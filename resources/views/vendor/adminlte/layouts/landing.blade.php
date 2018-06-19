@@ -132,7 +132,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 
 <div id="app">
     <!-- Fixed navbar -->
-    <div id="navigation" class="navbar navbar-default navbar-fixed-top" style="height:8em;">
+    <div id="navigation" class="navbar navbar-default navbar-fixed-top" style="height:9em;">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -144,17 +144,17 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="order_display"><i class="material-icons left">payment</i> Order Now</a></li>
-                    <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+                    <li><a class="btn" style="margin-top:2em;margin-bottom:1em; color:black;" href="order_display"><i class="material-icons left">payment</i> Order Now</a></li>
+                    <li><a class="btn" style="margin-top:2em;margin-bottom:1em;color:black;" href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
                     {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-                    <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
+                    <li><a class="btn" style="margin-top:2em;margin-bottom:1em;color:black;" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">{{ trans('adminlte_lang::message.login') }}</a></li>
-                        <li><a href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>
+                        <li><a style="margin-top:2em;margin-bottom:1em; color:black;" class="btn" href="{{ url('/login') }}">{{ trans('adminlte_lang::message.login') }}</a></li>
+                        <li><a style="margin-top:2em;margin-bottom:1em; color:black;" class="btn" href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>
                     @else
-                        <li><a href="/home">{{ Auth::user()->name }}</a></li>
+                        <li><a class="btn" href="/home">{{ Auth::user()->name }}</a></li>
                     @endif
                 </ul>
             </div><!--/.nav-collapse -->
