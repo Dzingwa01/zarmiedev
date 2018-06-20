@@ -5,6 +5,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The Sandwich Shop">
     <meta name="author" content="MARSHTEQ">
@@ -132,35 +133,78 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 
 <div id="app">
     <!-- Fixed navbar -->
-    <div id="navigation" class="navbar navbar-default navbar-fixed-top" style="height:9em;">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#"><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a class="btn" style="margin-top:2em;margin-bottom:1em; color:black;" href="order_display"><i class="material-icons left">payment</i> Order Now</a></li>
-                    <li><a class="btn" style="margin-top:2em;margin-bottom:1em;color:black;" href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+    {{--<div id="navigation" class="navbar navbar-default navbar-fixed-top" style="height:9em;">--}}
+        {{--<div class="container">--}}
+            {{--<div class="navbar-header">--}}
+                {{--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">--}}
+                    {{--<span class="icon-bar"></span>--}}
+                    {{--<span class="icon-bar"></span>--}}
+                    {{--<span class="icon-bar"></span>--}}
+                {{--</button>--}}
+                {{--<a class="navbar-brand" href="#"><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>--}}
+            {{--</div>--}}
+            {{--<div class="navbar-collapse collapse">--}}
+                {{--<ul class="nav navbar-nav">--}}
+                    {{--<li><a class="btn" style="margin-top:2em;margin-bottom:1em; color:black;" href="order_display"><i class="material-icons left">payment</i> Order Now</a></li>--}}
+                    {{--<li><a class="btn" style="margin-top:2em;margin-bottom:1em;color:black;" href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>--}}
                     {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-                    <li><a class="btn" style="margin-top:2em;margin-bottom:1em;color:black;" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
+                    {{--<li><a class="btn" style="margin-top:2em;margin-bottom:1em;color:black;" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
+                {{--</ul>--}}
+                {{--<ul class="nav navbar-nav navbar-right">--}}
+                    {{--@if (Auth::guest())--}}
+                        {{--<li><a style="margin-top:2em;margin-bottom:1em; color:black;" class="btn" href="{{ url('/login') }}">{{ trans('adminlte_lang::message.login') }}</a></li>--}}
+                        {{--<li><a style="margin-top:2em;margin-bottom:1em; color:black;" class="btn" href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>--}}
+                    {{--@else--}}
+                        {{--<li><a class="btn" href="/home">{{ Auth::user()->name }}</a></li>--}}
+                    {{--@endif--}}
+                {{--</ul>--}}
+            {{--</div><!--/.nav-collapse -->--}}
+        {{--</div>--}}
+    {{--</div>--}}
+    <nav class="navbar-fixed-top white" role="navigation" style="height:9em;">
+        <div class="nav-wrapper container-fluid">
+            <a id="logo-container" href="#" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
+            @if (Auth::check())
+                <li><a href="{{ url('/home') }}">Home</a></li>
+            @else
+                <ul class="right hide-on-med-and-down">
+                    <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="order_display"><i class="material-icons left">payment</i> Order Now</a></li>
+                    <li><a class="btn" href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+                    {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
+                    <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
+                    <li class="dropdown">
+                        <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#">
+                            <i class="material-icons left">person_pin</i>
+                            Account
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;"><i class="material-icons left">verified_user</i>Sign  In</a><br/>
+                            {{-- <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a> --}}
+                        </ul>
+                    </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    @if (Auth::guest())
-                        <li><a style="margin-top:2em;margin-bottom:1em; color:black;" class="btn" href="{{ url('/login') }}">{{ trans('adminlte_lang::message.login') }}</a></li>
-                        <li><a style="margin-top:2em;margin-bottom:1em; color:black;" class="btn" href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>
-                    @else
-                        <li><a class="btn" href="/home">{{ Auth::user()->name }}</a></li>
-                    @endif
-                </ul>
-            </div><!--/.nav-collapse -->
-        </div>
-    </div>
+                <ul id="nav-mobile" class="side-nav">
+                    <li><a class="btn" href="order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
+                    <li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+                    <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
+                    <li class="dropdown">
+                        <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#">
+                            <i class="material-icons left">person_pin</i>
+                            Account
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/>
+                            {{-- <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a> --}}
+                        </ul>
+                    </li>
 
+                </ul>
+                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+            @endif
+        </div>
+    </nav>
 
     <div class="slider" style="margin-top:5em">
         <ul id="slides" class="slides">

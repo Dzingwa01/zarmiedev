@@ -2,20 +2,22 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Jrean\UserVerification\Traits\VerifiesUsers;
+use Jrean\UserVerification\Traits\UserVerification;
 
 class User extends Authenticatable
 {
-    use Notifiable;
-
+    use EntrustUserTrait;
+    use UserVerification;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','phone_number','physical_address',
     ];
 
     /**
