@@ -26,6 +26,8 @@ Route::get('menu_display','MenuManagementController@getIndex');
 Route::get('contact_display','OrderController@showContactUsPage');
 Route::get('order_display','OrderController@getOrdersIndex');
 Route::get('process_order','OrderController@goToProcessOrder');
+Route::get('/order_completion','OrderController@gotToCompletion');
+Route::get('get_user_by_phone/{phone_number}','OrderController@getUserByPhone');
 Route::get('bread_selection','OrderController@showBread');
 Route::get('/address_selection','OrderController@showAddressSelection');
 Route::get('select_ingredients_toppings/{id}','OrderController@showIngredientsToppings');

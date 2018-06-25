@@ -12,6 +12,7 @@
                   <div class="row">
                     <div class="col-sm-6" >
                       <div id="bread_choices" style="margin-left:2em;">
+                          <label style="font-size: 16px; color:black; font-weight: bold;">Bread Type</label>
                         <p >
                           <input name="group01" class="bread" type="radio" id="white_bread" value="White Bread" required/>
                           <label for="white_bread">White Bread</label>
@@ -25,9 +26,9 @@
                           <label for="whole_wheat">Whole Wheat Bread</label>
                         </p>
                         <div style="margin-left:2em;">
-                          <input name="num_people" type="number" id="num_people"  placeholder="Enter Amount" style="display: inline-block;width: 180px;" required/>
+                          <input name="num_people" type="number" id="num_people"  value="1" hidden required/>
                         </div>
-                        
+                          <label style="font-size: 16px; font-weight: bold; color:black;">Toast Choice</label>
                         <p>
                           <input name="group1" type="radio" value="Toast" id="toast" required/>
                           <label for="toast">Toast</label>
@@ -82,7 +83,16 @@
   var item_number = sessionStorage.getItem('item_number_1');
   $(document).ready(function(){
       var menu_items = {!!$menu_items!!};
-      console.log(menu_items);
+      initializeQuantities();
+     function initializeQuantities(){
+         var quantity = $('#num_people').val();
+         sessionStorage.setItem('quantity',quantity);
+         $('#item_amount').append('<h6> <b>Quantity - </b>'+ quantity+'</h6>');
+         var item_prize = Number(sessionStorage.getItem("item_category_price")).toFixed(2);
+         var total_due = item_prize*$('#num_people').val();
+         sessionStorage.setItem('total_due',total_due);
+         $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
+     }
         $.each(menu_items, function(idx,obj){
           if(item_number == obj.item_number){
             var name_cur = obj.item_name;
@@ -102,6 +112,7 @@
              sessionStorage.setItem('bread_type',selected_bread);
              if(sessionStorage.getItem('selected_toast')!==null){
                   $('#item_bread').append('<h6><b>Bread Choice - </b>'+bread_choice + ' - ' +sessionStorage.getItem('selected_toast') + '</h6>');
+
              }
              else{
                   $('#item_bread').append('<h6><b>Bread Choice - </b>'+bread_choice + '</h6>');

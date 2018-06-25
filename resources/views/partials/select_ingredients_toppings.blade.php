@@ -45,6 +45,7 @@
                 <div id ='item_amount'>
                 </div>
                  <div id ='item_prize'></div>
+                  <div id ='item_ingredients'></div>
                 
               </fieldset>
             </form>
@@ -52,7 +53,81 @@
         </div>
   </div>
    <script>
-   
+       window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
+           window.msIndexedDB;
+
+       window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction ||
+           window.msIDBTransaction;
+       window.IDBKeyRange = window.IDBKeyRange ||
+           window.webkitIDBKeyRange || window.msIDBKeyRange
+
+       if (!window.indexedDB) {
+           window.alert("Your browser doesn't support a stable version of IndexedDB.")
+       }
+       var db;
+       var request = window.indexedDB.open("order_cart", 1);
+       request.onerror = function(event) {
+           console.log("error: ");
+       };
+
+       request.onsuccess = function(event) {
+           db = request.result;
+           readAll();
+       };
+       request.onupgradeneeded = function(event) {
+           var db = event.target.result;
+           var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id"});
+           readAll();
+       }
+
+       function addIngredient(ingredient_id,ingredient_name,ingredient_prize){
+           var request = db.transaction(["selected_ingredients"],"readwrite")
+               .objectStore("selected_ingredients")
+               .add({id:ingredient_id,name:ingredient_name,prize:ingredient_prize});
+
+           request.onsuccess = function(event){
+               console.log("ingredient addedd");
+           }
+           request.onerror = function(event){
+               console.log("error",event);
+           }
+       }
+       function readAll() {
+//           console.log("rading all");
+           var objectStore = db.transaction(["selected_ingredients"],"readwrite").objectStore("selected_ingredients");
+
+           objectStore.openCursor().onsuccess = function(event) {
+               var cursor = event.target.result;
+               console.log("cursor",cursor);
+               var ingredients = {!! $ingredients !!};
+
+               if (cursor) {
+                   for(var i=0;i<ingredients.length;i++){
+                       if(ingredients[i].ingredient.id == cursor.value.id){
+                           $("#"+cursor.value.id).remove();
+                           $('#item_ingredients').append('<button id='+cursor.value.id+' onclick="ingredient_select_reverse(this);"  class="glass" style="font-weight:bolder;margin-left:1em;color:white;">'+cursor.value.name+'</button>');
+                       }
+                   }
+
+                   cursor.continue();
+               } else {
+//                      alert("No more entries!");
+               }
+           };
+       }
+       function removeIngredient(ingredient_id){
+
+           var request = db.transaction(["selected_ingredients"],"readwrite")
+               .objectStore("selected_ingredients")
+               .delete(ingredient_id);
+
+           request.onsuccess = function(event){
+               console.log("ingredient removed",event);
+           }
+           request.onerror = function(event){
+               console.log("error",event);
+           }
+       }
   var item_number = sessionStorage.getItem('item_name');
   $(document).ready(function(){
        $('#choice').append('<h6><b>Choice - </b>'+sessionStorage.getItem('item_name')+'</h6>');
@@ -63,7 +138,6 @@
       
     $("#ingredients_toppings_form").on('submit',function(e){
         e.preventDefault();
-        
     });
     $('#ingredient_toppings_next').on('click',function(e){
         window.location.href = "{{'/address_selection'}}"; 
@@ -74,7 +148,26 @@
         
   });
   function ingredient_select(obj){
-    //   alert(obj.id);
+      var ingredients = {!! $ingredients !!};
+      for(var i=0;i<ingredients.length;i++){
+          if(ingredients[i].ingredient.id == obj.id){
+              $('#'+obj.id).remove();
+              addIngredient(obj.id,ingredients[i].ingredient.name,ingredients[i].ingredient.prize);
+              $('#item_ingredients').append('<button id='+obj.id+' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_reverse(this);" >'+ingredients[i].ingredient.name+'</button>');
+          }
+      }
+  }
+  function ingredient_select_reverse(obj){
+      //   alert(obj.id);
+      var ingredients = {!! $ingredients !!};
+      for(var i=0;i<ingredients.length;i++){
+          if(ingredients[i].ingredient.id == obj.id){
+              $('#'+obj.id).remove();
+              removeIngredient(obj.id);
+              $('#ingredients_list').append('<button id='+obj.id+' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_reverse(this);" >'+ingredients[i].ingredient.name+'</button>');
+          }
+      }
+//      console.log('Ingredients',ingredients);
   }
    </script>
   @endsection

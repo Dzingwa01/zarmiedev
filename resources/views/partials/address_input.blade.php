@@ -38,7 +38,7 @@
                 <div id ='item_amount'>
                 </div>
                  <div id ='item_prize'></div>
-                
+                  <div id ='item_ingredients'></div>
               </fieldset>
             </form>
           </div>
@@ -109,20 +109,64 @@
 
       </style>
       <script>
+          window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
+              window.msIndexedDB;
+
+          window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction ||
+              window.msIDBTransaction;
+          window.IDBKeyRange = window.IDBKeyRange ||
+              window.webkitIDBKeyRange || window.msIDBKeyRange
+
+          if (!window.indexedDB) {
+              window.alert("Your browser doesn't support a stable version of IndexedDB.")
+          }
+          var db;
+          var request = window.indexedDB.open("order_cart", 1);
+          request.onerror = function(event) {
+              console.log("error: ");
+          };
+
+          request.onsuccess = function(event) {
+              db = request.result;
+              console.log("success: "+ db);
+          };
+          request.onupgradeneeded = function(event) {
+              var db = event.target.result;
+              var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id"});
+          }
+          function readAll() {
+              var objectStore = db.transaction(["selected_ingredients"],"readwrite").objectStore("selected_ingredients");
+
+              objectStore.openCursor().onsuccess = function(event) {
+                  var cursor = event.target.result;
+                    console.log("cursor",cursor);
+                  if (cursor) {
+                      $('#item_ingredients').append('<button id='+cursor.value.id+' class="glass" style="font-weight:bolder;margin-left:1em;color:white;">'+cursor.value.name+'</button>');
+                      cursor.continue();
+                  } else {
+                  }
+              };
+          }
        $(document).ready(function(){
        $('#choice').append('<h6><b>Choice - </b>'+sessionStorage.getItem('item_name')+'</h6>');
        $('#type').append('<h6> <b>Type - </b>'+sessionStorage.getItem('item_category')+'</h6>');
         $('#item_bread').append('<h6><b>Bread Choice - </b>'+sessionStorage.getItem('bread_type') + ' - ' +sessionStorage.getItem('selected_toast') + '</h6>');
         $('#item_prize').append('<h6> <b>Prize - </b> R '+Number(sessionStorage.getItem('total_due')).toFixed(2)+'</h6>');
         $('#item_amount').append('<h6> <b>Quantity - </b>'+sessionStorage.getItem('quantity')+'</h6>');
-      
+           readAll();
+
+
     $("#address_form").on('submit',function(e){
         e.preventDefault();
-        // window.location.href = "{{'select_ingredients'}}";
+        sessionStorage.setItem("delivery_address",$("#address").val());
+        console.log("submisison comes here",$("#address").val());
+        window.location.href = "{{'/order_completion'}}";
+
         
     });
     $("#address_back").on('click',function(e){
         e.preventDefault();
+
         var link_to = sessionStorage.getItem('item_id');
         window.location.href = '/select_ingredients_toppings/'+link_to; 
     });
@@ -227,7 +271,8 @@
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
-            // var latLang=result[i].getPosition();
+//             var latLang=result[i].getPosition();
+//             console.log("latlang",latLang);
             // map.setCenter();
           }
         }
