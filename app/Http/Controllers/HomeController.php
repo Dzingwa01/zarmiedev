@@ -7,8 +7,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class HomeController
@@ -33,6 +33,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('adminlte::home');
+        $user=Auth::user();
+        if($user->hasRole('admin')){
+            return redirect()->route('admin_home');
+        }
+        else if($user->hasRole('client'))
+        {
+            return view('adminlte::home');
+        }
     }
 }

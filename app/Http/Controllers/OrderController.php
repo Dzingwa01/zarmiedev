@@ -24,9 +24,13 @@ class OrderController extends Controller
         return view('order_selection');
     }
 
-    public function showAddressSelection()
+    public function showAddressSelection($id)
     {
-        return view('partials.address_input');
+        $menu_item = Menu::find($id);
+        $item_categories = Category::all();
+        $item_sizes = Item_Size::all();
+        $ingredients = $menu_item->item_ingredients;
+        return view('partials.address_input',compact('ingredients'));
     }
 
     public function showIngredientsToppings($id)
@@ -108,8 +112,12 @@ class OrderController extends Controller
         return view('order_display', compact('menu_items', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread'));
     }
 
-    function gotToCompletion(){
-        return view('partials.order_completion');
+    function gotToCompletion($id){
+        $menu_item = Menu::find($id);
+        $item_categories = Category::all();
+        $item_sizes = Item_Size::all();
+        $ingredients = $menu_item->item_ingredients;
+        return view('partials.order_completion',compact('ingredients'));
     }
 
     public function getUserByPhone($phone_number){

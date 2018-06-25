@@ -105,7 +105,7 @@
                         </div>
                     <div class="row" style="margin-top:2em;" style="color:black">
                         <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                            <button id='' class="btn waves-effect waves-light">Cancel</button>
+                            <button id='cancel' class="btn waves-effect waves-light" data-dismiss="modal">Cancel</button>
                         </div>
                         <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
                             <button id='register_new_account' class="btn waves-effect waves-light">Submit</button>
@@ -221,22 +221,29 @@
     }
 
     function readAll() {
+
         var objectStore = db.transaction(["selected_ingredients"],"readwrite").objectStore("selected_ingredients");
 
         objectStore.openCursor().onsuccess = function(event) {
             var cursor = event.target.result;
-            console.log("cursor",cursor);
+            var ingredients = {!! $ingredients !!};
+
             if (cursor) {
-                $('#item_ingredients').append('<button id='+cursor.value.id+' class="glass" style="font-weight:bolder;margin-left:1em;color:white;">'+cursor.value.name+'</button>');
+                for(var i=0;i<ingredients.length;i++){
+                    if(ingredients[i].ingredient_id == cursor.value.id){
+                        $("#"+cursor.value.id).remove();
+                        $('#item_ingredients').append('<button id='+cursor.value.id+' onclick="ingredient_select_reverse(this);"  class="glass" style="font-weight:bolder;margin-left:1em;color:white;">'+cursor.value.name+'</button>');
+                        break;
+                    }
+                }
                 cursor.continue();
             } else {
+//                      alert("No more entries!");
             }
         };
     }
     $(document).ready(function(){
-//        $('#name_p').hide();
-//        $('#surname_p').hide();
-//        $('#email_address_div').hide();
+        $('#item_ingredients').append('<h6><b>Ingredients</b></h6>');
         $('#choice').append('<h6><b>Choice - </b>'+sessionStorage.getItem('item_name')+'</h6>');
         $('#type').append('<h6> <b>Type - </b>'+sessionStorage.getItem('item_category')+'</h6>');
         $('#item_bread').append('<h6><b>Bread Choice - </b>'+sessionStorage.getItem('bread_type') + ' - ' +sessionStorage.getItem('selected_toast') + '</h6>');
@@ -273,7 +280,9 @@
         });
         $("#complete_back").on('click',function(e){
             e.preventDefault();
-            window.location.href = "{{'/address_selection'}}";
+            var link_to = sessionStorage.getItem('item_id');
+            window.location.href = '/address_selection/'+link_to;
+            {{--window.location.href = "{{'/address_selection'}}";--}}
         });
     });
 

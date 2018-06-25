@@ -146,7 +146,11 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        Zizaco\Entrust\EntrustServiceProvider::class,
+        /*
+         * Package Service Providers...
+         */
+        Laravel\Tinker\TinkerServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -160,6 +164,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
+        Jrean\UserVerification\UserVerificationServiceProvider::class,
+        'Collective\Html\HtmlServiceProvider',
+        Yajra\Datatables\DatatablesServiceProvider::class,
 
     ],
 
@@ -210,6 +217,11 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'UserVerification' => Jrean\UserVerification\Facades\UserVerification::class,
+        'Form' => 'Collective\Html\FormFacade',
+        'Html' => 'Collective\Html\HtmlFacade',
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
     ],
 
 ];

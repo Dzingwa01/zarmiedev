@@ -128,22 +128,32 @@
 
           request.onsuccess = function(event) {
               db = request.result;
-              console.log("success: "+ db);
+              readAll();
           };
           request.onupgradeneeded = function(event) {
               var db = event.target.result;
               var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id"});
+              readAll();
           }
           function readAll() {
               var objectStore = db.transaction(["selected_ingredients"],"readwrite").objectStore("selected_ingredients");
 
               objectStore.openCursor().onsuccess = function(event) {
                   var cursor = event.target.result;
-                    console.log("cursor",cursor);
+                  var ingredients = {!! $ingredients !!};
+                  console.log("cursor",cursor);
+                  console.log("ingred",ingredients);
                   if (cursor) {
-                      $('#item_ingredients').append('<button id='+cursor.value.id+' class="glass" style="font-weight:bolder;margin-left:1em;color:white;">'+cursor.value.name+'</button>');
+                      for(var i=0;i<ingredients.length;i++){
+                          if(ingredients[i].ingredient_id == cursor.value.id){
+                              $("#"+cursor.value.id).remove();
+                              $('#item_ingredients').append('<button id='+cursor.value.id+' onclick="ingredient_select_reverse(this);"  class="glass" style="font-weight:bolder;margin-left:1em;color:white;">'+cursor.value.name+'</button>');
+                              break;
+                          }
+                      }
                       cursor.continue();
                   } else {
+//                      alert("No more entries!");
                   }
               };
           }
@@ -160,7 +170,9 @@
         e.preventDefault();
         sessionStorage.setItem("delivery_address",$("#address").val());
         console.log("submisison comes here",$("#address").val());
-        window.location.href = "{{'/order_completion'}}";
+        var link_to = sessionStorage.getItem('item_id');
+        window.location.href = '/order_completion/'+link_to;
+        {{--window.location.href = "{{'/order_completion/'}}";--}}
 
         
     });

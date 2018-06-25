@@ -98,7 +98,7 @@
 
            objectStore.openCursor().onsuccess = function(event) {
                var cursor = event.target.result;
-               console.log("cursor",cursor);
+
                var ingredients = {!! $ingredients !!};
 
                if (cursor) {
@@ -140,7 +140,9 @@
         e.preventDefault();
     });
     $('#ingredient_toppings_next').on('click',function(e){
-        window.location.href = "{{'/address_selection'}}"; 
+        var link_to = sessionStorage.getItem('item_id');
+        window.location.href = '/address_selection/'+link_to;
+        {{--window.location.href = "{{'/address_selection'}}"; --}}
     });
      $("#ingredient_toppings_back").on('click',function(){
         window.location.href = "{{'/process_order'}}";

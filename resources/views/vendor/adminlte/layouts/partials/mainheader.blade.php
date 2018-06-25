@@ -1,16 +1,14 @@
 <!-- Main Header -->
-<header class="main-header">
-
+<header class="main-header" >
+    {{--<a id="logo-container" href="{{ url('/home') }}" class="brand-logo" ></a>--}}
     <!-- Logo -->
-    <a href="{{ url('/home') }}" class="logo">
+    <a href="{{ url('/home') }}" class="logo" style="height: 5em!important;">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>A</b>LT</span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Admin</b>LTE Laravel </span>
+        <img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} />
     </a>
 
     <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation">
+    <nav class="navbar navbar-static-top" role="navigation" >
         <!-- Sidebar toggle button-->
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">{{ trans('adminlte_lang::message.togglenav') }}</span>

@@ -101,66 +101,12 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css'>
-    <script>
-        $(document).ready(function(){
-            $("#details_form" ).hide();
-            // $("#many_details_form").hide();
-            //$("#sandwich_popup_dialog").modal("hide");
-            $('.slider').slider({ full_width: true });
-            $('.parallax').parallax();
-            $("#sandwich_popup").on('click',function(){
-                $("#sandwich_popup_dialog").modal('show');
-            });
-            $("#salads_popup").on('click',function(){
-                $("#salads_popup_dialog").modal('show');
-            });
-            $("#trays_popup").on('click',function(){
-                $("#trays_popup_dialog").modal('show');
-            });
 
-        });
-
-    </script>
-    <style>
-        .drop-down{
-            margin-left: 1em!important;
-        }
-    </style>
 
 </head>
 
-<body data-spy="scroll" data-offset="0" data-target="#navigation">
-
-<div id="app">
-    <!-- Fixed navbar -->
-    {{--<div id="navigation" class="navbar navbar-default navbar-fixed-top" style="height:9em;">--}}
-        {{--<div class="container">--}}
-            {{--<div class="navbar-header">--}}
-                {{--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">--}}
-                    {{--<span class="icon-bar"></span>--}}
-                    {{--<span class="icon-bar"></span>--}}
-                    {{--<span class="icon-bar"></span>--}}
-                {{--</button>--}}
-                {{--<a class="navbar-brand" href="#"><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>--}}
-            {{--</div>--}}
-            {{--<div class="navbar-collapse collapse">--}}
-                {{--<ul class="nav navbar-nav">--}}
-                    {{--<li><a class="btn" style="margin-top:2em;margin-bottom:1em; color:black;" href="order_display"><i class="material-icons left">payment</i> Order Now</a></li>--}}
-                    {{--<li><a class="btn" style="margin-top:2em;margin-bottom:1em;color:black;" href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>--}}
-                    {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-                    {{--<li><a class="btn" style="margin-top:2em;margin-bottom:1em;color:black;" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
-                {{--</ul>--}}
-                {{--<ul class="nav navbar-nav navbar-right">--}}
-                    {{--@if (Auth::guest())--}}
-                        {{--<li><a style="margin-top:2em;margin-bottom:1em; color:black;" class="btn" href="{{ url('/login') }}">{{ trans('adminlte_lang::message.login') }}</a></li>--}}
-                        {{--<li><a style="margin-top:2em;margin-bottom:1em; color:black;" class="btn" href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>--}}
-                    {{--@else--}}
-                        {{--<li><a class="btn" href="/home">{{ Auth::user()->name }}</a></li>--}}
-                    {{--@endif--}}
-                {{--</ul>--}}
-            {{--</div><!--/.nav-collapse -->--}}
-        {{--</div>--}}
-    {{--</div>--}}
+<body >
+<div id="app"></div>
     <nav class="navbar-fixed-top white" role="navigation" style="height:9em;">
         <div class="nav-wrapper container-fluid">
             <a id="logo-container" href="#" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
@@ -172,33 +118,17 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
                     <li><a class="btn" href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
                     {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
                     <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
-                    <li class="dropdown">
-                        <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#">
-                            <i class="material-icons left">person_pin</i>
-                            Account
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;"><i class="material-icons left">verified_user</i>Sign  In</a><br/>
-                            {{-- <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a> --}}
-                        </ul>
-                    </li>
+                    <li><a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/></li>
+                    <li><a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a></li>
+
                 </ul>
                 <ul id="nav-mobile" class="side-nav">
                     <li><a class="btn" href="order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
                     <li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
                     <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
-                    <li class="dropdown">
-                        <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#">
-                            <i class="material-icons left">person_pin</i>
-                            Account
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/>
-                            {{-- <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a> --}}
-                        </ul>
-                    </li>
+                    <li><a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/></li>
+                    <li><a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a></li>
+
 
                 </ul>
                 <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -436,78 +366,6 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
             </div>
         </div>
     </div>
-    <style>
-        @media only screen
-        and (min-width : 1824px) {
-            .modal{
-                height: 450px!important;
-            }
-        }
-        #map_canvas {
-            height: 250px;
-            /*width: 300px;*/
-            margin: 0px;
-            padding: 0px
-        }
-
-        .controls {
-            border: 1px solid!important;
-            border-radius: 2px 0 0 2px!important;
-            box-sizing: border-box!important;
-            -moz-box-sizing: border-box!important;
-            height: 32px;
-            outline: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        }
-        .pac-container {
-            background-color: #fff;
-            z-index: 20;
-            position: fixed;
-            display: inline-block;
-            float: left;
-        }
-        .modal{
-            z-index: 20;
-        }
-        .modal-backdrop{
-            z-index: 10;
-        }​
-         #address {
-             background-color: #fff;
-             font-family: Roboto;
-             font-size: 15px;
-             font-weight: 300;
-             margin-left: 12px;
-             padding: 0 11px 0 13px;
-             text-overflow: ellipsis;
-             width: 400px;
-         }
-
-        #address:focus {
-            border-color: #4d90fe;
-        }
-
-        /*.pac-container {
-        font-family: Roboto;
-        }*/
-
-        #type-selector {
-            color: #fff;
-            background-color: #4d90fe;
-            padding: 5px 11px 0px 11px;
-        }
-
-        #type-selector label {
-            /*font-family: Roboto;*/
-            font-size: 13px;
-            font-weight: 300;
-        }
-
-    </style>
-
-
-
-
     <footer class="page-footer teal">
         <div class="container">
             <div class="row">
@@ -549,26 +407,134 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
         </script>
     </footer>
 
-</div>
-
 </body>
-</div>
-
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
+<style>
+    @media only screen
+    and (min-width : 1824px) {
+        .modal{
+            height: 450px!important;
+        }
+    }
+    #map_canvas {
+        height: 250px;
+        /*width: 300px;*/
+        margin: 0px;
+        padding: 0px
+    }
+
+    .controls {
+        border: 1px solid!important;
+        border-radius: 2px 0 0 2px!important;
+        box-sizing: border-box!important;
+        -moz-box-sizing: border-box!important;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+    .pac-container {
+        background-color: #fff;
+        z-index: 20;
+        position: fixed;
+        display: inline-block;
+        float: left;
+    }
+    .modal{
+        z-index: 20;
+    }
+    .modal-backdrop{
+        z-index: 10;
+    }​
+     #address {
+         background-color: #fff;
+         font-family: Roboto;
+         font-size: 15px;
+         font-weight: 300;
+         margin-left: 12px;
+         padding: 0 11px 0 13px;
+         text-overflow: ellipsis;
+         width: 400px;
+     }
+
+    #address:focus {
+        border-color: #4d90fe;
+    }
+
+    /*.pac-container {
+    font-family: Roboto;
+    }*/
+
+    #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+    }
+
+    #type-selector label {
+        /*font-family: Roboto;*/
+        font-size: 13px;
+        font-weight: 300;
+    }
+
+    .drop-down{
+        margin-left: 1em!important;
+    }
+</style>
 <script src="{{ asset('/js/app.js') }}"></script>
 <script src="{{ asset('/js/smoothscroll.js') }}"></script>
 <script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4VCOsDzZ-3fqwWrxmWWgoPNlXcpvpPvE&libraries=places&callback=getLocation" async defer></script>
-<script>
-    $('.carousel').carousel({
-        interval: 3500
-    })
-</script>
+
 <script src="js/materialize.js"></script>
 <script src="js/init.js"></script>
 <script>
+    $(document).ready(function(){
+        $("#details_form" ).hide();
+        // $("#many_details_form").hide();
+        //$("#sandwich_popup_dialog").modal("hide");
+        $('.slider').slider({ full_width: true });
+        $('.parallax').parallax();
+        $("#sandwich_popup").on('click',function(){
+            $("#sandwich_popup_dialog").modal('show');
+        });
+        $("#salads_popup").on('click',function(){
+            $("#salads_popup_dialog").modal('show');
+        });
+        $("#trays_popup").on('click',function(){
+            $("#trays_popup_dialog").modal('show');
+        });
+        $('.carousel').carousel({
+            interval: 3500
+        })
+        $('#address_form').on('submit',function(){
+            return false;
+        });
+        $('#address_action').on('click',function(){
+            var address=$('#address').val();
+            console.log(address.length);
+            if(address.length>=15){
+                sessionStorage.setItem('address',address);
+                $('#address_div').hide();
+                window.location.href = '/order_display';
+                // $('#details_form').show();
+                $(this).close();
+            }
+            else{
+                // alert('Please enter your full address, in port elizabeth');
+                $.notify('Please enter your full address, in port elizabeth',{
+                    type:"danger",
+                    align:"center",
+                    verticalAlign:"middle",
+                    animation:true,
+                    animationType:"drop"
+                });
+            }
+        });
+
+    });
+
     var latitude=0;
     var longitude=0;
     var map;
@@ -693,40 +659,11 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
     $('#order_popup_dialog').on("shown.bs.modal",function(){
         google.maps.event.trigger(map, "resize");
     });
-</script>
-<script>
+
     function place_order(){
         alert("Coming soon");
     }
-    $(document).ready(function(){
 
-        $('#address_form').on('submit',function(){
-            return false;
-        });
-        $('#address_action').on('click',function(){
-            var address=$('#address').val();
-            console.log(address.length);
-            if(address.length>=15){
-                sessionStorage.setItem('address',address);
-                $('#address_div').hide();
-                window.location.href = '/order_display';
-                // $('#details_form').show();
-                $(this).close();
-            }
-            else{
-                // alert('Please enter your full address, in port elizabeth');
-                $.notify('Please enter your full address, in port elizabeth',{
-                    type:"danger",
-                    align:"center",
-                    verticalAlign:"middle",
-                    animation:true,
-                    animationType:"drop"
-                });
-            }
-        });
-
-
-    });
 </script>
-</body>
+
 </html>
