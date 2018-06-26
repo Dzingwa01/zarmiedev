@@ -5,6 +5,15 @@
 @endsection
 @section('main-content')
     <div class="container-fluid box box-success">
+        @if (session('status'))
+            <div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ session('status') }}
+            </div>
+        @elseif(session('error'))
+            <div class="alert alert-danger"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="row">
             <div class="col m3">
                 <a id="add_menu" style="margin-top: 1em;" class="btn" data-toggle="modal" data-target="#add_menu_popup"><i
@@ -95,16 +104,39 @@
                         <label for="item_description">Description</label>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="input-field col s6 offset-m2">
-                        <select id="item_size" name="item_size" required>
-                            <option value="">**Please select a size**</option>
-                            @foreach($item_sizes as $size)
-                                <option value="{{$size->id}}">{{$size->size_name}}</option>
-                            @endforeach
-                        </select>
+                        <input id="sandwich_prize" name="item_prize" placeholder="Item Prize" type="number" step="0.01"
+                               class="validate" required>
+                        <label for="sandwich_prize">Sandwich Prize</label>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="input-field col s6 offset-m2">
+                        <input id="medium_sub" name="item_prize" placeholder="Item Prize" type="number" step="0.01"
+                               class="validate" required>
+                        <label for="medium_sub">Medium Sub Prize</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s6 offset-m2">
+                        <input id="large_sub_prize" name="item_prize" placeholder="Item Prize" type="number" step="0.01"
+                               class="validate" required>
+                        <label for="large_sub_prize">Large Sub Prize</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s6 offset-m2">
+                        <input id="wrap_prize" name="item_prize" placeholder="Item Prize" type="number" step="0.01"
+                               class="validate" required>
+                        <label for="wrap_prize">Wrap Prize</label>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="input-field col s6 offset-m2">
                         <select id="item_category" name="item_category" required>
@@ -115,13 +147,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="input-field col s6 offset-m2">
-                        <input id="item_prize" name="item_prize" placeholder="Item Prize" type="number" step="0.01"
-                               class="validate" required>
-                        <label for="item_prize">Prize</label>
-                    </div>
-                </div>
+
                 <hr/>
                 <h5>Ingredients</h5>
                 <div class="row">
@@ -137,149 +163,141 @@
                     </div>
                 </div>
 
-        <hr/>
-        <div class="row">
-            <div class="col-md-6 col-md-offset-4">
-                <button type="submit" class="btn btn-primary"><i class="material-icons left">add</i>
-                    Save
-                </button>
-            </div>
-            <div>
+                <hr/>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-4">
+                        <button type="submit" class="btn btn-primary"><i class="material-icons left">add</i>
+                            Save
+                        </button>
+                    </div>
+                    <div>
 
-            </div>
+                    </div>
+                </div>
+            </form>
         </div>
-        </form>
-    </div>
 
     </div>
     @push('custom-scripts')
-        <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-                crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+    <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    {{--<script src="https://code.jquery.com/jquery-3.3.1.min.js"--}}
+            {{--integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="--}}
+            {{--crossorigin="anonymous"></script>--}}
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 
-        <script type="text/javascript" charset="utf8"
-                src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
-        <script src="js/materialize.js"></script>
-        <script src="js/init.js"></script>
-        <script>
-            $(document).ready(function () {
+    <script type="text/javascript" charset="utf8"
+            src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+    <script src="js/materialize.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/styles/metro/notify-metro.js"></script>
+    <script src="js/init.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('select').material_select();
+            $("#add_category").on('click', function () {
+
+                $("#add_category_popup").modal('show');
+            });
+            $("#add_menu").on('click', function () {
+
+                $("#add_menu_popup").modal('show');
+            });
+            $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+                $(".alert").slideUp(500);
+            });
+            $.get("/get_ingredients", function (data) {
+                console.log("Check me");
+                var id_local = "#ingredients";
+                var results = data.ingredients;
+                console.log("results", data);
+                $.each(results, function (idx, obj) {
+                    $(id_local).append("<option value=" + obj.id + ">" + obj.name + "</option>");
+                });
                 $('select').material_select();
-                $("#add_category").on('click', function () {
-
-                    $("#add_category_popup").modal('show');
-                });
-                $("#add_menu").on('click', function () {
-
-                    $("#add_menu_popup").modal('show');
+                $(id_local).trigger('contentChanged');
+                $(id_local).on('contentChanged', function () {
+                    $(this).material_select();
                 });
 
-                $.get("/get_ingredients", function (data) {
-                    console.log("Check me");
-                    var id_local = "#ingredients";
-                    var results = data.ingredients;
-                    console.log("results",data);
-                    $.each(results, function (idx, obj) {
-                        $(id_local).append("<option value=" + obj.id + ">" + obj.name + "</option>");
-                    });
-                    $('select').material_select();
-                    $(id_local).trigger('contentChanged');
-                    $(id_local).on('contentChanged', function () {
-                        $(this).material_select();
-                    });
-
-                });
-
-                $('#add_menu_item').submit(function (e) {
-                    e.preventDefault();
-                    var ingredient_ids = '';
-                    var formData = new FormData();
-                    formData.append('item_number', $('#item_number').val());
-                    formData.append('item_id', $('#item_id').val());
-                    formData.append('item_name', $('#item_name').val());
-                    formData.append('item_number', $('#item_number').val());
-                    formData.append('item_description', $('#item_description').val());
-                    formData.append('item_category', $('#item_category').val());
-                    formData.append('item_prize', $('#item_prize').val());
-                    formData.append('item_size', $('#item_size').val());
-                    formData.append('_token', $('input[name="_token"]').val());
-                    var count = 0;
-                    $(".ingr").each(function (idx, obj) {
-                        console.log("check" + obj.id);
-                        count += 1;
-                        formData.append('ingredients_array[]', obj.id);
-                    });
-                    $.ajax({
-                        url: "{{ route('add_menu_item') }}",
-                        processData: false,
-                        contentType: false,
-                        data: formData,
-                        type: 'post',
-                        success: function (response, a, b) {
-                            // console.log(response);
-                            $.notify('Menu Item saved successfully', {
-                                type: "success",
-                                align: "center",
-                                verticalAlign: "middle",
-                                animation: true,
-                                animationType: "drop"
-                            });
-                            window.location.href = '/menus';
-                        },
-                        error: function (response) {
-                            $.notify('You can not save menu item without ingredients', {
-                                type: "danger",
-                                align: "center",
-                                verticalAlign: "middle",
-                                animation: true,
-                                animationType: "drop"
-                            });
-                        }
-                    }).always(function () {
-
-                    });
-                });
             });
 
-            function add_category() {
-
-            }
-
-            function select_ingredient() {
-                var selected_ingredient = $('#ingredients').val();
-                var selected_ingredient_text = $("#ingredients option:selected").text();
-                var html_string = '<div id="' + selected_ingredient + '"  class="col s3 well" style="margin-left:1em;"><p id="' + selected_ingredient + '" class="ingr" style="font-weight:bolder;" ><span id="' + selected_ingredient + '" class="material-icons close" style="cursor:pointer;" onclick="remove_ingredient(this)">close</span>' + selected_ingredient_text + '</p></div>';
-                $('#ingredients_list').append(html_string);
-
-
-            }
-
-            function remove_ingredient(obj) {
-                $('#' + obj.id).remove();
-            }
-        </script>
-        <script>
-
-            $(function () {
-                $('#menu-table').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    ajax: '{{route('menu_items')}}',
-                    columns: [
-                        {data: 'item_number', name: 'item_number'},
-                        {data: 'name', name: 'name'},
-                        {data: 'description', name: 'description'},
-                        {data: 'category_name', name: 'category_name'},
-                        {data: 'size_name', name: 'size_name'},
-                        {data: 'prize', name: 'prize'},
-                        {data: 'created_at', name: 'menu_item.created_at'},
-                        {data: 'action', name: 'action', orderable: false, searchable: false}
-                    ]
+            $('#add_menu_item').submit(function (e) {
+                e.preventDefault();
+                var ingredient_ids = '';
+                var formData = new FormData();
+                formData.append('item_number', $('#item_number').val());
+                formData.append('item_name', $('#item_name').val());
+                formData.append('description', $('#item_description').val());
+                formData.append('category_id', $('#item_category').val());
+                formData.append('_token', $('input[name="_token"]').val());
+                formData.append('sandwich_prize',$('#sandwich_prize').val());
+                formData.append('medium_sub',$('#medium_sub').val());
+                formData.append('large_sub_prize',$('#large_sub_prize').val());
+                formData.append('wrap_prize',$('#wrap_prize').val());
+                var count = 0;
+                $(".ingr").each(function (idx, obj) {
+                    count += 1;
+                    formData.append('ingredients_array[]', obj.id);
                 });
+                $.ajax({
+                    url: "{{ route('add_menu_item') }}",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    type: 'post',
+
+                    success: function (response, a, b) {
+                         console.log("success",response);
+//                        $("#add_menu_popup").modal('hide');
+                        window.location.reload();
+                    },
+                    error: function (response) {
+                        console.log("error",response);
+                        window.location.reload();
+//                        $("#add_menu_popup").modal('hide');
+                    }
+                });
+            });
+        });
+
+        function add_category() {
+
+        }
+
+        function select_ingredient() {
+            var selected_ingredient = $('#ingredients').val();
+            var selected_ingredient_text = $("#ingredients option:selected").text();
+            var html_string = '<div id="' + selected_ingredient + '"  class="col s3 well" style="margin-left:1em;"><p id="' + selected_ingredient + '" class="ingr" style="font-weight:bolder;" ><span id="' + selected_ingredient + '" class="material-icons close" style="cursor:pointer;" onclick="remove_ingredient(this)">close</span>' + selected_ingredient_text + '</p></div>';
+            $('#ingredients_list').append(html_string);
+
+
+        }
+
+        function remove_ingredient(obj) {
+            $('#' + obj.id).remove();
+        }
+    </script>
+    <script>
+
+        $(function () {
+            $('#menu-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{route('menu_items')}}',
+                columns: [
+                    {data: 'item_number', name: 'item_number'},
+                    {data: 'name', name: 'name'},
+                    {data: 'description', name: 'description'},
+                    {data: 'category_name', name: 'category_name'},
+                    {data: 'size_name', name: 'size_name'},
+                    {data: 'prize', name: 'prize'},
+                    {data: 'created_at', name: 'menu_item.created_at'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                ]
+            });
 //                $('select[name="menu-table_length"]').css("display","inline");
-            });
-        </script>
+        });
+    </script>
     @endpush
 @endsection
