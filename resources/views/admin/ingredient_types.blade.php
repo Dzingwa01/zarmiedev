@@ -1,15 +1,17 @@
+@extends('adminlte::layouts.app')
 
-@extends('layouts.admin_template')
-@section('content')
-
-  <div class="container-fluid" style="margin-top:10em;">
+@section('htmlheader_title')
+  {{ trans('adminlte_lang::message.home') }}
+@endsection
+@section('main-content')
+  <div class="container-fluid box box-success">
     <div class="row">
       <div class="col m3">
-        <a id="add_menu" class="btn"  data-toggle="modal" data-target="#add_ingredient_popup"  ><i class="material-icons">add</i>Add Ingredient Type</a>
+        <a id="add_menu" class="btn" style="margin-top: 1em;" data-toggle="modal" data-target="#add_ingredient_popup"  ><i class="material-icons">add</i>Add Ingredient Type</a>
       </br>
     </br>
     </div>
-  <div class="col m9">
+  <div class="col m12">
     <table class="table table-bordered" id="menu-table">
       <thead>
         <tr>
@@ -57,11 +59,23 @@
       </div>
     </form>
   </div>
+</div>
+  @push('custom-scripts')
+    <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 
+    <script type="text/javascript" charset="utf8"
+            src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+    <script src="js/materialize.js"></script>
+    <script src="js/init.js"></script>
 <script>
 $(document).ready(function(){
 
-    $('select').material_select();
+
   $("#add_category").on('click',function(){
 
     $("#add_category_popup").modal('show');
@@ -74,8 +88,6 @@ $(document).ready(function(){
 function add_category(){
   alert('Coming Soon');
 }
-</script>
-<script>
 
 $(function() {
   $('#menu-table').DataTable({
@@ -89,6 +101,9 @@ $(function() {
       {data: 'action', name: 'action', orderable: false, searchable: false}
     ]
   });
+    $('select').material_select();
 });
 </script>
+
+  @endpush
 @endsection

@@ -29,9 +29,9 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="skin-blue sidebar-mini">
+<body class="skin-green sidebar-mini">
 <div id="app">
-    <div class="wrapper">
+    <div class="">
 
     @include('adminlte::layouts.partials.mainheader')
 
@@ -40,7 +40,7 @@ desired effect
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
 
-        @include('adminlte::layouts.partials.contentheader')
+        {{--@include('adminlte::layouts.partials.contentheader')--}}
 
         <!-- Main content -->
         <section class="content">
@@ -58,6 +58,6 @@ desired effect
 @section('scripts')
     @include('adminlte::layouts.partials.scripts')
 @show
-
+@stack('custom-scripts')
 </body>
 </html>

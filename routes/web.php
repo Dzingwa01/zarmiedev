@@ -21,6 +21,7 @@ Route::post('save_category','MenusController@saveCategory')->name('save_category
 Route::get('admin','AdminController@index')->name('admin_home');
 Route::get('menu_display','MenuManagementController@getIndex');
 
+Route::get("get_ingredients","IngredientController@getIngredients");
 
 //orders
 Route::get('contact_display','OrderController@showContactUsPage');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Ingredient;
 use Illuminate\Http\Request;
 use App\Menu;
 use App\Category;
@@ -46,13 +47,15 @@ class MenusController extends Controller
        $menu_item = Menu::find($id);
        $item_categories= Category::all();
        $item_sizes=Item_Size::all();
-       return view('menu_item_edit',compact('menu_item','item_categories','item_sizes'));
+       $ingredients = $menu_item->item_ingredients;
+       $other_items = Menu::where('item_number',$menu_item->item_number)->get();
+       return view('admin.menu_item_edit',compact('menu_item','item_categories','item_sizes','other_items','ingredients'));
      }
      public function update(Request $request,$id)
      {
         
        $input = $request->all();
-        dd($input);
+//        dd($input);
        $menu_item = Menu::find($id);
        $menu_item->name=$input['name'];
        $menu_item->description=$input['description'];

@@ -26,7 +26,9 @@ class IngredientController extends Controller
   */
   public function showIngredients()
   {
-    $ingredient=Ingredient::all();
+    $ingredient=Ingredient::join("ingredient_type","ingredient_type.id","ingredient_type_id")
+                ->select("ingredient.*","ingredient_type.type_name")->get();
+
     return Datatables::of($ingredient) ->addColumn('action', function ($ingredient) {
       $re='ingredient/'.$ingredient->id;
       $sh='ingredient/show/'.$ingredient->id;
@@ -35,9 +37,16 @@ class IngredientController extends Controller
     })
     ->make(true);
   }
+
+  public function getIngredients(){
+      $ingredients = Ingredient::orderBy('name','asc')->get();
+      return response()->json(["ingredients"=>$ingredients]);
+  }
+
   public function editIngredient($id){
     $ingredient = Ingredient::find($id);
-    return view('admin.ingredient_item_edit',compact('ingredient'));
+      $item_types=IngredientType::all();
+    return view('admin.ingredient_item_edit',compact('ingredient','item_types'));
   }
   public function update(Request $request,$id)
   {

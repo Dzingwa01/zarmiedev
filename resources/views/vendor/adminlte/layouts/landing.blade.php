@@ -74,8 +74,9 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
             margin-left:4em!important;
         }
         .slide_p{
-            color:white!important;
+            color:black!important;
             width:300px;
+            font-weight:900!important;
             text-align:center;
         }
         li{

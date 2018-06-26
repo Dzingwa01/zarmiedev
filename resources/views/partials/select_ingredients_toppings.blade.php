@@ -45,7 +45,9 @@
                 <div id ='item_amount'>
                 </div>
                  <div id ='item_prize'></div>
-                  <div id ='item_ingredients'></div>
+                  <div id ='item_ingredients'>
+                      <h6><b>Ingredients</b></h6>
+                  </div>
                 
               </fieldset>
             </form>
@@ -67,17 +69,24 @@
        var db;
        var request = window.indexedDB.open("order_cart", 1);
        request.onerror = function(event) {
-           console.log("error: ");
+           console.log("error: ",event);
        };
 
        request.onsuccess = function(event) {
-           db = request.result;
-           readAll();
+           db = event.target.result;
+//           var transaction = event.target.transaction;
+//           var objectStore = db.transaction(["selected_ingredients"],"readwrite")
+//               .objectStore("selected_ingredients");
+           readAll(db);
+
        };
        request.onupgradeneeded = function(event) {
-           var db = event.target.result;
-           var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id"});
-           readAll();
+           db = event.target.result;
+           var transaction = event.target.transaction;
+           var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id",autoIncrement: true});
+           transaction.oncomplete = function(event){
+               readAll(db);
+           }
        }
 
        function addIngredient(ingredient_id,ingredient_name,ingredient_prize){
@@ -92,7 +101,7 @@
                console.log("error",event);
            }
        }
-       function readAll() {
+       function readAll(db) {
 //           console.log("rading all");
            var objectStore = db.transaction(["selected_ingredients"],"readwrite").objectStore("selected_ingredients");
 

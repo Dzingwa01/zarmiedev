@@ -18,31 +18,29 @@
             </div>
         @endif
 
-        <!-- search form (Optional) -->
-        {{--<form action="#" method="get" class="sidebar-form">--}}
-            {{--<div class="input-group">--}}
-                {{--<input type="text" name="q" class="form-control" placeholder="{{ trans('adminlte_lang::message.search') }}..."/>--}}
-              {{--<span class="input-group-btn">--}}
-                {{--<button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>--}}
-              {{--</span>--}}
-            {{--</div>--}}
-        {{--</form>--}}
-        <!-- /.search form -->
-
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" style="margin-top:2em;">
             {{--<li class="header">{{ trans('adminlte_lang::message.header') }}</li>--}}
             <!-- Optionally, you can add icons to the links -->
             <li><a href="{{route('admin_home')}}" ><i class='fa fa-home'></i><span style="cursor:pointer;"> Dashboard</span></a></li>
-                <li><a href="{{route('manage_menus')}}"  ><i class="material-icons left">library_add</i><span style="cursor:pointer;"> Menus</span></a></li>
-                <li><a href="{{route('users')}}"><i class="material-icons left">recent_actors</i> <span style="cursor:pointer;">Users</span></a></li>
-            {{----}}
-            {{--<li class="treeview">--}}
-                {{--<a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.multilevel') }}</span> <i class="fa fa-angle-left pull-right"></i></a>--}}
-                {{--<ul class="treeview-menu">--}}
-                    {{--<li><a href="#">{{ trans('adminlte_lang::message.linklevel2') }}</a></li>--}}
-                    {{--<li><a href="#">{{ trans('adminlte_lang::message.linklevel2') }}</a></li>--}}
-                {{--</ul>--}}
+                <li class="treeview">
+                    <a href=""  ><i class="fa fa-list"></i><span> Menus</span></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{route('manage_menus')}}">Menu Items</a></li>
+                        <li><a href="#">Menu Categories</a></li>
+                        {{--<li><a href="{{route('manage_ingredients')}}">Ingredients</a></li>--}}
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href=""  ><i class="fa fa-list"></i><span > Ingredients</span></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{route('manage_ingredients')}}">Ingredients</a></li>
+                        <li><a  href="{{route('ingredient_type_home')}}">Ingredient Types</a></li>
+
+                    </ul>
+                </li>
+                <li><a href="{{route('users')}}"><i class="fa fa-users"></i> <span style="cursor:pointer;">Users</span></a></li>
+
             {{--</li>--}}
         </ul><!-- /.sidebar-menu -->
     </section>
