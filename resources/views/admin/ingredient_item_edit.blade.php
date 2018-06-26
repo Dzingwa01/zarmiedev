@@ -7,7 +7,17 @@
 
     <div class="container-fluid box box-success">
         <div class="row">
-            <h4>Edit Ingredient</h4>
+
+            <div class="row">
+                <div class="col-lg-12 margin-tb">
+                    <div class="pull-left">
+                        <h5>Edit Ingredient</h5>
+                    </div>
+                    <div class="pull-right">
+                        <a class="btn btn-primary" href="{{ route('manage_ingredients') }}"> Back</a>
+                    </div>
+                </div>
+            </div>
             <form class="form-horizontal" role="form" method="POST"
                   action="{{ url('ingredient/update/'.$ingredient->id) }}">
                 {{ csrf_field() }}
@@ -37,9 +47,10 @@
 
                     </div>
                 </div>
-                <div class="row">
-                    <div class="input-field col s6 offset-m4">
-                        <select id="ingredient_type_id" name="ingredient_type_id" required>
+                <div class="form-group">
+                    <label for="ingredient_type_id" class="col-md-4 control-label">Ingredient Type</label>
+                    <div class="col-md-6">
+                        <select id="ingredient_type_id" name="ingredient_type_id"  required>
                             <option value="">**Please select a ingredient type**</option>
                             @foreach($item_types as $item_type)
                                 <option {{($item_type->id==$ingredient->ingredient_type_id)?"selected":""}} value="{{$item_type->id}}">{!!$item_type->type_name!!}</option>
@@ -63,10 +74,6 @@
         {{--integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="--}}
         {{--crossorigin="anonymous"></script>--}}
         <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-        <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
-        <script type="text/javascript" charset="utf8"
-                src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
         <script src="/js/materialize.js"></script>
         <script src="/js/init.js"></script>
         <script>

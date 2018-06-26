@@ -6,6 +6,15 @@
 @section('main-content')
 
     <div class="container-fluid box box-success">
+        @if (session('status'))
+            <div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ session('status') }}
+            </div>
+        @elseif(session('error'))
+            <div class="alert alert-danger"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="row">
             <div class="col m3">
                 <a id="add_menu" style="margin-top: 1em;" class="btn" data-toggle="modal" data-target="#add_ingredient_popup"><i
@@ -109,6 +118,9 @@
                 $("#add_menu").on('click', function () {
 
                     $("#add_menu_popup").modal('show');
+                });
+                $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+                    $(".alert").slideUp(500);
                 });
             });
 

@@ -63,7 +63,7 @@ Route::post('ingredient_type/update/{id}','IngredientTypeController@update');
 Route::get('ingredient/delete/{id}','IngredientController@destroy');
 Route::get('ingredient/show/{id}','IngredientController@show');
 Route::get('ingredient_type/show/{id}','IngredientTypeController@show');
-Route::get('ingredient_type/delete/{id}','IngredientController@destroy');
+Route::get('ingredient_type/delete/{id}','IngredientTypeController@destroy');
 Route::group(['middleware' => ['web','isVerified']], function() {
     Route::get('/home', 'HomeController@index');
     // Route::get('users', ['as' => 'UserController', 'uses' => 'UserController@getIndex']);

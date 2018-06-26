@@ -1,7 +1,12 @@
-@extends('layouts.admin_template')
+@extends('adminlte::layouts.app')
 
-@section('content')
-  <div class="container" style="margin-top:8em;">
+@section('htmlheader_title')
+  {{ trans('adminlte_lang::message.home') }}
+@endsection
+@section('main-content')
+
+  <div class="container-fluid box box-success">
+
     <div class="row">
       <div class="col-lg-12 margin-tb">
         <div class="pull-left">
@@ -28,4 +33,12 @@
 
     </div>
   </div>
+  @push('custom-scripts')
+  {{--<script src="https://code.jquery.com/jquery-3.3.1.min.js"--}}
+  {{--integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="--}}
+  {{--crossorigin="anonymous"></script>--}}
+  <script src="/js/materialize.js"></script>
+  <script src="/js/init.js"></script>
+  <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  @endpush
 @endsection

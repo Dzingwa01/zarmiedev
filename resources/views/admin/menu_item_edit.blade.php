@@ -6,7 +6,15 @@
 @section('main-content')
 
     <div class="container-fluid box box-success">
-        <h4>Edit Menu Item</h4>
+        <div class="row">
+            <div class="pull-left">
+                <h5>Edit Menu Item</h5>
+            </div>
+            <div class="pull-right" style="margin-top:1em;">
+                <a class="btn btn-primary" href="{{ route('manage_menus') }}"> Back</a>
+            </div>
+        </div>
+
         <form id='update_menu_item' class="form-horizontal" method="POST">
             <meta name="_token" content="{{ csrf_token() }}">
             <input id="item_id" value='{{$menu_item->id}}' hidden/>
@@ -51,20 +59,19 @@
                     @foreach($other_items as $other_item)
                         @if($other_item->item_size_id==1)
                             <input id="sandwich_prize" type="number" step='0.10' class="form-control"
-                                   name="sandwich_prize" value="{{$other_item->prize}}" required autofocus>
+                                   name="sandwich_prize" value="{{$other_item->prize}}" required>
                         @endif
                     @endforeach
-
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="medium_sub" class="col-md-4 control-label">Medium Sub Prize</label>
+                <label for="medium_sub_prize" class="col-md-4 control-label">Medium Sub Prize</label>
                 <div class="col-md-6">
                     @foreach($other_items as $other_item)
                         @if($other_item->item_size_id==2)
-                            <input id="medium_sub" type="number" step='0.10' class="form-control"
-                                   name="medium_sub" value="{{$other_item->prize}}" required autofocus>
+                            <input id="medium_sub_prize" type="number" step='0.10' class="form-control"
+                                   name="medium_sub_prize" value="{{$other_item->prize}}" required >
                         @endif
                     @endforeach
                 </div>
@@ -75,7 +82,7 @@
                     @foreach($other_items as $other_item)
                         @if($other_item->item_size_id==3)
                             <input id="large_sub_prize" type="number" step='0.10' class="form-control"
-                                   name="large_sub_prize" value="{{$other_item->prize}}" required autofocus>
+                                   name="large_sub_prize" value="{{$other_item->prize}}" required >
                         @endif
                     @endforeach
                 </div>
@@ -86,7 +93,7 @@
                     @foreach($other_items as $other_item)
                         @if($other_item->item_size_id==4)
                             <input id="wrap_prize" type="number" step='0.10' class="form-control"
-                                   name="wrap_prize" value="{{$other_item->prize}}" required autofocus>
+                                   name="wrap_prize" value="{{$other_item->prize}}" required >
                         @endif
                     @endforeach
                 </div>
@@ -128,11 +135,15 @@
         </form>
     </div>
     @push('custom-scripts')
+    {{--<script src="https://code.jquery.com/jquery-3.3.1.min.js"--}}
+    {{--integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="--}}
+    {{--crossorigin="anonymous"></script>--}}
+    <script src="/js/materialize.js"></script>
+    <script src="/js/init.js"></script>
         <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/styles/metro/notify-metro.js"></script>
-        <script src="/js/materialize.js"></script>
-        <script src="/js/init.js"></script>
+
     <script>
         $(document).ready(function () {
             $('select').material_select();
@@ -149,6 +160,11 @@
                 });
 
             });
+//            let count = 0;
+//            $(".ingr").each(function (idx, obj) {
+//                count += 1;
+//                console.log("checkme",obj.id)
+//            });
             $('#update_menu_item').submit(function (e) {
                 e.preventDefault();
                 var ingredient_ids = '';
@@ -157,15 +173,15 @@
                 formData.append('item_id', $('#item_id').val());
                 formData.append('item_name', $('#item_name').val());
                 formData.append('item_number', $('#item_number').val());
-                formData.append('item_description', $('#item_description').val());
-                formData.append('item_category', $('#item_category').val());
+                formData.append('description', $('#item_description').val());
+                formData.append('category_id', $('#item_category').val());
                 formData.append('wrap_prize', $('#wrap_prize').val());
                 formData.append('large_sub_prize', $('#large_sub_prize').val());
-                formData.append('medium_sub_prize', $('#medium_sub').val());
+                formData.append('medium_sub_prize', $('#medium_sub_prize').val());
                 formData.append('sandwich_prize', $('#sandwich_prize').val());
-                formData.append('item_size', $('#item_size').val());
+
                 formData.append('_token', $('input[name="_token"]').val());
-                var count = 0;
+                let count = 0;
                 $(".ingr").each(function (idx, obj) {
                     count += 1;
                     formData.append('ingredients_array[]', obj.id);
@@ -178,7 +194,7 @@
                     type: 'post',
                     success: function (response, a, b) {
                         console.log(response);
-                        $.notify('Menu Item saved successfully', {
+                        $.notify(response.status, {
                             type: "success",
                             align: "center",
                             verticalAlign: "middle",
@@ -189,13 +205,14 @@
                     },
                     error: function (response) {
                         console.log(response);
-                        $.notify('You can not save menu item without ingredients', {
+                        $.notify(response.error, {
                             type: "danger",
                             align: "center",
                             verticalAlign: "middle",
                             animation: true,
                             animationType: "drop"
                         });
+                        window.location.href = '/menus';
                     }
                 }).always(function () {
 
