@@ -225,6 +225,14 @@
         var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id"});
     }
 
+    function clearIngredients(){
+        var objectStore = db.transaction(["selected_ingredients"],"readwrite").objectStore("selected_ingredients");
+        var objectStoreRequest = objectStore.clear();
+        objectStoreRequest.onsuccess = function(event) {
+            // report the success of our request
+           console.log("cleared successfully");
+        };
+    }
     function readAll() {
 
         var objectStore = db.transaction(["selected_ingredients"],"readwrite").objectStore("selected_ingredients");
@@ -237,7 +245,7 @@
                 for(var i=0;i<ingredients.length;i++){
                     if(ingredients[i].ingredient_id == cursor.value.id){
                         $("#"+cursor.value.id).remove();
-                        $('#item_ingredients').append('<button id='+cursor.value.id+' onclick="ingredient_select_reverse(this);"  class="glass" style="font-weight:bolder;margin-left:1em;color:white;">'+cursor.value.name+'</button>');
+                        $('#item_ingredients').append('<button id='+cursor.value.id+' class="glass" style="font-weight:bolder;margin-left:1em;color:white;">'+cursor.value.name+'</button>');
                         break;
                     }
                 }
@@ -247,6 +255,7 @@
             }
         };
     }
+
     function decrease_quantity(){
         $('#item_amount').empty();
         var quantity = sessionStorage.getItem('quantity');
@@ -324,12 +333,18 @@
             var formData = new FormData();
             formData.append('_token',$("#_token").val());
             formData.append('phone_number',$("#phone_number").val());
+//            formData.append('item_size',sessionStorage.getItem('item_name'));
            formData.append('item_name',sessionStorage.getItem('item_name'));
            formData.append('item_category',sessionStorage.getItem('item_category'));
            formData.append('bread_type',sessionStorage.getItem('bread_type') + ' - ' +sessionStorage.getItem('selected_toast'));
            formData.append('prize',Number(sessionStorage.getItem('total_due')).toFixed(2));
            formData.append('quantity',sessionStorage.getItem('quantity'));
            formData.append('address',sessionStorage.getItem('delivery_address'));
+            var count = 0;
+            $(".glass").each(function (idx, obj) {
+                count += 1;
+                formData.append('ingredients_array[]', obj.id);
+            });
 
             $.ajax({
                 url: "{{ route('place_order') }}",
@@ -344,12 +359,12 @@
                 success: function (response, a, b) {
                     console.log("success",response);
                     alert(response.status);
-                    window.location.href ="/order_display";
+                    clearIngredients();
+                    window.location.href ="/";
                 },
                 error: function (response) {
                     console.log("error",response);
-//                    window.location.reload();
-//                        $("#add_menu_popup").modal('hide');
+                    alert(response.status);
                 }
             });
 

@@ -32,8 +32,44 @@
 <script>
  <?php $menu_items = json_encode($menu_items);?>
   var item_number = sessionStorage.getItem('item_number_1');
+ window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
+     window.msIndexedDB;
+
+ window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction ||
+     window.msIDBTransaction;
+ window.IDBKeyRange = window.IDBKeyRange ||
+     window.webkitIDBKeyRange || window.msIDBKeyRange
+
+ if (!window.indexedDB) {
+     window.alert("Your browser doesn't support a stable version of IndexedDB.")
+ }
+ var db;
+ var request = window.indexedDB.open("order_cart", 1);
+ request.onerror = function(event) {
+     console.log("error: ");
+ };
+
+ request.onsuccess = function(event) {
+     db = request.result;
+     clearIngredients(db);
+ };
+ request.onupgradeneeded = function(event) {
+     var db = event.target.result;
+     var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id"});
+     clearIngredients(db);
+ }
+
+ function clearIngredients(db){
+     var objectStore = db.transaction(["selected_ingredients"],"readwrite").objectStore("selected_ingredients");
+     var objectStoreRequest = objectStore.clear();
+     objectStoreRequest.onsuccess = function(event) {
+         // report the success of our request
+         console.log("cleared successfully");
+     };
+ }
   $(document).ready(function(){
       var menu_items = {!!$menu_items!!};
+
         $.each(menu_items, function(idx,obj){
           if(item_number == obj.item_number){
             var name_cur = obj.item_name;

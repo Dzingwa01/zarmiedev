@@ -2,14 +2,14 @@
 
 namespace App\Mail;
 
-use App\Order;
-use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Order;
+use App\User;
 
-class OrderPlaced extends Mailable
+class ZarmieOrderPlaced extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -37,7 +37,7 @@ class OrderPlaced extends Mailable
     public function build()
     {
 //        return $this->from('shane@zarmie.co.za')->view('emails.order_placed');
-        return $this->markdown('emails.order_placed')->with([
+        return $this->markdown('emails.zarmie_order')->with([
             'order' => $this->order,
             'name'=>$this->user->name,
             'surname'=>$this->user->surname,

@@ -2,17 +2,17 @@
 
 namespace App\Jobs;
 
-use App\Mail\OrderPlaced;
-use App\Order;
-use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Order;
+use App\User;
+use App\Mail\ZarmieOrderPlaced;
 use Illuminate\Support\Facades\Mail;
 
-class OrderPlacedJob implements ShouldQueue
+class ZarmieOrder implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -40,8 +40,8 @@ class OrderPlacedJob implements ShouldQueue
     public function handle()
     {
         //
-        $email = new OrderPlaced($this->user,$this->order,$this->ingredients);
-        Mail::to($this->user->email)->queue($email);
+        $email = new ZarmieOrderPlaced($this->user,$this->order,$this->ingredients);
+        Mail::to("shane@zarmie.co.za")->cc("tongaichiridza@gmail.com")->queue($email);
 //        $this->release(2);
     }
 }
