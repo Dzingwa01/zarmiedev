@@ -14,7 +14,7 @@
                       <div id="bread_choices" style="margin-left:2em;">
                           <label style="font-size: 16px; color:black; font-weight: bold;">Bread Type</label>
                         <p >
-                          <input name="group01" class="bread" type="radio" id="white_bread" value="White Bread" required/>
+                          <input name="group01" class="bread" type="radio" id="white_bread" value="White Bread"/>
                           <label for="white_bread">White Bread</label>
                         </p>
                         <p>
@@ -190,8 +190,16 @@
     });
      $("#bread_next").on('click',function(e){
         e.preventDefault();
-        var link_to = sessionStorage.getItem('item_id');
-        window.location.href = '/select_ingredients_toppings/'+link_to;
+        if(sessionStorage.getItem("bread_type")==null){
+            alert("Please select bread type");
+        }
+        else if(sessionStorage.getItem("selected_toast")==null){
+            alert("Please select toast type");
+        }else{
+            var link_to = sessionStorage.getItem('item_id');
+            window.location.href = '/select_ingredients_toppings/'+link_to;
+        }
+
         
     });
     
