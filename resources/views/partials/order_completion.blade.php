@@ -6,7 +6,8 @@
 
         <div class="col-sm-8">
             <h5>Enter Your Personal Information</h5>
-            <form id="order_completion_form" col="col-md-10">
+            <form id="order_completion_form" col="col-md-10" role="form" method="POST">
+                <input id="_token" name="_token" value="{{ csrf_token() }}" hidden>
                 <div class="row">
                 <p class="col-md-6" style="color:black">
                     <label for="phone_number" >Phone Number</label>
@@ -50,7 +51,11 @@
                     </div>
                     <div id ='item_bread'>
                     </div>
-                    <div id ='item_amount'>
+                    <div>
+                        <h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i onclick="increase_quantity()" class="fa fa-plus"></i> </a>  <a id="decrease_el" style="margin-left:1em;"><i onclick="decrease_quantity()" class="fa fa-minus"></i> </a>  </h6>
+                        <div id="item_amount">
+
+                        </div>
                     </div>
                     <div id ='item_prize'></div>
                     <div id ='item_ingredients'></div>
@@ -242,13 +247,56 @@
             }
         };
     }
+    function decrease_quantity(){
+        $('#item_amount').empty();
+        var quantity = sessionStorage.getItem('quantity');
+        var new_qty = Number(quantity)-1;
+        if(new_qty>1){
+            $("#decrease_el").show();
+        }
+        else{
+            $("#decrease_el").hide();
+        }
+
+        $('#item_amount').append('<h6> <b>'+ new_qty+'</h6>');
+        sessionStorage.setItem('quantity',new_qty);
+        var item_prize = Number(sessionStorage.getItem("item_category_price")).toFixed(2);
+        var total_due = Number(item_prize*new_qty).toFixed(2);
+        sessionStorage.setItem('total_due',total_due);
+        $('#item_prize').empty();
+        $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
+    }
+    function increase_quantity(){
+        $('#item_amount').empty();
+        var quantity = sessionStorage.getItem('quantity');
+        var new_qty = Number(quantity)+1;
+        if(new_qty>1){
+            $("#decrease_el").show();
+        }
+        else{
+            $("#decrease_el").hide();
+        }
+
+        $('#item_amount').append('<h6> <b>'+ new_qty+'</h6>');
+        sessionStorage.setItem('quantity',new_qty);
+        var item_prize = Number(sessionStorage.getItem("item_category_price")).toFixed(2);
+        var total_due = Number(item_prize*new_qty).toFixed(2);
+        sessionStorage.setItem('total_due',total_due);
+        $('#item_prize').empty();
+        $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
+    }
     $(document).ready(function(){
+
+        var qty = sessionStorage.getItem('quantity');
+        if(qty==1){
+            $("#decrease_el").hide();
+        }
         $('#item_ingredients').append('<h6><b>Ingredients</b></h6>');
         $('#choice').append('<h6><b>Choice - </b>'+sessionStorage.getItem('item_name')+'</h6>');
         $('#type').append('<h6> <b>Type - </b>'+sessionStorage.getItem('item_category')+'</h6>');
         $('#item_bread').append('<h6><b>Bread Choice - </b>'+sessionStorage.getItem('bread_type') + ' - ' +sessionStorage.getItem('selected_toast') + '</h6>');
         $('#item_prize').append('<h6> <b>Prize - </b> R '+Number(sessionStorage.getItem('total_due')).toFixed(2)+'</h6>');
-        $('#item_amount').append('<h6> <b>Quantity - </b>'+sessionStorage.getItem('quantity')+'</h6>');
+        $('#item_amount').append('<h6>'+sessionStorage.getItem('quantity')+'</h6>');
         $('#address_div').append('<h6> <b>Address </b><br/>'+sessionStorage.getItem('delivery_address')+'</h6>');
         readAll();
         $('#phone_number').on('blur',function(){
@@ -271,11 +319,39 @@
             });
         });
 
-        $("#address_form").on('submit',function(e){
+        $("#order_completion_form").on('submit',function(e){
             e.preventDefault();
-            sessionStorage.setItem("delivery_address",$("#address").val());
-            window.location.href = "{{'/order_completion'}}";
-            console.log("submisison comes here",$("#address").val());
+            var formData = new FormData();
+            formData.append('_token',$("#_token").val());
+            formData.append('phone_number',$("#phone_number").val());
+           formData.append('item_name',sessionStorage.getItem('item_name'));
+           formData.append('item_category',sessionStorage.getItem('item_category'));
+           formData.append('bread_type',sessionStorage.getItem('bread_type') + ' - ' +sessionStorage.getItem('selected_toast'));
+           formData.append('prize',Number(sessionStorage.getItem('total_due')).toFixed(2));
+           formData.append('quantity',sessionStorage.getItem('quantity'));
+           formData.append('address',sessionStorage.getItem('delivery_address'));
+
+            $.ajax({
+                url: "{{ route('place_order') }}",
+                processData: false,
+                contentType: false,
+                data: formData,
+                type: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+
+                success: function (response, a, b) {
+                    console.log("success",response);
+                    alert(response.status);
+                    window.location.href ="/order_display";
+                },
+                error: function (response) {
+                    console.log("error",response);
+//                    window.location.reload();
+//                        $("#add_menu_popup").modal('hide');
+                }
+            });
 
         });
         $("#complete_back").on('click',function(e){

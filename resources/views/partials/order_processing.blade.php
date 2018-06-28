@@ -65,7 +65,11 @@
                 
                 <div id ='item_bread'>
                 </div>
-                <div id ='item_amount'>
+                <div>
+                    <h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i onclick="increase_quantity()" class="fa fa-plus"></i> </a>  <a id="decrease_el" style="margin-left:1em;"><i onclick="decrease_quantity()" class="fa fa-minus"></i> </a>  </h6>
+                    <div id="item_amount">
+
+                    </div>
                 </div>
                  <div id ='item_prize'></div>
                 <div id ='item_toast'>
@@ -81,15 +85,55 @@
   <script>
   <?php $menu_items = json_encode($menu_items);?>
   var item_number = sessionStorage.getItem('item_number_1');
+  function decrease_quantity(){
+      $('#item_amount').empty();
+      var quantity = sessionStorage.getItem('quantity');
+      var new_qty = Number(quantity)-1;
+      if(new_qty>1){
+          $("#decrease_el").show();
+      }
+      else{
+          $("#decrease_el").hide();
+      }
+
+      $('#item_amount').append('<h6> <b>'+ new_qty+'</h6>');
+      sessionStorage.setItem('quantity',new_qty);
+      var item_prize = Number(sessionStorage.getItem("item_category_price")).toFixed(2);
+      var total_due = Number(item_prize*new_qty).toFixed(2);
+      sessionStorage.setItem('total_due',total_due);
+      $('#item_prize').empty();
+      $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
+  }
+  function increase_quantity(){
+      $('#item_amount').empty();
+      var quantity = sessionStorage.getItem('quantity');
+      var new_qty = Number(quantity)+1;
+      if(new_qty>1){
+          $("#decrease_el").show();
+      }
+      else{
+          $("#decrease_el").hide();
+      }
+
+      $('#item_amount').append('<h6> <b>'+ new_qty+'</h6>');
+      sessionStorage.setItem('quantity',new_qty);
+      var item_prize = Number(sessionStorage.getItem("item_category_price")).toFixed(2);
+      var total_due = Number(item_prize*new_qty).toFixed(2);
+      sessionStorage.setItem('total_due',total_due);
+      $('#item_prize').empty();
+      $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
+  }
   $(document).ready(function(){
+
       var menu_items = {!!$menu_items!!};
       initializeQuantities();
      function initializeQuantities(){
          var quantity = $('#num_people').val();
+         $("#decrease_el").hide();
          sessionStorage.setItem('quantity',quantity);
-         $('#item_amount').append('<h6> <b>Quantity - </b>'+ quantity+'</h6>');
+         $('#item_amount').append('<h6> <b>'+ quantity+'</h6>');
          var item_prize = Number(sessionStorage.getItem("item_category_price")).toFixed(2);
-         var total_due = item_prize*$('#num_people').val();
+         var total_due = Number(item_prize*$('#num_people').val()).toFixed(2);
          sessionStorage.setItem('total_due',total_due);
          $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
      }

@@ -38,6 +38,7 @@ Route::get('menus','MenusController@getIndex')->name('manage_menus');
 Route::get('menu_items','MenusController@showMenus')->name('menu_items');
 
 Route::post('save_item','MenusController@store')->name('add_menu_item');
+Route::post('place_order','OrderController@placeOrder')->name('place_order');
 Route::get('ingredients','IngredientController@getIndex')->name('manage_ingredients');
 Route::get('uploads','UploadsController@getIndex')->name('manage_uploads');
 Route::get('ingredient_items','IngredientController@showIngredients')->name('ingredient_items');

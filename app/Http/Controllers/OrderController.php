@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\OrderPlacedJob;
+use App\Order;
 use App\User;
 use Illuminate\Http\Request;
 use App\Bread;
@@ -11,6 +13,9 @@ use App\Menu;
 use App\Category;
 use App\Item_Size;
 use Yajra\Datatables\Facades\Datatables;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderPlaced;
+
 
 class OrderController extends Controller
 {
@@ -22,6 +27,26 @@ class OrderController extends Controller
     public function getIndex()
     {
         return view('order_selection');
+    }
+
+    public function placeOrder(Request $request){
+        $input = $request->all();
+        $user = User::where('phone_number',$input['phone_number'])->first();
+        DB::beginTransaction();
+        try {
+        $input['user_id'] = $user->id;
+        $order = Order::create($input);
+        DB::commit();
+        event($user);
+        dispatch(new OrderPlacedJob($user,$order));
+
+        return response()->json(["status"=>"Order captured successfully"]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+            return response()->json(["status"=>"An error occured ".$e->getMessage()]);
+        }
+
     }
 
     public function showAddressSelection($id)

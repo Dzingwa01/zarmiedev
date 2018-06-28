@@ -6,11 +6,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Jrean\UserVerification\Traits\VerifiesUsers;
 use Jrean\UserVerification\Traits\UserVerification;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     use EntrustUserTrait;
     use UserVerification;
+//    use Illuminate\Notifications\Notifiable;
+    use Notifiable;
     /**
      * The attributes that are mass assignable.
      *
