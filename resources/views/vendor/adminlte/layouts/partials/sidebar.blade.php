@@ -24,7 +24,7 @@
             <!-- Optionally, you can add icons to the links -->
             <li><a href="{{route('admin_home')}}" ><i class='fa fa-home'></i><span style="cursor:pointer;"> Dashboard</span></a></li>
                 <li class="treeview">
-                    <a href=""  ><i class="fa fa-list"></i><span><i class="fa fa-angle-left pull-right" Menus</span></a>
+                    <a href=""  ><i class="fa fa-list"></i><span><i class="fa fa-angle-left pull-right"></i> Menus</span></a>
                     <ul class="treeview-menu">
                         <li><a href="{{route('manage_menus')}}">Menu Items</a></li>
                         <li><a href="#">Menu Categories</a></li>
@@ -32,7 +32,7 @@
                     </ul>
                 </li>
                 <li class="treeview">
-                    <a href=""  ><i class="fa fa-list"></i><span ><i class="fa fa-angle-left pull-right" Ingredients</span></a>
+                    <a href=""  ><i class="fa fa-list"></i><span ><i class="fa fa-angle-left pull-right"></i> Ingredients</span></a>
                     <ul class="treeview-menu">
                         <li><a href="{{route('manage_ingredients')}}">Ingredients</a></li>
                         <li><a  href="{{route('ingredient_type_home')}}">Ingredient Types</a></li>

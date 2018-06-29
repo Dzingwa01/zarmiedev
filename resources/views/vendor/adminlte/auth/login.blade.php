@@ -64,7 +64,7 @@
         </div><!-- /.login-box -->
     </div>
     @include('adminlte::layouts.partials.scripts_auth')
-    <sty
+
     <script>
         $(function () {
             $('input').iCheck({

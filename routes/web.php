@@ -80,7 +80,9 @@ Route::group(['middleware' => ['web','isVerified']], function() {
 Route::get('order_selection','OrderController@getIndex')->name('order_selection');
 Route::get('show','UserController@showUsers')->name('users_info');
 Route::get('users','UserController@getIndex')->name('users');
-
+Route::get('/account_creation_success','Auth\RegisterController@accountSuccess');
+Route::get('/account_not_verified','Auth\RegisterController@accountNotRegistered');
+Route::get('/verify_email/{token}', 'Auth\RegisterController@verify');
 Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
     // Route::get('/', 'AdminController@welcome');
     // Route::get('/manage', ['middleware' => ['permission:manage-admins'], 'uses' => 'AdminController@manageAdmins']);

@@ -46,6 +46,7 @@
         </div>
       </div>
 
+
       <div class="row">
         <div class="input-field col s6 offset-m2">
           <input id="item_prize" name="item_prize" placeholder="Item Prize" type="number" step="0.01" class="validate" required>

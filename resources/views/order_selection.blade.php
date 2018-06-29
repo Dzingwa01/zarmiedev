@@ -119,8 +119,8 @@ ul{
 <body>
   <nav class="navbar-fixed-top white" role="navigation" style="height:7em;">
     <div class="nav-wrapper container-fluid">
-      <a id="logo-container" href="#" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
-      @if (Auth::check())
+      <a id="logo-container" href="/" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
+      @if (Auth::user()->verified!=0)
         <li><a href="{{ url('/home') }}">Home</a></li>
       @else
         <ul class="right hide-on-med-and-down">

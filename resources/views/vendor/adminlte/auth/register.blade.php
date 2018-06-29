@@ -6,12 +6,14 @@
 
 @section('content')
 
-<body class="hold-transition register-page">
+    <body class="hold-transition register-page">
     <div id="app">
         <div class="register-box">
-            <div class="register-logo">
-                <a href="{{ url('/home') }}"><b>Admin</b>LTE</a>
-            </div>
+
+            <div style="margin: auto; width: 50%;  padding: 10px;">
+                <a id="logo-container" href="#" class="brand-logo"><img class="img-responsive img-rounded"
+                                                                        src={{URL::asset('pictures/logo.png')}} /></a>
+            </div><!-- /.login-logo -->
 
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
@@ -29,20 +31,45 @@
                 <form action="{{ url('/register') }}" method="post">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group has-feedback">
-                        <input type="text" class="form-control" placeholder="{{ trans('adminlte_lang::message.fullname') }}" name="name" value="{{ old('name') }}"/>
+                        <input type="text" class="form-control"
+                               placeholder="First Name" name="name"
+                               value="{{ old('name') }}"/>
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="email" class="form-control" placeholder="{{ trans('adminlte_lang::message.email') }}" name="email" value="{{ old('email') }}"/>
+                        <input type="text" class="form-control"
+                               placeholder="Last Name" name="surname"
+                               value="{{ old('surname') }}"/>
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="tel" class="form-control"
+                               placeholder="Phone Number" name="phone_number"
+                               value="{{ old('phone_number') }}"/>
+                        <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="email" class="form-control"
+                               placeholder="{{ trans('adminlte_lang::message.email') }}" name="email"
+                               value="{{ old('email') }}"/>
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" class="form-control" placeholder="{{ trans('adminlte_lang::message.password') }}" name="password"/>
+                        <textarea rows="5" class="form-control"
+                               placeholder="Physical Address" name="physical_address"
+                                  ></textarea>
+
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="password" class="form-control"
+                               placeholder="{{ trans('adminlte_lang::message.password') }}" name="password"/>
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" class="form-control" placeholder="{{ trans('adminlte_lang::message.retrypepassword') }}" name="password_confirmation"/>
-                        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                        <input type="password" class="form-control"
+                               placeholder="Retype password"
+                               name="password_confirmation"/>
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <div class="row">
                         <div class="col-xs-1">
@@ -56,18 +83,20 @@
                         </div><!-- /.col -->
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <button type="button" class="btn btn-block btn-flat" data-toggle="modal" data-target="#termsModal">{{ trans('adminlte_lang::message.terms') }}</button>
+                                <button type="button" class="btn btn-block btn-flat" data-toggle="modal"
+                                        data-target="#termsModal">{{ trans('adminlte_lang::message.terms') }}</button>
                             </div>
                         </div><!-- /.col -->
                         <div class="col-xs-4 col-xs-push-1">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">{{ trans('adminlte_lang::message.register') }}</button>
+                            <button type="submit"
+                                    class="btn btn-primary btn-block btn-flat">{{ trans('adminlte_lang::message.register') }}</button>
                         </div><!-- /.col -->
                     </div>
                 </form>
 
                 @include('adminlte::auth.partials.social_login')
 
-                <a href="{{ url('/login') }}" class="text-center">{{ trans('adminlte_lang::message.membreship') }}</a>
+                <a href="{{ url('/login') }}" class="text-center">I already have an account</a>
             </div><!-- /.form-box -->
         </div><!-- /.register-box -->
     </div>
@@ -86,6 +115,6 @@
         });
     </script>
 
-</body>
+    </body>
 
 @endsection

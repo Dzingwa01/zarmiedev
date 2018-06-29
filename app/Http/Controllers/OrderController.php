@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Ingredient;
 use App\Jobs\OrderPlacedJob;
 use App\Jobs\ZarmieOrder;
 use App\Order;
@@ -31,32 +32,33 @@ class OrderController extends Controller
         return view('order_selection');
     }
 
-    public function placeOrder(Request $request){
+    public function placeOrder(Request $request)
+    {
         $input = $request->all();
         $ingr_amount = count($input['ingredients_array']);
         $ingredients_array = $input['ingredients_array'];
-        $user = User::where('phone_number',$input['phone_number'])->first();
+        $user = User::where('phone_number', $input['phone_number'])->first();
         DB::beginTransaction();
         try {
-        $input['user_id'] = $user->id;
-        $order = Order::create($input);
+            $input['user_id'] = $user->id;
+            $order = Order::create($input);
             for ($x = 0; $x < $ingr_amount; $x++) {
                 $item_ingredient = new OrderIngredient;
                 $item_ingredient->ingredient_id = $ingredients_array[$x];
                 $item_ingredient->order_id = $order->id;
                 $item_ingredient->save();
             }
-        DB::commit();
-            $ingredients = OrderIngredient::join('ingredient','ingredient.id','order_ingredients.ingredient_id')->where('order_id',$order->id)->pluck('ingredient.name');
-        event($user);
-        dispatch(new OrderPlacedJob($user,$order,$ingredients));
-        dispatch(new ZarmieOrder($user,$order,$ingredients));
+            DB::commit();
+            $ingredients = OrderIngredient::join('ingredient', 'ingredient.id', 'order_ingredients.ingredient_id')->where('order_id', $order->id)->pluck('ingredient.name');
+            event($user);
+            dispatch(new OrderPlacedJob($user, $order, $ingredients));
+            dispatch(new ZarmieOrder($user, $order, $ingredients));
 
-        return response()->json(["status"=>"Order captured successfully"]);
+            return response()->json(["status" => "Order captured successfully"]);
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
-            return response()->json(["status"=>"An error occured ".$e]);
+            return response()->json(["status" => "An error occured " . $e]);
         }
 
     }
@@ -67,16 +69,39 @@ class OrderController extends Controller
         $item_categories = Category::all();
         $item_sizes = Item_Size::all();
         $ingredients = $menu_item->item_ingredients;
-        return view('partials.address_input',compact('ingredients'));
+        return view('partials.address_input', compact('ingredients'));
     }
 
     public function showIngredientsToppings($id)
     {
         $menu_item = Menu::find($id);
+//        dd($menu_item);
         $item_categories = Category::all();
+        $item_type = Category::where('id', $menu_item->category_id)->first();
+//        dd($item_type);
         $item_sizes = Item_Size::all();
         $ingredients = $menu_item->item_ingredients;
-        return view('partials.select_ingredients_toppings', compact('ingredients'));
+//        dd($ingredients);
+        $other_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->select('ingredient.*','ingredient_type.type_name')->get();
+        $dup_other = [];
+        foreach ($other_ingredients as $ingr) {
+            if (strpos($item_type->category_name,$ingr->type_name) !== false) {
+                $available = false;
+                foreach ($ingredients as $ingredient){
+                    if($ingredient->ingredient_id==$ingr->id){
+                        $available=true;
+                        break;
+                    }
+                }
+                if(!$available){
+                    array_push($dup_other,$ingr);
+                }
+
+            }
+        }
+        $other_ingredients = $dup_other;
+//        dd($other_ingredients);
+        return view('partials.select_ingredients_toppings', compact('ingredients','other_ingredients'));
     }
 
     public function showContactUsPage()
@@ -149,17 +174,19 @@ class OrderController extends Controller
         return view('order_display', compact('menu_items', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread'));
     }
 
-    function gotToCompletion($id){
+    function gotToCompletion($id)
+    {
         $menu_item = Menu::find($id);
         $item_categories = Category::all();
         $item_sizes = Item_Size::all();
         $ingredients = $menu_item->item_ingredients;
-        return view('partials.order_completion',compact('ingredients'));
+        return view('partials.order_completion', compact('ingredients'));
     }
 
-    public function getUserByPhone($phone_number){
-        $user = User::where('phone_number',$phone_number)->first();
-        return response()->json(["user"=>$user]);
+    public function getUserByPhone($phone_number)
+    {
+        $user = User::where('phone_number', $phone_number)->first();
+        return response()->json(["user" => $user]);
     }
 
     public function goToProcessOrder()

@@ -7,17 +7,20 @@
 
     <div class="container-fluid box box-success">
         @if (session('status'))
-            <div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <div class="alert alert-success"><a href="#" class="close" data-dismiss="alert"
+                                                aria-label="close">&times;</a>
                 {{ session('status') }}
             </div>
         @elseif(session('error'))
-            <div class="alert alert-danger"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert"
+                                               aria-label="close">&times;</a>
                 {{ session('error') }}
             </div>
         @endif
         <div class="row">
             <div class="col m3">
-                <a id="add_menu" style="margin-top: 1em;" class="btn" data-toggle="modal" data-target="#add_ingredient_popup"><i
+                <a id="add_menu" style="margin-top: 1em;" class="btn" data-toggle="modal"
+                   data-target="#add_ingredient_popup"><i
                             class="fa fa-plus"></i>Add Ingredient</a><br/>
             </div>
             <br>
@@ -63,8 +66,17 @@
                         <label for="item_description">Description</label>
                     </div>
                 </div>
-
-                <div class="row">
+                {{--<div class="row">--}}
+                    {{--<div class="input-field col s6 offset-m2">--}}
+                        {{--<p>--}}
+                            {{--<input name="group1" id="free" type="radio" value="free" required/>--}}
+                            {{--<label for="free">Free</label>--}}
+                            {{--<input id="paid" name="group1" type="radio" value="paid" required/>--}}
+                            {{--<label for="paid">Paid</label>--}}
+                        {{--</p>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                <div class="row" id="item_prize_div">
                     <div class="input-field col s6 offset-m2">
                         <input id="item_prize" name="item_prize" placeholder="Item Prize" type="number" step="0.01"
                                class="validate" required>
@@ -96,56 +108,65 @@
 
     </div>
     @push('custom-scripts')
-        {{--<script src="https://code.jquery.com/jquery-3.3.1.min.js"--}}
-                {{--integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="--}}
-                {{--crossorigin="anonymous"></script>--}}
-        <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-        <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
-        <script type="text/javascript" charset="utf8"
-                src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
-        <script src="js/materialize.js"></script>
-        <script src="js/init.js"></script>
+    {{--<script src="https://code.jquery.com/jquery-3.3.1.min.js"--}}
+    {{--integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="--}}
+    {{--crossorigin="anonymous"></script>--}}
+    <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+            src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+    <script src="js/materialize.js"></script>
+    <script src="js/init.js"></script>
 
-            <script>
-            $(document).ready(function () {
+    <script>
+        $(document).ready(function () {
+//            $("#item_prize_div").hide();
+            $('#item_type').material_select();
+            $("#add_category").on('click', function () {
 
-                $('#item_type').material_select();
-                $("#add_category").on('click', function () {
-
-                    $("#add_category_popup").modal('show');
-                });
-                $("#add_menu").on('click', function () {
-
-                    $("#add_menu_popup").modal('show');
-                });
-                $(".alert").fadeTo(2000, 500).slideUp(500, function(){
-                    $(".alert").slideUp(500);
-                });
+                $("#add_category_popup").modal('show');
             });
+            $("#add_menu").on('click', function () {
 
-            function add_category() {
-                alert('Coming Soon');
-            }
-        </script>
-        <script>
-
-            $(function () {
-                $('#menu-table').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    ajax: '{{route('ingredient_items')}}',
-                    columns: [
-                        {data: 'name', name: 'name'},
-                        {data: 'description', name: 'description'},
-                        {data: 'prize', name: 'prize'},
-                        {data: 'type_name', name: 'type_name'},
-                        {data: 'created_at', name: 'created_at'},
-                        {data: 'action', name: 'action', orderable: false, searchable: false}
-                    ]
-                });
-                $('select[name="menu-table_length"]').css("display","inline");
+                $("#add_menu_popup").modal('show');
             });
-        </script>
+            $(".alert").fadeTo(2000, 500).slideUp(500, function () {
+                $(".alert").slideUp(500);
+            });
+//            $('input:radio').click(function () {
+//                var is_free = $(this).val();
+////                console.log("value", is_free);
+//                if (is_free == "free") {
+//                    $("#item_prize_div").hide();
+//                } else {
+//                    $("#item_prize_div").show();
+//                }
+//            });
+        });
+
+        function add_category() {
+            alert('Coming Soon');
+        }
+    </script>
+    <script>
+
+        $(function () {
+            $('#menu-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{route('ingredient_items')}}',
+                columns: [
+                    {data: 'name', name: 'name'},
+                    {data: 'description', name: 'description'},
+                    {data: 'prize', name: 'prize'},
+                    {data: 'type_name', name: 'type_name'},
+                    {data: 'created_at', name: 'created_at'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                ]
+            });
+            $('select[name="menu-table_length"]').css("display", "inline");
+        });
+    </script>
     @endpush
 @endsection

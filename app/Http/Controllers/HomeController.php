@@ -39,7 +39,13 @@ class HomeController extends Controller
         }
         else if($user->hasRole('client'))
         {
-            return view('adminlte::home');
+            if($user->verified==0){
+                return view('status.status_message_not_activated');
+            }else{
+                return view('adminlte::home');
+            }
+
+
         }
     }
 }

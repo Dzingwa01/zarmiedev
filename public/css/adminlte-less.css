@@ -3199,6 +3199,7 @@ table.text-center th {
 }
 .login-page,
 .register-page {
+  background-image:url(../img/sandwich.jpg);
   background: #d2d6de;
 }
 .login-box,

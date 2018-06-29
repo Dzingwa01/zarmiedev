@@ -110,10 +110,10 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 <div id="app"></div>
     <nav class="navbar-fixed-top white" role="navigation" style="height:9em;">
         <div class="nav-wrapper container-fluid">
-            <a id="logo-container" href="#" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
-            @if (Auth::check())
-                <li><a href="{{ url('/home') }}">Home</a></li>
-            @else
+            <a id="logo-container" href="/" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
+            {{--@if (Auth::user()->verified!=0)--}}
+                {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
+            {{--@else--}}
                 <ul class="right hide-on-med-and-down">
                     <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="order_display"><i class="material-icons left">payment</i> Order Now</a></li>
                     <li><a class="btn" href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
@@ -133,7 +133,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 
                 </ul>
                 <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-            @endif
+            {{--@endif--}}
         </div>
     </nav>
 
