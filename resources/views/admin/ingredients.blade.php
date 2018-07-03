@@ -32,7 +32,10 @@
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
-                        <th>Prize</th>
+                        <th>Small Prize</th>
+                        <th>Medium Prize</th>
+                        <th>Large Prize</th>
+                        <th>Wrap Prize</th>
                         <th>Ingredient Type</th>
                         <th>Created At</th>
                         <th>Action</th>
@@ -66,23 +69,36 @@
                         <label for="item_description">Description</label>
                     </div>
                 </div>
-                {{--<div class="row">--}}
-                    {{--<div class="input-field col s6 offset-m2">--}}
-                        {{--<p>--}}
-                            {{--<input name="group1" id="free" type="radio" value="free" required/>--}}
-                            {{--<label for="free">Free</label>--}}
-                            {{--<input id="paid" name="group1" type="radio" value="paid" required/>--}}
-                            {{--<label for="paid">Paid</label>--}}
-                        {{--</p>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
+
                 <div class="row" id="item_prize_div">
                     <div class="input-field col s6 offset-m2">
-                        <input id="item_prize" name="item_prize" placeholder="Item Prize" type="number" step="0.01"
+                        <input id="item_prize" name="item_prize" placeholder="Small Item Prize" type="number" step="0.01"
                                class="validate" required>
-                        <label for="item_prize">Prize</label>
+                        <label for="item_prize">Small Ingredient Prize</label>
                     </div>
                 </div>
+                <div class="row" id="item_prize_div">
+                    <div class="input-field col s6 offset-m2">
+                        <input id="item_prize_medium" name="item_prize_medium" placeholder="Medium Item Prize" type="number" step="0.01"
+                               class="validate" required>
+                        <label for="item_prize_medium">Medium Ingredient Prize</label>
+                    </div>
+                </div>
+                <div class="row" id="item_prize_div">
+                    <div class="input-field col s6 offset-m2">
+                        <input id="item_prize_large" name="item_prize_large" placeholder="Large Item Prize" type="number" step="0.01"
+                               class="validate" required>
+                        <label for="item_prize_large">Large Ingredient Prize</label>
+                    </div>
+                </div>
+                <div class="row" id="item_prize_div">
+                    <div class="input-field col s6 offset-m2">
+                        <input id="item_prize_wrap" name="item_prize_wrap" placeholder="Wrap Item Prize" type="number" step="0.01"
+                               class="validate" required>
+                        <label for="item_prize_wrap">Wrap Ingredient Prize</label>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="input-field col s6 offset-m2">
                         <select id="item_type" name="item_type" required>
@@ -160,6 +176,9 @@
                     {data: 'name', name: 'name'},
                     {data: 'description', name: 'description'},
                     {data: 'prize', name: 'prize'},
+                    {data: 'medium_prize', name: 'medium_prize'},
+                    {data: 'large_prize', name: 'large_prize'},
+                    {data: 'wrap_prize', name: 'wrap_prize'},
                     {data: 'type_name', name: 'type_name'},
                     {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}

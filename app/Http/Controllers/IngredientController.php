@@ -94,14 +94,17 @@ class IngredientController extends Controller
     {
         DB::beginTransaction();
         try {
-        $ingredient_item = new Ingredient;
-        $ingredient_item->name = $request->item_name;
-        $ingredient_item->description = $request->item_description;
-        $ingredient_item->prize = $request->item_prize;
-        $ingredient_item->ingredient_type_id = $request->item_type;
-        $ingredient_item->save();
-        DB::commit();
-        return redirect()->route('manage_ingredients')->with("status", "Ingredient addedd successfully");
+            $ingredient_item = new Ingredient;
+            $ingredient_item->name = $request->item_name;
+            $ingredient_item->description = $request->item_description;
+            $ingredient_item->prize = $request->item_prize;
+            $ingredient_item->medium_prize = $request->item_prize;
+            $ingredient_item->large_prize = $request->item_prize;
+            $ingredient_item->wrap_prize = $request->item_prize;
+            $ingredient_item->ingredient_type_id = $request->item_type;
+            $ingredient_item->save();
+            DB::commit();
+            return redirect()->route('manage_ingredients')->with("status", "Ingredient addedd successfully");
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->route('manage_ingredients')->with("error", "Error occured, please contact system admin " . $e->getMessage());

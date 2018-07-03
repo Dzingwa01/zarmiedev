@@ -15,6 +15,11 @@ class ModifyIngredient extends Migration
     {
         Schema::table('ingredient', function (Blueprint $table) {
             //
+//            $table->dropColumn('updated_at');
+            $table->decimal('medium_prize')->nullable();
+            $table->decimal('large_prize')->nullable();
+            $table->decimal('wrap_prize')->nullable();
+//            $table->timestamp('updated_at')->nullable();
         });
     }
 
@@ -27,6 +32,9 @@ class ModifyIngredient extends Migration
     {
         Schema::table('ingredient', function (Blueprint $table) {
             //
+            $table->dropColumn('medium_prize');
+            $table->dropColumn('large_prize');
+            $table->dropColumn('wrap_prize');
         });
     }
 }

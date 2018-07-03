@@ -9,7 +9,7 @@ class Ingredient extends Model
   protected $table = 'ingredient';
   protected $primaryKey ='id';
   protected $fillable = [
-      'name', 'description','prize','ingredient_type_id'
+      'name', 'description','prize','ingredient_type_id','medium_prize','large_prize','wrap_prize'
   ];
 
 }

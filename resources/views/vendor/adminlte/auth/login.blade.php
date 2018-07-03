@@ -8,7 +8,7 @@
     <body class="hold-transition login-page">
     <div id="app">
         <div class="login-box">
-            <div style="margin: auto; width: 100%;  padding: 10px;">
+            <div style="margin: auto; width: 50%;  padding: 10px;">
                 <a id="logo-container" href="#" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
             </div><!-- /.login-logo -->
 
