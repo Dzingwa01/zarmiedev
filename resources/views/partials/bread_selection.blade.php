@@ -127,7 +127,7 @@ function bread_selection(obj){
             if(item_number == obj.item_number && obj.item_size_id == '4' ){
                 sessionStorage.setItem('item_category_price',obj.prize);
               sessionStorage.setItem('item_category','Wrap');
-               sessionStorage.setItem('item_size_id',obj.id);
+               sessionStorage.setItem('item_id',obj.id);
             }
         });
            

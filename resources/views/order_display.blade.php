@@ -240,6 +240,7 @@
           $.each(menu_items, function(idx,obj){
             if(table.id == obj.item_category){
                 console.log(obj.item_number);
+                console.log("wrap",obj.wrap);
               $(table).append('<tr onclick="process_order('+obj.item_number+')"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
             }
           });

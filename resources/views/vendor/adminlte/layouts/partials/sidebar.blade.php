@@ -27,7 +27,7 @@
                     <a href=""  ><i class="fa fa-list"></i><span><i class="fa fa-angle-left pull-right"></i> Menus</span></a>
                     <ul class="treeview-menu">
                         <li><a href="{{route('manage_menus')}}">Menu Items</a></li>
-                        <li><a href="#">Menu Categories</a></li>
+                        <li><a href="{{route('manage_category_menus')}}">Menu Categories</a></li>
                         {{--<li><a href="{{route('manage_ingredients')}}">Ingredients</a></li>--}}
                     </ul>
                 </li>

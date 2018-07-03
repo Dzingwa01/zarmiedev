@@ -75,10 +75,8 @@ class OrderController extends Controller
     public function showIngredientsToppings($id)
     {
         $menu_item = Menu::find($id);
-//        dd($menu_item);
         $item_categories = Category::all();
         $item_type = Category::where('id', $menu_item->category_id)->first();
-//        dd($item_type);
         $item_sizes = Item_Size::all();
         $ingredients = $menu_item->item_ingredients;
 //        dd($ingredients);

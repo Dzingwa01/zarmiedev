@@ -25,6 +25,9 @@ class MenusController extends Controller
         $item_sizes = Item_Size::all();
         return view('admin.menus')->with('menu_categories', $categories)->with('item_sizes', $item_sizes);
     }
+    public function getCategoriesIndex(){
+        return view('admin.menu_category');
+    }
 
     /**
      * Process datatables ajax request.
@@ -48,6 +51,47 @@ class MenusController extends Controller
             ->make(true);
     }
 
+    public function saveCategory(Request $request){
+
+        $input = $request->all();
+        $file = $input['category_image'];
+        $ext  = $file->getClientOriginalExtension();
+        $filename = md5(str_random(5)).'.'.$ext;
+        $name = 'picture_url';
+        if($file->move('menu_images/',$filename)){
+            $this->arr[$name] = 'menu_images/'.$filename;
+        }
+
+        DB::beginTransaction();
+        try{
+            $category=new Category;
+            $category->category_name = $input['category_name'];
+            $category->description = $input['category_description'];
+            $category->picture_url = $this->arr[$name];
+            $category->save();
+            DB::commit();
+            return redirect()->route('manage_category_menus')->with('status', "Menu Category saved successfully" );
+        }
+        catch(\Exception $e){
+            // dd($e);
+            DB::rollback();
+            return  redirect()->route('manage_category_menus')->with('error', "Menu Category could not be saved ");
+
+        }
+
+
+    }
+
+public function showMenuCategories(){
+    $menu = Category::all();
+    return Datatables::of($menu)->addColumn('action', function ($menu) {
+        $re = 'menu_category/' . $menu->id;
+        $sh = 'menu_category/show/' . $menu->id;
+        $del = 'menu_category/delete/' . $menu->id;
+        return '<a href=' . $sh . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $re . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
+    })
+        ->make(true);
+}
     public function editMenu($id)
     {
         $menu_item = Menu::find($id);
@@ -170,9 +214,21 @@ class MenusController extends Controller
                 $mn->delete();
             }
             DB::commit();
-            return redirect()->route('manage_menus')->with("status", "Menu item deleted successfully");
+            return redirect()->route('manage_menus')->with("status", "Menu category deleted successfully");
         } catch (\Exception $e) {
-            return redirect('/menus')->with("error", "could not delete menu item, please contact system admin");
+            return redirect('/manage_menus')->with("error", "could not delete menu category, please contact system admin");
+        }
+    }
+
+    public function destroyMenuCategory($id){
+        DB::beginTransaction();
+        $menu = Category::find($id);
+        try {
+            $menu->delete();
+            DB::commit();
+            return redirect()->route('/menu_categories')->with("status", "Menu item deleted successfully");
+        } catch (\Exception $e) {
+            return redirect('/menu_categories')->with("error", $e);
         }
     }
 
@@ -189,6 +245,16 @@ class MenusController extends Controller
 //        dd($item_ingredients);
         return view('admin.menu_item_show', compact('menu_item', 'categories', 'item_sizes','item_ingredients','other_items','ingredients'));
 
+    }
+
+    public function showMenuCategory($id){
+        $categories = Category::find($id);
+        return view('admin.menu_item_category_show', compact('categories'));
+    }
+
+    public function editMenuCategory($id){
+        $categories = Category::find($id);
+        return view('admin.menu_item_category_edit', compact('categories'));
     }
 
     public function store(Request $request)

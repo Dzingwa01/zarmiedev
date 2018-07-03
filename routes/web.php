@@ -35,7 +35,9 @@ Route::get('select_ingredients_toppings/{id}','OrderController@showIngredientsTo
 
 Route::get('ingredient_type','IngredientTypeController@getIndex')->name('ingredient_type_home');
 Route::get('menus','MenusController@getIndex')->name('manage_menus');
+Route::get('menu_categories','MenusController@getCategoriesIndex')->name('manage_category_menus');
 Route::get('menu_items','MenusController@showMenus')->name('menu_items');
+Route::get('menu_item_category','MenusController@showMenuCategories')->name('menu_item_category');
 
 Route::post('save_item','MenusController@store')->name('add_menu_item');
 Route::post('place_order','OrderController@placeOrder')->name('place_order');
@@ -56,6 +58,9 @@ Route::get('menu/{id}','MenusController@editMenu');
 Route::post('menu/update/{id}','MenusController@update');
 Route::get('menu/delete/{id}','MenusController@destroy');
 Route::get('menu/show/{id}','MenusController@show');
+Route::get('menu_category/delete/{id}','MenusController@destroyMenuCategory');
+Route::get('menu_category/show/{id}','MenusController@showMenuCategory');
+Route::get('menu_category/{id}','MenusController@editMenuCategory');
 
 Route::get('ingredient/{id}','IngredientController@editIngredient');
 Route::get('ingredient_type/{id}','IngredientTypeController@editIngredientType');
