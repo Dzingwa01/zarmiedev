@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <form class="col s12" method='post' enctype="multipart/form-data">
+        <form class="col s12" method='post' enctype="multipart/form-data" action='/update_category/{{$categories->id}}' >
             <input type="hidden" name="_token" value={{csrf_token()}} >
             <div class="row">
                 <div class="input-field col s6 offset-m2">
@@ -37,15 +37,22 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col s6 offset-m2">
+                <img id="cat_image" src="{{URL::asset($categories->picture_url)}}" class="img-responsive"/>
+                </div>
+            </div>
+            <div class="row">
 
                 <div class="input-field col s6 offset-m2">
 
-                    <input id="category_image" name="category_image" type="file" class="validate" required>
+                    <input id="category_image" name="category_image" type="file" class="validate" onchange="preview_file()" accept="image/*">
                     <!-- <label for="category_image">Image</label> -->
                 </div>
             </div>
-            <div>
-                <input class="btn" type='submit' style="margin-left:12em!important;" value='Save'>
+            <div class="row">
+                <div class="input-field col s6 offset-m2">
+                <input class="btn" type='submit' style="margin-left:12em!important;" value='Update'>
+                </div>
             </div>
         </form>
     </div>
@@ -63,5 +70,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/styles/metro/notify-metro.js"></script>
     <script src="/js/init.js"></script>
+    <script>
+        function preview_file(){
+            var preview = document.getElementById("cat_image"); //selects the query named img
+            var file    = document.querySelector('input[type=file]').files[0]; //sames as here
+            var reader  = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file); //reads the data as a URL
+            } else {
+                preview.src = "";
+            }
+        }
+    </script>
     @endpush
 @endsection

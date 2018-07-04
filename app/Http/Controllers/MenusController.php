@@ -103,6 +103,39 @@ public function showMenuCategories(){
         return view('admin.menu_item_edit', compact('menu_item', 'item_categories', 'item_sizes', 'other_items', 'ingredients'));
     }
 
+    public function updateCategory(Request $request,$id){
+        $input = $request->all();
+        $category=Category::where('id',$id)->first();
+//        dd($category);
+        $input['description'] = $input['category_description'];
+        DB::beginTransaction();
+        try{
+            if(array_key_exists("category_image",$input)){
+                $file = $input['category_image'];
+                $ext  = $file->getClientOriginalExtension();
+                $filename = md5(str_random(5)).'.'.$ext;
+                $name = 'picture_url';
+                if($file->move('menu_images/',$filename)){
+                    $this->arr[$name] = 'menu_images/'.$filename;
+                }
+
+                $input['picture_url'] = $this->arr[$name];
+                $category->update($input);
+            }else{
+                $category->update($input);
+            }
+
+            DB::commit();
+            return redirect()->route('manage_category_menus')->with('status', "Menu Category saved successfully" );
+        }
+        catch(\Exception $e){
+            // dd($e);
+            DB::rollback();
+            return  redirect()->route('manage_category_menus')->with('error', "Menu Category could not be saved ".$e->getMessage());
+
+        }
+    }
+
     public function update(Request $request, $id)
     {
 

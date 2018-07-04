@@ -18,6 +18,7 @@ Route::get('email-verification/error', 'Auth\RegisterController@getVerificationE
 Route::get('email-verification/check/{token}', 'Auth\RegisterController@getVerification')->name('email-verification.check');
 Route::auth();
 Route::post('save_category','MenusController@saveCategory')->name('save_category');
+Route::post('update_category/{id}','MenusController@updateCategory');
 Route::get('admin','AdminController@index')->name('admin_home');
 Route::get('menu_display','MenuManagementController@getIndex');
 
@@ -70,6 +71,7 @@ Route::get('ingredient/delete/{id}','IngredientController@destroy');
 Route::get('ingredient/show/{id}','IngredientController@show');
 Route::get('ingredient_type/show/{id}','IngredientTypeController@show');
 Route::get('ingredient_type/delete/{id}','IngredientTypeController@destroy');
+
 Route::group(['middleware' => ['web','isVerified']], function() {
     Route::get('/home', 'HomeController@index');
     // Route::get('users', ['as' => 'UserController', 'uses' => 'UserController@getIndex']);

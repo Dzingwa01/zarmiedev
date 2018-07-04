@@ -66,10 +66,15 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col s6 offset-m2">
+                        <img id="cat_image" src="" class="img-responsive"/>
+                    </div>
+                </div>
+                <div class="row">
 
                     <div class="input-field col s6 offset-m2">
 
-                        <input id="category_image" name="category_image" type="file" class="validate" required>
+                        <input id="category_image" name="category_image" type="file" class="validate" onchange="preview_file()" accept="image/*">
                         <!-- <label for="category_image">Image</label> -->
                     </div>
                 </div>
@@ -111,11 +116,11 @@
 
     </script>
     <script>
-
         $(function () {
             $('#menu-table').DataTable({
                 processing: true,
                 serverSide: true,
+                responsive:true,
                 ajax: '{{route('menu_item_category')}}',
                 columns: [
                     {data: 'category_name', name: 'category_name'},
@@ -127,6 +132,25 @@
             });
 //                $('select[name="menu-table_length"]').css("display","inline");
         });
+    </script>
+    <script>
+        function preview_file(){
+            var preview = document.getElementById("cat_image"); //selects the query named img
+            var file    = document.querySelector('input[type=file]').files[0]; //sames as here
+            var reader  = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file); //reads the data as a URL
+            } else {
+                preview.src = "";
+            }
+        }
+
+        //        preview_file();
     </script>
     @endpush
 @endsection

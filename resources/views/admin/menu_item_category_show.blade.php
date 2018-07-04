@@ -37,11 +37,8 @@
         </div>
     </div>
     <div class="row">
-
-        <div class="input-field col s6 offset-m2">
-
-            <input id="category_image" name="category_image" type="file" class="validate" required>
-            <!-- <label for="category_image">Image</label> -->
+        <div class="col s6 offset-m2">
+            <img id="cat_image" src="{{URL::asset($categories->picture_url)}}" class="img-responsive"/>
         </div>
     </div>
 
