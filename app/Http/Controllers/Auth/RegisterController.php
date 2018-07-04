@@ -110,6 +110,7 @@ class RegisterController extends Controller
         }
         return response()->view('status.status_message',$user,200);
     }
+
     public function verify($token)
     {
         $user = User::where('verification_token', $token)->first();

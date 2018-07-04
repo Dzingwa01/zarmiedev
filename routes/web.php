@@ -42,6 +42,7 @@ Route::get('menu_item_category','MenusController@showMenuCategories')->name('men
 
 Route::post('save_item','MenusController@store')->name('add_menu_item');
 Route::post('place_order','OrderCompletionLoginController@placeOrder')->name('place_order');
+Route::post('place_order_new_registration','OrderCompletionRegisterController@placeOrderRegister')->name('place_order_new_registration');
 
 Route::get('ingredients','IngredientController@getIndex')->name('manage_ingredients');
 Route::get('uploads','UploadsController@getIndex')->name('manage_uploads');

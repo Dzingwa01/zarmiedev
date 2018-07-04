@@ -77,13 +77,14 @@
         </div>
         <div class="modal-body">
             <p style="color:black;">You currently do not have an account with zarmie. Please complete the form below</p>
-            <form id="order_completion_form" col="col-md-10">
+            <form id="order_completion_form" col="col-md-10" role="form" method="POST">
+                <input id="_token" name="_token" value="{{ csrf_token() }}" hidden>
                 <fieldset>
                     <legend>Enter Account Registration details</legend>
                     <div class="row">
                         <p class="col-md-6" style="color:black">
                             <label for="phone_number">Phone Number</label>
-                            <input id='phone_number' type='tel' placeholder="Enter your phone number" required>
+                            <input id='phone_number_dialog' type='tel' placeholder="Enter your phone number" required>
                         </p>
                         <p id="email_address_div" class="col-md-6" style="color:black">
                             <label for="email_address_dialog">Email</label>
@@ -104,10 +105,19 @@
                         </p>
                     </div>
                     <div class="row">
+                        <p id="" class="col-md-6" style="color:black">
+                            <label for="password">Password</label>
+                            <input id='password_dialog' type='password' placeholder="Enter your account password" required>
+                        </p>
+                        <p id="" class="col-md-6" style="color:black">
+                            <label for="confirm_password">Confirm Password</label>
+                            <input id='confirm_password' type='password' placeholder="Confirm account password" required>
+                        </p>
+                    </div>
+                    <div class="row">
                         <p id="address" class="col-md-6" style="color:black">
                             <label for="address_dialog">Address</label>
                             <textarea id='address_dialog' class="materialize-textarea"></textarea>
-
                         </p>
 
                     </div>
@@ -135,77 +145,7 @@
         {{--</div>--}}
 
     </div>
-    <style>
-        #map_canvas {
-            height: 250px;
-            /*width: 300px;*/
-            margin: 0px;
-            padding: 0px
-        }
 
-        .controls {
-            border: 1px solid !important;
-            border-radius: 2px 0 0 2px !important;
-            box-sizing: border-box !important;
-            -moz-box-sizing: border-box !important;
-            height: 32px;
-            outline: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        .pac-container {
-            background-color: #fff;
-            z-index: 20;
-            position: fixed;
-            display: inline-block;
-            float: left;
-        }
-
-        input[type=text] {
-            background-color: white;
-        }
-
-        .modal {
-            z-index: 20;
-        }
-
-        .modal-backdrop {
-            z-index: 10;
-        }
-
-        ​
-        #address {
-            background-color: #fff !important;
-            font-family: Roboto;
-            font-size: 15px;
-            font-weight: 300;
-
-            padding: 0 11px 0 13px;
-            text-overflow: ellipsis;
-
-        }
-
-        #address:focus {
-            border-color: #4d90fe;
-        }
-
-        /*.pac-container {
-        font-family: Roboto;
-        }*/
-
-        #type-selector {
-            color: #fff;
-            background-color: #4d90fe;
-            padding: 5px 11px 0px 11px;
-        }
-
-        #type-selector label {
-            /*font-family: Roboto;*/
-            font-size: 13px;
-            font-weight: 300;
-        }
-
-    </style>
     {{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--}}
     {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>--}}
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -333,12 +273,62 @@
                     }
                     else {
                         $('#address_dialog').val(sessionStorage.getItem("delivery_address"));
+                        $("#phone_number_dialog").val($("#contact_number").val());
                         $("#new_account").modal()
                     }
 
                 });
             });
+            $("#order_completion_form").on('submit', function (e) {
+                e.preventDefault();
+                if($("#password_dialog").val()!==$("#confirm_password").val()){
+                    alert("Passwords do not match");
+                }
+                else{
+                var formData = new FormData();
+                formData.append('_token', $("#_token").val());
+                formData.append('phone_number', $("#phone_number_dialog").val());
+                formData.append('email', $("#email_address_dialog").val());
+                formData.append('password', $("#password_dialog").val());
+                formData.append('first_name', $("#first_name_dialog").val());
+                formData.append('last_name', $("#last_name_dialog").val());
+                formData.append('address', $("#address_dialog").val());
+                formData.append('item_name', sessionStorage.getItem('item_name'));
+                formData.append('item_category', sessionStorage.getItem('item_category'));
+                formData.append('bread_type', sessionStorage.getItem('bread_type') + ' - ' + sessionStorage.getItem('selected_toast'));
+                formData.append('prize', Number(sessionStorage.getItem('total_due')).toFixed(2));
+                formData.append('quantity', sessionStorage.getItem('quantity'));
 
+                var count = 0;
+                $(".glass").each(function (idx, obj) {
+                    count += 1;
+                    formData.append('ingredients_array[]', obj.id);
+                });
+
+                $.ajax({
+                    url: "{{ route('place_order_new_registration') }}",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    type: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+
+                    success: function (response, a, b) {
+                        console.log("success", response);
+                        alert(response.status);
+                        clearIngredients();
+                        window.location.href ="/";
+                    },
+                    error: function (response) {
+                        console.log("error", response);
+                        alert(response.status);
+                    }
+                });
+                }
+
+            });
             $("#order_completion").on('submit', function (e) {
                 e.preventDefault();
 
