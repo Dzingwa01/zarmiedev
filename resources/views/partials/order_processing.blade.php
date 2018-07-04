@@ -85,6 +85,7 @@
   <script>
   <?php $menu_items = json_encode($menu_items);?>
   var item_number = sessionStorage.getItem('item_number_1');
+  sessionStorage.setItem("prev_swap_choice","no");
   function decrease_quantity(){
       $('#item_amount').empty();
       var quantity = sessionStorage.getItem('quantity');

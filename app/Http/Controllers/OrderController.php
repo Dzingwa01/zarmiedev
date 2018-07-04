@@ -80,22 +80,40 @@ class OrderController extends Controller
         $item_sizes = Item_Size::all();
         $ingredients = $menu_item->item_ingredients;
 //        dd($ingredients);
-        $other_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->select('ingredient.*','ingredient_type.type_name')->get();
-        $dup_other = [];
-        foreach ($other_ingredients as $ingr) {
-            if (strpos($item_type->category_name,$ingr->type_name) !== false) {
-                $available = false;
-                foreach ($ingredients as $ingredient){
-                    if($ingredient->ingredient_id==$ingr->id){
-                        $available=true;
-                        break;
-                    }
+        $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->select('ingredient.*','ingredient_type.type_name')->get();
+
+        $ingredients_with_id = [];
+        foreach ($ingredients as $ingredient){
+            foreach ($all_ingredients as $ingr) {
+                if($ingredient->ingredient_id==$ingr->id){
+                    array_push($ingredients_with_id,$ingr);
                 }
-                if(!$available){
+            }
+        }
+//        dd($ingredients_with_id);
+        $other_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->select('ingredient.*','ingredient_type.type_name')->get();
+//        dd($other_ingredients);
+        $dup_other = [];
+        foreach ($ingredients_with_id as $with_id){
+        foreach ($other_ingredients as $ingr) {
+                if($with_id->ingredient_type_id == $ingr->ingredient_type_id ){
                     array_push($dup_other,$ingr);
                 }
-
             }
+        }
+        $other_ingredients = $dup_other;
+//        dd($other_ingredients);
+        $dup_other = [];
+        $dup_other_ids = [];
+        foreach ($other_ingredients as $ingr){
+                $available = false;
+                if(!in_array($ingr->id,$dup_other_ids)){
+                    array_push($dup_other_ids,$ingr->id);
+                    array_push($dup_other,$ingr);
+                }
+                else{
+                    array_push($dup_other,$ingr);
+                }
         }
         $other_ingredients = $dup_other;
 //        dd($other_ingredients);
