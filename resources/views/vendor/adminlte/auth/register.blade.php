@@ -94,7 +94,7 @@
                     </div>
                 </form>
 
-                @include('adminlte::auth.partials.social_login')
+                {{--@include('adminlte::auth.partials.social_login')--}}
 
                 <a href="{{ url('/login') }}" class="text-center">I already have an account</a>
             </div><!-- /.form-box -->

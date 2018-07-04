@@ -7,6 +7,7 @@ An order has been received:<br/>
 <b>Item name:</b> {{$order->item_name}}<br/>
 <b>Item size:</b> {{$order->item_category}}<br/>
 <b>Bread type:</b> {{$order->bread_type}}<br/>
+<b>Order Total Prize:</b> {{$order->prize}}<br/>
 <b>Quantity ordered:</b> {{$order->quantity}}<br/>
 <b>Delivery address:</b> {{$order->address}}<br/>
 

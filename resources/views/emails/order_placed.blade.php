@@ -6,6 +6,7 @@ Your order has been received. Your order details are as follows:<br/>
 <b>Item size:</b> {{$order->item_category}}<br/>
 <b>Bread type:</b> {{$order->bread_type}}<br/>
 <b>Quantity ordered:</b> {{$order->quantity}}<br/>
+<b>Order Total Prize:</b> {{$order->prize}}<br/>
 <b>Delivery address:</b> {{$order->address}}<br/>
 <b>Contact Number:</b> {{$order->phone_number}}<br/>
 <b>Ingredients: </b>

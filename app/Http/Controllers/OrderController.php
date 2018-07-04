@@ -79,7 +79,7 @@ class OrderController extends Controller
         $item_type = Category::where('id', $menu_item->category_id)->first();
         $item_sizes = Item_Size::all();
         $ingredients = $menu_item->item_ingredients;
-//        dd($ingredients);
+
         $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->select('ingredient.*','ingredient_type.type_name')->get();
 
         $ingredients_with_id = [];
@@ -90,19 +90,17 @@ class OrderController extends Controller
                 }
             }
         }
-//        dd($ingredients_with_id);
+
         $other_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->select('ingredient.*','ingredient_type.type_name')->get();
-//        dd($other_ingredients);
         $dup_other = [];
         foreach ($ingredients_with_id as $with_id){
         foreach ($other_ingredients as $ingr) {
-                if($with_id->ingredient_type_id == $ingr->ingredient_type_id ){
+                if($with_id->ingredient_type_id == $ingr->ingredient_type_id && $with_id->id!=$ingr->id){
                     array_push($dup_other,$ingr);
                 }
             }
         }
         $other_ingredients = $dup_other;
-//        dd($other_ingredients);
         $dup_other = [];
         $dup_other_ids = [];
         foreach ($other_ingredients as $ingr){

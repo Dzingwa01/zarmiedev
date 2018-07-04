@@ -100,7 +100,7 @@
 	background-color: green; /*for compatibility with older browsers*/
 	background-image: linear-gradient(green,lightgreen);
 	/*width:160px;*/
-	border-radius: 3px;
+	border-radius: 25px;
     box-shadow: 0px 1px 4px -2px #333;
    
 

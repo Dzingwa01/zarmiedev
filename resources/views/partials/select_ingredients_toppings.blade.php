@@ -129,10 +129,6 @@
 
         request.onsuccess = function (event) {
             db = event.target.result;
-            {{--var ingredients = {!! $ingredients !!};--}}
-            {{--for(var i=0;i<ingredients.length;i++){--}}
-                {{--addIngredient(ingredients[i].ingredient.id, ingredients[i].ingredient.name, ingredients[i].ingredient.prize);--}}
-            {{--}--}}
             readAll(db);
 
         };
@@ -141,10 +137,6 @@
             var transaction = event.target.transaction;
             var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id", autoIncrement: true});
             transaction.oncomplete = function (event) {
-                {{--var ingredients = {!! $ingredients !!};--}}
-                {{--for(var i=0;i<ingredients.length;i++){--}}
-                    {{--addIngredient(ingredients[i].ingredient.id, ingredients[i].ingredient.name, ingredients[i].ingredient.prize);--}}
-                {{--}--}}
                 readAll(db);
             }
         }
@@ -159,6 +151,20 @@
             }
             request.onerror = function (event) {
                 console.log("error", event);
+            }
+        }
+        function count_ingredients(db){
+            var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
+            var countRequest = objectStore.count();
+            console.log("count req",countRequest);
+            countRequest.onsuccess = function(){
+               var count = countRequest.result;
+                if(count>0){
+                    var link_to = sessionStorage.getItem('item_id');
+                    window.location.href = '/address_selection/' + link_to;
+                }else{
+                    alert("Please select the ingredients you want");
+                }
             }
         }
         function readAll(db) {
@@ -266,8 +272,10 @@
                 e.preventDefault();
             });
             $('#ingredient_toppings_next').on('click', function (e) {
-                var link_to = sessionStorage.getItem('item_id');
-                window.location.href = '/address_selection/' + link_to;
+
+                var count = count_ingredients(db);
+
+
                 {{--window.location.href = "{{'/address_selection'}}"; --}}
             });
             $("#ingredient_toppings_back").on('click', function () {

@@ -325,7 +325,7 @@
         });
       }
       function callback(results, status) {
-        // console.log("creating marker");
+         console.log("creating marker",results);
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
