@@ -81,7 +81,7 @@ class OrderController extends Controller
         $ingredients = $menu_item->item_ingredients;
         $standard_toppings = Topping::where('category','standard')->get();
         $optional_toppings = Topping::where('category','optional')->get();
-        $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->select('ingredient.*','ingredient_type.type_name')->get();
+        $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name')->get();
 
         $ingredients_with_id = [];
         foreach ($ingredients as $ingredient){
@@ -92,7 +92,7 @@ class OrderController extends Controller
             }
         }
 
-        $other_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->select('ingredient.*','ingredient_type.type_name')->get();
+        $other_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name')->get();
         $dup_other = [];
         foreach ($ingredients_with_id as $with_id){
         foreach ($other_ingredients as $ingr) {

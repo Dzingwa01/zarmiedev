@@ -44,6 +44,8 @@
      window.alert("Your browser doesn't support a stable version of IndexedDB.")
  }
  var db;
+ var db_toppings;
+ var toppings_request = window.indexedDB.open("toppings_cart", 1);
  var request = window.indexedDB.open("order_cart", 1);
  request.onerror = function(event) {
      console.log("error: ");
@@ -58,13 +60,37 @@
      var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id"});
      clearIngredients(db);
  }
+ toppings_request.onerror = function (event) {
+     console.log("error: ", event);
+ };
 
+ toppings_request.onsuccess = function (event) {
+     db_toppings = event.target.result;
+     clearToppings(db_toppings);
+ };
+ toppings_request.onupgradeneeded = function (event) {
+     db_toppings = event.target.result;
+
+     var transaction = event.target.transaction;
+     var objectStore_toppings = db_toppings.createObjectStore("selected_toppings", {keyPath: "id", autoIncrement: true});
+     transaction.oncomplete = function (event) {
+         clearToppings(db_toppings);
+     }
+ }
  function clearIngredients(db){
      var objectStore = db.transaction(["selected_ingredients"],"readwrite").objectStore("selected_ingredients");
      var objectStoreRequest = objectStore.clear();
      objectStoreRequest.onsuccess = function(event) {
          // report the success of our request
          console.log("cleared successfully");
+     };
+ }
+ function clearToppings(db_toppings) {
+     var objectStore = db_toppings.transaction(["selected_toppings"], "readwrite").objectStore("selected_toppings");
+     var objectStoreRequest = objectStore.clear();
+     objectStoreRequest.onsuccess = function (event) {
+         // report the success of our request
+         console.log("toppings cleared successfully");
      };
  }
   $(document).ready(function(){

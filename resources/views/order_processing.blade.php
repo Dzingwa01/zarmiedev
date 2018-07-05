@@ -92,6 +92,25 @@
     /*background-color: #90EE90;*/
 
   }
+  .glass_unselected{
+    /* background styles */
+    position: relative;
+    display: inline-block;
+
+    background-color: grey; /*for compatibility with older browsers*/
+    background-image: linear-gradient(grey,lightgrey);
+    /*width:160px;*/
+    border-radius: 25px;
+    box-shadow: 0px 1px 4px -2px #333;
+
+
+    /* text styles */
+
+    color: #fff;
+    font-size: 18px;
+    font-family: sans-serif;
+    font-weight: 100;
+  }
   .glass{
 	/* background styles */
 	position: relative;
