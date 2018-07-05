@@ -8,15 +8,33 @@
                 <form id="ingredients_toppings_form" col="col-md-12">
                     <fieldset>
                         <legend>Ingredients</legend>
-                        <p style="color:black;font-weight:bold;">Available Item ingredients - * Please select the ones
-                            you want</p>
+                        {{--<p style="color:black;font-weight:bold;">Available Item ingredients - * Please select the ones--}}
+                            {{--you want</p>--}}
+                        {{--<div class="row" style="margin-top:2em;">--}}
+                            {{--<div id='ingredients_list'>--}}
+
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        <p style="color:black;font-weight:bold;">Default Toppings(Free) - * Please remove the ones you don't want
                         <div class="row" style="margin-top:2em;">
-                            <div id='ingredients_list'>
-                                @if(count($ingredients)>0)
-                                    @foreach($ingredients as $ingredient)
-                                        <button id='{{$ingredient->ingredient_id}}' class="glass"
+                            <div id='standard_toppings'>
+                                @if(count($standard_toppings)>0)
+                                    @foreach($standard_toppings as $topping)
+                                        <button id='{{'to_'.$topping->id}}' class="glass"
                                                 style="font-weight:bolder;margin-left:1em;color:white;"
-                                                onclick="ingredient_select(this);">{{$ingredient->ingredient->name}}  </button>
+                                                onclick="ingredient_select_swap(this);">{{$topping->name}}  </button>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        <p style="color:black;font-weight:bold;">Extra Toppings (Paid) - * Please select your choice - if any
+                        <div class="row" style="margin-top:2em;">
+                            <div id='optional_toppings'>
+                                @if(count($optional_toppings)>0)
+                                    @foreach($optional_toppings as $topping)
+                                        <button id='{{'opt_'.$topping->id}}' class="glass"
+                                                style="font-weight:bolder;margin-left:1em;color:white;"
+                                                onclick="ingredient_select_swap(this);">{{$topping->name}}  </button>
                                     @endforeach
                                 @endif
                             </div>
@@ -34,7 +52,7 @@
                         <div id="select_swap">
                             <p style="color:black;font-weight:bold;">Select swap ingredients</p>
                             <div class="row" style="margin-top:2em;">
-                                <div id='ingredients_list'>
+                                <div id='ingredients_list_swap'>
                                     @if(count($other_ingredients)>0)
                                         @foreach($other_ingredients as $ingredient)
                                             <button id='{{$ingredient->id}}' class="glass"
@@ -79,11 +97,21 @@
                         <div id='item_prize'></div>
                         <div id='item_ingredients'>
                             <h6><b>Ingredients - *You can select to remove</b></h6>
+
                         </div>
 
                     </fieldset>
                 </form>
             </div>
+        </div>
+        <div hidden>
+            @if(count($ingredients)>0)
+                @foreach($ingredients as $ingredient)
+                    <button
+                            style="font-weight:bolder;margin-left:1em;color:white;"
+                            >{{$ingredient->ingredient->name}}  </button>
+                @endforeach
+            @endif
         </div>
     </div>
     <div id="swap_ingredients" class="modal">
@@ -129,14 +157,15 @@
 
         request.onsuccess = function (event) {
             db = event.target.result;
+            addDefault();
             readAll(db);
-
         };
         request.onupgradeneeded = function (event) {
             db = event.target.result;
             var transaction = event.target.transaction;
             var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id", autoIncrement: true});
             transaction.oncomplete = function (event) {
+                addDefault();
                 readAll(db);
             }
         }
@@ -235,7 +264,14 @@
             $('#item_prize').empty();
             $('#item_prize').append('<h6> <b>Prize - </b>R' + total_due + '</h6>');
         }
-
+        function addDefault(){
+            var ingredients = {!! json_encode($ingredients) !!};
+            console.log("ingredients",ingredients);
+            for (var i = 0; i < ingredients.length; i++) {
+                    addIngredient(ingredients[i].id, ingredients[i].ingredient.name, ingredients[i].ingredient.prize,ingredients[i].ingredient.ingredient_type_id);
+//                    $('#item_ingredients').append('<button id=' + ingredients[i].id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_reverse(this);" >' + ingredients[i].ingredient.name + '</button>');
+            }
+        }
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
             if(sessionStorage.getItem("prev_swap_choice")=="no"){

@@ -79,7 +79,8 @@ class OrderController extends Controller
         $item_type = Category::where('id', $menu_item->category_id)->first();
         $item_sizes = Item_Size::all();
         $ingredients = $menu_item->item_ingredients;
-
+        $standard_toppings = Topping::where('category','standard')->get();
+        $optional_toppings = Topping::where('category','optional')->get();
         $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->select('ingredient.*','ingredient_type.type_name')->get();
 
         $ingredients_with_id = [];
@@ -115,7 +116,7 @@ class OrderController extends Controller
         }
         $other_ingredients = $dup_other;
 //        dd($other_ingredients);
-        return view('partials.select_ingredients_toppings', compact('ingredients','other_ingredients'));
+        return view('partials.select_ingredients_toppings', compact('ingredients','other_ingredients','standard_toppings','optional_toppings'));
     }
 
     public function showContactUsPage()

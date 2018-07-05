@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <form id='update_menu_item' class="form-horizontal" method="POST">
+        <form id='update_menu_item' class="form-horizontal" method="POST"  action="{{ url('ingredient/update/'.$ingredient->id) }}">
             <meta name="_token" content="{{ csrf_token() }}">
             <input id="item_id" value='{{$menu_item->id}}' hidden/>
             <div class="form-group">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Ingredient;
+use App\Topping;
 use Illuminate\Http\Request;
 use App\Menu;
 use App\Category;
@@ -29,6 +30,9 @@ class MenusController extends Controller
         return view('admin.menu_category');
     }
 
+    public function getToppingsIndex(){
+        return view('admin.manage_toppings');
+    }
     /**
      * Process datatables ajax request.
      *
@@ -49,6 +53,21 @@ class MenusController extends Controller
             return '<a href=' . $sh . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $re . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
         })
             ->make(true);
+    }
+
+    public function saveTopping(Request $request){
+        DB::beginTransaction();
+        try{
+           $topping = Topping::create($request->all());
+            DB::commit();
+            return redirect()->route('manage_toppings')->with('status', "Topping saved successfully" );
+        }
+        catch(\Exception $e){
+            // dd($e);
+            DB::rollback();
+            return  redirect()->route('manage_toppings')->with('error', "Topping could not be saved ");
+
+        }
     }
 
     public function saveCategory(Request $request){
@@ -88,6 +107,17 @@ public function showMenuCategories(){
         $re = 'menu_category/' . $menu->id;
         $sh = 'menu_category/show/' . $menu->id;
         $del = 'menu_category/delete/' . $menu->id;
+        return '<a href=' . $sh . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $re . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
+    })
+        ->make(true);
+}
+
+public function showToppingsList(){
+    $menu = Topping::all();
+    return Datatables::of($menu)->addColumn('action', function ($menu) {
+        $re = 'topping/' . $menu->id;
+        $sh = 'topping/show/' . $menu->id;
+        $del = 'topping/delete/' . $menu->id;
         return '<a href=' . $sh . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $re . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
     })
         ->make(true);
@@ -264,6 +294,17 @@ public function showMenuCategories(){
             return redirect('/menu_categories')->with("error", $e);
         }
     }
+    public function destroyTopping($id){
+        DB::beginTransaction();
+        $menu = Topping::find($id);
+        try {
+            $menu->delete();
+            DB::commit();
+            return redirect()->route('/manage_toppings')->with("status", "Topping deleted successfully");
+        } catch (\Exception $e) {
+            return redirect('/manage_toppings')->with("error", $e);
+        }
+    }
 
     public function show($id)
     {
@@ -283,6 +324,29 @@ public function showMenuCategories(){
     public function showMenuCategory($id){
         $categories = Category::find($id);
         return view('admin.menu_item_category_show', compact('categories'));
+    }
+public function editTopping($id){
+    $topping = Topping::find($id);
+    return view('admin.topping_edit', compact('topping'));
+}
+
+public function updateTopping(Request $request,$id){
+    $input = $request->all();
+//    dd($input);
+    DB::beginTransaction();
+    $topping = Topping::find($id);
+    try {
+        $topping->update($input);
+        DB::commit();
+        return redirect()->route('manage_toppings')->with("status", "Topping updated successfully");
+    } catch (\Exception $e) {
+        throw $e;
+        return redirect('/manage_toppings')->with("error", $e);
+    }
+}
+    public function showTopping($id){
+        $topping = Topping::find($id);
+        return view('admin.topping_show', compact('topping'));
     }
 
     public function editMenuCategory($id){

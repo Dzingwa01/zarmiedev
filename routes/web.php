@@ -18,6 +18,7 @@ Route::get('email-verification/error', 'Auth\RegisterController@getVerificationE
 Route::get('email-verification/check/{token}', 'Auth\RegisterController@getVerification')->name('email-verification.check');
 Route::auth();
 Route::post('save_category','MenusController@saveCategory')->name('save_category');
+Route::post('save_topping','MenusController@saveTopping')->name('save_topping');
 Route::post('update_category/{id}','MenusController@updateCategory');
 Route::get('admin','AdminController@index')->name('admin_home');
 Route::get('menu_display','MenuManagementController@getIndex');
@@ -39,6 +40,9 @@ Route::get('menus','MenusController@getIndex')->name('manage_menus');
 Route::get('menu_categories','MenusController@getCategoriesIndex')->name('manage_category_menus');
 Route::get('menu_items','MenusController@showMenus')->name('menu_items');
 Route::get('menu_item_category','MenusController@showMenuCategories')->name('menu_item_category');
+Route::get('toppings_list','MenusController@showToppingsList')->name('toppings_list');
+
+Route::get('manage_toppings','MenusController@getToppingsIndex')->name('manage_toppings');
 
 Route::post('save_item','MenusController@store')->name('add_menu_item');
 Route::post('place_order','OrderCompletionLoginController@placeOrder')->name('place_order');
@@ -64,6 +68,12 @@ Route::get('menu/show/{id}','MenusController@show');
 Route::get('menu_category/delete/{id}','MenusController@destroyMenuCategory');
 Route::get('menu_category/show/{id}','MenusController@showMenuCategory');
 Route::get('menu_category/{id}','MenusController@editMenuCategory');
+
+Route::get('topping/delete/{id}','MenusController@destroyTopping');
+Route::get('topping/show/{id}','MenusController@showTopping');
+Route::get('topping/{id}','MenusController@editTopping');
+Route::post('topping/update/{id}','MenusController@updateTopping');
+
 
 Route::get('ingredient/{id}','IngredientController@editIngredient');
 Route::get('ingredient_type/{id}','IngredientTypeController@editIngredientType');

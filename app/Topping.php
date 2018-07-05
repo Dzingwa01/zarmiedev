@@ -9,6 +9,6 @@ class Topping extends Model
   protected $table = 'toppings';
   protected $primaryKey ='id';
   protected $fillable = [
-      'name', 'description','category',
+      'name', 'description','category','prize'
   ];
 }

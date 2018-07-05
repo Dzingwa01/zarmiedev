@@ -217,9 +217,15 @@
               </center>
             </div>
             <table id="{{$category->id}}" class="table table-hover table-sm table-striped">
+              @if($category->id==18||$category->id==19)
               <thead>
-                <tr><th>Item Number</th><th>Name</th><th>Sandwich</th><th>Medium Sub</th><th>Large Sub</th><th>Wrap</th></tr>
+                <tr><th>Item Number</th><th>Name</th><th>Price</th></tr>
               </thead>
+              @elseif($category->id<=6)
+                <tr><th>Item Number</th><th>Name</th><th>Sandwich</th><th>Medium Sub</th><th>Large Sub</th><th>Wrap</th></tr>
+              @elseif($category->id<=7)
+                <tr><th>Item Number</th><th>Name</th><th>Medium</th><th>Large</th></tr>
+                @endif
               <tbody>
               </tbody>
             </table>
@@ -229,22 +235,40 @@
       </div>
     </div>
   </div>
+  </div>
   
     <script type='text/javascript'>
   
     <?php $menu_items = json_encode($menu_items);?>
     var menu_items = {!!$menu_items!!};
+    var categories = {!! $categories !!}
+    console.log("categories",categories.length);
       console.log(menu_items);
       $(document).ready(function(){
-        $('.table').each(function(i,table){
-          $.each(menu_items, function(idx,obj){
-            if(table.id == obj.item_category){
-                console.log(obj.item_number);
-                console.log("wrap",obj.wrap);
-              $(table).append('<tr onclick="process_order('+obj.item_number+')"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
-            }
-          });
-        });
+          for(var i=0;i<categories.length;i++){
+              console.log("category",categories[i]);
+              $.each(menu_items, function(idx,obj){
+                  if(categories[i].id === obj.item_category){
+                      try{
+                          $("#"+categories[i].id).append('<tr onclick="process_order('+obj.item_number+')"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
+
+                      }catch(err){
+                          if(categories[i].id==18||categories[i].id==19){
+                              $("#"+categories[i].id).append('<tr onclick="process_order('+obj.item_number+')"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td></tr>');
+                          }
+                          else if(categories[i].id==7){
+                              $("#"+categories[i].id).append('<tr onclick="process_order('+obj.item_number+')"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td></tr>');
+
+                          }
+                      }
+                  }
+              });
+          }
+//        $.each(categories,function(i,table){
+//            console.log("table",table);
+//
+//
+//        });
       });
     function process_order(item_number){
         sessionStorage.setItem('item_number_1',item_number);
