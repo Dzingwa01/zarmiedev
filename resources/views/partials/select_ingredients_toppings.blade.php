@@ -15,7 +15,8 @@
 
                         {{--</div>--}}
                         {{--</div>--}}
-                        <p style="color:black;font-weight:bold;">Standard Toppings(Free) - * Please select the ones you don't
+                        <p style="color:black;font-weight:bold;">Standard Toppings(Free) - * Please select the ones you
+                            don't
                             want
                         <div class="row" style="margin-top:2em;">
                             <div id='standard_toppings'>
@@ -41,7 +42,7 @@
                                     @foreach($extra_toppings as $topping)
                                         <button class="glass"
                                                 style="font-weight:bolder;margin-left:1em;color:white;"
-                                                >{{$topping->name}}  </button>
+                                        >{{$topping->name}}  </button>
                                     @endforeach
                                 @endif
                             </div>
@@ -49,26 +50,26 @@
                         <hr/>
                         {{--<p style="color:black;font-weight:bold;">Do you want to swap ingredients?</p>--}}
                         {{--<p>--}}
-                            {{--<input name="group01" class="bread" type="radio" value="no" id="no" checked/>--}}
-                            {{--<label for="no">No</label>--}}
+                        {{--<input name="group01" class="bread" type="radio" value="no" id="no" checked/>--}}
+                        {{--<label for="no">No</label>--}}
                         {{--</p>--}}
                         {{--<p>--}}
-                            {{--<input name="group01" class="bread" type="radio" id="yes" value="yes"/>--}}
-                            {{--<label for="yes">Yes</label>--}}
+                        {{--<input name="group01" class="bread" type="radio" id="yes" value="yes"/>--}}
+                        {{--<label for="yes">Yes</label>--}}
                         {{--</p>--}}
                         {{--<div id="select_swap">--}}
-                            {{--<p style="color:black;font-weight:bold;">Select swap ingredients</p>--}}
-                            {{--<div class="row" style="margin-top:2em;">--}}
-                                {{--<div id='ingredients_list_swap'>--}}
-                                    {{--@if(count($other_ingredients)>0)--}}
-                                        {{--@foreach($other_ingredients as $ingredient)--}}
-                                            {{--<button id='{{$ingredient->id}}' class="glass"--}}
-                                                    {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
-                                                    {{--onclick="ingredient_select_swap(this);">{{$ingredient->name}}  </button>--}}
-                                        {{--@endforeach--}}
-                                    {{--@endif--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
+                        {{--<p style="color:black;font-weight:bold;">Select swap ingredients</p>--}}
+                        {{--<div class="row" style="margin-top:2em;">--}}
+                        {{--<div id='ingredients_list_swap'>--}}
+                        {{--@if(count($other_ingredients)>0)--}}
+                        {{--@foreach($other_ingredients as $ingredient)--}}
+                        {{--<button id='{{$ingredient->id}}' class="glass"--}}
+                        {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
+                        {{--onclick="ingredient_select_swap(this);">{{$ingredient->name}}  </button>--}}
+                        {{--@endforeach--}}
+                        {{--@endif--}}
+                        {{--</div>--}}
+                        {{--</div>--}}
                         {{--</div>--}}
                         {{--<hr/>--}}
                         <div class="row">
@@ -125,7 +126,7 @@
             @endif
         </div>
     </div>
-    <div id="extra_toppings_modal" class="modal" >
+    <div id="extra_toppings_modal" class="modal">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h5 class="modal-title">Extra Toppings</h5>
@@ -155,23 +156,24 @@
             </form>
         </div>
     </div>
-    <div id="swap_ingredients" class="modal" >
+    <div id="swap_ingredients" class="modal">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h5 class="modal-title">Swap Ingredients</h5>
         </div>
         <div class="modal-body">
-            <p style="color:black;font-weight: bolder">Please select ingredient you would want to swap with for: <span id="swap_name"></span>
+            <p style="color:black;font-weight: bolder">Please select ingredient you would want to swap with for: <span
+                        id="swap_name"></span>
             </p>
             <form id="" col="col-md-10" onsubmit="return false;">
                 <fieldset>
                     <legend>Available Swap ingredients</legend>
 
-                        <div class="row" style="margin-top:2em;">
-                            <div id='ingredients_list_swap'>
+                    <div class="row" style="margin-top:2em;">
+                        <div id='ingredients_list_swap'>
 
-                            </div>
                         </div>
+                    </div>
 
                 </fieldset>
 
@@ -184,19 +186,21 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-                    <div class="row">
+            <div class="row">
 
-                            <button style="margin:1em;" class="btn remove" data-dismiss="modal"> Remove</button>
+                <button style="margin:1em;" class="btn remove" data-dismiss="modal"> Remove</button>
 
-                            <button style="margin:1em;" class="btn swap" data-dismiss="modal" onclick="ingredient_select_swap(this)"> Swap</button>
-                        </div>
-                    </div>
+                <button style="margin:1em;" class="btn swap" data-dismiss="modal"
+                        onclick="ingredient_select_swap(this)"> Swap
+                </button>
+            </div>
         </div>
+    </div>
     </div>
     <div hidden>
         @if(count($other_ingredients)>0)
             @foreach($other_ingredients as $ingredient)
-                <button >{{$ingredient->name}}  </button>
+                <button>{{$ingredient->name}}  </button>
             @endforeach
         @endif
     </div>
@@ -247,54 +251,82 @@
             db_toppings = event.target.result;
 
             var transaction = event.target.transaction;
-            var objectStore_toppings = db_toppings.createObjectStore("selected_toppings", {keyPath: "id", autoIncrement: true});
+            var objectStore_toppings = db_toppings.createObjectStore("selected_toppings", {
+                keyPath: "id",
+                autoIncrement: true
+            });
             transaction.oncomplete = function (event) {
                 addDefaultToppings();
             }
         }
+
         function addDefaultToppings() {
-            var standard_toppings = {!! $standard_toppings !!}
-            for (var i = 0; i<standard_toppings.length; i++) {
+            var standard_toppings =
+                    {!! $standard_toppings !!}
+            for (var i = 0; i < standard_toppings.length; i++) {
                 console.log(standard_toppings[i].id);
-                    addTopping(standard_toppings[i].id, standard_toppings[i].name, standard_toppings[i].prize, standard_toppings[i].category);
+                addTopping(standard_toppings[i].id, standard_toppings[i].name, standard_toppings[i].prize, standard_toppings[i].category);
             }
         }
+
         function topping_select(obj) {
             $("#" + obj.id).addClass('glass_unselected').removeClass('glass');
             var id_string = obj.id.split('_');
             var id = id_string[1];
-            removeTopping(id,db_toppings);
+            removeTopping(id, db_toppings);
         }
 
-        function optional_topping_select(obj){
+        function optional_topping_select(obj) {
             $("#" + obj.id).addClass('glass_unselected').removeClass('glass');
             var id_string = obj.id.split('_');
             var id = id_string[1];
-            var new_id = "rev_"+id;
-            var standard_toppings = {!! $optional_toppings !!}
-            for (var i = 0; i<standard_toppings.length; i++) {
-                if(standard_toppings[i].id==id){
+            var new_id = "rev_" + id;
+            var standard_toppings =
+                    {!! $optional_toppings !!}
+            for (var i = 0; i < standard_toppings.length; i++) {
+                if (standard_toppings[i].id == id) {
                     addTopping(standard_toppings[i].id, standard_toppings[i].name, standard_toppings[i].prize, standard_toppings[i].category);
                     $('#extra_toppings').append('<button id=' + new_id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="optional_select_reverse(this);" >' + standard_toppings[i].name + '</button>');
                 }
             }
         }
-        function optional_select_reverse(obj){
+
+        function optional_select_reverse(obj) {
             var id_string = obj.id.split('_');
             var id = id_string[1];
-            var old_id = "opt_"+id;
-            $("#"+obj.id).remove();
+            var old_id = "opt_" + id;
+            $("#" + obj.id).remove();
             $("#" + old_id).addClass('glass').removeClass('glass_unselected');
-            removeTopping(id,db_toppings);
+            removeTopping(id, db_toppings);
         }
-        function extras_select_reverse(obj){
+
+        function extras_select_reverse(obj) {
             var id_string = obj.id.split('_');
             var id = id_string[1];
-//            var old_id = "opt_"+id;
-            $("#"+obj.id).remove();
-            $("#" + old_id).addClass('glass').removeClass('glass_unselected');
-            removeTopping(id,db_toppings);
+//console.log("id is",id);
+            let prize = 0;
+            $("#" + obj.id).remove();
+//            $("#" + old_id).addClass('glass').removeClass('glass_unselected');
+            removeTopping(id, db_toppings);
+            var extra_toppings ={!! json_encode($extra_toppings) !!};
+            console.log("id is", extra_toppings);
+            for (var i = 0; i < extra_toppings.length; i++) {
+                if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
+                    for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
+                        if (id == extra_toppings[i].item_ingredients[x].ingredient_id) {
+                            prize = extra_toppings[i].prize;
+                            console.log("prize", prize);
+                        }
+                    }
+                }
+            }
+            var new_prize = Number(sessionStorage.getItem('total_due')) - prize;
+            sessionStorage.setItem('total_due', new_prize);
+            $("#item_prize").empty();
+            $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
+
         }
+
         function addTopping(topping_id, topping_name, topping_prize, topping_category) {
             var request = db_toppings.transaction(["selected_toppings"], "readwrite")
                 .objectStore("selected_toppings")
@@ -325,6 +357,7 @@
                 console.log("error", event);
             }
         }
+
         function count_ingredients(db) {
             var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
             var countRequest = objectStore.count();
@@ -339,6 +372,7 @@
                 }
             }
         }
+
         function readAll(db) {
             var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
             objectStore.openCursor().onsuccess = function (event) {
@@ -356,7 +390,8 @@
                 }
             };
         }
-        function removeTopping(topping_id,db_toppings) {
+
+        function removeTopping(topping_id, db_toppings) {
             var request = db_toppings.transaction(["selected_toppings"], "readwrite")
                 .objectStore("selected_toppings")
                 .delete(topping_id);
@@ -381,6 +416,7 @@
                 console.log("error", event);
             }
         }
+
         function decrease_quantity() {
             $('#item_amount').empty();
             var quantity = sessionStorage.getItem('quantity');
@@ -394,12 +430,13 @@
 
             $('#item_amount').append('<h6> <b>' + new_qty + '</h6>');
             sessionStorage.setItem('quantity', new_qty);
-            var item_prize = Number(sessionStorage.getItem("item_category_price")).toFixed(2);
+            var item_prize = Number(sessionStorage.getItem("total_due")).toFixed(2);
             var total_due = Number(item_prize * new_qty).toFixed(2);
             sessionStorage.setItem('total_due', total_due);
             $('#item_prize').empty();
             $('#item_prize').append('<h6> <b>Prize - </b>R' + total_due + '</h6>');
         }
+
         function increase_quantity() {
             $('#item_amount').empty();
             var quantity = sessionStorage.getItem('quantity');
@@ -413,12 +450,13 @@
 
             $('#item_amount').append('<h6> <b>' + new_qty + '</h6>');
             sessionStorage.setItem('quantity', new_qty);
-            var item_prize = Number(sessionStorage.getItem("item_category_price")).toFixed(2);
+            var item_prize = Number(sessionStorage.getItem("total_due")).toFixed(2);
             var total_due = Number(item_prize * new_qty).toFixed(2);
             sessionStorage.setItem('total_due', total_due);
             $('#item_prize').empty();
             $('#item_prize').append('<h6> <b>Prize - </b>R' + total_due + '</h6>');
         }
+
         function addDefault() {
             var ingredients = {!! json_encode($ingredients) !!};
             console.log("ingredients", ingredients);
@@ -427,13 +465,14 @@
 //                    $('#item_ingredients').append('<button id=' + ingredients[i].id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_reverse(this);" >' + ingredients[i].ingredient.name + '</button>');
             }
         }
+
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
             var extra_toppings ={!! json_encode($extra_toppings) !!};
-            console.log("extra toppings",extra_toppings);
-            for(var i=0;i<extra_toppings.length;i++){
-                if(extra_toppings[i].size_name==sessionStorage.getItem('item_category')){
-                    $("#extra_toppings").append(' <button id='+extra_toppings[i].id+' class="glass" onclick="extra_toppings_select(this)" style="font-weight:bolder;margin-left:1em;color:white;">'+extra_toppings[i].name+'</button>');
+//            console.log("extra toppings",extra_toppings);
+            for (var i = 0; i < extra_toppings.length; i++) {
+                if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
+                    $("#extra_toppings").append(' <button id=' + extra_toppings[i].id + ' class="glass" onclick="extra_toppings_select(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + extra_toppings[i].name + '</button>');
                 }
             }
             if (sessionStorage.getItem("prev_swap_choice") == "no") {
@@ -477,17 +516,18 @@
             });
 
         });
-        function extra_toppings_select(obj){
+
+        function extra_toppings_select(obj) {
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             var ingredients = {!!json_encode($all_ingredients) !!};
             $("#extra_toppings_list").empty();
-            for(var i=0;i<extra_toppings.length;i++){
-                if(extra_toppings[i].id==obj.id){
-                    for(var x=0;x<extra_toppings[i].item_ingredients.length;x++){
-                        console.log(extra_toppings[i].item_ingredients[x].ingredient_id);
-                        for(var y=0;y<ingredients.length;y++){
-                            if(ingredients[y].id==extra_toppings[i].item_ingredients[x].ingredient_id){
-                                $("#extra_toppings_list").append(' <button id='+'ext_'+ingredients[y].id+' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;color:white;">'+ingredients[y].name+'</button>');
+            for (var i = 0; i < extra_toppings.length; i++) {
+                if (extra_toppings[i].id == obj.id) {
+                    for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
+//                        console.log(extra_toppings[i].item_ingredients[x].ingredient_id);
+                        for (var y = 0; y < ingredients.length; y++) {
+                            if (ingredients[y].id == extra_toppings[i].item_ingredients[x].ingredient_id) {
+                                $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + ingredients[y].name + '</button>');
                             }
                         }
                     }
@@ -495,19 +535,41 @@
             }
             $("#extra_toppings_modal").modal();
         }
-        function extra_toppings_selected(obj){
+
+        function extra_toppings_selected(obj) {
             $("#" + obj.id).addClass('glass_unselected').removeClass('glass');
             var id_string = obj.id.split('_');
             var id = id_string[1];
-            var new_id = "rev_"+id;
-            var standard_toppings = {!! json_encode($all_ingredients) !!}
-            for (var i = 0; i<standard_toppings.length; i++) {
-                if(standard_toppings[i].id==id){
+            console.log("prize", id);
+
+            var new_id = "rev_" + id;
+            let prize = 0;
+            var extra_toppings ={!! json_encode($extra_toppings) !!};
+//            console.log(extra_toppings);
+            for (var i = 0; i < extra_toppings.length; i++) {
+                if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
+                    for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
+                        if (id == extra_toppings[i].item_ingredients[x].ingredient_id) {
+                            prize = extra_toppings[i].prize;
+//                            console.log("prize",prize);
+                        }
+                    }
+                }
+            }
+            var standard_toppings =
+                    {!! json_encode($all_ingredients) !!}
+            for (var i = 0; i < standard_toppings.length; i++) {
+                if (standard_toppings[i].id == id) {
                     addTopping(standard_toppings[i].id, standard_toppings[i].name, standard_toppings[i].prize, standard_toppings[i].category);
+                    var new_prize = Number(sessionStorage.getItem('total_due')) + prize;
+                    sessionStorage.setItem('total_due', new_prize);
+                    $("#item_prize").empty();
+                    $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
                     $('#extra_toppings_cart').append('<button id=' + new_id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="extras_select_reverse(this);" >' + standard_toppings[i].name + '</button>');
                 }
             }
         }
+
         function ingredient_select_swap(obj) {
 
             var ingredients = {!! $ingredients !!};
@@ -548,6 +610,7 @@
 //                }
 //            };
         }
+
         function ingredient_select(obj) {
             var ingredients = {!! $ingredients !!};
             for (var i = 0; i < ingredients.length; i++) {
@@ -559,28 +622,28 @@
             }
             var ingredients_others = {!! json_encode($other_ingredients) !!};
             console.log(ingredients_others);
-            for(var i=0;i<ingredients_others.length;i++){
-                if(ingredients_others[i].id==obj.id){
-                    $('#item_ingredients').append(' <button id='+ingredients_others[i].id+' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_reverse(this)">'+ ingredients_others[i].name+'</button>');
+            for (var i = 0; i < ingredients_others.length; i++) {
+                if (ingredients_others[i].id == obj.id) {
+                    $('#item_ingredients').append(' <button id=' + ingredients_others[i].id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_reverse(this)">' + ingredients_others[i].name + '</button>');
                 }
             }
         }
 
         function ingredient_select_reverse(obj) {
             $('#ingredients_list_swap').empty();
-            $('.swap').attr('id',obj.id);
+            $('.swap').attr('id', obj.id);
             var ingredients = {!! $ingredients !!};
 
             let selected_id = 0;
             for (var i = 0; i < ingredients.length; i++) {
-                if(obj.id==ingredients[i].id){
+                if (obj.id == ingredients[i].id) {
                     selected_id = ingredients[i].ingredient.ingredient_type_id;
                 }
             }
             var ingredients_others = {!! json_encode($other_ingredients) !!};
-            for(var i=0;i<ingredients_others.length;i++){
-                if(ingredients_others[i].ingredient_type_id==selected_id){
-                    $('#ingredients_list_swap').append(' <button id='+ingredients_others[i].id+' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" data-dismiss="modal" onclick="ingredient_select(this)">'+ ingredients_others[i].name+'</button>');
+            for (var i = 0; i < ingredients_others.length; i++) {
+                if (ingredients_others[i].ingredient_type_id == selected_id) {
+                    $('#ingredients_list_swap').append(' <button id=' + ingredients_others[i].id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" data-dismiss="modal" onclick="ingredient_select(this)">' + ingredients_others[i].name + '</button>');
                 }
             }
             $("#confirm_remove").modal();
