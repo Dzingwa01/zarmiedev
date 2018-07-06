@@ -217,14 +217,14 @@
               </center>
             </div>
             <table id="{{$category->id}}" class="table table-hover table-sm table-striped">
-              @if($category->id==18||$category->id==19)
+              @if($category->id==18||$category->id==19||$category->id==22||$category->id==21||$category->id==20)
               <thead>
                 <tr><th>Item Number</th><th>Name</th><th>Price</th></tr>
               </thead>
               @elseif($category->id<=6)
                 <tr><th>Item Number</th><th>Name</th><th>Sandwich</th><th>Medium Sub</th><th>Large Sub</th><th>Wrap</th></tr>
               @elseif($category->id<=7)
-                <tr><th>Item Number</th><th>Name</th><th>Medium</th><th>Large</th></tr>
+                <tr><th>Item Number</th><th>Name</th><th>Small</th><th>Large</th></tr>
                 @endif
               <tbody>
               </tbody>
@@ -253,7 +253,7 @@
                           $("#"+categories[i].id).append('<tr onclick="process_order('+obj.item_number+')"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
 
                       }catch(err){
-                          if(categories[i].id==18||categories[i].id==19){
+                          if(categories[i].id==18||categories[i].id==19||categories[i].id==20||categories[i].id==21||categories[i].id==22){
                               $("#"+categories[i].id).append('<tr onclick="process_order('+obj.item_number+')"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td></tr>');
                           }
                           else if(categories[i].id==7){

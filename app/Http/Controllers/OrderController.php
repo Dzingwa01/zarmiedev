@@ -78,11 +78,19 @@ class OrderController extends Controller
         $item_categories = Category::all();
         $item_type = Category::where('id', $menu_item->category_id)->first();
         $item_sizes = Item_Size::all();
+//        dd($item_sizes);
         $ingredients = $menu_item->item_ingredients;
         $standard_toppings = Topping::where('category','standard')->get();
         $optional_toppings = Topping::where('category','optional')->get();
         $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name')->get();
+        $extra_toppings = Menu::join('item_sizes','item_sizes.id','menu_item.item_size_id')->where('category_id',8)->select('menu_item.*','item_sizes.size_name')->get();
+//        dd($extra_toppings);
+        $temp_toppings_ingredients =[];
+        foreach ($extra_toppings as $topping){
+            $topping_ingredients = $topping->item_ingredients;
+        }
 
+//        dd($temp_toppings_ingredients);
         $ingredients_with_id = [];
         foreach ($ingredients as $ingredient){
             foreach ($all_ingredients as $ingr) {
@@ -93,6 +101,7 @@ class OrderController extends Controller
         }
 
         $other_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name')->get();
+
         $dup_other = [];
         foreach ($ingredients_with_id as $with_id){
         foreach ($other_ingredients as $ingr) {
@@ -116,7 +125,7 @@ class OrderController extends Controller
         }
         $other_ingredients = $dup_other;
 //        dd($other_ingredients);
-        return view('partials.select_ingredients_toppings', compact('ingredients','other_ingredients','standard_toppings','optional_toppings'));
+        return view('partials.select_ingredients_toppings', compact('ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
     }
 
     public function showContactUsPage()
@@ -131,11 +140,12 @@ class OrderController extends Controller
             ->join('menu_categories', 'menu_categories.id', 'menu_item.category_id')
             ->where('prize', '>', 0)
             ->select('category_id', 'name', 'prize', 'size_name', 'item_number', 'category_name', 'item_size_id')
-            ->orderBy('item_number')
+
             ->get();
 
-        // dd($menu_items);
+//         dd($menu_items);
         $categories = DB::table('menu_categories')
+            ->where('id','!=',8)
             ->orderBy('id')
             ->get();
         $toppings = Topping::all();

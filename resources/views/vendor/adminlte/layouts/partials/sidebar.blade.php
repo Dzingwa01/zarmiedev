@@ -39,7 +39,7 @@
 
                     </ul>
                 </li>
-                <li><a href="{{route('manage_toppings')}}" ><i class='fa fa-list'></i><span style="cursor:pointer;"> Topings</span></a></li>
+                <li><a href="{{route('manage_toppings')}}" ><i class='fa fa-list'></i><span style="cursor:pointer;">Standard & Optional Toppings</span></a></li>
                 <li><a href="{{route('users')}}"><i class="fa fa-users"></i> <span style="cursor:pointer;">Users</span></a></li>
 
             {{--</li>--}}
