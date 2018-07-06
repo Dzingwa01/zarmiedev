@@ -242,8 +242,8 @@
     <?php $menu_items = json_encode($menu_items);?>
     var menu_items = {!!$menu_items!!};
     var categories = {!! $categories !!}
-    console.log("categories",categories.length);
-      console.log(menu_items);
+//    console.log("categories",categories.length);
+//      console.log(menu_items);
       $(document).ready(function(){
           for(var i=0;i<categories.length;i++){
               console.log("category",categories[i]);
