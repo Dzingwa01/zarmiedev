@@ -224,7 +224,7 @@
               @elseif($category->id<=6)
                 <tr><th>Item Number</th><th>Name</th><th>Sandwich</th><th>Medium Sub</th><th>Large Sub</th><th>Wrap</th></tr>
               @elseif($category->id<=7)
-                <tr><th>Item Number</th><th>Name</th><th>Small</th><th>Large</th></tr>
+                <tr><th>Item Number</th><th>Name</th><th>Medium</th><th>Large</th></tr>
                 @endif
               <tbody>
               </tbody>
@@ -246,18 +246,18 @@
 //      console.log(menu_items);
       $(document).ready(function(){
           for(var i=0;i<categories.length;i++){
-              console.log("category",categories[i]);
+//              console.log("category",categories[i]);
               $.each(menu_items, function(idx,obj){
                   if(categories[i].id === obj.item_category){
                       try{
-                          $("#"+categories[i].id).append('<tr onclick="process_order('+obj.item_number+')"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
+                          $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
 
                       }catch(err){
                           if(categories[i].id==18||categories[i].id==19||categories[i].id==20||categories[i].id==21||categories[i].id==22){
-                              $("#"+categories[i].id).append('<tr onclick="process_order('+obj.item_number+')"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td></tr>');
+                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td></tr>');
                           }
                           else if(categories[i].id==7){
-                              $("#"+categories[i].id).append('<tr onclick="process_order('+obj.item_number+')"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td></tr>');
+                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td></tr>');
 
                           }
                       }
@@ -271,8 +271,10 @@
 //        });
       });
     function process_order(item_number){
-        sessionStorage.setItem('item_number_1',item_number);
-        
+        var id_string = item_number.id.split('_');
+        var id = id_string[1];
+        sessionStorage.setItem('item_number_1',id);
+        console.log("item_number",id);
         window.location.href="{{url('/bread_selection')}}";
        console.log(item_number);
         

@@ -38,41 +38,41 @@
 
                             </div>
                         </div>
-                        <p style="color:black;font-weight:bold;">Do you want to add any extra toppings?</p>
-                        <p>
-                            <input name="group01" class="bread" type="radio" value="no" id="no" checked/>
-                            <label for="no">No</label>
+                        {{--<p style="color:black;font-weight:bold;">Do you want to add any extra toppings?</p>--}}
+                        {{--<p>--}}
+                            {{--<input name="group01" class="bread" type="radio" value="no" id="no" checked/>--}}
+                            {{--<label for="no">No</label>--}}
 
-                            <input name="group01" class="bread" type="radio" id="yes" value="yes"/>
-                            <label for="yes">Yes</label>
-                        </p>
+                            {{--<input name="group01" class="bread" type="radio" id="yes" value="yes"/>--}}
+                            {{--<label for="yes">Yes</label>--}}
+                        {{--</p>--}}
 
-                        <div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>
-                            <p  style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)
-                            <div id='extra_toppings' >
+                        {{--<div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>--}}
+                            {{--<p  style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)--}}
+                            {{--<div id='extra_toppings' >--}}
 
-                            </div>
-                        </div>
-                        <div class="row" style="margin-top:2em;" hidden>
-                            <div>
-                                @if(count($extra_toppings)>0)
-                                    @foreach($extra_toppings as $topping)
-                                        <button class="glass"
-                                                style="font-weight:bolder;margin-left:1em;color:white;"
-                                        >{{$topping->name}}  </button>
-                                    @endforeach
-                                @endif
-                            </div>
-                        </div>
-                        <hr/>
-                        <p style="color:black;font-weight:bold;">Do you want to swap any toppings?</p>
-                        <p>
-                            <input name="group02" class="bread" type="radio" value="swap_no" id="swap_no" checked/>
-                            <label for="swap_no">No</label>
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        {{--<div class="row" style="margin-top:2em;" hidden>--}}
+                            {{--<div>--}}
+                                {{--@if(count($extra_toppings)>0)--}}
+                                    {{--@foreach($extra_toppings as $topping)--}}
+                                        {{--<button class="glass"--}}
+                                                {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
+                                        {{-->{{$topping->name}}  </button>--}}
+                                    {{--@endforeach--}}
+                                {{--@endif--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        {{--<hr/>--}}
+                        {{--<p style="color:black;font-weight:bold;">Do you want to swap any toppings?</p>--}}
+                        {{--<p>--}}
+                            {{--<input name="group02" class="bread" type="radio" value="swap_no" id="swap_no" checked/>--}}
+                            {{--<label for="swap_no">No</label>--}}
 
-                            <input name="group02" class="bread" type="radio" id="swap_yes" value="swap_yes"/>
-                            <label for="swap_yes">Yes</label>
-                        </p>
+                            {{--<input name="group02" class="bread" type="radio" id="swap_yes" value="swap_yes"/>--}}
+                            {{--<label for="swap_yes">Yes</label>--}}
+                        {{--</p>--}}
                         <div id="swap_ingredients_div" hidden>
                             <div id="swap_ingredients">
                                 @if(count($other_ingredients)>0)
@@ -113,8 +113,8 @@
                         <div id='type'></div>
                         <div id='choice'>
                         </div>
-                        <div id='item_bread'>
-                        </div>
+                        {{--<div id='item_bread'>--}}
+                        {{--</div>--}}
                         <div>
                             <h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i
                                             onclick="increase_quantity()" class="fa fa-plus"></i> </a> <a
@@ -129,24 +129,16 @@
                             <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
 
                         </div>
-                        <div id='extra_toppings_cart' style="margin-top:2em;">
-                            <h6><b>Extra Toppings - *Click to remove </b></h6>
+                        {{--<div id='extra_toppings_cart' style="margin-top:2em;">--}}
+                            {{--<h6><b>Extra Toppings - *Click to remove </b></h6>--}}
 
-                        </div>
+                        {{--</div>--}}
 
                     </fieldset>
                 </form>
             </div>
         </div>
-        {{--<div hidden>--}}
-        {{--@if(count($ingredients)>0)--}}
-        {{--@foreach($ingredients as $ingredient)--}}
-        {{--<button--}}
-        {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
-        {{-->{{$ingredient->ingredient->name}}  </button>--}}
-        {{--@endforeach--}}
-        {{--@endif--}}
-        {{--</div>--}}
+
     </div>
     <div id="extra_toppings_modal" class="modal">
         <div class="modal-header">
@@ -570,7 +562,7 @@
 
             $('#choice').append('<h6><b>Choice - </b>' + sessionStorage.getItem('item_name') + '</h6>');
             $('#type').append('<h6> <b>Type - </b>' + sessionStorage.getItem('item_category') + '</h6>');
-            $('#item_bread').append('<h6><b>Bread Choice - </b>' + sessionStorage.getItem('bread_type') + ' - ' + sessionStorage.getItem('selected_toast') + '</h6>');
+//            $('#item_bread').append('<h6><b>Bread Choice - </b>' + sessionStorage.getItem('bread_type') + ' - ' + sessionStorage.getItem('selected_toast') + '</h6>');
             $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
             $('#item_amount').append('<h6>' + sessionStorage.getItem('quantity') + '</h6>');
 
@@ -581,7 +573,7 @@
                 var count = count_ingredients(db);
             });
             $("#ingredient_toppings_back").on('click', function () {
-                window.location.href = "{{'/process_order'}}";
+                window.location.href = "{{'/bread_selection'}}";
             });
 
         });

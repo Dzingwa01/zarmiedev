@@ -34,6 +34,7 @@ Route::get('get_user_by_phone/{phone_number}','OrderController@getUserByPhone');
 Route::get('bread_selection','OrderController@showBread');
 Route::get('/address_selection/{id}','OrderController@showAddressSelection');
 Route::get('select_ingredients_toppings/{id}','OrderController@showIngredientsToppings');
+Route::get('select_ingredients_toppings_salads/{id}','OrderController@showIngredientsToppingsSalads');
 
 Route::get('ingredient_type','IngredientTypeController@getIndex')->name('ingredient_type_home');
 Route::get('menus','MenusController@getIndex')->name('manage_menus');

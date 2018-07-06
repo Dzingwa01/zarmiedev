@@ -127,6 +127,61 @@ class OrderController extends Controller
 //        dd($other_ingredients);
         return view('partials.select_ingredients_toppings', compact('ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
     }
+    public function showIngredientsToppingsSalads($id)
+    {
+        $menu_item = Menu::find($id);
+        $item_categories = Category::all();
+        $item_type = Category::where('id', $menu_item->category_id)->first();
+        $item_sizes = Item_Size::all();
+//        dd($item_sizes);
+        $ingredients = $menu_item->item_ingredients;
+        $standard_toppings = Topping::where('category','standard')->get();
+        $optional_toppings = Topping::where('category','optional')->get();
+        $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name')->get();
+        $extra_toppings = Menu::join('item_sizes','item_sizes.id','menu_item.item_size_id')->where('category_id',8)->select('menu_item.*','item_sizes.size_name')->get();
+//        dd($extra_toppings);
+        $temp_toppings_ingredients =[];
+        foreach ($extra_toppings as $topping){
+            $topping_ingredients = $topping->item_ingredients;
+        }
+
+//        dd($temp_toppings_ingredients);
+        $ingredients_with_id = [];
+        foreach ($ingredients as $ingredient){
+            foreach ($all_ingredients as $ingr) {
+                if($ingredient->ingredient_id==$ingr->id){
+                    array_push($ingredients_with_id,$ingr);
+                }
+            }
+        }
+
+        $other_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name')->get();
+
+        $dup_other = [];
+        foreach ($ingredients_with_id as $with_id){
+            foreach ($other_ingredients as $ingr) {
+                if($with_id->ingredient_type_id == $ingr->ingredient_type_id && $with_id->id!=$ingr->id){
+                    array_push($dup_other,$ingr);
+                }
+            }
+        }
+        $other_ingredients = $dup_other;
+        $dup_other = [];
+        $dup_other_ids = [];
+        foreach ($other_ingredients as $ingr){
+            $available = false;
+            if(!in_array($ingr->id,$dup_other_ids)){
+                array_push($dup_other_ids,$ingr->id);
+                array_push($dup_other,$ingr);
+            }
+            else{
+                array_push($dup_other,$ingr);
+            }
+        }
+        $other_ingredients = $dup_other;
+//        dd($other_ingredients);
+        return view('partials.salads_select_ingredient_toping', compact('ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
+    }
 
     public function showContactUsPage()
     {

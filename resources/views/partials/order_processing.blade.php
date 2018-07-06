@@ -74,6 +74,10 @@
                  <div id ='item_prize'></div>
                 <div id ='item_toast'>
                 </div>
+                  {{--<div id='item_ingredients' style="margin-top:2em;">--}}
+                      {{--<h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>--}}
+
+                  {{--</div>--}}
                 
               </fieldset>
             </form>
@@ -86,6 +90,7 @@
   <?php $menu_items = json_encode($menu_items);?>
   var item_number = sessionStorage.getItem('item_number_1');
   sessionStorage.setItem("prev_swap_choice","no");
+  sessionStorage.setItem("prev_swap_choice_2","no");
   function decrease_quantity(){
       $('#item_amount').empty();
       var quantity = sessionStorage.getItem('quantity');
@@ -105,6 +110,7 @@
       $('#item_prize').empty();
       $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
   }
+
   function increase_quantity(){
       $('#item_amount').empty();
       var quantity = sessionStorage.getItem('quantity');
@@ -206,8 +212,11 @@
     
      $("#bread_back").on('click',function(e){
         e.preventDefault();
-        var link_to = sessionStorage.getItem('item_id');
-        window.location.href = '/bread_selection';
+
+             window.location.href = '/bread_selection';
+
+
+
         
     });
         
