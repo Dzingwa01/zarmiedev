@@ -15,7 +15,7 @@
 
                         {{--</div>--}}
                         {{--</div>--}}
-                        <p style="color:black;font-weight:bold;">Standard Toppings - * Please select to remove
+                        <p style="color:black;font-weight:bold;">Standard Toppings - * You can select to remove
                         <div class="row" style="margin-top:2em;">
                             <div id='standard_toppings'>
                                 @if(count($ingredients)>0)
@@ -38,7 +38,34 @@
 
                             </div>
                         </div>
-                        <div class="row" style="margin-top:2em;">
+                        <hr/>
+                        <div id="swap_toppings_div" hidden class="row" style="margin-top:1em;">
+                            <button class="accordion" >Swap Removed <span id="swap_ingr"></span> With: </button>
+                            <div id="swap_toppings_accordion" class="panel">
+                                <form id="" col="col-md-10" onsubmit="return false;">
+                                    {{--<fieldset>--}}
+                                    {{--<legend>Please select extra topping:</legend>--}}
+
+                                    <div class="row" style="margin-top:1em;">
+                                        <div id="swap_ingredients">
+
+                                        </div>
+                                    </div>
+                                    {{--<div class="row">--}}
+                                    {{--<div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">--}}
+                                    {{--<button id='' class="btn waves-effect waves-light" class="collapse">Cancel</button>--}}
+                                    {{--</div>--}}
+
+                                    {{--<div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">--}}
+                                    {{--<button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--</fieldset>--}}
+
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:1em;">
 
                         <button class="accordion " >Extra Toppings</button>
 
@@ -93,7 +120,7 @@
                             </div>
                         </div>
                         <hr/>
-                        <div id="swap_toppings_div" hidden class="row" style="margin-top:2em;">
+                        <div id="swap_toppings_div" hidden class="row" style="margin-top:1em;">
                             <button class="accordion" >Swap Removed Toppings With: </button>
                             <div id="swap_toppings_accordion" class="panel">
                                 <form id="" col="col-md-10" onsubmit="return false;">
@@ -199,17 +226,24 @@
         {{--@endforeach--}}
         {{--@endif--}}
         {{--</div>--}}
+        <div hidden>
+            @if(count($other_ingredients)>0)
+            @foreach($other_ingredients as $ingredient)
+            <button
+            >{{$ingredient->name}}  </button>
+            @endforeach
+            @endif
+        </div>
     </div>
-    <div id="extra_toppings_modal" class="modal">
+    <div id="extra_toppings_modal" class="modal" style="height: 450px;">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h5 class="modal-title">Extra Toppings</h5>
         </div>
         <div class="modal-body">
-
-            <form id="" col="col-md-10" onsubmit="return false;">
+            <form id="" col="col-md-10" onsubmit="return false">
                 <fieldset>
-                    <legend>Please select extra topping:</legend>
+                    <legend>Please select extra topping/s:</legend>
 
                     <div class="row" style="margin-top:2em;">
                         <div id='extra_toppings_list'>
@@ -377,7 +411,10 @@
                     $("#removed_list").append('<span id=' + remove_id + ' style="margin-left:1em" >' + ingredient_name +" removed " + '</span>');
                     $('#' + id).remove();
                     removeIngredient(id);
+                    ingredient_select_swap(obj);
                     $("#swap_toppings_div").show();
+                    $("#swap_ingr").empty();
+                    $("#swap_ingr").append(ingredient_name);
                 }else{
                     $("#" + obj.id).addClass('glass').removeClass('glass_unselected');
                     $("#"+remove_id).remove();
@@ -715,46 +752,65 @@
         }
 
         function ingredient_select_swap(obj) {
-
             var ingredients = {!! $ingredients !!};
-            console.log("ingredients", obj);
+            var id_string = obj.id.split("_");
+            var new_id = id_string[1];
 
             let selected_name = '';
             let selected_prize = 0;
             let ingredient_type_id = 0;
             for (var i = 0; i < ingredients.length; i++) {
-                if (ingredients[i].ingredient.ingredient_id == obj.id) {
-                    $("#swap_name").empty();
-                    $("#swap_name").append('<b>' + ingredients[i].ingredient.name + '</b>');
+                if (ingredients[i].id == new_id) {
                     selected_name = ingredients[i].ingredient.name;
                     selected_prize = ingredients[i].ingredient.prize;
                     ingredient_type_id = ingredients[i].ingredient.ingredient_type_id;
                 }
             }
-            $('#ingredients_list_swap').empty();
-            var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
-            objectStore.openCursor().onsuccess = function (event) {
-                var cursor = event.target.result;
-                if (cursor) {
-                    let var_string = cursor.value.id + ',' + obj.id;
-                    if (cursor.value.ingredient_type_id == ingredient_type_id) {
-                        $('#ingredients_list_swap').append('<button id=' + cursor.value.id + ' onclick="ingredient_select_reverse_swap(' + var_string + ');"  class="glass" style="font-weight:bolder;margin-left:1em;color:white;">' + cursor.value.name + '</button>');
-                        if (cursor.value.prize < selected_prize) {
-                            console.log("item prize", sessionStorage.getItem("item_prize"));
-                            console.log("selected_prize", selected_prize);
-                            console.log("selected_cursor", cursor.value.prize);
-                            var cur_prize = sessionStorage.getItem("item_prize");
-                            cur_prize += Number(selected_prize) - cursor.value.prize;
-                            sessionStorage.setItem("item_prize", cur_prize);
-                        }
-                    }
-                    cursor.continue();
-                } else {
-                }
-            };
-            $("#swap_ingredients_modal").modal();
-        }
 
+            $('#swap_ingredients').empty();
+            var ingredients_others = {!! json_encode($other_ingredients) !!};
+//            console.log(ingredients_others);
+            for (var i = 0; i < ingredients_others.length; i++) {
+                if (ingredients_others[i].ingredient_type_id == ingredient_type_id) {
+                    var new_id = 'swap_'+ingredients_others[i].id;
+                    $('#swap_ingredients').append(' <button id=' + new_id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_swapped(this)">' + ingredients_others[i].name + '</button>');
+
+                }
+            }
+//            var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
+//            objectStore.openCursor().onsuccess = function (event) {
+//                var cursor = event.target.result;
+//                if (cursor) {
+//                    let var_string = cursor.value.id + ',' + new_id;
+//                    if (cursor.value.ingredient_type_id == ingredient_type_id) {
+//                        $('#swap_ingredients').append('<button id=' + cursor.value.id + ' onclick="ingredient_select_reverse_swap(' + var_string + ');"  class="glass" style="font-weight:bolder;margin-left:1em;color:white;">' + cursor.value.name + '</button>');
+//                        if (cursor.value.prize < selected_prize) {
+//                            console.log("item prize", sessionStorage.getItem("item_prize"));
+//                            console.log("selected_prize", selected_prize);
+//                            console.log("selected_cursor", cursor.value.prize);
+//                            var cur_prize = sessionStorage.getItem("item_prize");
+//                            cur_prize += Number(selected_prize) - cursor.value.prize;
+//                            sessionStorage.setItem("item_prize", cur_prize);
+//                        }
+//                    }
+//                    cursor.continue();
+//                } else {
+//                }
+//            };
+//            $("#swap_ingredients_modal").modal();
+        }
+        function ingredient_select_swapped(obj){
+            var id_string = obj.id.split("_");
+            var new_id = id_string[1];
+            var ingredients_others = {!! json_encode($other_ingredients) !!};
+            for (var i = 0; i < ingredients_others.length; i++) {
+                if (ingredients_others[i].id == new_id) {
+                    addIngredient(ingredients_others[i].id, ingredients_others[i].name, ingredients_others[i].prize, ingredients_others[i].ingredient_type_id);
+                    $('#item_ingredients').append('<li id=' + ingredients_others[i].id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + ingredients_others[i].name + '</li>');
+                    $("#swap_toppings_div").hide();
+                }
+            }
+        }
         function ingredient_select(obj) {
             var ingredients = {!! $ingredients !!};
             for (var i = 0; i < ingredients.length; i++) {

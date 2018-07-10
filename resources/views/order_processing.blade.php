@@ -109,7 +109,7 @@
     cursor: pointer;
     font-weight: bold;
     padding: 18px;
-    width: 50%;
+    width: 70%;
     margin-left: 1em;
     text-align: left;
     border: none;
