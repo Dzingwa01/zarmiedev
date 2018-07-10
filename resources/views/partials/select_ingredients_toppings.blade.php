@@ -15,7 +15,7 @@
 
                         {{--</div>--}}
                         {{--</div>--}}
-                        <p style="color:black;font-weight:bold;">Standard Ingredients - * Please select to remove
+                        <p style="color:black;font-weight:bold;">Standard Toppings - * Please select to remove
                         <div class="row" style="margin-top:2em;">
                             <div id='standard_toppings'>
                                 @if(count($ingredients)>0)
@@ -38,21 +38,49 @@
 
                             </div>
                         </div>
-                        <p style="color:black;font-weight:bold;">Do you want to add any extra toppings?</p>
-                        <p>
-                            <input name="group01" class="bread" type="radio" value="no" id="no" checked/>
-                            <label for="no">No</label>
+                        <div class="row" style="margin-top:2em;">
 
-                            <input name="group01" class="bread" type="radio" id="yes" value="yes"/>
-                            <label for="yes">Yes</label>
-                        </p>
+                        <button class="accordion " >Extra Toppings</button>
 
-                        <div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>
-                            <p  style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)
-                            <div id='extra_toppings' >
+                        <div id="toppings_accordion" class="panel">
+                            <form id="" col="col-md-10" onsubmit="return false;">
+                                {{--<fieldset>--}}
+                                    {{--<legend>Please select extra topping:</legend>--}}
 
-                            </div>
+                                    <div class="row" style="margin-top:1em;">
+                                        <div id='extra_toppings'>
+
+                                        </div>
+                                    </div>
+                                    {{--<div class="row">--}}
+                                        {{--<div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">--}}
+                                            {{--<button id='' class="btn waves-effect waves-light" class="collapse">Cancel</button>--}}
+                                        {{--</div>--}}
+
+                                        {{--<div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">--}}
+                                            {{--<button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</fieldset>--}}
+
+                            </form>
                         </div>
+                        </div>
+                        {{--<p style="color:black;font-weight:bold;">Do you want to add any extra toppings?</p>--}}
+                        {{--<p>--}}
+                            {{--<input name="group01" class="bread" type="radio" value="no" id="no" checked/>--}}
+                            {{--<label for="no">No</label>--}}
+
+                            {{--<input name="group01" class="bread" type="radio" id="yes" value="yes"/>--}}
+                            {{--<label for="yes">Yes</label>--}}
+                        {{--</p>--}}
+
+                        {{--<div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>--}}
+                            {{--<p  style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)--}}
+                            {{--<div id='extra_toppings' >--}}
+
+                            {{--</div>--}}
+                        {{--</div>--}}
                         <div class="row" style="margin-top:2em;" hidden>
                             <div>
                                 @if(count($extra_toppings)>0)
@@ -65,26 +93,50 @@
                             </div>
                         </div>
                         <hr/>
-                        <p style="color:black;font-weight:bold;">Do you want to swap any toppings?</p>
-                        <p>
-                            <input name="group02" class="bread" type="radio" value="swap_no" id="swap_no" checked/>
-                            <label for="swap_no">No</label>
+                        <div id="swap_toppings_div" hidden class="row" style="margin-top:2em;">
+                            <button class="accordion" >Swap Removed Toppings With: </button>
+                            <div id="swap_toppings_accordion" class="panel">
+                                <form id="" col="col-md-10" onsubmit="return false;">
+                                    {{--<fieldset>--}}
+                                    {{--<legend>Please select extra topping:</legend>--}}
 
-                            <input name="group02" class="bread" type="radio" id="swap_yes" value="swap_yes"/>
-                            <label for="swap_yes">Yes</label>
-                        </p>
-                        <div id="swap_ingredients_div" hidden>
-                            <div id="swap_ingredients">
-                                @if(count($other_ingredients)>0)
-                                    @foreach($other_ingredients as $ingredient)
-                                        <button id='{{$ingredient->id}}' class="glass"
-                                                style="font-weight:bolder;margin-left:1em;color:white;"
-                                                onclick="ingredient_select_swap(this);">{{$ingredient->name}}  </button>
-                                    @endforeach
-                                @endif
+                                    <div class="row" style="margin-top:1em;">
+                                        <div id="swap_ingredients">
+                                            @if(count($other_ingredients)>0)
+                                                @foreach($other_ingredients as $ingredient)
+                                                    <button id='{{$ingredient->id}}' class="glass"
+                                                            style="font-weight:bolder;margin-left:1em;color:white;"
+                                                            onclick="ingredient_select_swap(this);">{{$ingredient->name}}  </button>
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                    </div>
+                                    {{--<div class="row">--}}
+                                    {{--<div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">--}}
+                                    {{--<button id='' class="btn waves-effect waves-light" class="collapse">Cancel</button>--}}
+                                    {{--</div>--}}
+
+                                    {{--<div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">--}}
+                                    {{--<button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--</fieldset>--}}
+
+                                </form>
                             </div>
-
                         </div>
+                        {{--<p style="color:black;font-weight:bold;">Do you want to swap any toppings?</p>--}}
+                        {{--<p>--}}
+                            {{--<input name="group02" class="bread" type="radio" value="swap_no" id="swap_no" checked/>--}}
+                            {{--<label for="swap_no">No</label>--}}
+
+                            {{--<input name="group02" class="bread" type="radio" id="swap_yes" value="swap_yes"/>--}}
+                            {{--<label for="swap_yes">Yes</label>--}}
+                        {{--</p>--}}
+                        {{--<div id="swap_ingredients_div" hidden>--}}
+                           {{----}}
+
+                        {{--</div>--}}
                         {{--<div id="select_swap">--}}
                         {{--<p style="color:black;font-weight:bold;">Select swap ingredients</p>--}}
                         {{--<div class="row" style="margin-top:2em;">--}}
@@ -325,12 +377,15 @@
                     $("#removed_list").append('<span id=' + remove_id + ' style="margin-left:1em" >' + ingredient_name +" removed " + '</span>');
                     $('#' + id).remove();
                     removeIngredient(id);
+                    $("#swap_toppings_div").show();
                 }else{
                     $("#" + obj.id).addClass('glass').removeClass('glass_unselected');
                     $("#"+remove_id).remove();
+                    $("#swap_toppings_div").hide();
                     addIngredient(id, ingredient_name,prize, type_id);
                     $('#item_ingredients').append('<li id=' + id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + ingredient_name + '</li>');
                 }
+
             };
 
         }
@@ -524,9 +579,29 @@
 //                    $('#item_ingredients').append('<button id=' + ingredients[i].id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_reverse(this);" >' + ingredients[i].ingredient.name + '</button>');
             }
         }
+        function accordion_trigger(){
+            var acc = document.getElementsByClassName("accordion");
+            var i;
 
+            for (i = 0; i < acc.length; i++) {
+                acc[i].addEventListener("click", function() {
+                    /* Toggle between adding and removing the "active" class,
+                     to highlight the button that controls the panel */
+                    this.classList.toggle("active");
+
+                    /* Toggle between hiding and showing the active panel */
+                    var panel = this.nextElementSibling;
+                    if (panel.style.display === "block") {
+                        panel.style.display = "none";
+                    } else {
+                        panel.style.display = "block";
+                    }
+                });
+            }
+        }
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
+            accordion_trigger();
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             $("#choice_id").empty();
             $("#choice_id").append(sessionStorage.getItem("item_category"));

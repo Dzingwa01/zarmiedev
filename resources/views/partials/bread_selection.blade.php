@@ -218,6 +218,9 @@
                             sessionStorage.setItem('item_category_price', obj.prize);
                             sessionStorage.setItem('item_category', 'Wrap');
                             sessionStorage.setItem('item_id', obj.id);
+                            sessionStorage.setItem('selected_toast',"No Toast");
+                            sessionStorage.setItem("bread_type","White Bread");
+
                         }
                     });
 
@@ -226,7 +229,11 @@
             if(sessionStorage.getItem("route_item_category")==7){
                 var link_to = sessionStorage.getItem('item_id');
                 window.location.href = '/select_ingredients_toppings_salads/'+link_to;
-            }else {
+            }else if(sessionStorage.getItem('item_category')=="Wrap"){
+                var link_to = sessionStorage.getItem('item_id');
+                window.location.href = '/select_ingredients_toppings/'+link_to;
+            }
+            else {
 
                 window.location.href = "{{'process_order'}}";
             }

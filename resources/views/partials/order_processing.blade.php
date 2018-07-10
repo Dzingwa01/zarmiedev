@@ -17,7 +17,7 @@
                           <input name="group01" class="bread" type="radio" id="white_bread" value="White Bread"/>
                           <label for="white_bread">White Bread</label>
                         </p>
-                        <p>
+                        <p id="brown_bread_p">
                           <input name="group01" class="bread" type="radio" value="Brown Bread" id="brown_bread" />
                           <label for="brown_bread" >Brown Bread</label>
                         </p>
@@ -131,7 +131,10 @@
       $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
   }
   $(document).ready(function(){
-
+    if(sessionStorage.getItem('item_category')=="Medium Sub" || sessionStorage.getItem('item_category')=="Large Sub"){
+        $("#no_toast").attr("checked",true);
+        $("#brown_bread_p").hide();
+    }
       var menu_items = {!!$menu_items!!};
       initializeQuantities();
      function initializeQuantities(){
