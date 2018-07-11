@@ -109,19 +109,24 @@ public function updateDrinkCategory(Request $request,$id){
         //
 //        dd($request->all());
         $input = $request->all();
-        $file = $input['picture'];
-        $ext  = $file->getClientOriginalExtension();
-        $filename = md5(str_random(5)).'.'.$ext;
-        $name = 'image_url';
-        if($file->move('menu_images/',$filename)){
-            $this->arr[$name] = 'menu_images/'.$filename;
-        }
+
 
         DB::beginTransaction();
         try{
+            if(array_key_exists("picture",$input)){
+                $file = $input['picture'];
+                $ext  = $file->getClientOriginalExtension();
+                $filename = md5(str_random(5)).'.'.$ext;
+                $name = 'image_url';
+                if($file->move('menu_images/',$filename)){
+                    $this->arr[$name] = 'menu_images/'.$filename;
+                }
+                $input['image_url'] = $this->arr[$name];
+                Drink::create($input);
+            }else{
+                Drink::create($input);
+            }
 
-            $input['image_url'] = $this->arr[$name];
-            Drink::create($input);
             DB::commit();
             return redirect()->route('drinks.index')->with('status', "Drink saved successfully" );
         }

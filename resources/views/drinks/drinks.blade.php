@@ -98,7 +98,7 @@
 
                     <div class="input-field col s6 offset-m2">
 
-                        <input id="picture" name="picture" type="file" class="validate" onchange="preview_file()" accept="image/*" required>
+                        <input id="picture" name="picture" type="file" class="validate" onchange="preview_file()" accept="image/*">
                         <!-- <label for="category_image">Image</label> -->
                     </div>
                 </div>
