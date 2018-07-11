@@ -217,6 +217,7 @@
                     $.each(menu_items_1, function (idx, obj) {
                         if (item_number == obj.item_number && obj.item_size_id == '4') {
                             sessionStorage.setItem('item_category_price', obj.prize);
+                            sessionStorage.setItem('total_due', obj.prize);
                             sessionStorage.setItem('item_category', 'Wrap');
                             sessionStorage.setItem('item_id', obj.id);
                             sessionStorage.setItem('quantity', 1);
