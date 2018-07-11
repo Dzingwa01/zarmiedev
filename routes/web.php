@@ -14,6 +14,19 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::resource('drinks','DrinksController');
+Route::get('drinks_list','DrinksController@showDrinks')->name('drinks_list');
+Route::get('show_drink_type','DrinksController@showCategories')->name('show_drink_type');
+Route::get('drink_categories_list','DrinksController@showDrinksCategories')->name('drink_categories_list');
+Route::get('/show_drink_type/DrinksController@showCategories');
+Route::post('/drinks/update/{id}','DrinksController@update');
+Route::get('/drinks/delete/{id}','DrinksController@destroy');
+
+Route::get('/drink_categories/{id}','DrinksController@displayDrinksCategories');
+Route::get('/drink_categories_edit/{id}','DrinksController@editDrinksCategories');
+Route::get('/drink_categories/delete/{id}','DrinksController@deleteDrinksCategories');
+Route::post('/store_drink_category','DrinksController@storeDrinkCategory')->name('store_drink_category');
+
 Route::get('email-verification/error', 'Auth\RegisterController@getVerificationError')->name('email-verification.error');
 Route::get('email-verification/check/{token}', 'Auth\RegisterController@getVerification')->name('email-verification.check');
 Route::auth();
@@ -55,6 +68,7 @@ Route::get('ingredient_items','IngredientController@showIngredients')->name('ing
 Route::get('ingredient_item_types','IngredientTypeController@showIngredientTypes')->name('ingredient_item_types');
 Route::post('save_ingredient','IngredientController@store')->name('add_ingredient');
 Route::post('save_ingredient_type','IngredientTypeController@store')->name('add_ingredient_type');
+
 
 
 Route::get('users/{id}','UserController@editUser');

@@ -487,7 +487,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 <script src="{{ asset('/js/smoothscroll.js') }}"></script>
 <script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4VCOsDzZ-3fqwWrxmWWgoPNlXcpvpPvE&libraries=places&callback=getLocation" async defer></script>
-
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/materialize.js"></script>
 <script src="js/init.js"></script>
 <script>
@@ -498,23 +498,23 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
         $('.slider').slider({ full_width: true });
         $('.parallax').parallax();
         $("#sandwich_popup").on('click',function(){
-            $("#sandwich_popup_dialog").modal('show');
+            $("#sandwich_popup_dialog").modal();
         });
         $("#salads_popup").on('click',function(){
-            $("#salads_popup_dialog").modal('show');
+            $("#salads_popup_dialog").modal();
         });
         $("#trays_popup").on('click',function(){
-            $("#trays_popup_dialog").modal('show');
+            $("#trays_popup_dialog").modal();
         });
         $('.carousel').carousel({
             interval: 3500
-        })
+        });
         $('#address_form').on('submit',function(){
             return false;
         });
         $('#address_action').on('click',function(){
             var address=$('#address').val();
-            console.log(address.length);
+//            console.log(address.length);
             if(address.length>=15){
                 sessionStorage.setItem('address',address);
                 $('#address_div').hide();
@@ -635,7 +635,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
         });
     }
     function callback(results, status) {
-        console.log("creating marker");
+//        console.log("creating marker");
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length; i++) {
                 createMarker(results[i]);

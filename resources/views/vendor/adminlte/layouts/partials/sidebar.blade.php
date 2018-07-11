@@ -39,6 +39,14 @@
 
                     </ul>
                 </li>
+                <li class="treeview">
+                    <a href=""  ><i class="fa fa-list"></i><span ><i class="fa fa-angle-left pull-right"></i> Drinks Menu</span></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{url('/drinks')}}">Drinks</a></li>
+                        <li><a  href="{{url('show_drink_type')}}">Drink Types</a></li>
+
+                    </ul>
+                </li>
                 <li><a href="{{route('manage_toppings')}}" ><i class='fa fa-list'></i><span style="cursor:pointer;">Standard & Optional Toppings</span></a></li>
                 <li><a href="{{route('users')}}"><i class="fa fa-users"></i> <span style="cursor:pointer;">Users</span></a></li>
 
