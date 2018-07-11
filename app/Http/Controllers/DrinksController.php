@@ -47,24 +47,34 @@ class DrinksController extends Controller
             $re = 'drink_categories/' . $drink->id;
             $sh = 'drink_categories_edit/'. $drink->id;
             $del = 'drink_categories/delete/' . $drink->id;
-            return '<a href=' . $sh . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $re . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
+            return '<a href=' . $re . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $sh . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
         })
             ->make(true);
     }
 
     public function  displayDrinksCategories($id){
-
+        $drink_category = DrinkCategory::find($id);
+        return view('drinks.show_categories',compact('drink_category'));
     }
 
     public function editDrinksCategories($id){
-        $categories = DrinkCategory::all();
-
-        return view('drinks.edit',compact('categories'));
+        $drink_category = DrinkCategory::find($id);
+        return view('drinks.edit_categories',compact('drink_category'));
     }
     public function deleteDrinksCategories($id){
 
     }
-
+public function updateDrinkCategory(Request $request,$id){
+    DB::beginTransaction();
+    try {
+        $drink = DrinkCategory::create($request->all());
+        DB::commit();
+        return redirect()->route('show_drink_type')->with("status", "Drink added successfully");
+    } catch (\Exception $e) {
+        DB::rollback();
+        return redirect()->route('show_drink_type')->with("error", "Error occured, please contact system admin " . $e->getMessage());
+    }
+}
     public function storeDrinkCategory(Request $request){
 
         DB::beginTransaction();

@@ -26,6 +26,7 @@ Route::get('/drink_categories/{id}','DrinksController@displayDrinksCategories');
 Route::get('/drink_categories_edit/{id}','DrinksController@editDrinksCategories');
 Route::get('/drink_categories/delete/{id}','DrinksController@deleteDrinksCategories');
 Route::post('/store_drink_category','DrinksController@storeDrinkCategory')->name('store_drink_category');
+Route::post('/drink_categories/update/{id}','DrinksController@updateDrinkCategory');
 
 Route::get('email-verification/error', 'Auth\RegisterController@getVerificationError')->name('email-verification.error');
 Route::get('email-verification/check/{token}', 'Auth\RegisterController@getVerification')->name('email-verification.check');

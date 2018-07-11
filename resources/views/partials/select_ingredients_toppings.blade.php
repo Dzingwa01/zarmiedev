@@ -38,6 +38,25 @@
 
                             </div>
                         </div>
+                        <div id="egg_selection_div" hidden>
+                            <p style="color:black;font-weight:bold;">How do you like your eggs done?</p>
+                            <p>
+                            <input name="group01" class="bread" type="radio" value="Fried" id="fried"/>
+                            <label for="fried">Fried</label>
+
+                            <input name="group01" class="bread" type="radio" id="scrambled" value="Scrambled"/>
+                                <label for="scrambled">Scrambled</label>
+                                <input name="group01" class="bread" type="radio" id="mimosa" value="Mimosa"/>
+                                <label for="mimosa">Mimosa</label>
+                            </p>
+
+                            <div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>
+                            <p  style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)
+                            <div id='extra_toppings' >
+
+                            </div>
+                            </div>
+                        </div>
                         <hr/>
                         <div id="swap_toppings_div" hidden class="row" style="margin-top:1em;">
                             <button class="accordion" >Replace <span id="swap_ingr"></span> </button>
@@ -191,6 +210,8 @@
                         <legend>Order Cart</legend>
                         <div id='type'></div>
                         <div id='choice'>
+                        </div>
+                        <div id='egg_choice_div' hidden>
                         </div>
                         <div id='item_bread'>
                         </div>
@@ -515,9 +536,22 @@
             countRequest.onsuccess = function () {
                 var count = countRequest.result;
                 if (count > 0) {
-                    var link_to = sessionStorage.getItem('item_id');
-                    window.location.href = '/address_selection/' + link_to;
+                    console.log("egg choice",sessionStorage.getItem("egg_choice"));
+                    if(sessionStorage.getItem("item_number_1")==24||sessionStorage.getItem("item_number_1")==23){
+                        if(sessionStorage.getItem("egg_choice")==null){
+                            alert("Please select egg choice!");
+                        }
+                        else{
+                            var link_to = sessionStorage.getItem('item_id');
+                            window.location.href = '/address_selection/' + link_to;
+                        }
+                    }else{
+                        var link_to = sessionStorage.getItem('item_id');
+                        window.location.href = '/address_selection/' + link_to;
+                    }
+
                 } else {
+
                     alert("Please select the ingredients you want");
                 }
             }
@@ -643,6 +677,9 @@
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             $("#choice_id").empty();
             $("#choice_id").append(sessionStorage.getItem("item_category"));
+            if(sessionStorage.getItem("item_number_1")==24||sessionStorage.getItem("item_number_1")==23){
+                $("#egg_selection_div").show();
+            }
             for (var i = 0; i < extra_toppings.length; i++) {
                 if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
                     $("#extra_toppings").append(' <button id=' + extra_toppings[i].id + ' class="glass" onclick="extra_toppings_select(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + extra_toppings[i].name + '</button>');
@@ -674,6 +711,11 @@
                 else if(swap_choice == "swap_yes") {
                     $("#swap_ingredients_div").show();
                     sessionStorage.setItem("prev_swap_choice_2", "yes");
+                }else{
+                    $("#egg_choice_div").show();
+                    $("#egg_choice_div").empty();
+                    $("#egg_choice_div").append('<p /> <b>Eggs should be:</b>'+swap_choice +'</p>');
+                    sessionStorage.setItem("egg_choice",swap_choice);
                 }
             });
             var qty = sessionStorage.getItem('quantity');

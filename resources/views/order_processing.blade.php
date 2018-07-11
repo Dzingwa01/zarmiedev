@@ -95,7 +95,7 @@
   .accordion:after {
     content: '\02795'; /* Unicode character for "plus" sign (+) */
     font-size: 13px;
-    background-color: white!important;
+    /*background-color: white!important;*/
     float: right;
     margin-left: 5px;
   }
