@@ -163,7 +163,7 @@
             var cur_id = obj.id;
             var item_number = sessionStorage.getItem('item_number_1');
             $.each(menu_items, function (idx, obj) {
-                console.log(obj);
+//                console.log(obj);
                 if (sessionStorage.getItem('item_number_1') == obj.item_number) {
                     if (cur_id == 'sandwich') {
                         $.each(menu_items_1, function (idx, obj) {
@@ -207,6 +207,7 @@
                                 sessionStorage.setItem('item_category_price', obj.prize);
                                 sessionStorage.setItem('item_category', 'Large Sub');
                             }
+                            sessionStorage.setItem("bread_type","");
                             sessionStorage.setItem('item_id', obj.id);
                         }
 
@@ -218,6 +219,7 @@
                             sessionStorage.setItem('item_category_price', obj.prize);
                             sessionStorage.setItem('item_category', 'Wrap');
                             sessionStorage.setItem('item_id', obj.id);
+                            sessionStorage.setItem('quantity', 1);
                             sessionStorage.setItem('selected_toast',"No Toast");
                             sessionStorage.setItem("bread_type","White Bread");
 
@@ -234,8 +236,8 @@
                 window.location.href = '/select_ingredients_toppings/'+link_to;
             }
             else {
-
-                window.location.href = "{{'process_order'}}";
+                var link_to = sessionStorage.getItem('item_id');
+                window.location.href = '/process_order/'+link_to;
             }
 
         }

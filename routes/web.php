@@ -28,7 +28,7 @@ Route::get("get_ingredients","IngredientController@getIngredients");
 //orders
 Route::get('contact_display','OrderController@showContactUsPage');
 Route::get('order_display','OrderController@getOrdersIndex');
-Route::get('process_order','OrderController@goToProcessOrder');
+Route::get('process_order/{id}','OrderController@goToProcessOrder');
 Route::get('/order_completion/{id}','OrderController@gotToCompletion');
 Route::get('get_user_by_phone/{phone_number}','OrderController@getUserByPhone');
 Route::get('bread_selection','OrderController@showBread');

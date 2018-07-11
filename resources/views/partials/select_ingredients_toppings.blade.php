@@ -7,7 +7,7 @@
             <div class="col-sm-8">
                 <form id="ingredients_toppings_form" col="col-md-12">
                     <fieldset>
-                        <legend>Ingredients</legend>
+                        <legend>Toppings</legend>
                         {{--<p style="color:black;font-weight:bold;">Available Item ingredients - * Please select the ones--}}
                         {{--you want</p>--}}
                         {{--<div class="row" style="margin-top:2em;">--}}
@@ -40,7 +40,7 @@
                         </div>
                         <hr/>
                         <div id="swap_toppings_div" hidden class="row" style="margin-top:1em;">
-                            <button class="accordion" >Swap Removed <span id="swap_ingr"></span> With: </button>
+                            <button class="accordion" >Replace <span id="swap_ingr"></span> </button>
                             <div id="swap_toppings_accordion" class="panel">
                                 <form id="" col="col-md-10" onsubmit="return false;">
                                     {{--<fieldset>--}}
@@ -208,7 +208,7 @@
                             <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
 
                         </div>
-                        <div id='extra_toppings_cart' style="margin-top:2em;">
+                        <div id='extra_toppings_cart' style="margin-top:2em;" hidden>
                             <h6><b>Extra Toppings - *Click to remove </b></h6>
 
                         </div>
@@ -235,7 +235,7 @@
             @endif
         </div>
     </div>
-    <div id="extra_toppings_modal" class="modal" style="height: 450px;">
+    <div id="extra_toppings_modal" class="modal" style="height: 400px;">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h5 class="modal-title">Extra Toppings</h5>
@@ -354,6 +354,7 @@
         toppings_request.onsuccess = function (event) {
             db_toppings = event.target.result;
 //            addDefaultToppings();
+            readToppings();
         };
         toppings_request.onupgradeneeded = function (event) {
             db_toppings = event.target.result;
@@ -365,12 +366,12 @@
             });
             transaction.oncomplete = function (event) {
 //                addDefaultToppings();
+                readToppings();
             }
         }
 
         function addDefaultToppings() {
-            var standard_toppings =
-                    {!! $standard_toppings !!}
+            var standard_toppings = {!! $standard_toppings !!}
             for (var i = 0; i < standard_toppings.length; i++) {
                 console.log(standard_toppings[i].id);
                 addTopping(standard_toppings[i].id, standard_toppings[i].name, standard_toppings[i].prize, standard_toppings[i].category);
@@ -426,8 +427,6 @@
             };
 
         }
-
-
         function optional_topping_select(obj) {
             $("#" + obj.id).addClass('glass_unselected').removeClass('glass');
             var id_string = obj.id.split('_');
@@ -457,7 +456,7 @@
             var id = id_string[1];
             let prize = 0;
             $("#" + obj.id).remove();
-//            $("#" + old_id).addClass('glass').removeClass('glass_unselected');
+
             removeTopping(id, db_toppings);
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             console.log("id is", extra_toppings);
@@ -466,12 +465,12 @@
                     for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
                         if (id == extra_toppings[i].item_ingredients[x].ingredient_id) {
                             prize = extra_toppings[i].prize;
-                            console.log("prize", prize);
+//                            console.log("prize", prize);
                         }
                     }
                 }
             }
-            var new_prize = Number(sessionStorage.getItem('total_due')) - prize;
+            var new_prize = Number(sessionStorage.getItem('total_due')) - (prize*Number(sessionStorage.getItem("quantity"))).toFixed(2);
             sessionStorage.setItem('total_due', new_prize);
             $("#item_prize").empty();
             $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
@@ -581,9 +580,11 @@
 
             $('#item_amount').append('<h6> <b>' + new_qty + '</h6>');
             sessionStorage.setItem('quantity', new_qty);
+            console.log("new quantity",new_qty);
             var item_prize = Number(sessionStorage.getItem("total_due")).toFixed(2);
-            var total_due = Number(item_prize * new_qty).toFixed(2);
-            sessionStorage.setItem('total_due', total_due);
+            var total_due_single = Number(item_prize/ quantity).toFixed(2);
+            var total_due = Number(new_qty* total_due_single).toFixed(2);
+            sessionStorage.setItem('total_due',total_due );
             $('#item_prize').empty();
             $('#item_prize').append('<h6> <b>Prize - </b>R' + total_due + '</h6>');
         }
@@ -601,7 +602,7 @@
 
             $('#item_amount').append('<h6> <b>' + new_qty + '</h6>');
             sessionStorage.setItem('quantity', new_qty);
-            var item_prize = Number(sessionStorage.getItem("total_due")).toFixed(2);
+            var item_prize = Number(sessionStorage.getItem("total_due")).toFixed(2)/quantity;
             var total_due = Number(item_prize * new_qty).toFixed(2);
             sessionStorage.setItem('total_due', total_due);
             $('#item_prize').empty();
@@ -693,7 +694,13 @@
                 var count = count_ingredients(db);
             });
             $("#ingredient_toppings_back").on('click', function () {
-                window.location.href = "{{'/process_order'}}";
+                var link_to = sessionStorage.getItem('item_id');
+                if(sessionStorage.getItem('item_category')=="Wrap"){
+                    window.location.href = '/bread_selection';
+                }else{
+                    window.location.href = '/process_order/'+link_to;
+                }
+
             });
 
         });
@@ -708,7 +715,7 @@
 //                        console.log(extra_toppings[i].item_ingredients[x].ingredient_id);
                         for (var y = 0; y < ingredients.length; y++) {
                             if (ingredients[y].id == extra_toppings[i].item_ingredients[x].ingredient_id) {
-                                $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + ingredients[y].name + '</button>');
+                                $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + ingredients[y].name + ' - ' + extra_toppings[x].prize +'</button>');
                             }
                         }
                     }
@@ -716,17 +723,27 @@
             }
             $("#extra_toppings_modal").modal();
         }
+        function readToppings() {
+            var objectStore = db_toppings.transaction(["selected_toppings"],"readwrite").objectStore("selected_toppings");
+            objectStore.openCursor().onsuccess = function(event) {
+                var cursor = event.target.result;
+                if (cursor) {
+                    $("#"+cursor.value.id).remove();
+                    $('#extra_toppings_cart').append('<li id='+cursor.value.id+' style="font-weight:bolder;margin-left:1em;color:black;">'+cursor.value.name+'</li>');
 
+                    cursor.continue();
+                }
+            };
+        }
         function extra_toppings_selected(obj) {
             $("#" + obj.id).addClass('glass_unselected').removeClass('glass');
             var id_string = obj.id.split('_');
             var id = id_string[1];
-            console.log("prize", id);
-
+          $("#extra_toppings_cart").show();
             var new_id = "rev_" + id;
             let prize = 0;
             var extra_toppings ={!! json_encode($extra_toppings) !!};
-//            console.log(extra_toppings);
+            console.log("extra_toppings",extra_toppings);
             for (var i = 0; i < extra_toppings.length; i++) {
                 if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
                     for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
@@ -737,16 +754,15 @@
                     }
                 }
             }
-            var standard_toppings =
-                    {!! json_encode($all_ingredients) !!}
+            var standard_toppings =  {!! json_encode($all_ingredients) !!}
             for (var i = 0; i < standard_toppings.length; i++) {
                 if (standard_toppings[i].id == id) {
                     addTopping(standard_toppings[i].id, standard_toppings[i].name, standard_toppings[i].prize, standard_toppings[i].category);
-                    var new_prize = Number(sessionStorage.getItem('total_due')) + prize;
+                    var new_prize = Number(sessionStorage.getItem('total_due')) + (prize + Number(sessionStorage.getItem("quantity")));
                     sessionStorage.setItem('total_due', new_prize);
                     $("#item_prize").empty();
                     $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
-                    $('#extra_toppings_cart').append('<button id=' + new_id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="extras_select_reverse(this);" >' + standard_toppings[i].name + '</button>');
+                    $('#extra_toppings_cart').append('<li id=' + new_id + ' style="font-weight:bolder;margin-left:1em;color:black;" onclick="extras_select_reverse(this);" >' + standard_toppings[i].name + '</li>');
                 }
             }
         }
@@ -755,7 +771,6 @@
             var ingredients = {!! $ingredients !!};
             var id_string = obj.id.split("_");
             var new_id = id_string[1];
-
             let selected_name = '';
             let selected_prize = 0;
             let ingredient_type_id = 0;
@@ -769,45 +784,36 @@
 
             $('#swap_ingredients').empty();
             var ingredients_others = {!! json_encode($other_ingredients) !!};
-//            console.log(ingredients_others);
             for (var i = 0; i < ingredients_others.length; i++) {
                 if (ingredients_others[i].ingredient_type_id == ingredient_type_id) {
                     var new_id = 'swap_'+ingredients_others[i].id;
                     $('#swap_ingredients').append(' <button id=' + new_id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_swapped(this)">' + ingredients_others[i].name + '</button>');
-
                 }
             }
-//            var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
-//            objectStore.openCursor().onsuccess = function (event) {
-//                var cursor = event.target.result;
-//                if (cursor) {
-//                    let var_string = cursor.value.id + ',' + new_id;
-//                    if (cursor.value.ingredient_type_id == ingredient_type_id) {
-//                        $('#swap_ingredients').append('<button id=' + cursor.value.id + ' onclick="ingredient_select_reverse_swap(' + var_string + ');"  class="glass" style="font-weight:bolder;margin-left:1em;color:white;">' + cursor.value.name + '</button>');
-//                        if (cursor.value.prize < selected_prize) {
-//                            console.log("item prize", sessionStorage.getItem("item_prize"));
-//                            console.log("selected_prize", selected_prize);
-//                            console.log("selected_cursor", cursor.value.prize);
-//                            var cur_prize = sessionStorage.getItem("item_prize");
-//                            cur_prize += Number(selected_prize) - cursor.value.prize;
-//                            sessionStorage.setItem("item_prize", cur_prize);
-//                        }
-//                    }
-//                    cursor.continue();
-//                } else {
-//                }
-//            };
-//            $("#swap_ingredients_modal").modal();
         }
+
         function ingredient_select_swapped(obj){
             var id_string = obj.id.split("_");
             var new_id = id_string[1];
+            var ingredients = {!! $ingredients !!};
+            let selected_prize = 0;
+            let ingredient_type_id = 0;
+            for (var i = 0; i < ingredients.length; i++) {
+                if (ingredients[i].id == new_id) {
+                    selected_prize = ingredients[i].ingredient.prize;
+                }
+            }
             var ingredients_others = {!! json_encode($other_ingredients) !!};
             for (var i = 0; i < ingredients_others.length; i++) {
                 if (ingredients_others[i].id == new_id) {
                     addIngredient(ingredients_others[i].id, ingredients_others[i].name, ingredients_others[i].prize, ingredients_others[i].ingredient_type_id);
                     $('#item_ingredients').append('<li id=' + ingredients_others[i].id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + ingredients_others[i].name + '</li>');
                     $("#swap_toppings_div").hide();
+                    if(selected_prize!=null &&ingredients_others[i].prize!=null && selected_prize<ingredients_others[i].prize){
+                        var cur_prize = sessionStorage.getItem("total_due");
+                        cur_prize += Number(selected_prize) - ingredients_others[i].prize;
+                        sessionStorage.setItem("item_prize", cur_prize);
+                    }
                 }
             }
         }

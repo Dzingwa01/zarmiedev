@@ -74,20 +74,103 @@
                  <div id ='item_prize'></div>
                 <div id ='item_toast'>
                 </div>
-                  {{--<div id='item_ingredients' style="margin-top:2em;">--}}
-                      {{--<h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>--}}
+                  <div id='item_ingredients' style="margin-top:2em;">
+                      <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
 
-                  {{--</div>--}}
+                  </div>
                 
               </fieldset>
             </form>
           </div>
         </div>
-       
+     <div hidden>
+     @if(count($ingredients)>0)
+     @foreach($ingredients as $ingredient)
+     <button
+     style="font-weight:bolder;margin-left:1em;color:white;"
+     >{{$ingredient->ingredient->name}}  </button>
+     @endforeach
+     @endif
+     </div>
   </div>
  
   <script>
   <?php $menu_items = json_encode($menu_items);?>
+      window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
+      window.msIndexedDB;
+
+  window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction ||
+      window.msIDBTransaction;
+  window.IDBKeyRange = window.IDBKeyRange ||
+      window.webkitIDBKeyRange || window.msIDBKeyRange
+
+  if (!window.indexedDB) {
+      window.alert("Your browser doesn't support a stable version of IndexedDB.")
+  }
+  var db;
+  var db_toppings;
+  var toppings_request = window.indexedDB.open("toppings_cart", 1);
+  var request = window.indexedDB.open("order_cart", 1);
+  request.onerror = function (event) {
+      console.log("error: ", event);
+  };
+
+  request.onsuccess = function (event) {
+      db = event.target.result;
+      addDefault();
+      readAll(db);
+  };
+  request.onupgradeneeded = function (event) {
+      db = event.target.result;
+      var transaction = event.target.transaction;
+      var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id", autoIncrement: true});
+      transaction.oncomplete = function (event) {
+          addDefault();
+          readAll(db);
+      }
+  }
+  function addDefault() {
+      var ingredients = {!! json_encode($ingredients) !!};
+      console.log("ingredients", ingredients);
+      for (var i = 0; i < ingredients.length; i++) {
+          addIngredient(ingredients[i].id, ingredients[i].ingredient.name, ingredients[i].ingredient.prize, ingredients[i].ingredient.ingredient_type_id);
+//                    $('#item_ingredients').append('<button id=' + ingredients[i].id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_reverse(this);" >' + ingredients[i].ingredient.name + '</button>');
+      }
+  }
+  function readAll(db) {
+      var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
+      objectStore.openCursor().onsuccess = function (event) {
+          var cursor = event.target.result;
+          var ingredients = {!! $ingredients !!};
+          if (cursor) {
+              for (var i = 0; i < ingredients.length; i++) {
+                  if (ingredients[i].ingredient.id == cursor.value.id) {
+                      $("#" + cursor.value.id).remove();
+                  }
+              }
+              $('#item_ingredients').append('<li id=' + cursor.value.id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '</li>');
+              cursor.continue();
+          } else {
+          }
+      };
+  }
+  function addIngredient(ingredient_id, ingredient_name, ingredient_prize, ingredient_type_id) {
+      var request = db.transaction(["selected_ingredients"], "readwrite")
+          .objectStore("selected_ingredients")
+          .add({
+              id: ingredient_id.toString(),
+              name: ingredient_name,
+              prize: ingredient_prize,
+              ingredient_type_id: ingredient_type_id.toString()
+          });
+
+      request.onsuccess = function (event) {
+          console.log("ingredient addedd");
+      }
+      request.onerror = function (event) {
+          console.log("error", event);
+      }
+  }
   var item_number = sessionStorage.getItem('item_number_1');
   sessionStorage.setItem("prev_swap_choice","no");
   sessionStorage.setItem("prev_swap_choice_2","no");
@@ -133,6 +216,7 @@
   $(document).ready(function(){
     if(sessionStorage.getItem('item_category')=="Medium Sub" || sessionStorage.getItem('item_category')=="Large Sub"){
         $("#no_toast").attr("checked",true);
+        sessionStorage.setItem('selected_toast','No Toast');
         $("#brown_bread_p").hide();
     }
       var menu_items = {!!$menu_items!!};
@@ -166,12 +250,10 @@
              sessionStorage.setItem('bread_type',selected_bread);
              if(sessionStorage.getItem('selected_toast')!==null){
                   $('#item_bread').append('<h6><b>Bread Choice - </b>'+bread_choice + ' - ' +sessionStorage.getItem('selected_toast') + '</h6>');
-
              }
              else{
                   $('#item_bread').append('<h6><b>Bread Choice - </b>'+bread_choice + '</h6>');
              }
-           
         }
         else{
             $('#item_bread').empty();
@@ -195,12 +277,11 @@
     });
     $("#bread_selection").on('submit',function(e){
         e.preventDefault();
-       
         
     });
      $("#bread_next").on('click',function(e){
         e.preventDefault();
-        if(sessionStorage.getItem("bread_type")==null){
+        if(sessionStorage.getItem("bread_type")==null||sessionStorage.getItem("bread_type")==""){
             alert("Please select bread type");
         }
         else if(sessionStorage.getItem("selected_toast")==null){
@@ -215,12 +296,7 @@
     
      $("#bread_back").on('click',function(e){
         e.preventDefault();
-
              window.location.href = '/bread_selection';
-
-
-
-        
     });
         
   });
