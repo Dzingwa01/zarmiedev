@@ -47,7 +47,7 @@
 
                   </div>
                   <div id='extra_toppings_cart' style="margin-top:2em;">
-                      <h6><b>Toppings </b></h6>
+                      <h6><b>Extra Toppings </b></h6>
 
                   </div>
               </fieldset>
@@ -182,7 +182,7 @@
                   var cursor = event.target.result;
                   if (cursor) {
                       $("#"+cursor.value.id).remove();
-                      $('#extra_toppings_cart').append('<button id='+cursor.value.id+'  class="glass" style="font-weight:bolder;margin-left:1em;color:white;">'+cursor.value.name+'</button>');
+                      $('#extra_toppings_cart').append('<li id='+cursor.value.id+' style="font-weight:bolder;margin-left:1em;color:black;">'+cursor.value.name+'</li>');
 
                       cursor.continue();
                   }
@@ -197,7 +197,7 @@
                   console.log("ingred",ingredients);
                   if (cursor) {
                       $("#"+cursor.value.id).remove();
-                      $('#item_ingredients').append('<button id='+cursor.value.id+'  class="glass" style="font-weight:bolder;margin-left:1em;color:white;">'+cursor.value.name+'</button>');
+                      $('#item_ingredients').append('<li id='+cursor.value.id+'   style="font-weight:bolder;margin-left:1em;color:black;">'+cursor.value.name+'</li>');
 
                       cursor.continue();
                   }

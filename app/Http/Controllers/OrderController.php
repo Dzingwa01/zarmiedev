@@ -269,8 +269,14 @@ class OrderController extends Controller
         return response()->json(["user" => $user]);
     }
 
-    public function goToProcessOrder()
+    public function goToProcessOrder($id)
     {
+        $menu_item = Menu::find($id);
+        $item_categories = Category::all();
+        $item_type = Category::where('id', $menu_item->category_id)->first();
+        $item_sizes = Item_Size::all();
+//        dd($item_sizes);
+        $ingredients = $menu_item->item_ingredients;
         $bread = Bread::all();
         $bread = json_encode($bread);
         $menu_items = DB::table('menu_item')
@@ -332,7 +338,7 @@ class OrderController extends Controller
             ++$counter;
         }
         $menu_items = $resultant;
-        return view('partials.order_processing', compact('bread', 'menu_items', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread'));
+        return view('partials.order_processing', compact('bread', 'menu_items','ingredients', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread'));
     }
 
     public function showBread()
