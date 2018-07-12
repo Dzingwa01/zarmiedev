@@ -243,7 +243,7 @@
     var menu_items = {!!$menu_items!!};
     var categories = {!! $categories !!}
 //    console.log("categories",categories.length);
-//      console.log(menu_items);
+      console.log(menu_items);
       $(document).ready(function(){
           for(var i=0;i<categories.length;i++){
 //              console.log("category",categories[i]);
@@ -273,6 +273,7 @@
     function process_order(item_number){
         var id_string = item_number.id.split('_');
         var id = id_string[1];
+//        alert("hit");
         sessionStorage.setItem('item_number_1',id);
         console.log("item_number",id);
         window.location.href="{{url('/bread_selection')}}";
@@ -323,6 +324,6 @@
     </footer>
 
     <script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4VCOsDzZ-3fqwWrxmWWgoPNlXcpvpPvE&libraries=places&callback=getLocation" async defer></script>
+    {{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4VCOsDzZ-3fqwWrxmWWgoPNlXcpvpPvE&libraries=places&callback=getLocation" async defer></script>--}}
   </body>
   </html>

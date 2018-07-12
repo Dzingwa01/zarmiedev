@@ -37,6 +37,9 @@
                             <div style="margin-top: 1em;" id="removed_list">
 
                             </div>
+                            <div style="margin-top: 1em;" id="replaced_list">
+
+                            </div>
                         </div>
                         <div id="egg_selection_div" hidden>
                             <p style="color:black;font-weight:bold;">How do you like your eggs done?</p>
@@ -52,9 +55,9 @@
 
                             <div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>
                             <p  style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)
-                            <div id='extra_toppings' >
+                            {{--<div id='extra_toppings' >--}}
 
-                            </div>
+                            {{--</div>--}}
                             </div>
                         </div>
                         <hr/>
@@ -147,7 +150,7 @@
                                     {{--<legend>Please select extra topping:</legend>--}}
 
                                     <div class="row" style="margin-top:1em;">
-                                        <div id="swap_ingredients">
+                                        <div id="">
                                             @if(count($other_ingredients)>0)
                                                 @foreach($other_ingredients as $ingredient)
                                                     <button id='{{$ingredient->id}}' class="glass"
@@ -238,15 +241,15 @@
                 </form>
             </div>
         </div>
-        {{--<div hidden>--}}
-        {{--@if(count($ingredients)>0)--}}
-        {{--@foreach($ingredients as $ingredient)--}}
-        {{--<button--}}
-        {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
-        {{-->{{$ingredient->ingredient->name}}  </button>--}}
-        {{--@endforeach--}}
-        {{--@endif--}}
-        {{--</div>--}}
+        <div hidden>
+        @if(count($ingredients)>0)
+        @foreach($ingredients as $ingredient)
+        <button
+        style="font-weight:bolder;margin-left:1em;color:white;"
+        >{{$ingredient->ingredient->name}}  </button>
+        @endforeach
+        @endif
+        </div>
         <div hidden>
             @if(count($other_ingredients)>0)
             @foreach($other_ingredients as $ingredient)
@@ -405,13 +408,17 @@
             var id = id_string[1];
             removeTopping(id, db_toppings);
         }
-
-        function ingredient_select_remove(obj){
+        function ingredient_select_remove_newbies(obj){
+            console.log("clicked",obj);
             var actual_ingredient = 0;
             var ingredient_name = "";
             var remove_id ="";
+            var swap_id ="";
             var type_id = "";
+            var remove_id2 =0;
             var ingredients = {!! $ingredients !!};
+            var ingredients_others = {!! json_encode($other_ingredients) !!};
+            console.log("other ingredients",ingredients_others);
             var id_string = obj.id.split('_');
             var id = id_string[1];
             var prize = 0;
@@ -422,6 +429,72 @@
                     actual_ingredient = ingredients[i].id;
                     type_id = ingredients[i].ingredient.ingredient_type_id;
                     prize = ingredients[i].ingredient.prize;
+                }
+            }
+            for (var i = 0; i < ingredients_others.length; i++) {
+                if (ingredients_others[i].id == id) {
+                    remove_id = "rem_" + id;
+                    remove_id2 = "remm_" + id;
+                    swap_id ="swaww_"+id;
+                    ingredient_name = ingredients_others[i].name;
+                    actual_ingredient = ingredients_others[i].id;
+                    type_id = ingredients_others[i].ingredient_type_id;
+                    prize = ingredients_others[i].prize;
+                }
+            }
+            var objectStore = db.transaction(["selected_ingredients"]).objectStore("selected_ingredients");
+            var req = objectStore.get(id);
+
+            req.onsuccess= function(event){
+                if(req.result){
+                    $("#" + obj.id).addClass('glass_unselected').removeClass('glass');
+                    $("#removed_list").append('<span id=' + remove_id2 + ' style="margin-left:1em" >' + ingredient_name +" removed " + '</span>');
+                    $('#' + swap_id).remove();
+
+                    removeIngredient(id);
+//                    ingredient_select_swap(obj);
+                    $("#swap_toppings_div").show();
+                    $("#swap_ingr").empty();
+                    $("#swap_ingr").append(ingredient_name);
+                }else{
+                    $("#" + obj.id).addClass('glass').removeClass('glass_unselected');
+                    $("#"+remove_id2).remove();
+                    $("#"+remove_id).remove();
+                    $("#swap_toppings_div").hide();
+                    addIngredient(id, ingredient_name,prize, type_id);
+//                    $('#item_ingredients').append('<li id=' + swap_id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + ingredient_name + '</li>');
+                }
+
+            };
+
+        }
+        function ingredient_select_remove(obj){
+            var actual_ingredient = 0;
+            var ingredient_name = "";
+            var remove_id ="";
+            var type_id = "";
+            var ingredients = {!! $ingredients !!};
+            var ingredients_others = {!! json_encode($other_ingredients) !!};
+            console.log("other ingredients",ingredients_others);
+            var id_string = obj.id.split('_');
+            var id = id_string[1];
+            var prize = 0;
+            for (var i = 0; i < ingredients.length; i++) {
+                if (ingredients[i].id == id) {
+                    remove_id = "rem_" + id;
+                    ingredient_name = ingredients[i].ingredient.name;
+                    actual_ingredient = ingredients[i].id;
+                    type_id = ingredients[i].ingredient.ingredient_type_id;
+                    prize = ingredients[i].ingredient.prize;
+                }
+            }
+            for (var i = 0; i < ingredients_others.length; i++) {
+                if (ingredients_others[i].id == id) {
+                    remove_id = "rem_" + id;
+                    ingredient_name = ingredients_others[i].name;
+                    actual_ingredient = ingredients_others[i].id;
+                    type_id = ingredients_others[i].ingredient_type_id;
+                    prize = ingredients_others[i].prize;
                 }
             }
             var objectStore = db.transaction(["selected_ingredients"]).objectStore("selected_ingredients");
@@ -522,7 +595,18 @@
                 });
 
             request.onsuccess = function (event) {
-                console.log("ingredient addedd");
+
+                var another_new ="rep_"+ingredient_id;
+                var new_id_late = "swaww_"+ingredient_id;
+                $("#new_id_late").remove();
+//                        $("#another_new").remove();
+//                        addIngredient(ingredients_others[i].id, ingredients_others[i].name, ingredients_others[i].prize, ingredients_others[i].ingredient_type_id);
+                $('#item_ingredients').append('<li id=' + new_id_late + '   style="font-weight:bolder;margin-left:1em;color:black;">' + ingredient_name + '</li>');
+                $("#replaced_list").append('<span id=' + another_new + ' style="margin-left:1em" >' + ingredient_name +" added as replacement " + '</span>');
+                var late_id = "ingr_"+ingredient_id;
+                $("#late_id").remove();
+                $("#standard_toppings").append('<button class="glass" id='+late_id+' onclick="ingredient_select_remove_newbies(this)" style="font-weight:bolder;margin-left:1em;color:white;">'+ingredient_name+' </button>')
+                $("#swap_toppings_div").hide();
             }
             request.onerror = function (event) {
                 console.log("error", event);
@@ -681,7 +765,11 @@
                 $("#egg_selection_div").show();
             }
             for (var i = 0; i < extra_toppings.length; i++) {
+
                 if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
+                    console.log("check me",sessionStorage.getItem('item_category') + extra_toppings[i].size_name);
+//                    $("#extra_toppings").append('<h1>Ndeip</h1>');
+                    console.log("checllll",extra_toppings[i].name);
                     $("#extra_toppings").append(' <button id=' + extra_toppings[i].id + ' class="glass" onclick="extra_toppings_select(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + extra_toppings[i].name + '</button>');
                 }
             }
@@ -783,6 +871,7 @@
             var id = id_string[1];
           $("#extra_toppings_cart").show();
             var new_id = "rev_" + id;
+
             let prize = 0;
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             console.log("extra_toppings",extra_toppings);
@@ -805,6 +894,7 @@
                     $("#item_prize").empty();
                     $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
                     $('#extra_toppings_cart').append('<li id=' + new_id + ' style="font-weight:bolder;margin-left:1em;color:black;" onclick="extras_select_reverse(this);" >' + standard_toppings[i].name + '</li>');
+//                    $('#replaced_list').append('<span id='+another_new+'>'+standard_toppings[i].name+' replaced</span>');
                 }
             }
         }
@@ -816,6 +906,7 @@
             let selected_name = '';
             let selected_prize = 0;
             let ingredient_type_id = 0;
+
             for (var i = 0; i < ingredients.length; i++) {
                 if (ingredients[i].id == new_id) {
                     selected_name = ingredients[i].ingredient.name;
@@ -827,8 +918,9 @@
             $('#swap_ingredients').empty();
             var ingredients_others = {!! json_encode($other_ingredients) !!};
             for (var i = 0; i < ingredients_others.length; i++) {
-                if (ingredients_others[i].ingredient_type_id == ingredient_type_id) {
+                if (ingredients_others[i].ingredient_type_id == ingredient_type_id && ingredients_others[i].id!=new_id) {
                     var new_id = 'swap_'+ingredients_others[i].id;
+                    $('#'+new_id).remove();
                     $('#swap_ingredients').append(' <button id=' + new_id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_swapped(this)">' + ingredients_others[i].name + '</button>');
                 }
             }
@@ -837,27 +929,35 @@
         function ingredient_select_swapped(obj){
             var id_string = obj.id.split("_");
             var new_id = id_string[1];
+            var another_new ="rep_"+new_id;
             var ingredients = {!! $ingredients !!};
+            let ingredient_type = 0;
             let selected_prize = 0;
+            let ingredient_name = "";
             let ingredient_type_id = 0;
             for (var i = 0; i < ingredients.length; i++) {
                 if (ingredients[i].id == new_id) {
                     selected_prize = ingredients[i].ingredient.prize;
+                    ingredient_type = ingredients[i].ingredient.ingredient_type_id;
+                    ingredient_name = ingredients[i].ingredient.name;
                 }
             }
+
             var ingredients_others = {!! json_encode($other_ingredients) !!};
             for (var i = 0; i < ingredients_others.length; i++) {
                 if (ingredients_others[i].id == new_id) {
-                    addIngredient(ingredients_others[i].id, ingredients_others[i].name, ingredients_others[i].prize, ingredients_others[i].ingredient_type_id);
-                    $('#item_ingredients').append('<li id=' + ingredients_others[i].id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + ingredients_others[i].name + '</li>');
-                    $("#swap_toppings_div").hide();
-                    if(selected_prize!=null &&ingredients_others[i].prize!=null && selected_prize<ingredients_others[i].prize){
-                        var cur_prize = sessionStorage.getItem("total_due");
-                        cur_prize += Number(selected_prize) - ingredients_others[i].prize;
-                        sessionStorage.setItem("item_prize", cur_prize);
-                    }
+                    selected_prize = ingredients_others[i].prize;
+                    ingredient_type = ingredients_others[i].ingredient_type_id;
+                    ingredient_name = ingredients_others[i].name;
                 }
             }
+//            if(selected_prize!=null &&ingredients_others[i].prize!=null && selected_prize<ingredients_others[i].prize){
+//                var cur_prize = sessionStorage.getItem("total_due");
+//                cur_prize += Number(selected_prize) - ingredients_others[i].prize;
+//                sessionStorage.setItem("item_prize", cur_prize);
+//            }
+            addIngredient(new_id, ingredient_name, selected_prize, ingredient_type);
+
         }
         function ingredient_select(obj) {
             var ingredients = {!! $ingredients !!};

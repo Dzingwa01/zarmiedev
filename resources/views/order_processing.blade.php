@@ -222,6 +222,11 @@
     left: 0;
     padding: 20px;
   }
+  input[type="checkbox"]{
+    position:relative;
+    left:1em;
+    opacity: 1!important;
+  }
   .card .card-content {
     padding: 10px;
     border-radius: 0 0 2px 2px;
