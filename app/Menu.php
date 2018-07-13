@@ -9,7 +9,7 @@ class Menu extends Model
   protected $table = 'menu_item';
   protected $primaryKey ='id';
   protected $fillable = [
-      'name', 'description', 'category_id','item_size_id','prize','category_id','item_number'
+      'name', 'description', 'category_id','item_size_id','prize','category_id','item_number','image_url'
   ];
 
 public function category(){

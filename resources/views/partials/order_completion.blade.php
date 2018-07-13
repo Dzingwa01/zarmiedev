@@ -168,7 +168,7 @@
         var db;
         var db_toppings;
         var toppings_request = window.indexedDB.open("toppings_cart", 1);
-        var request = window.indexedDB.open("order_cart", 1);
+         var request = window.indexedDB.open("order_cart",2);
         request.onerror = function(event) {
             console.log("error: ");
         };

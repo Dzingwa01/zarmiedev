@@ -177,7 +177,9 @@ public function showToppingsList(){
         $item_sizes = Item_Size::all();
         DB::beginTransaction();
         try {
+
             $menu_item = Menu::find($id);
+
             $menu_item_1 = Menu::where('item_size_id', 1)
             ->where('item_number', $menu_item->item_number)
                 ->first();
@@ -191,26 +193,55 @@ public function showToppingsList(){
             $menu_item_4 = Menu::where('item_size_id', 4)
                 ->where('item_number', $menu_item->item_number)
                 ->first();
-
-            foreach ($item_sizes as $item_size) {
-                if ($item_size->size_name == "Medium Sub") {
-//                dd("check");
-                    $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->medium_sub_prize, "item_number" => $request->item_number];
-                    $menu_item_2->update($input);
-                } else if ($item_size->size_name == "Sandwich") {
-                    $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->sandwich_prize, "item_number" => $request->item_number];
-                    $menu_item_1->update($input);
-                } else if ($item_size->size_name == "Large Sub") {
-                    $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->large_sub_prize, "item_number" => $request->item_number];
-                    $menu_item_3->update($input);
-
-                } else if ($item_size->size_name == "Wrap") {
-                    $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->wrap_prize, "item_number" => $request->item_number];
-                    $menu_item_4->update($input);
+            if(array_key_exists("picture",$input)){
+                $file = $input['picture'];
+                $ext  = $file->getClientOriginalExtension();
+                $filename = md5(str_random(5)).'.'.$ext;
+                $name = 'image_url';
+                if($file->move('menu_images/',$filename)){
+                    $this->arr[$name] = 'menu_images/'.$filename;
                 }
+                $input['image_url'] = $this->arr[$name];
+//                dd($input);
+                foreach ($item_sizes as $item_size) {
+                    if ($item_size->size_name == "Medium Sub") {
+//                dd("check");
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->medium_sub_prize, "item_number" => $request->item_number,"image_url"=>$input['image_url']];
+                        $menu_item_2->update($input);
+                    } else if ($item_size->size_name == "Sandwich") {
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->sandwich_prize, "item_number" => $request->item_number,"image_url"=>$input['image_url']];
+                        $menu_item_1->update($input);
+                    } else if ($item_size->size_name == "Large Sub") {
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->large_sub_prize, "item_number" => $request->item_number,"image_url"=>$input['image_url']];
+                        $menu_item_3->update($input);
 
+                    } else if ($item_size->size_name == "Wrap") {
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->wrap_prize, "item_number" => $request->item_number,"image_url"=>$input['image_url']];
+                        $menu_item_4->update($input);
+                    }
+
+                }
+            }else{
+//                dd($input);
+                foreach ($item_sizes as $item_size) {
+                    if ($item_size->size_name == "Medium Sub") {
+//                dd("check");
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->medium_sub_prize, "item_number" => $request->item_number];
+                        $menu_item_2->update($input);
+                    } else if ($item_size->size_name == "Sandwich") {
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->sandwich_prize, "item_number" => $request->item_number];
+                        $menu_item_1->update($input);
+                    } else if ($item_size->size_name == "Large Sub") {
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->large_sub_prize, "item_number" => $request->item_number];
+                        $menu_item_3->update($input);
+
+                    } else if ($item_size->size_name == "Wrap") {
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->wrap_prize, "item_number" => $request->item_number];
+                        $menu_item_4->update($input);
+                    }
+
+                }
             }
-
 
 
             $item_ingredient = ItemIngredient::where('item_id', $menu_item_1->id)->get();
@@ -367,22 +398,49 @@ public function updateTopping(Request $request,$id){
         $menu_item_4 = null;
         DB::beginTransaction();
         try {
-
-            foreach ($item_sizes as $item_size) {
-                if ($item_size->size_name == "Medium Sub") {
+            if(array_key_exists("picture",$input)) {
+                $file = $input['picture'];
+                $ext = $file->getClientOriginalExtension();
+                $filename = md5(str_random(5)) . '.' . $ext;
+                $name = 'image_url';
+                if ($file->move('menu_images/', $filename)) {
+                    $this->arr[$name] = 'menu_images/' . $filename;
+                }
+                $input['image_url'] = $this->arr[$name];
+                foreach ($item_sizes as $item_size) {
+                    if ($item_size->size_name == "Medium Sub") {
 //                dd("check");
-                    $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->medium_sub, "item_number" => $request->item_number];
-                    $menu_item_2 = Menu::create($input);
-                } else if ($item_size->size_name == "Sandwich") {
-                    $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->sandwich_prize, "item_number" => $request->item_number];
-                    $menu_item_1 =  Menu::create($input);
-                } else if ($item_size->size_name == "Large Sub") {
-                    $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->large_sub_prize, "item_number" => $request->item_number];
-                    $menu_item_3 =  Menu::create($input);
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->medium_sub, "item_number" => $request->item_number,$input['image_url']];
+                        $menu_item_2 = Menu::create($input);
+                    } else if ($item_size->size_name == "Sandwich") {
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->sandwich_prize, "item_number" => $request->item_number,$input['image_url']];
+                        $menu_item_1 =  Menu::create($input);
+                    } else if ($item_size->size_name == "Large Sub") {
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->large_sub_prize, "item_number" => $request->item_number,$input['image_url']];
+                        $menu_item_3 =  Menu::create($input);
 
-                } else if ($item_size->size_name == "Wrap") {
-                    $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->wrap_prize, "item_number" => $request->item_number];
-                    $menu_item_4 = Menu::create($input);
+                    } else if ($item_size->size_name == "Wrap") {
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->wrap_prize, "item_number" => $request->item_number,$input['image_url']];
+                        $menu_item_4 = Menu::create($input);
+                    }
+                }
+            }else{
+                foreach ($item_sizes as $item_size) {
+                    if ($item_size->size_name == "Medium Sub") {
+//                dd("check");
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->medium_sub, "item_number" => $request->item_number];
+                        $menu_item_2 = Menu::create($input);
+                    } else if ($item_size->size_name == "Sandwich") {
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->sandwich_prize, "item_number" => $request->item_number];
+                        $menu_item_1 =  Menu::create($input);
+                    } else if ($item_size->size_name == "Large Sub") {
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->large_sub_prize, "item_number" => $request->item_number];
+                        $menu_item_3 =  Menu::create($input);
+
+                    } else if ($item_size->size_name == "Wrap") {
+                        $input = ["name" => $request->item_name, "description" => $request->description, "category_id" => $request->category_id, "item_size_id" => $item_size->id, "prize" => $request->wrap_prize, "item_number" => $request->item_number];
+                        $menu_item_4 = Menu::create($input);
+                    }
                 }
             }
             for ($x = 0; $x < $ingr_amount; $x++) {

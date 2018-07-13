@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Drink;
 use App\Ingredient;
 use App\Jobs\OrderPlacedJob;
 use App\Jobs\ZarmieOrder;
@@ -75,10 +76,6 @@ class OrderController extends Controller
     public function showIngredientsToppings($id)
     {
         $menu_item = Menu::find($id);
-        $item_categories = Category::all();
-        $item_type = Category::where('id', $menu_item->category_id)->first();
-        $item_sizes = Item_Size::all();
-//        dd($item_sizes);
         $ingredients = $menu_item->item_ingredients;
         $standard_toppings = Topping::where('category','standard')->get();
         $optional_toppings = Topping::where('category','optional')->get();
@@ -89,8 +86,7 @@ class OrderController extends Controller
         foreach ($extra_toppings as $topping){
             $topping_ingredients = $topping->item_ingredients;
         }
-
-//        dd($temp_toppings_ingredients);
+        $drinks = Drink::all();
         $ingredients_with_id = [];
         foreach ($ingredients as $ingredient){
             foreach ($all_ingredients as $ingr) {
@@ -125,7 +121,7 @@ class OrderController extends Controller
         }
         $other_ingredients = $dup_other;
 //        dd($other_ingredients);
-        return view('partials.select_ingredients_toppings', compact('ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
+        return view('partials.select_ingredients_toppings', compact('drinks','ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
     }
     public function showIngredientsToppingsSalads($id)
     {
@@ -194,7 +190,7 @@ class OrderController extends Controller
             ->join('item_sizes', 'item_sizes.id', 'menu_item.item_size_id')
             ->join('menu_categories', 'menu_categories.id', 'menu_item.category_id')
             ->where('prize', '>', 0)
-            ->select('menu_item.id','category_id', 'name', 'prize', 'size_name', 'item_number', 'category_name', 'item_size_id')
+            ->select('menu_item.id','category_id', 'name', 'prize', 'size_name', 'item_number', 'category_name', 'item_size_id','menu_item.description','menu_item.image_url')
 
             ->get();
         $menu_items_1 = $menu_items;
@@ -243,6 +239,8 @@ class OrderController extends Controller
                     $formatted_result['item_name'] = $item->name;
                     $formatted_result['item_category'] = $item->category_id;
                     $formatted_result['item_id'] = $item->id;
+                    $formatted_result['item_description'] = $item->description;
+                    $formatted_result['item_image'] = $item->image_url;
                 }
             }
 

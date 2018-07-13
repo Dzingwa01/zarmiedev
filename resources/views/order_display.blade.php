@@ -208,7 +208,7 @@
     <div class="row" >
       <div id='menu_items' class="row" >
        
-      <div class="container">
+      {{--<div class="container">--}}
         @foreach ($categories as $category)
           <div class="col-md-12 col-sm-12 col-xs-12" >
             <div style="margin:auto;width:50%;">
@@ -232,7 +232,7 @@
 
           </div>
         @endforeach
-      </div>
+      {{--</div>--}}
     </div>
   </div>
   </div>
@@ -254,20 +254,25 @@
     }
     var db;
     var db_toppings;
+
     var toppings_request = window.indexedDB.open("toppings_cart", 1);
-    var request = window.indexedDB.open("order_cart", 1);
+     var request = window.indexedDB.open("order_cart",2);
     request.onerror = function (event) {
         console.log("error: ");
     };
 
     request.onsuccess = function (event) {
         db = request.result;
+//        var objectStore = db.createObjectStore("selected_drinks", {keyPath: "id", autoIncrement: true});
         clearIngredients(db);
+        clearDrinks(db);
     };
     request.onupgradeneeded = function (event) {
         var db = event.target.result;
-        var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id"});
-        clearIngredients(db);
+        var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id", autoIncrement: true});
+        var objectStore = db.createObjectStore("selected_drinks", {keyPath: "id", autoIncrement: true});
+//        clearIngredients(db);
+
 //     readAll(db);
     }
     toppings_request.onerror = function (event) {
@@ -296,6 +301,14 @@
         objectStoreRequest.onsuccess = function (event) {
             // report the success of our request
             console.log("cleared successfully");
+        };
+    }
+    function clearDrinks(db) {
+        var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
+        var objectStoreRequest = objectStore.clear();
+        objectStoreRequest.onsuccess = function (event) {
+            // report the success of our request
+            console.log("drinks cleared successfully");
         };
     }
     function clearToppings(db_toppings) {
@@ -355,7 +368,8 @@
                 sessionStorage.setItem('quantity', 1);
                 sessionStorage.setItem('item_category_price', obj.sandwich);
                 sessionStorage.setItem('total_due', obj.sandwich);
-
+                sessionStorage.setItem('item_description',obj.item_description);
+                sessionStorage.setItem('item_image',obj.item_image);
             }
         });
 

@@ -150,6 +150,22 @@
     font-family: sans-serif;
     font-weight: 100;
   }
+  .drink_glass{
+    /* background styles */
+    position: relative;
+    display: inline-block;
+
+    background-color: #039be5; /*for compatibility with older browsers*/
+    background-image: linear-gradient( #039be5,lightskyblue);
+    /*width:160px;*/
+    border-radius: 25px;
+    box-shadow: 0px 1px 4px -2px #333;
+    /* text styles */
+    color: #fff;
+    font-size: 18px;
+    font-family: sans-serif;
+    font-weight: 100;
+  }
   .glass{
 	/* background styles */
 	position: relative;
@@ -160,10 +176,7 @@
 	/*width:160px;*/
 	border-radius: 25px;
     box-shadow: 0px 1px 4px -2px #333;
-   
-
 	/* text styles */
-	
 	color: #fff;
 	font-size: 18px;
 	font-family: sans-serif;
@@ -221,6 +234,17 @@
     bottom: 0;
     left: 0;
     padding: 20px;
+  }
+  .drink_button {
+    display: block;
+    width: 115px;
+    height: 25px;
+    background: #4E9CAF;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
   }
   input[type="checkbox"]{
     position:relative;
@@ -337,7 +361,6 @@
     </footer>
 
     <script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>
-    
     
   </body>
   </html>

@@ -83,7 +83,7 @@
             <h4 class="modal-title center">Add Menu Item</h4>
         </div>
         <div class="modal-body">
-            <form id='add_menu_item' class="col s12" role="form" method="POST">
+            <form id='add_menu_item' class="col s12" role="form" method="POST" enctype="multipart/form-data">
                 <meta name="_token" content="{{ csrf_token() }}">
                 <div class="row">
                     <div class="input-field col s6 offset-m2">
@@ -104,7 +104,24 @@
                         <label for="item_description">Description</label>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col s6 offset-m2">
+                        <label  for="item_image">Drink Image</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s6 offset-m2">
+                        <img id="item_image" src="" class="img-responsive"/>
+                    </div>
+                </div>
+                <div class="row">
 
+                    <div class="input-field col s6 offset-m2">
+
+                        <input id="picture" name="picture" type="file" class="validate" onchange="preview_file()" accept="image/*">
+                        <!-- <label for="category_image">Image</label> -->
+                    </div>
+                </div>
                 <div class="row">
                     <div class="input-field col s6 offset-m2">
                         <input id="sandwich_prize" name="item_prize" placeholder="Item Prize" type="number" step="0.01"
@@ -235,6 +252,9 @@
                 formData.append('medium_sub',$('#medium_sub').val());
                 formData.append('large_sub_prize',$('#large_sub_prize').val());
                 formData.append('wrap_prize',$('#wrap_prize').val());
+                jQuery.each(jQuery('#picture')[0].files, function (i, file) {
+                    formData.append('picture', file);
+                });
                 var count = 0;
                 $(".ingr").each(function (idx, obj) {
                     count += 1;
@@ -260,6 +280,22 @@
                 });
             });
         });
+
+        function preview_file(){
+            var preview = document.getElementById("item_image"); //selects the query named img
+            var file    = document.querySelector('input[type=file]').files[0]; //sames as here
+            var reader  = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file); //reads the data as a URL
+            } else {
+                preview.src = "";
+            }
+        }
 
         function add_category() {
 

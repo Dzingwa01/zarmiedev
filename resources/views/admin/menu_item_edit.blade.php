@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <form id='update_menu_item' class="form-horizontal" method="POST"  action="{{ url('menu/update/'.$menu_item->id) }}">
+        <form id='update_menu_item' class="form-horizontal" method="POST"  enctype="multipart/form-data"  action="{{ url('menu/update/'.$menu_item->id) }}">
             <meta name="_token" content="{{ csrf_token() }}">
             <input id="item_id" value='{{$menu_item->id}}' hidden/>
             <div class="form-group">
@@ -32,6 +32,24 @@
                     <input id="item_name" type="text" class="form-control" name="item_name"
                            value="{{$menu_item->name}}" required autofocus>
 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6 offset-m4">
+                    <label  for="item_image">Item Image</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6 offset-m4">
+                    <img id="item_image" src="{{URL::asset($menu_item->image_url)}}"  class="img-responsive"/>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="input-field col s6 offset-m4">
+
+                    <input id="picture" name="picture" type="file" class="validate" onchange="preview_file()" accept="image/*">
+                    <!-- <label for="category_image">Image</label> -->
                 </div>
             </div>
             <div class="form-group">
@@ -179,8 +197,10 @@
                 formData.append('large_sub_prize', $('#large_sub_prize').val());
                 formData.append('medium_sub_prize', $('#medium_sub_prize').val());
                 formData.append('sandwich_prize', $('#sandwich_prize').val());
-
                 formData.append('_token', $('input[name="_token"]').val());
+                jQuery.each(jQuery('#picture')[0].files, function (i, file) {
+                    formData.append('picture', file);
+                });
                 let count = 0;
                 $(".ingr").each(function (idx, obj) {
                     count += 1;
@@ -233,7 +253,21 @@
 
 
         }
+        function preview_file(){
+            var preview = document.getElementById("item_image"); //selects the query named img
+            var file    = document.querySelector('input[type=file]').files[0]; //sames as here
+            var reader  = new FileReader();
 
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file); //reads the data as a URL
+            } else {
+                preview.src = "";
+            }
+        }
         function remove_ingredient(obj) {
             $('#' + obj.id).remove();
         }
