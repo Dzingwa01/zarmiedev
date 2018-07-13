@@ -41,7 +41,7 @@
         </div>
         <div id="trays_div" style="margin-bottom: 4em;">
             <div id='sandwich' onclick="bread_selection(this)" class="col-sm-offset-4 col-sm-4 tile">
-                <h5 style="margin-top:2em;">Sandwiches Tray </h5>
+                <h5 id="choice_name" style="margin-top:2em;"> </h5>
                 <div id='sandwich_price_trays'></div>
             </div>
         </div>
@@ -132,6 +132,9 @@
                     sessionStorage.setItem("route_item_category",item_category);
                     sessionStorage.setItem('item_name', name_cur);
                     $('#choice').append(sessionStorage.getItem('item_name'));
+                    $('#choice_name').empty();
+                    $('#choice_name').append(sessionStorage.getItem('item_name').toLowerCase());
+
                     $('.prizes').remove();
                     if (item_category == 7) {
                         $('#normal_sandwiches').hide();

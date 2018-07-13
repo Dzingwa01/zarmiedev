@@ -240,8 +240,74 @@
     <script type='text/javascript'>
   
     <?php $menu_items = json_encode($menu_items);?>
+    var item_number = sessionStorage.getItem('item_number_1');
+    window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
+        window.msIndexedDB;
+
+    window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction ||
+        window.msIDBTransaction;
+    window.IDBKeyRange = window.IDBKeyRange ||
+        window.webkitIDBKeyRange || window.msIDBKeyRange
+
+    if (!window.indexedDB) {
+        window.alert("Your browser doesn't support a stable version of IndexedDB.")
+    }
+    var db;
+    var db_toppings;
+    var toppings_request = window.indexedDB.open("toppings_cart", 1);
+    var request = window.indexedDB.open("order_cart", 1);
+    request.onerror = function (event) {
+        console.log("error: ");
+    };
+
+    request.onsuccess = function (event) {
+        db = request.result;
+        clearIngredients(db);
+    };
+    request.onupgradeneeded = function (event) {
+        var db = event.target.result;
+        var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id"});
+        clearIngredients(db);
+//     readAll(db);
+    }
+    toppings_request.onerror = function (event) {
+        console.log("error: ", event);
+    };
+
+    toppings_request.onsuccess = function (event) {
+        db_toppings = event.target.result;
+        clearToppings(db_toppings);
+    };
+    toppings_request.onupgradeneeded = function (event) {
+        db_toppings = event.target.result;
+
+        var transaction = event.target.transaction;
+        var objectStore_toppings = db_toppings.createObjectStore("selected_toppings", {
+            keyPath: "id",
+            autoIncrement: true
+        });
+        transaction.oncomplete = function (event) {
+            clearToppings(db_toppings);
+        }
+    }
+    function clearIngredients(db) {
+        var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
+        var objectStoreRequest = objectStore.clear();
+        objectStoreRequest.onsuccess = function (event) {
+            // report the success of our request
+            console.log("cleared successfully");
+        };
+    }
+    function clearToppings(db_toppings) {
+        var objectStore = db_toppings.transaction(["selected_toppings"], "readwrite").objectStore("selected_toppings");
+        var objectStoreRequest = objectStore.clear();
+        objectStoreRequest.onsuccess = function (event) {
+            // report the success of our request
+            console.log("toppings cleared successfully");
+        };
+    }
     var menu_items = {!!$menu_items!!};
-    var categories = {!! $categories !!}
+    var categories = {!! $categories !!};
 //    console.log("categories",categories.length);
       console.log(menu_items);
       $(document).ready(function(){
@@ -264,19 +330,41 @@
                   }
               });
           }
-//        $.each(categories,function(i,table){
-//            console.log("table",table);
-//
-//
-//        });
-      });
+
+    });
     function process_order(item_number){
         var id_string = item_number.id.split('_');
         var id = id_string[1];
-//        alert("hit");
         sessionStorage.setItem('item_number_1',id);
-        console.log("item_number",id);
-        window.location.href="{{url('/bread_selection')}}";
+        var item_category = 0;
+        var item_id = 0;
+        var menu_items_1 = {!!$menu_items_1!!};
+      console.log("item number",item_number);
+        $.each(menu_items, function (idx, obj) {
+            if (id == obj.item_number) {
+                var name_cur = obj.item_name;
+                item_category = obj.item_category;
+                item_id = obj.item_id;
+                sessionStorage.setItem("route_item_category",item_category);
+                sessionStorage.setItem('item_name', name_cur);
+                sessionStorage.setItem('item_category_price', item_category);
+                sessionStorage.setItem('item_category', 'Tray');
+                sessionStorage.setItem('item_id', obj.id);
+                sessionStorage.setItem('bread_type',"Whole Wheat & White");
+                sessionStorage.setItem('selected_toast',"No Toast");
+                sessionStorage.setItem('quantity', 1);
+                sessionStorage.setItem('item_category_price', obj.sandwich);
+                sessionStorage.setItem('total_due', obj.sandwich);
+
+            }
+        });
+
+        if(item_category>=18&&item_category<=22){
+            window.location.href = '/select_ingredients_toppings/'+item_id;
+        }else{
+            window.location.href="{{url('/bread_selection')}}";
+        }
+
        console.log(item_number);
         
     }

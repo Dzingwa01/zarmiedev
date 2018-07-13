@@ -194,10 +194,10 @@ class OrderController extends Controller
             ->join('item_sizes', 'item_sizes.id', 'menu_item.item_size_id')
             ->join('menu_categories', 'menu_categories.id', 'menu_item.category_id')
             ->where('prize', '>', 0)
-            ->select('category_id', 'name', 'prize', 'size_name', 'item_number', 'category_name', 'item_size_id')
+            ->select('menu_item.id','category_id', 'name', 'prize', 'size_name', 'item_number', 'category_name', 'item_size_id')
 
             ->get();
-
+        $menu_items_1 = $menu_items;
 //         dd($menu_items);
         $categories = DB::table('menu_categories')
             ->where('id','!=',8)
@@ -242,6 +242,7 @@ class OrderController extends Controller
                     }
                     $formatted_result['item_name'] = $item->name;
                     $formatted_result['item_category'] = $item->category_id;
+                    $formatted_result['item_id'] = $item->id;
                 }
             }
 
@@ -251,7 +252,7 @@ class OrderController extends Controller
         }
         $menu_items = $resultant;
         // dd($categories);
-        return view('order_display', compact('menu_items', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread'));
+        return view('order_display', compact('menu_items', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread','menu_items_1'));
     }
 
     function gotToCompletion($id)
@@ -283,7 +284,7 @@ class OrderController extends Controller
             ->join('item_sizes', 'item_sizes.id', 'menu_item.item_size_id')
             ->join('menu_categories', 'menu_categories.id', 'menu_item.category_id')
             ->where('prize', '>', 0)
-            ->select('category_id', 'name', 'prize', 'size_name', 'item_number', 'category_name', 'item_size_id')
+            ->select('menu_item.id','category_id', 'name', 'prize', 'size_name', 'item_number', 'category_name', 'item_size_id')
             ->orderBy('item_number')
             ->get();
 
@@ -330,6 +331,7 @@ class OrderController extends Controller
                     }
                     $formatted_result['item_name'] = $item->name;
                     $formatted_result['item_category'] = $item->category_id;
+                    $formatted_result['item_id'] = $item->id;
                 }
             }
 

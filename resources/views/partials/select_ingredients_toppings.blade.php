@@ -514,7 +514,7 @@
                     $("#" + obj.id).addClass('glass').removeClass('glass_unselected');
                     $("#"+remove_id).remove();
                     $("#swap_toppings_div").hide();
-                    addIngredient(id, ingredient_name,prize, type_id);
+                    addIngredientOg(id, ingredient_name,prize, type_id);
                     $('#item_ingredients').append('<li id=' + id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + ingredient_name + '</li>');
                 }
 
@@ -528,6 +528,7 @@
             var new_id = "rev_" + id;
             var standard_toppings =
                     {!! $optional_toppings !!}
+                    $('#extra_toppings').empty();
             for (var i = 0; i < standard_toppings.length; i++) {
                 if (standard_toppings[i].id == id) {
                     addTopping(standard_toppings[i].id, standard_toppings[i].name, standard_toppings[i].prize, standard_toppings[i].category);
@@ -584,6 +585,24 @@
             }
         }
 
+        function addIngredientOg(ingredient_id, ingredient_name, ingredient_prize, ingredient_type_id) {
+            var request = db.transaction(["selected_ingredients"], "readwrite")
+                .objectStore("selected_ingredients")
+                .add({
+                    id: ingredient_id.toString(),
+                    name: ingredient_name,
+                    prize: ingredient_prize,
+                    ingredient_type_id: ingredient_type_id.toString()
+                });
+
+            request.onsuccess = function (event) {
+                $("#new_id_late").remove();$("#replaced_list").append('<span id=' + another_new + ' style="margin-left:1em" >' + ingredient_name +" restored " + '</span>');
+                $("#swap_toppings_div").hide();
+            }
+            request.onerror = function (event) {
+                console.log("error", event);
+            }
+        }
         function addIngredient(ingredient_id, ingredient_name, ingredient_prize, ingredient_type_id) {
             var request = db.transaction(["selected_ingredients"], "readwrite")
                 .objectStore("selected_ingredients")
@@ -599,8 +618,6 @@
                 var another_new ="rep_"+ingredient_id;
                 var new_id_late = "swaww_"+ingredient_id;
                 $("#new_id_late").remove();
-//                        $("#another_new").remove();
-//                        addIngredient(ingredients_others[i].id, ingredients_others[i].name, ingredients_others[i].prize, ingredients_others[i].ingredient_type_id);
                 $('#item_ingredients').append('<li id=' + new_id_late + '   style="font-weight:bolder;margin-left:1em;color:black;">' + ingredient_name + '</li>');
                 $("#replaced_list").append('<span id=' + another_new + ' style="margin-left:1em" >' + ingredient_name +" added as replacement " + '</span>');
                 var late_id = "ingr_"+ingredient_id;
