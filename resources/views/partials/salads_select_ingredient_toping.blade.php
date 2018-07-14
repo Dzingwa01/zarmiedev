@@ -15,7 +15,7 @@
                         <img id="salad_image" height="200px" width="300px" class="img-responsive img-rounded"/>
                     </div>
                     <div class="col-sm-8">
-                        <p style="color:black;font-weight:bold;">Standard Ingredients - * Please select to remove
+                        <p style="color:black;font-weight:bold;">Standard Ingredients
                         <form id="ingredients_toppings_form" col="col-md-12">
                             <div class="row" style="margin-top:1em;">
                                 <div id='standard_toppings'>

@@ -7,9 +7,10 @@
     <div class="row" >
 
           <div class=" col-md-7 col-sm-12 card" style="margin-left: 4em;">
-            <form id="bread_selection" >
+              <h6 style="font-weight: bolder;font-size:1.5em;" id="choice_normals"></h6>
+            <form id="bread_selection" style="margin-top:2em;">
               {{--<fieldset>--}}
-                <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Bread & Toast Choice</h6>
+                {{--<h6 style="color:black;font-weight:bold;font-size: 1.5em;">Bread & Toast Choice</h6>--}}
                 {{--<h6>Please select your bread and toast option</h6>--}}
                 <div  id='bread_choice_form'>
                   <div class="row">
@@ -221,6 +222,7 @@
       $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
   }
   $(document).ready(function(){
+      $("#choice_normals").append(sessionStorage.getItem('item_name') +" - "+sessionStorage.getItem('item_category'));
       $('.step-container').stepMaker({
           steps: ['Item Size','Bread Choice', 'Ingredients', 'Delivery Info','Receipt'],
           currentStep: 2
