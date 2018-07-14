@@ -9,9 +9,8 @@
     <body class="hold-transition register-page">
     <div id="app">
         <div class="register-box">
-
             <div style="margin: auto; width: 50%;  padding: 10px;">
-                <a id="logo-container" href="#" class="brand-logo"><img class="img-responsive img-rounded"
+                <a id="logo-container" href="/" class="brand-logo"><img class="img-responsive img-rounded"
                                                                         src={{URL::asset('pictures/logo.png')}} /></a>
             </div><!-- /.login-logo -->
 
@@ -26,7 +25,7 @@
                 </div>
             @endif
 
-            <div class="register-box-body">
+            <div class="register-box-body" style="border-radius: 15px;">
                 <p class="login-box-msg">{{ trans('adminlte_lang::message.registermember') }}</p>
                 <form action="{{ url('/register') }}" method="post">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -89,14 +88,14 @@
                         </div><!-- /.col -->
                         <div class="col-xs-4 col-xs-push-1">
                             <button type="submit"
-                                    class="btn btn-primary btn-block btn-flat">{{ trans('adminlte_lang::message.register') }}</button>
+                                    class="btn btn-success btn-block btn-flat">{{ trans('adminlte_lang::message.register') }}</button>
                         </div><!-- /.col -->
                     </div>
                 </form>
 
                 {{--@include('adminlte::auth.partials.social_login')--}}
 
-                <a href="{{ url('/login') }}" class="text-center">I already have an account</a>
+                <a href="{{ url('/login') }}" class="text-center" style="color:black;font-weight: bolder;">I already have an account</a>
             </div><!-- /.form-box -->
         </div><!-- /.register-box -->
     </div>

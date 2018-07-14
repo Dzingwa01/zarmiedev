@@ -8,318 +8,320 @@
             <div class="step-container_trays" style="width: 100%; margin: 0 auto"></div>
         </div>
         <div class="row">
+
             <div class=" col-md-7 col-sm-12 card" style="margin-left: 4em;">
-                <form id="ingredients_toppings_form" >
-                    {{--<fieldset>--}}
-                        {{--<legend>Toppings</legend>--}}
+                <form id="ingredients_toppings_form">
+                    <div id="normal_sandwiches_div">
 
-                        <div id="normal_sandwiches_div">
+                        <h6 style="font-weight: bolder;font-size:1.5em;" id="choice_normals"></h6>
 
-                            <p style="color:black;font-weight:bold;">Standard Toppings - * You can select to remove</p>
-                            <div class="row" style="margin-top:2em;">
-                                <div id='standard_toppings'>
-                                    @if(count($ingredients)>0)
-                                        @foreach($ingredients as $ingredient)
-                                            <button class="glass" id="{{"ingr_".$ingredient->id}}"
-                                                    onclick="ingredient_select_remove(this)"
-                                                    style="font-weight:bolder;margin-left:1em;color:white;"
-                                            >{{$ingredient->ingredient->name}}  </button>
-                                        @endforeach
-                                    @endif
-                                    {{--@if(count($standard_toppings)>0)--}}
-                                    {{--@foreach($standard_toppings as $topping)--}}
-                                    {{--<button id='{{'to_'.$topping->id}}' class="glass"--}}
-                                    {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
-                                    {{--onclick="topping_select(this);">{{$topping->name}}  </button>--}}
-                                    {{--@endforeach--}}
-                                    {{--@endif--}}
-                                </div>
-                                <div style="margin-top: 1em;" id="removed_list">
+                        <p style="color:black;font-weight:bold;">Standard Toppings - * You can select to remove</p>
+                        <div class="row" style="margin-top:2em;">
+                            <div id='standard_toppings'>
+                                @if(count($ingredients)>0)
+                                    @foreach($ingredients as $ingredient)
+                                        <button class="glass" id="{{"ingr_".$ingredient->id}}"
+                                                onclick="ingredient_select_remove(this)"
+                                                style="font-weight:bolder;margin-left:1em;color:white;"
+                                        >{{$ingredient->ingredient->name}}  </button>
+                                    @endforeach
+                                @endif
+                                {{--@if(count($standard_toppings)>0)--}}
+                                {{--@foreach($standard_toppings as $topping)--}}
+                                {{--<button id='{{'to_'.$topping->id}}' class="glass"--}}
+                                {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
+                                {{--onclick="topping_select(this);">{{$topping->name}}  </button>--}}
+                                {{--@endforeach--}}
+                                {{--@endif--}}
+                            </div>
+                            <div style="margin-top: 1em;" id="removed_list">
 
-                                </div>
-                                <div style="margin-top: 1em;" id="replaced_list">
+                            </div>
+                            <div style="margin-top: 1em;" id="replaced_list">
 
-                                </div>
                             </div>
                         </div>
-                        <di id="trays_div" hidden>
+                    </div>
+                    <di id="trays_div" hidden>
 
-                            <div class="row" style="margin: 1em;">
-                                <h6 style="color:black;font-weight:bold;font-size: 1.5em;"><span id="tray_name"></span></h6>
-                                <div class="col-sm-6">
-                                    <img id="tray_image" height="200px" width="300px" class="img-rounded"/>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <p id="tray_description" style="color:black;"></p>
-                                </div>
-
+                        <div class="row" style="margin: 1em;">
+                            <h6 style="color:black;font-weight:bold;font-size: 1.5em;"><span id="tray_name"></span></h6>
+                            <div class="col-sm-6">
+                                <img id="tray_image" height="200px" width="300px" class="img-rounded"/>
                             </div>
 
-                        </di>
-                        <div id="combination_trays_div" hidden>
-                            <div class="row" style="margin-top:2em;">
-                                <button class="accordion ">Select Tray Items - 5 Max</button>
-
-                                <div id="combination_accordion" class="panel">
-                                    <form id="" col="col-md-10" onsubmit="return false;">
-                                        <div class="row">
-                                            <div class="pull-right" style="margin-right: 2em;">
-                                                <span id="combinations_counter" style="margin-left:1em;font-weight: bolder;">5 Left</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top:1em;">
-                                            <div id='standard_toppings'>
-                                                @if(count($ingredients)>0)
-                                                    @foreach($ingredients as $ingredient)
-                                                        <button class="glass" id="{{"comb_".$ingredient->id}}"
-                                                                onclick="ingredient_select_combination_add(this)"
-                                                                style="font-weight:bolder;margin-left:1em;color:white;"
-                                                        >{{$ingredient->ingredient->name}}  </button>
-                                                    @endforeach
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                    </form>
-                                </div>
+                            <div class="col-sm-6">
+                                <p id="tray_description" style="color:black;"></p>
                             </div>
+
                         </div>
 
-                        <div style="margin-top: 1em;" id="removed_list">
+                    </di>
+                    <div id="combination_trays_div" hidden>
+                        <div class="row" style="margin-top:2em;">
+                            <button class="accordion ">Select Tray Items - 5 Max</button>
 
+                            <div id="combination_accordion" class="panel">
+                                <form id="" col="col-md-10" onsubmit="return false;">
+                                    <div class="row">
+                                        <div class="pull-right" style="margin-right: 2em;">
+                                            <span id="combinations_counter"
+                                                  style="margin-left:1em;font-weight: bolder;">5 Left</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="margin-top:1em;">
+                                        <div id='standard_toppings'>
+                                            @if(count($ingredients)>0)
+                                                @foreach($ingredients as $ingredient)
+                                                    <button class="glass" id="{{"comb_".$ingredient->id}}"
+                                                            onclick="ingredient_select_combination_add(this)"
+                                                            style="font-weight:bolder;margin-left:1em;color:white;"
+                                                    >{{$ingredient->ingredient->name}}  </button>
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
                         </div>
-                        <div style="margin-top: 1em;" id="replaced_list"></div>
+                    </div>
+
+                    <div style="margin-top: 1em;" id="removed_list">
+
+                    </div>
+                    <div style="margin-top: 1em;" id="replaced_list"></div>
 
 
-                            <div id="egg_selection_div" hidden>
-                                <p style="color:black;font-weight:bold;">How do you like your eggs done?</p>
-                                <p>
-                                    <input name="group01" class="bread" type="radio" value="Fried" id="fried"/>
-                                    <label for="fried">Fried</label>
+                    <div id="egg_selection_div" hidden>
+                        <p style="color:black;font-weight:bold;">How do you like your eggs done?</p>
+                        <p>
+                            <input name="group01" class="bread" type="radio" value="Fried" id="fried"/>
+                            <label for="fried">Fried</label>
 
-                                    <input name="group01" class="bread" type="radio" id="scrambled" value="Scrambled"/>
-                                    <label for="scrambled">Scrambled</label>
-                                    <input name="group01" class="bread" type="radio" id="mimosa" value="Mimosa"/>
-                                    <label for="mimosa">Mimosa</label>
-                                </p>
+                            <input name="group01" class="bread" type="radio" id="scrambled" value="Scrambled"/>
+                            <label for="scrambled">Scrambled</label>
+                            <input name="group01" class="bread" type="radio" id="mimosa" value="Mimosa"/>
+                            <label for="mimosa">Mimosa</label>
+                        </p>
 
-                                <div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>
-                                    <p style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)
-                                    {{--<div id='extra_toppings' >--}}
-
-                                    {{--</div>--}}
-                                </div>
-                            </div>
-                            <hr/>
-                            <div id="swap_toppings_div" hidden class="row" style="margin-top:1em;">
-                                <button class="accordion">Replace <span id="swap_ingr"></span></button>
-                                <div id="swap_toppings_accordion" class="panel">
-                                    <form id="" col="col-md-10" onsubmit="return false;">
-                                        {{--<fieldset>--}}
-                                        {{--<legend>Please select extra topping:</legend>--}}
-
-                                        <div class="row" style="margin-top:1em;">
-                                            <div id="swap_ingredients">
-
-                                            </div>
-                                        </div>
-                                        {{--<div class="row">--}}
-                                        {{--<div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">--}}
-                                        {{--<button id='' class="btn waves-effect waves-light" class="collapse">Cancel</button>--}}
-                                        {{--</div>--}}
-
-                                        {{--<div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">--}}
-                                        {{--<button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>--}}
-                                        {{--</div>--}}
-                                        {{--</div>--}}
-                                        {{--</fieldset>--}}
-
-                                    </form>
-                                </div>
-                            </div>
-                            <div id="extra_toppings_div_2" class="row" style="margin-top:1em;">
-
-                                <button class="accordion ">Extra Toppings</button>
-
-                                <div id="toppings_accordion" class="panel">
-                                    <form id="" col="col-md-10" onsubmit="return false;">
-                                        {{--<fieldset>--}}
-                                        {{--<legend>Please select extra topping:</legend>--}}
-
-                                        <div class="row" style="margin-top:1em;">
-                                            <div id='extra_toppings'>
-
-                                            </div>
-                                        </div>
-                                        {{--<div class="row">--}}
-                                        {{--<div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">--}}
-                                        {{--<button id='' class="btn waves-effect waves-light" class="collapse">Cancel</button>--}}
-                                        {{--</div>--}}
-
-                                        {{--<div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">--}}
-                                        {{--<button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>--}}
-                                        {{--</div>--}}
-                                        {{--</div>--}}
-                                        {{--</fieldset>--}}
-
-                                    </form>
-                                </div>
-                            </div>
-                            <div id="drinks_div" class="row" style="margin-top:1em;">
-                                <button class="accordion ">Something to Drink</button>
-
-                                <div id="drinks_accordion" class="panel">
-                                    <form id="" col="col-md-10" onsubmit="return false;">
-                                        <div class="row" style="margin-top:1em;">
-                                            <div id='drinks_list'>
-                                                @if(count($drinks)>0)
-                                                    @foreach($drinks as $drink)
-                                                        <button id="{{"drink_".$drink->id}}" class="drink_glass"
-                                                                onclick="drink_select(this)"
-                                                                style="margin-left:1em;color:white;"
-                                                        >
-                                                            <i class="fa fa-beer"></i> {{$drink->name . " - ".$drink->prize}}
-                                                        </button>
-                                                    @endforeach
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                    </form>
-                                </div>
-                            </div>
-                            {{--<p style="color:black;font-weight:bold;">Do you want to add any extra toppings?</p>--}}
-                            {{--<p>--}}
-                            {{--<input name="group01" class="bread" type="radio" value="no" id="no" checked/>--}}
-                            {{--<label for="no">No</label>--}}
-
-                            {{--<input name="group01" class="bread" type="radio" id="yes" value="yes"/>--}}
-                            {{--<label for="yes">Yes</label>--}}
-                            {{--</p>--}}
-
-                            {{--<div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>--}}
-                            {{--<p  style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)--}}
+                        <div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>
+                            <p style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)
                             {{--<div id='extra_toppings' >--}}
 
                             {{--</div>--}}
-                            {{--</div>--}}
-                            <div class="row" style="margin-top:2em;" hidden>
-                                <div>
-                                    @if(count($extra_toppings)>0)
-                                        @foreach($extra_toppings as $topping)
-                                            <button class="glass"
-                                                    style="font-weight:bolder;margin-left:1em;color:white;"
-                                            >{{$topping->name}}  </button>
-                                        @endforeach
-                                    @endif
+                        </div>
+                    </div>
+                    <hr/>
+                    <div id="swap_toppings_div" hidden class="row" style="margin-top:1em;">
+                        <button class="accordion">Replace <span id="swap_ingr"></span></button>
+                        <div id="swap_toppings_accordion" class="panel">
+                            <form id="" col="col-md-10" onsubmit="return false;">
+                                {{--<fieldset>--}}
+                                {{--<legend>Please select extra topping:</legend>--}}
+
+                                <div class="row" style="margin-top:1em;">
+                                    <div id="swap_ingredients">
+
+                                    </div>
                                 </div>
-                            </div>
-                            <hr/>
-                            <div id="swap_toppings_div" hidden class="row" style="margin-top:1em;">
-                                <button class="accordion">Swap Removed Toppings With:</button>
-                                <div id="swap_toppings_accordion" class="panel">
-                                    <form id="" col="col-md-10" onsubmit="return false;">
-                                        {{--<fieldset>--}}
-                                        {{--<legend>Please select extra topping:</legend>--}}
+                                {{--<div class="row">--}}
+                                {{--<div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">--}}
+                                {{--<button id='' class="btn waves-effect waves-light" class="collapse">Cancel</button>--}}
+                                {{--</div>--}}
 
-                                        <div class="row" style="margin-top:1em;">
-                                            <div id="">
-                                                @if(count($other_ingredients)>0)
-                                                    @foreach($other_ingredients as $ingredient)
-                                                        <button id='{{$ingredient->id}}' class="glass"
-                                                                style="font-weight:bolder;margin-left:1em;color:white;"
-                                                                onclick="ingredient_select_swap(this);">{{$ingredient->name}}  </button>
-                                                    @endforeach
-                                                @endif
-                                            </div>
-                                        </div>
-                                        {{--<div class="row">--}}
-                                        {{--<div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">--}}
-                                        {{--<button id='' class="btn waves-effect waves-light" class="collapse">Cancel</button>--}}
-                                        {{--</div>--}}
+                                {{--<div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">--}}
+                                {{--<button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>--}}
+                                {{--</div>--}}
+                                {{--</div>--}}
+                                {{--</fieldset>--}}
 
-                                        {{--<div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">--}}
-                                        {{--<button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>--}}
-                                        {{--</div>--}}
-                                        {{--</div>--}}
-                                        {{--</fieldset>--}}
+                            </form>
+                        </div>
+                    </div>
+                    <div id="extra_toppings_div_2" class="row" style="margin-top:1em;">
 
-                                    </form>
+                        <button class="accordion ">Extra Toppings</button>
+
+                        <div id="toppings_accordion" class="panel">
+                            <form id="" col="col-md-10" onsubmit="return false;">
+                                {{--<fieldset>--}}
+                                {{--<legend>Please select extra topping:</legend>--}}
+
+                                <div class="row" style="margin-top:1em;">
+                                    <div id='extra_toppings'>
+
+                                    </div>
                                 </div>
-                            </div>
-                            {{--<p style="color:black;font-weight:bold;">Do you want to swap any toppings?</p>--}}
-                            {{--<p>--}}
-                            {{--<input name="group02" class="bread" type="radio" value="swap_no" id="swap_no" checked/>--}}
-                            {{--<label for="swap_no">No</label>--}}
+                                {{--<div class="row">--}}
+                                {{--<div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">--}}
+                                {{--<button id='' class="btn waves-effect waves-light" class="collapse">Cancel</button>--}}
+                                {{--</div>--}}
 
-                            {{--<input name="group02" class="bread" type="radio" id="swap_yes" value="swap_yes"/>--}}
-                            {{--<label for="swap_yes">Yes</label>--}}
-                            {{--</p>--}}
-                            {{--<div id="swap_ingredients_div" hidden>--}}
-                            {{----}}
+                                {{--<div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">--}}
+                                {{--<button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>--}}
+                                {{--</div>--}}
+                                {{--</div>--}}
+                                {{--</fieldset>--}}
 
-                            {{--</div>--}}
-                            {{--<div id="select_swap">--}}
-                            {{--<p style="color:black;font-weight:bold;">Select swap ingredients</p>--}}
-                            {{--<div class="row" style="margin-top:2em;">--}}
-                            {{--<div id='ingredients_list_swap'>--}}
+                            </form>
+                        </div>
+                    </div>
+                    <div id="drinks_div" class="row" style="margin-top:1em;">
+                        <button class="accordion ">Something to Drink</button>
 
-                            {{--</div>--}}
-                            {{--</div>--}}
-                            {{--</div>--}}
-                            {{--<hr/>--}}
-                            <div class="row">
-                                <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                                    <button id='ingredient_toppings_back' class="btn waves-effect waves-light">Back
-                                    </button>
+                        <div id="drinks_accordion" class="panel">
+                            <form id="" col="col-md-10" onsubmit="return false;">
+                                <div class="row" style="margin-top:1em;">
+                                    <div id='drinks_list'>
+                                        @if(count($drinks)>0)
+                                            @foreach($drinks as $drink)
+                                                <button id="{{"drink_".$drink->id}}" class="drink_glass"
+                                                        onclick="drink_select(this)"
+                                                        style="margin-left:1em;color:white;"
+                                                >
+                                                    <i class="fa fa-beer"></i> {{$drink->name . " - ".$drink->prize}}
+                                                </button>
+                                            @endforeach
+                                        @endif
+                                    </div>
                                 </div>
 
-                                <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
-                                    <button id='ingredient_toppings_next' class="btn waves-effect waves-light">Next
-                                    </button>
+                            </form>
+                        </div>
+                    </div>
+                    {{--<p style="color:black;font-weight:bold;">Do you want to add any extra toppings?</p>--}}
+                    {{--<p>--}}
+                    {{--<input name="group01" class="bread" type="radio" value="no" id="no" checked/>--}}
+                    {{--<label for="no">No</label>--}}
+
+                    {{--<input name="group01" class="bread" type="radio" id="yes" value="yes"/>--}}
+                    {{--<label for="yes">Yes</label>--}}
+                    {{--</p>--}}
+
+                    {{--<div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>--}}
+                    {{--<p  style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)--}}
+                    {{--<div id='extra_toppings' >--}}
+
+                    {{--</div>--}}
+                    {{--</div>--}}
+                    <div class="row" style="margin-top:2em;" hidden>
+                        <div>
+                            @if(count($extra_toppings)>0)
+                                @foreach($extra_toppings as $topping)
+                                    <button class="glass"
+                                            style="font-weight:bolder;margin-left:1em;color:white;"
+                                    >{{$topping->name}}  </button>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                    <hr/>
+                    <div id="swap_toppings_div" hidden class="row" style="margin-top:1em;">
+                        <button class="accordion">Swap Removed Toppings With:</button>
+                        <div id="swap_toppings_accordion" class="panel">
+                            <form id="" col="col-md-10" onsubmit="return false;">
+                                {{--<fieldset>--}}
+                                {{--<legend>Please select extra topping:</legend>--}}
+
+                                <div class="row" style="margin-top:1em;">
+                                    <div id="">
+                                        @if(count($other_ingredients)>0)
+                                            @foreach($other_ingredients as $ingredient)
+                                                <button id='{{$ingredient->id}}' class="glass"
+                                                        style="font-weight:bolder;margin-left:1em;color:white;"
+                                                        onclick="ingredient_select_swap(this);">{{$ingredient->name}}  </button>
+                                            @endforeach
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
+                                {{--<div class="row">--}}
+                                {{--<div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">--}}
+                                {{--<button id='' class="btn waves-effect waves-light" class="collapse">Cancel</button>--}}
+                                {{--</div>--}}
+
+                                {{--<div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">--}}
+                                {{--<button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>--}}
+                                {{--</div>--}}
+                                {{--</div>--}}
+                                {{--</fieldset>--}}
+
+                            </form>
+                        </div>
+                    </div>
+                    {{--<p style="color:black;font-weight:bold;">Do you want to swap any toppings?</p>--}}
+                    {{--<p>--}}
+                    {{--<input name="group02" class="bread" type="radio" value="swap_no" id="swap_no" checked/>--}}
+                    {{--<label for="swap_no">No</label>--}}
+
+                    {{--<input name="group02" class="bread" type="radio" id="swap_yes" value="swap_yes"/>--}}
+                    {{--<label for="swap_yes">Yes</label>--}}
+                    {{--</p>--}}
+                    {{--<div id="swap_ingredients_div" hidden>--}}
+                    {{----}}
+
+                    {{--</div>--}}
+                    {{--<div id="select_swap">--}}
+                    {{--<p style="color:black;font-weight:bold;">Select swap ingredients</p>--}}
+                    {{--<div class="row" style="margin-top:2em;">--}}
+                    {{--<div id='ingredients_list_swap'>--}}
+
+                    {{--</div>--}}
+                    {{--</div>--}}
+                    {{--</div>--}}
+                    {{--<hr/>--}}
+                    <div class="row">
+                        <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
+                            <button id='ingredient_toppings_back' class="btn waves-effect waves-light">Back
+                            </button>
+                        </div>
+
+                        <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
+                            <button id='ingredient_toppings_next' class="btn waves-effect waves-light">Next
+                            </button>
+                        </div>
+                    </div>
 
                     {{--</fieldset>--}}
                 </form>
             </div>
             <div class="col-sm-4 card" style="margin-left:2em; ">
-                <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Order Cart <i class="fa fa-shopping-cart"></i> </h6>
+                <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Order Cart <i
+                            class="fa fa-shopping-cart"></i></h6>
                 <form onsubmit="return false;">
                     {{--<fieldset>--}}
-                        {{--<legend>Order Cart</legend>--}}
-                        <div id='type'></div>
-                        <div id='choice'>
-                        </div>
-                        <div id='egg_choice_div' hidden>
-                        </div>
-                        <div id='item_bread'>
-                        </div>
-                        <div>
-                            <h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i
-                                            onclick="increase_quantity()" class="fa fa-plus"></i> </a> <a
-                                        id="decrease_el" style="margin-left:1em;"><i onclick="decrease_quantity()"
-                                                                                     class="fa fa-minus"></i> </a></h6>
-                            <div id="item_amount">
-
-                            </div>
-                        </div>
-                        <div id='item_prize'></div>
-                        <div id='item_ingredients' style="margin-top:2em;">
-                            <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
+                    {{--<legend>Order Cart</legend>--}}
+                    <div id='type'></div>
+                    <div id='choice'>
+                    </div>
+                    <div id='egg_choice_div' hidden>
+                    </div>
+                    <div id='item_bread'>
+                    </div>
+                    <div>
+                        <h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i
+                                        onclick="increase_quantity()" class="fa fa-plus"></i> </a> <a
+                                    id="decrease_el" style="margin-left:1em;"><i onclick="decrease_quantity()"
+                                                                                 class="fa fa-minus"></i> </a></h6>
+                        <div id="item_amount">
 
                         </div>
-                        <div id='extra_toppings_cart' style="margin-top:2em;" hidden>
-                            <h6><b>Extra Toppings - *Click to remove </b></h6>
+                    </div>
+                    <div id='item_prize'></div>
+                    <div id='item_ingredients' style="margin-top:2em;">
+                        <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
 
+                    </div>
+                    <div id='extra_toppings_cart' style="margin-top:2em;" hidden>
+                        <h6><b>Extra Toppings - *Click to remove </b></h6>
+
+                    </div>
+                    <div id='drinks_cart' style="margin-top:2em;" hidden>
+                        <h6><b>Something to drink </b></h6>
+                        <div id="selected_drinks">
                         </div>
-                        <div id='drinks_cart' style="margin-top:2em;" hidden>
-                            <h6><b>Something to drink </b></h6>
-                            <div id="selected_drinks">
-                            </div>
-                        </div>
+                    </div>
                     {{--</fieldset>--}}
                 </form>
             </div>
@@ -601,15 +603,15 @@
 
             req.onsuccess = function (event) {
                 if (req.result) {
-                    $('#'+id).remove();
+                    $('#' + id).remove();
                     $("#" + obj.id).addClass('glass').removeClass('glass_unselected');
                     removeIngredient(id);
                     var choices_number = Number(sessionStorage.getItem("combination_count"));
                     choices_number -= 1;
-                    var cnt = 5-choices_number;
+                    var cnt = 5 - choices_number;
                     $("#combinations_counter").empty();
-                    $("#combinations_counter").append(cnt +" Choices Left");
-                    sessionStorage.setItem("combination_count",choices_number);
+                    $("#combinations_counter").append(cnt + " Choices Left");
+                    sessionStorage.setItem("combination_count", choices_number);
                 } else {
                     var choices_number = Number(sessionStorage.getItem("combination_count"));
                     if (choices_number < 5) {
@@ -618,10 +620,10 @@
                         $('#item_ingredients').append('<li id=' + id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + ingredient_name + '</li>');
                         addIngredientOg(id, ingredient_name, prize, type_id);
                         choices_number += 1;
-                        var cnt = 5-choices_number;
+                        var cnt = 5 - choices_number;
                         $("#combinations_counter").empty();
-                        $("#combinations_counter").append(cnt +" Choices Left");
-                        sessionStorage.setItem("combination_count",choices_number);
+                        $("#combinations_counter").append(cnt + " Choices Left");
+                        sessionStorage.setItem("combination_count", choices_number);
                     }
                     else {
                         alert("You can only add a maximum of 5 items");
@@ -899,6 +901,7 @@
                 }
             };
         }
+
         function clearIngredients(db) {
             var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
             var objectStoreRequest = objectStore.clear();
@@ -907,6 +910,7 @@
                 console.log("cleared successfully");
             };
         }
+
         function removeTopping(topping_id, db_toppings) {
             var request = db_toppings.transaction(["selected_toppings"], "readwrite")
                 .objectStore("selected_toppings")
@@ -985,7 +989,7 @@
                     addIngredientOg2(ingredients[i].id, ingredients[i].ingredient.name, ingredients[i].ingredient.prize, ingredients[i].ingredient.ingredient_type_id);
 
                 }
-            }else{
+            } else {
                 clearIngredients(db);
             }
         }
@@ -1014,12 +1018,13 @@
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
             accordion_trigger();
+            console.log("Prize", sessionStorage.getItem('route_item_category'));
             $('.step-container').stepMaker({
-                steps: [ 'Item Size','Bread Choice', 'Ingredients', 'Delivery Info','Receipt'],
+                steps: ['Item Size', 'Bread Choice', 'Ingredients', 'Delivery Info', 'Receipt'],
                 currentStep: 3
             });
             $('.step-container_trays').stepMaker({
-                steps: [ 'Item Size', 'Ingredients', 'Delivery Info','Receipt'],
+                steps: ['Item Size', 'Ingredients', 'Delivery Info', 'Receipt'],
                 currentStep: 2
             });
             $("#trays_tracker").hide();
@@ -1029,6 +1034,7 @@
             $("#choice_id").append(sessionStorage.getItem("item_category"));
             if (sessionStorage.getItem("item_category") === "Tray") {
                 $("#normal_sandwiches_div").hide();
+                $("#choice_normals").hide();
                 $("#extra_toppings_div_2").hide();
                 $("#trays_div").show();
                 $("#tray_name").empty();
@@ -1092,6 +1098,7 @@
             if (qty == 1) {
                 $("#decrease_el").hide();
             }
+            $("#choice_normals").append(sessionStorage.getItem('item_name'));
             $('#choice').append('<h6><b>Choice - </b>' + toTitleCase(sessionStorage.getItem('item_name')) + '</h6>');
             $('#type').append('<h6> <b>Type - </b>' + sessionStorage.getItem('item_category') + '</h6>');
             $('#item_bread').append('<h6><b>Bread Choice - </b>' + sessionStorage.getItem('bread_type') + ' - ' + sessionStorage.getItem('selected_toast') + '</h6>');
@@ -1203,10 +1210,10 @@
                     for (var x = 0; x < ingredients.length; x++) {
                         if (ingredients[x].ingredient.id == ingredients_others[i].id) {
                             console.log("hit");
-                           exists = true;
+                            exists = true;
                         }
                     }
-                    if(!exists){
+                    if (!exists) {
                         var new_id = 'swap_' + ingredients_others[i].id;
                         $('#' + new_id).remove();
                         $('#swap_ingredients').append(' <button id=' + new_id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_swapped(this)">' + ingredients_others[i].name + '</button>');

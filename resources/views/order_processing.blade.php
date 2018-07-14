@@ -291,7 +291,7 @@
 <body>
 <nav class="navbar-fixed-top white" role="navigation" style="height:5em;margin-bottom: 1em;">
   <div class="nav-wrapper container-fluid">
-    <a id="logo-container" href="/" class="brand-logo" ><img height="50px" width="70px" class=" img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
+    <a id="logo-container" href="/" class="brand-logo" ><img height="70px" width="100px" class=" img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
     {{--@if (Auth::user()->verified!=0)--}}
       {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
     {{--@else--}}
@@ -300,16 +300,16 @@
         <li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
         {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
         <li><a class="btn" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
-        <li><a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/></li>
-        <li><a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a></li>
+        <li><a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Account</a><br/></li>
+        {{--<li><a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a></li>--}}
 
       </ul>
       <ul id="nav-mobile" class="side-nav">
         <li><a class="btn" href="/order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
         <li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
         <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
-        <li><a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/></li>
-        <li><a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a></li>
+        <li><a class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/></li>
+        {{--<li><a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a></li>--}}
 
 
       </ul>

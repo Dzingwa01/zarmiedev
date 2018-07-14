@@ -9,7 +9,7 @@
     <div id="app">
         <div class="login-box">
             <div style="margin: auto; width: 50%;  padding: 10px;">
-                <a id="logo-container" href="#" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
+                <a id="logo-container" href="/" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
             </div><!-- /.login-logo -->
 
             @if (count($errors) > 0)
@@ -23,7 +23,7 @@
                 </div>
             @endif
 
-            <div class="login-box-body">
+            <div class="login-box-body" style="border-radius: 15px;">
                 <p class="login-box-msg"> {{ trans('adminlte_lang::message.siginsession') }} </p>
                 <form action="{{ url('/login') }}" method="post">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -48,16 +48,15 @@
                         </div><!-- /.col -->
                         <div class="col-xs-4">
                             <button type="submit"
-                                    class="btn btn-primary btn-block btn-flat">{{ trans('adminlte_lang::message.buttonsign') }}</button>
+                                    class="btn btn-success btn-block btn-flat">{{ trans('adminlte_lang::message.buttonsign') }}</button>
                         </div><!-- /.col -->
                     </div>
                 </form>
 
                 {{--@include('adminlte::auth.partials.social_login')--}}
 
-                <a href="{{ url('/password/reset') }}">{{ trans('adminlte_lang::message.forgotpassword') }}</a><br>
-                <a href="{{ url('/register') }}"
-                   class="text-center">{{ trans('adminlte_lang::message.registermember') }}</a>
+                <a href="{{ url('/password/reset') }}" class="text-center" style="color:black;font-weight: bolder;">{{ trans('adminlte_lang::message.forgotpassword') }}</a><br>
+                <a href="{{ url('/register') }}" class="text-center" style="color:black;font-weight: bolder;">Register For a Zarmie Account</a>
 
             </div><!-- /.login-box-body -->
 

@@ -13,6 +13,7 @@
                 </center>
                 {{--<button class="btn pull-right" onclick="goBack()"><i class="fa fa-arrow-left"></i> Back</button>--}}
             </div>
+            <div class="row" id="with_sandwiches">
             <div class="row">
 
                 <div id='sandwich' onclick="bread_selection(this)" class="col-sm-5 tile">
@@ -34,7 +35,30 @@
                     <div id='wrap_price'></div>
                 </div>
             </div>
+            </div>
+
+        <div class="row" hidden id="without_sandwiches">
+
+            <div class="row">
+            <div id='mediumsub' onclick="bread_selection(this)" class="col-sm-5 tile">
+                <h5 style="margin-top:2em;">Medium Sub - 15cm </h5>
+                <div id='medium_price_sandwiches'></div>
+            </div>
+
+            <div id='largesub' onclick="bread_selection(this)" class="col-sm-5 tile">
+                <h5 style="margin-top:2em;">Large - 22cm </h5>
+                <div id='large_price_sandwiches'></div>
+            </div>
+            </div>
+            <div class="row">
+            <div id='wrap' onclick="bread_selection(this)" class="col-sm-5 tile">
+                <h5 style="margin-top:2em;">Wrap</h5>
+                <div id='wrap_price_sandwiches'></div>
+            </div>
+            </div>
         </div>
+        </div>
+
 
         <div id="salads_div" style="margin-bottom: 4em;margin-left: 4em;">
         <div class="row">
@@ -100,9 +124,9 @@
                 <div id='sandwich_price_trays'></div>
             </div>
         </div>
-        </div>
+
     </div>
-    </div>
+
 
     {{--<link rel="stylesheet" href="/css/jquery-step-maker.css">--}}
     {{--<script src="/js/jquery-step-maker.js"></script>--}}
@@ -219,10 +243,20 @@
                     else {
                         $("#trays_div").hide();
                         $("#salads_div").hide();
-                        $('#sandwich_price').append('<h5 class="prizes"> R' + (obj.sandwich).toFixed(2) + '</h5>');
-                        $('#medium_price').append('<h5 class="prizes"> R' + (obj.mediumsub).toFixed(2) + '</h5>');
-                        $('#large_price').append('<h5 class="prizes"> R' + (obj.largesub).toFixed(2) + '</h5>');
-                        $('#wrap_price').append('<h5 class="prizes"> R' + (obj.wrap).toFixed(2) + '</h5>');
+                        if(sessionStorage.getItem("item_number_1")==27||sessionStorage.getItem("item_number_1")==28){
+//                            $('#sandwich_price').append('<h5 class="prizes"> R' + (obj.sandwich).toFixed(2) + '</h5>');
+                            $("#with_sandwiches").hide();
+                            $("#without_sandwiches").show();
+                            $('#medium_price_sandwiches').append('<h5 class="prizes"> R' + (obj.mediumsub).toFixed(2) + '</h5>');
+                            $('#large_price_sandwiches').append('<h5 class="prizes"> R' + (obj.largesub).toFixed(2) + '</h5>');
+                            $('#wrap_price_sandwiches').append('<h5 class="prizes"> R' + (obj.wrap).toFixed(2) + '</h5>');
+                        }else{
+                            $('#sandwich_price').append('<h5 class="prizes"> R' + (obj.sandwich).toFixed(2) + '</h5>');
+                            $('#medium_price').append('<h5 class="prizes"> R' + (obj.mediumsub).toFixed(2) + '</h5>');
+                            $('#large_price').append('<h5 class="prizes"> R' + (obj.largesub).toFixed(2) + '</h5>');
+                            $('#wrap_price').append('<h5 class="prizes"> R' + (obj.wrap).toFixed(2) + '</h5>');
+                        }
+
                     }
 
 

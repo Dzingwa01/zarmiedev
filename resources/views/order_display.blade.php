@@ -158,9 +158,9 @@
   </script>
 </head>
 <body>
-  <nav class="navbar-fixed-top white" role="navigation" style="height:7em;">
+  <nav class="navbar-fixed-top white" role="navigation" style="height:5em;">
     <div class="nav-wrapper container-fluid">
-      <a id="logo-container" href="/" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
+      <a id="logo-container" href="/" class="brand-logo" ><img height="70px" width="100px" class="img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
       {{--@if (Auth::user()->verified!=0)--}}
         {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
       {{--@else--}}
@@ -204,7 +204,7 @@
     </div>
   </nav>
 
-  <div class="container-fluid" style="margin-top:8em">
+  <div class="container-fluid" style="margin-top:5em">
     {{--<div class="step-container" style="width: 700px; margin: 0 auto"></div>--}}
     <div class="row" >
       <div id='menu_items' class="row" >
@@ -331,7 +331,7 @@
               $.each(menu_items, function(idx,obj){
                   if(categories[i].id === obj.item_category){
                       try{
-                          $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
+                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
 
                       }catch(err){
                           if(categories[i].id==18||categories[i].id==19||categories[i].id==20||categories[i].id==21||categories[i].id==22){
@@ -341,6 +341,17 @@
                               $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td></tr>');
 
                           }
+                          if(obj.item_number==28||obj.item_number==27){
+                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td></td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
+
+                          }else if(obj.item_number==25||obj.item_number==33){
+                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td></td><td></td><td></td><td> R '+(obj.wrap).toFixed(2)+'</td></tr>');
+
+                          }else if(obj.item_number==32){
+                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td></td><td>R '+(obj.sandwich).toFixed(2)+'</td><td></td><td> </td></tr>');
+
+                          }
+
                       }
                   }
               });
@@ -357,6 +368,7 @@
         sessionStorage.setItem('item_number_1',id);
         var item_category = 0;
         var item_id = 0;
+        var prize = 0;
         var menu_items_1 = {!!$menu_items_1!!};
       console.log("item number",item_number);
         $.each(menu_items, function (idx, obj) {
@@ -364,9 +376,19 @@
                 var name_cur = obj.item_name;
                 item_category = obj.item_category;
                 item_id = obj.item_id;
+                if(id==25||id==33){
+                    prize = obj.wrap;
+                    sessionStorage.setItem('item_category_price', prize);
+                    sessionStorage.setItem('total_due',prize);
+                }else if(id==32){
+                    prize = obj.sandwich;
+
+                }
+
                 sessionStorage.setItem("route_item_category",item_category);
                 sessionStorage.setItem('item_name', name_cur);
-                sessionStorage.setItem('item_category_price', item_category);
+                sessionStorage.setItem('item_category_price', prize);
+                sessionStorage.setItem('total_due',prize);
                 sessionStorage.setItem('item_category', 'Tray');
                 sessionStorage.setItem('item_id', obj.id);
                 sessionStorage.setItem('bread_type',"Whole Wheat & White");
@@ -381,7 +403,13 @@
 
         if(item_category>=18&&item_category<=22){
             window.location.href = '/select_ingredients_toppings/'+item_id;
-        }else{
+        }else if(id==32||id==25||id==33){
+            sessionStorage.setItem('item_category',item_category);
+            window.location.href = '/select_ingredients_toppings/'+item_id;
+            sessionStorage.setItem('item_category_price', prize);
+            sessionStorage.setItem('total_due',prize);
+        }
+        else{
             window.location.href='/bread_selection/'+item_id;
         }
 
