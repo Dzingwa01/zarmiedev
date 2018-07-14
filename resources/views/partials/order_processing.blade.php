@@ -1,13 +1,14 @@
 @extends('order_processing')
 @section('content')
- <div class="container" style="margin-top:8em">
+ <div class="container-fluid" style="margin-top:8em">
       
     <div class="row" >
        
-          <div class="col-sm-8">
+          <div class="col-sm-7 card">
             <form id="bread_selection" >
-              <fieldset>
-                <legend>Bread Choice & Amount</legend>
+              {{--<fieldset>--}}
+                <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Bread & Toast Choice</h6>
+                <h6>Please select your bread and toast option</h6>
                 <div  id='bread_choice_form'>
                   <div class="row">
                     <div class="col-sm-6" >
@@ -52,13 +53,13 @@
                   </div>
                 </div>
                  
-              </fieldset>
+              {{--</fieldset>--}}
             </form>
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-4 card" style="margin-left: 2em;">
           <form>
-              <fieldset>
-                <legend>Order Cart</legend>
+              {{--<fieldset>--}}
+                <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Order Cart <i class="fa fa-shopping-cart"></i> </h6>
                 <div id='type'></div>
                 <div id ='choice'>
                 </div>
@@ -79,7 +80,7 @@
 
                   </div>
                 
-              </fieldset>
+              {{--</fieldset>--}}
             </form>
           </div>
         </div>

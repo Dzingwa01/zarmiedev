@@ -1,13 +1,13 @@
 @extends('order_processing')
 @section('content')
-    <div class="container" style="margin-top:8em">
+    <div class="container-fluid" style="margin-top:8em">
 
         <div class="row">
 
-            <div class="col-sm-8">
+            <div class="col-sm-7 card">
                 <form id="ingredients_toppings_form" col="col-md-12">
-                    <fieldset>
-                        <legend>Toppings</legend>
+                    {{--<fieldset>--}}
+                        {{--<legend>Toppings</legend>--}}
 
                         <div id="normal_sandwiches_div">
                             <p style="color:black;font-weight:bold;">Standard Toppings - * You can select to remove</p>
@@ -39,7 +39,7 @@
                         </div>
                         <di id="trays_div" hidden>
                             <div class="row" style="margin: 1em;">
-                                <p style="color:black;font-weight:bold;"><span id="tray_name"></span></p>
+                                <h6 style="color:black;font-weight:bold;font-size: 1.5em;"><span id="tray_name"></span></h6>
                                 <div class="col-sm-6">
                                     <img id="tray_image" height="300px" width="300px" class="img-responsive"/>
                                 </div>
@@ -52,10 +52,16 @@
                         </di>
                         <div id="combination_trays_div" hidden>
                             <div class="row" style="margin-top:2em;">
-                                <button class="accordion ">Select 5 Items</button>
+                                <button class="accordion ">Select Tray Items - 5 Max</button>
 
                                 <div id="combination_accordion" class="panel">
                                     <form id="" col="col-md-10" onsubmit="return false;">
+                                        <div class="row">
+                                            <div class="pull-right" style="margin-right: 2em;">
+                                                <span id="combinations_counter" style="margin-left:1em;font-weight: bolder;">5 Left</span>
+                                            </div>
+                                        </div>
+
                                         <div class="row" style="margin-top:1em;">
                                             <div id='standard_toppings'>
                                                 @if(count($ingredients)>0)
@@ -77,7 +83,7 @@
                         <div style="margin-top: 1em;" id="removed_list">
 
                         </div>
-                        <div style="margin-top: 1em;" id="replaced_list">
+                        <div style="margin-top: 1em;" id="replaced_list"></div>
 
 
                             <div id="egg_selection_div" hidden>
@@ -268,13 +274,15 @@
                                     </button>
                                 </div>
                             </div>
-                    </fieldset>
+
+                    {{--</fieldset>--}}
                 </form>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4 card" style="margin-left:2em; ">
+                <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Order Cart <i class="fa fa-shopping-cart"></i> </h6>
                 <form onsubmit="return false;">
-                    <fieldset>
-                        <legend>Order Cart</legend>
+                    {{--<fieldset>--}}
+                        {{--<legend>Order Cart</legend>--}}
                         <div id='type'></div>
                         <div id='choice'>
                         </div>
@@ -305,7 +313,7 @@
                             <div id="selected_drinks">
                             </div>
                         </div>
-                    </fieldset>
+                    {{--</fieldset>--}}
                 </form>
             </div>
         </div>
@@ -417,7 +425,7 @@
         if (!window.indexedDB) {
             window.alert("Your browser doesn't support a stable version of IndexedDB.")
         }
-        sessionStorage.setItem("combination_count",0);
+        sessionStorage.setItem("combination_count", 0);
         var db;
         var db_toppings;
         var toppings_request = window.indexedDB.open("toppings_cart", 1);
@@ -586,24 +594,32 @@
 
             req.onsuccess = function (event) {
                 if (req.result) {
-//                    $('#'+id).remove();
-                    $("#" + obj.id).addClass('glass_unselected').removeClass('glass');
-                     var choices_number = Number(sessionStorage.getItem("combination_count"));
-                    if(choices_number<5){
-                        choices_number +=1;
-
-                        sessionStorage.setItem("combination_count",choices_number);
+                    $('#'+id).remove();
+                    $("#" + obj.id).addClass('glass').removeClass('glass_unselected');
+                    removeIngredient(id);
+                    var choices_number = Number(sessionStorage.getItem("combination_count"));
+                    choices_number -= 1;
+                    var cnt = 5-choices_number;
+                    $("#combinations_counter").empty();
+                    $("#combinations_counter").append(cnt +" Choices Left");
+                    sessionStorage.setItem("combination_count",choices_number);
+                } else {
+                    var choices_number = Number(sessionStorage.getItem("combination_count"));
+                    if (choices_number < 5) {
+                        $("#" + obj.id).addClass('glass_unselected').removeClass('glass');
+                        sessionStorage.setItem("combination_count", choices_number);
                         $('#item_ingredients').append('<li id=' + id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + ingredient_name + '</li>');
-
+                        addIngredientOg(id, ingredient_name, prize, type_id);
+                        choices_number += 1;
+                        var cnt = 5-choices_number;
+                        $("#combinations_counter").empty();
+                        $("#combinations_counter").append(cnt +" Choices Left");
+                        sessionStorage.setItem("combination_count",choices_number);
                     }
-                    else{
+                    else {
                         alert("You can only add a maximum of 5 items");
                     }
 
-                } else {
-                    $("#" + obj.id).addClass('glass').removeClass('glass_unselected');
-//                    $("#" + remove_id).remove();
-                    addIngredientOg(id, ingredient_name, prize, type_id);
                 }
 
             };
@@ -855,7 +871,7 @@
                         }
                     }
                     if (sessionStorage.getItem("route_item_category") != 22 && sessionStorage.getItem("route_item_category") != 21) {
-                        console.log("Hitsasa",sessionStorage.getItem("route_item_category") );
+//                        console.log("Hitsasa",sessionStorage.getItem("route_item_category") );
                         $('#item_ingredients').append('<li id=' + cursor.value.id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '</li>');
                     }
                     cursor.continue();
@@ -876,7 +892,14 @@
                 }
             };
         }
-
+        function clearIngredients(db) {
+            var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
+            var objectStoreRequest = objectStore.clear();
+            objectStoreRequest.onsuccess = function (event) {
+                // report the success of our request
+                console.log("cleared successfully");
+            };
+        }
         function removeTopping(topping_id, db_toppings) {
             var request = db_toppings.transaction(["selected_toppings"], "readwrite")
                 .objectStore("selected_toppings")
@@ -946,16 +969,17 @@
         }
 
         function addDefault() {
-
+//    console.log("adding defaults",sessionStorage.getItem("route_item_category"));
             var ingredients = {!! json_encode($ingredients) !!};
 
-            if (sessionStorage.getItem("route_item_category") != 22 && sessionStorage.getItem("route_item_category") != 21)
-            {
-                console.log("Hit");
+            if (sessionStorage.getItem("route_item_category") != 22 && sessionStorage.getItem("route_item_category") != 21) {
+                console.log("Hitdd");
                 for (var i = 0; i < ingredients.length; i++) {
                     addIngredientOg2(ingredients[i].id, ingredients[i].ingredient.name, ingredients[i].ingredient.prize, ingredients[i].ingredient.ingredient_type_id);
 
                 }
+            }else{
+                clearIngredients(db);
             }
         }
 
@@ -994,12 +1018,13 @@
                 $("#tray_name").append(sessionStorage.getItem('item_name'));
                 $("#tray_description").append(sessionStorage.getItem('item_description'));
                 $("#tray_image").attr("src", "/" + sessionStorage.getItem('item_image'));
+//                $("#item_ingredients").append('<label>Please select 5 items</label>');
             }
 
             if (sessionStorage.getItem("item_number_1") == 24 || sessionStorage.getItem("item_number_1") == 23) {
                 $("#egg_selection_div").show();
             }
-            if(sessionStorage.getItem("route_item_category")==22||sessionStorage.getItem("route_item_category")==21){
+            if (sessionStorage.getItem("route_item_category") == 22 || sessionStorage.getItem("route_item_category") == 21) {
                 $("#combination_trays_div").show();
             }
             for (var i = 0; i < extra_toppings.length; i++) {
@@ -1140,22 +1165,34 @@
             let selected_name = '';
             let selected_prize = 0;
             let ingredient_type_id = 0;
-
+            console.log(ingredients);
+            let ingredient_id = 0;
             for (var i = 0; i < ingredients.length; i++) {
                 if (ingredients[i].id == new_id) {
                     selected_name = ingredients[i].ingredient.name;
                     selected_prize = ingredients[i].ingredient.prize;
                     ingredient_type_id = ingredients[i].ingredient.ingredient_type_id;
+                    ingredient_id = ingredients[i].ingredient.id;
                 }
             }
 
             $('#swap_ingredients').empty();
             var ingredients_others = {!! json_encode($other_ingredients) !!};
             for (var i = 0; i < ingredients_others.length; i++) {
-                if (ingredients_others[i].ingredient_type_id == ingredient_type_id && ingredients_others[i].id != new_id) {
-                    var new_id = 'swap_' + ingredients_others[i].id;
-                    $('#' + new_id).remove();
-                    $('#swap_ingredients').append(' <button id=' + new_id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_swapped(this)">' + ingredients_others[i].name + '</button>');
+                if (ingredients_others[i].ingredient_type_id == ingredient_type_id && ingredient_id != ingredients_others[i].id) {
+                    var exists = false;
+                    for (var x = 0; x < ingredients.length; x++) {
+                        if (ingredients[x].ingredient.id == ingredients_others[i].id) {
+                            console.log("hit");
+                           exists = true;
+                        }
+                    }
+                    if(!exists){
+                        var new_id = 'swap_' + ingredients_others[i].id;
+                        $('#' + new_id).remove();
+                        $('#swap_ingredients').append(' <button id=' + new_id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="ingredient_select_swapped(this)">' + ingredients_others[i].name + '</button>');
+
+                    }
                 }
             }
         }
