@@ -1,115 +1,87 @@
 @extends('order_processing')
 @section('content')
-    <div class="container" style="margin-top:8em">
+    <div class="container-fluid" style="margin-top:8em">
 
         <div class="row">
-
-            <div class="col-sm-8">
-                <form id="ingredients_toppings_form" col="col-md-12">
-                    <fieldset>
-                        <legend>Ingredients</legend>
-                        {{--<p style="color:black;font-weight:bold;">Available Item ingredients - * Please select the ones--}}
-                        {{--you want</p>--}}
-                        {{--<div class="row" style="margin-top:2em;">--}}
-                        {{--<div id='ingredients_list'>--}}
-
-                        {{--</div>--}}
-                        {{--</div>--}}
+            <center>
+                <h5 style="font-weight: bolder;" id="choice_2"></h5>
+            </center>
+            <div class="col-sm-7 card">
+                <div class="row" style="margin: 1em;">
+                    <h6 style="color:black;font-weight:bold;font-size: 1.5em;"><span id="salad_name"></span></h6>
+                    <div class="col-sm-4">
+                        <img id="salad_image" height="300px" width="300px" class="img-responsive"/>
+                    </div>
+                    <div class="col-sm-8">
                         <p style="color:black;font-weight:bold;">Standard Ingredients - * Please select to remove
-                        <div class="row" style="margin-top:2em;">
-                            <div id='standard_toppings'>
-                                @if(count($ingredients)>0)
-                                    @foreach($ingredients as $ingredient)
-                                        <button class="glass" id="{{"ingr_".$ingredient->id}}"
-                                                onclick="ingredient_select_remove(this)"
-                                                style="font-weight:bolder;margin-left:1em;color:white;"
-                                        >{{$ingredient->ingredient->name}}  </button>
-                                    @endforeach
-                                @endif
-                                {{--@if(count($standard_toppings)>0)--}}
-                                {{--@foreach($standard_toppings as $topping)--}}
-                                {{--<button id='{{'to_'.$topping->id}}' class="glass"--}}
-                                {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
-                                {{--onclick="topping_select(this);">{{$topping->name}}  </button>--}}
-                                {{--@endforeach--}}
-                                {{--@endif--}}
+                        <form id="ingredients_toppings_form" col="col-md-12">
+                            <div class="row" style="margin-top:1em;">
+                                <div id='standard_toppings'>
+                                    @if(count($ingredients)>0)
+                                        @foreach($ingredients as $ingredient)
+                                            <button class="glass" id="{{"ingr_".$ingredient->id}}"
+                                                    onclick="ingredient_select_remove(this)"
+                                                    style="font-weight:bolder;margin-left:1em;color:white;"
+                                            >{{$ingredient->ingredient->name}}  </button>
+                                        @endforeach
+                                    @endif
+
+                                </div>
+                                <div style="margin-top: 1em;" id="removed_list">
+
+                                </div>
                             </div>
-                            <div style="margin-top: 1em;" id="removed_list">
+                            <div class="row">
+                        <p style="color:black;">You can substitute standard toppings for pasta.Lettuce, Tomato and Cucumber will be removed.</p>
+                                <button class="accordion ">Swap  Options</button>
 
-                            </div>
-                        </div>
-                        {{--<p style="color:black;font-weight:bold;">Do you want to add any extra toppings?</p>--}}
-                        {{--<p>--}}
-                            {{--<input name="group01" class="bread" type="radio" value="no" id="no" checked/>--}}
-                            {{--<label for="no">No</label>--}}
+                                <div id="pasta_accordion" class="panel">
+                                    <form id="" col="col-md-10" onsubmit="return false;">
+                                        <div class="row" style="margin-top:1em;">
+                                            <div id='pasta_list'>
 
-                            {{--<input name="group01" class="bread" type="radio" id="yes" value="yes"/>--}}
-                            {{--<label for="yes">Yes</label>--}}
-                        {{--</p>--}}
+                                                <button class="btn">Swap For Pasta</button>
+                                            </div>
+                                        </div>
 
-                        {{--<div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>--}}
-                            {{--<p  style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)--}}
-                            {{--<div id='extra_toppings' >--}}
-
-                            {{--</div>--}}
-                        {{--</div>--}}
-                        {{--<div class="row" style="margin-top:2em;" hidden>--}}
-                            {{--<div>--}}
-                                {{--@if(count($extra_toppings)>0)--}}
-                                    {{--@foreach($extra_toppings as $topping)--}}
-                                        {{--<button class="glass"--}}
-                                                {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
-                                        {{-->{{$topping->name}}  </button>--}}
-                                    {{--@endforeach--}}
-                                {{--@endif--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                        {{--<hr/>--}}
-                        {{--<p style="color:black;font-weight:bold;">Do you want to swap any toppings?</p>--}}
-                        {{--<p>--}}
-                            {{--<input name="group02" class="bread" type="radio" value="swap_no" id="swap_no" checked/>--}}
-                            {{--<label for="swap_no">No</label>--}}
-
-                            {{--<input name="group02" class="bread" type="radio" id="swap_yes" value="swap_yes"/>--}}
-                            {{--<label for="swap_yes">Yes</label>--}}
-                        {{--</p>--}}
-                        <div id="swap_ingredients_div" hidden>
-                            <div id="swap_ingredients">
-                                @if(count($other_ingredients)>0)
-                                    @foreach($other_ingredients as $ingredient)
-                                        <button id='{{$ingredient->id}}' class="glass"
-                                                style="font-weight:bolder;margin-left:1em;color:white;"
-                                                onclick="ingredient_select_swap(this);">{{$ingredient->name}}  </button>
-                                    @endforeach
-                                @endif
+                                    </form>
+                                </div>
                             </div>
 
-                        </div>
-                        {{--<div id="select_swap">--}}
-                        {{--<p style="color:black;font-weight:bold;">Select swap ingredients</p>--}}
-                        {{--<div class="row" style="margin-top:2em;">--}}
-                        {{--<div id='ingredients_list_swap'>--}}
 
-                        {{--</div>--}}
-                        {{--</div>--}}
-                        {{--</div>--}}
-                        {{--<hr/>--}}
-                        <div class="row">
-                            <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                                <button id='ingredient_toppings_back' class="btn waves-effect waves-light">Back</button>
+                            <div id="swap_ingredients_div" hidden>
+                                <div id="swap_ingredients">
+                                    @if(count($other_ingredients)>0)
+                                        @foreach($other_ingredients as $ingredient)
+                                            <button id='{{$ingredient->id}}' class="glass"
+                                                    style="font-weight:bolder;margin-left:1em;color:white;"
+                                                    onclick="ingredient_select_swap(this);">{{$ingredient->name}}  </button>
+                                        @endforeach
+                                    @endif
+                                </div>
+
                             </div>
 
-                            <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
-                                <button id='ingredient_toppings_next' class="btn waves-effect waves-light">Next</button>
+                            <div class="row">
+                                <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
+                                    <button id='ingredient_toppings_back' class="btn waves-effect waves-light">Back</button>
+                                </div>
+
+                                <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
+                                    <button id='ingredient_toppings_next' class="btn waves-effect waves-light">Next</button>
+                                </div>
                             </div>
-                        </div>
-                    </fieldset>
-                </form>
+                            {{--</fieldset>--}}
+                        </form>
+                    </div>
+
+                </div>
+
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4 card" style="margin-left: 2em;">
                 <form onsubmit="return false;">
-                    <fieldset>
-                        <legend>Order Cart</legend>
+                    {{--<fieldset>--}}
+                    <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Order Cart <i class="fa fa-shopping-cart"></i> </h6>
                         <div id='type'></div>
                         <div id='choice'>
                         </div>
@@ -134,7 +106,7 @@
 
                         {{--</div>--}}
 
-                    </fieldset>
+                    {{--</fieldset>--}}
                 </form>
             </div>
         </div>
@@ -283,7 +255,26 @@
                 addTopping(standard_toppings[i].id, standard_toppings[i].name, standard_toppings[i].prize, standard_toppings[i].category);
             }
         }
+        function accordion_trigger() {
+            var acc = document.getElementsByClassName("accordion");
+            var i;
 
+            for (i = 0; i < acc.length; i++) {
+                acc[i].addEventListener("click", function () {
+                    /* Toggle between adding and removing the "active" class,
+                     to highlight the button that controls the panel */
+                    this.classList.toggle("active");
+
+                    /* Toggle between hiding and showing the active panel */
+                    var panel = this.nextElementSibling;
+                    if (panel.style.display === "block") {
+                        panel.style.display = "none";
+                    } else {
+                        panel.style.display = "block";
+                    }
+                });
+            }
+        }
         function topping_select(obj) {
             $("#" + obj.id).addClass('glass_unselected').removeClass('glass');
             var id_string = obj.id.split('_');
@@ -328,7 +319,6 @@
 
         }
 
-
         function optional_topping_select(obj) {
             $("#" + obj.id).addClass('glass_unselected').removeClass('glass');
             var id_string = obj.id.split('_');
@@ -343,7 +333,6 @@
                 }
             }
         }
-
         function optional_select_reverse(obj) {
             var id_string = obj.id.split('_');
             var id = id_string[1];
@@ -520,9 +509,14 @@
 
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
+            accordion_trigger();
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             $("#choice_id").empty();
+            $("#choice_2").empty();
             $("#choice_id").append(sessionStorage.getItem("item_category"));
+            $("#salad_image").attr('src','/'+sessionStorage.getItem("item_image"));
+            $("#salad_description").append(sessionStorage.getItem("item_description"));
+            $('#salad_name').append(sessionStorage.getItem('item_name') + " - " +sessionStorage.getItem("item_category") );
             for (var i = 0; i < extra_toppings.length; i++) {
                 if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
                     $("#extra_toppings").append(' <button id=' + extra_toppings[i].id + ' class="glass" onclick="extra_toppings_select(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + extra_toppings[i].name + '</button>');
@@ -574,7 +568,7 @@
                 var count = count_ingredients(db);
             });
             $("#ingredient_toppings_back").on('click', function () {
-                window.location.href = "{{'/bread_selection'}}";
+                window.history.back();
             });
 
         });

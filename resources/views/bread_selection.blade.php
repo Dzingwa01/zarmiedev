@@ -82,6 +82,7 @@
             console.log("ingredients cleared successfully");
         };
     }
+
     clearIngredients();
     clearToppings();
 </script>

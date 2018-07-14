@@ -75,11 +75,10 @@
     color:#fff;
   }
  
-     .tile
+  .tile
   {
-    background-image:url('background_theme.jpg');
+    background-image:url('/background_theme.jpg');
     color:#ffffff;
-    
     margin-left:1em;
     text-align:center;
     vertical-align: center;

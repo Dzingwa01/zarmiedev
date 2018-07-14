@@ -376,7 +376,7 @@
         if(item_category>=18&&item_category<=22){
             window.location.href = '/select_ingredients_toppings/'+item_id;
         }else{
-            window.location.href="{{url('/bread_selection')}}";
+            window.location.href='/bread_selection/'+item_id;
         }
 
        console.log(item_number);

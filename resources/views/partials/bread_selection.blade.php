@@ -1,9 +1,9 @@
 @extends('order_processing')
 
 @section('content')
-    <div class="container" style="margin-top:8em;margin-bottom: 8em;">
+    <div class="container-fluid" style="margin-top:8em;margin-bottom: 8em;">
         <center>
-            <h5 id="choice"></h5>
+            <h5 style="font-weight: bolder;" id="choice"></h5>
         </center>
         <div id="normal_sandwiches" style="margin-bottom: 4em;">
             <div class="row">
@@ -30,14 +30,46 @@
         </div>
 
         <div id="salads_div" style="margin-bottom: 4em;">
+            <div class="row">
+                <div class="col-sm-4">
+                    <img id="salad_image" width="450px" height="300px" class="img-responsive img-rounded" />
+                </div>
+                <div class="col-sm-6">
+                <p style="color:black;">Party Salads are available on request. You can substitue standard for pasta with any of our salads.</p>
+                <table>
+                    <thead>
+                    <th>Standard</th><th>Optional</th><th>Dressing</th>
+                    </thead>
+                    <tr><td>Lettuce, tomato, cucumber, carrots & dressing</td><td>Onions & green peppers</td><td>CHEF'S DRESSING, CREAMY YOGURT & MUSTARD DRESSING, SEAFOOD DRESSING</td></tr>
+                </table>
+                    <p id="salads_ingredients_list" style="color:black;">Your salad will come with the following ingredients:</p>
+                    @foreach($ingredients as $ingr)
+                        @foreach($all_ingredients as $ingr_2)
+                            @if($ingr->ingredient_id==$ingr_2->id)
+                                <li>{{$ingr_2->name}}</li>
+                                @endif
+                            @endforeach
+                        @endforeach
+                </div>
+
+            </div>
+            <div class="row">
+               <center>
+                <label style="text-align: center">Select Salad Serving Size </label>
+               </center>
+            </div>
+            <div class="row">
+
             <div id='mediumsub' onclick="bread_selection(this)" class="col-sm-5 tile">
-                <h5 style="margin-top:2em;">Medium Salad </h5>
+                <h5 style="margin-top:2em;">Medium Salad - 500g </h5>
                 <div id='medium_price_salads'></div>
             </div>
             <div id='largesub' onclick="bread_selection(this)" class="col-sm-5 tile">
-                <h5 style="margin-top:2em;">Large Salad</h5>
+                <h5 style="margin-top:2em;">Large Salad - 750g</h5>
                 <div id='large_price_salads'></div>
             </div>
+            </div>
+
         </div>
         <div id="trays_div" style="margin-bottom: 4em;">
             <div id='sandwich' onclick="bread_selection(this)" class="col-sm-offset-4 col-sm-4 tile">
@@ -45,7 +77,7 @@
                 <div id='sandwich_price_trays'></div>
             </div>
         </div>
-
+        </div>
     </div>
     </div>
 
@@ -122,8 +154,7 @@
 
         $(document).ready(function () {
             var menu_items = {!!$menu_items!!};
-//            console.log("menu_items", menu_items);
-//            console.log("item_number", item_number);
+            $("#salad_image").attr("src","/"+sessionStorage.getItem("item_image"));
             $.each(menu_items, function (idx, obj) {
 //            console.log("check obj",obj);
                 if (item_number == obj.item_number) {

@@ -341,8 +341,12 @@ class OrderController extends Controller
         return view('partials.order_processing', compact('bread', 'menu_items','ingredients', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread'));
     }
 
-    public function showBread()
+    public function showBread($id)
     {
+        $cur_item = Menu::find($id);
+        $ingredients = $cur_item->item_ingredients;
+        $all_ingredients = Ingredient::all();
+//        dd($ingredients);
         $bread = Bread::all();
         $bread = json_encode($bread);
         $menu_items = DB::table('menu_item')
@@ -404,7 +408,8 @@ class OrderController extends Controller
             ++$counter;
         }
         $menu_items = $resultant;
-        return view('partials.bread_selection', compact('bread', 'menu_items', 'menu_items_1', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread'));
+//        dd($ingredients);
+        return view('partials.bread_selection', compact('bread','all_ingredients','ingredients','menu_items', 'menu_items_1', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread'));
     }
 
 }
