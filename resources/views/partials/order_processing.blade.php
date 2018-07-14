@@ -6,7 +6,7 @@
      </div>
     <div class="row" >
 
-          <div class=" col-md-7 col-sm-12 card" style="margin-left: 4em;">
+          <div class=" col-md-7 col-sm-12 card" style="margin-left: 1em;">
               <h6 style="font-weight: bolder;font-size:1.5em;" id="choice_normals"></h6>
             <form id="bread_selection" style="margin-top:2em;">
               {{--<fieldset>--}}
@@ -15,7 +15,7 @@
                 <div  id='bread_choice_form'>
                   <div class="row">
                     <div class="col-sm-6" >
-                      <div id="bread_choices" style="margin-left:2em;">
+                      <div id="bread_choices" >
                           <label style="font-size: 16px; color:black; font-weight: bold;">Bread Type</label>
                         <p >
                           <input name="group01" class="bread" type="radio" id="white_bread" value="White Bread"/>
@@ -224,7 +224,7 @@
   $(document).ready(function(){
       $("#choice_normals").append(sessionStorage.getItem('item_name') +" - "+sessionStorage.getItem('item_category'));
       $('.step-container').stepMaker({
-          steps: ['Item Size','Bread Choice', 'Ingredients', 'Delivery Info','Receipt'],
+          steps: ['Item Size','Bread Choice', 'Ingredients', 'Delivery','Receipt'],
           currentStep: 2
       });
     if(sessionStorage.getItem('item_category')=="Medium Sub" || sessionStorage.getItem('item_category')=="Large Sub"){

@@ -8,7 +8,7 @@
             <center>
                 <h5 style="font-weight: bolder;" id="choice_2"></h5>
             </center>
-            <div class="col-sm-7 card" style="margin-left: 2em;" >
+            <div class="col-md-7 col-sm-12 card" style="margin-left: 1em;" >
                 <div class="row" >
                     <h6 style="color:black;font-weight:bold;font-size: 1.5em;"><span id="salad_name"></span></h6>
                     <div class="col-sm-4">
@@ -27,15 +27,11 @@
                                             >{{$ingredient->ingredient->name}}  </button>
                                         @endforeach
                                     @endif
-
                                 </div>
                                 <div style="margin-top: 1em;" id="removed_list">
 
                                 </div>
                             </div>
-
-
-
                             <div id="swap_ingredients_div" hidden>
                                 <div id="swap_ingredients">
                                     @if(count($other_ingredients)>0)
@@ -48,23 +44,30 @@
                                 </div>
 
                             </div>
-
-
                             {{--</fieldset>--}}
                         </form>
+                        <p style="font-weight: bold;color:black;" id="no_pasta_message" hidden></p>
                     </div>
 
                 </div>
-                <div class="row">
+                <div class="row" id="pasta_div">
                     <p style="color:black;">You can substitute standard toppings for pasta.Lettuce, Tomato and Cucumber will be removed.</p>
-                    <button class="accordion ">Swap  Options</button>
-
+                    <button class="accordion ">Swap With Pasta Options</button>
                     <div id="pasta_accordion" class="panel">
                         <form id="" col="col-md-10" onsubmit="return false;">
                             <div class="row" style="margin-top:1em;">
                                 <div id='pasta_list'>
-
-                                    <button class="btn">Swap For Pasta</button>
+                                    @if(count($ingredients)>0)
+                                        @foreach($ingredients as $ingredient)
+                                            @if($ingredient->ingredient->name=="Lettuce"||$ingredient->ingredient->name=="Tomato"||$ingredient->ingredient->name=="Cucumber")
+                                            <button class="glass" id="{{"pasta_".$ingredient->id}}"
+                                                    onclick="ingredient_select_pasta(this)"
+                                                    style="font-weight:bolder;margin-left:1em;color:white;"
+                                            >{{$ingredient->ingredient->name}}  </button>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                    {{--<button class="btn">Swap For Pasta</button>--}}
                                 </div>
                             </div>
 
@@ -284,7 +287,9 @@
             var id = id_string[1];
             removeTopping(id, db_toppings);
         }
+        function ingredient_select_pasta(obj){
 
+        }
         function ingredient_select_remove(obj){
             var actual_ingredient = 0;
             var ingredient_name = "";
@@ -518,9 +523,15 @@
         $(document).ready(function () {
             accordion_trigger();
             $('.step-container_salads').stepMaker({
-                steps: ['Salad Size', 'Ingredients', 'Delivery Info','Receipt'],
+                steps: ['Salad Size', 'Ingredients', 'Delivery','Receipt'],
                 currentStep: 2
             });
+            if(sessionStorage.getItem("item_number_1")=="S6"||sessionStorage.getItem("item_number_1")=="S7"){
+                $("#pasta_div").hide();
+                $("#no_pasta_message").empty();
+                $("#no_pasta_message").show();
+                $("#no_pasta_message").append("No available swap options for this salad");
+            }
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             $("#choice_id").empty();
             $("#choice_2").empty();

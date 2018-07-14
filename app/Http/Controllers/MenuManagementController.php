@@ -21,7 +21,7 @@ class MenuManagementController extends Controller
                   ->join('item_sizes','item_sizes.id','menu_item.item_size_id')
                   ->join('menu_categories','menu_categories.id','menu_item.category_id')
                   ->where('prize','>',0)
-                  ->select('category_id','name','prize','size_name','item_number','category_name','item_size_id')
+                  ->select('menu_item.id','category_id','name','prize','size_name','item_number','category_name','item_size_id','menu_item.description','menu_item.image_url')
                   ->orderBy('item_number')
                   ->get();
 
@@ -54,6 +54,9 @@ class MenuManagementController extends Controller
           $formatted_result[$new_var] = $item->prize;
           $formatted_result['item_name'] = $item->name;
           $formatted_result['item_category'] = $item->category_id;
+          $formatted_result['item_id'] = $item->id;
+            $formatted_result['item_description'] = $item->description;
+            $formatted_result['item_image'] = $item->image_url;
         }
       }
       $resultant[$counter] =(object)$formatted_result;

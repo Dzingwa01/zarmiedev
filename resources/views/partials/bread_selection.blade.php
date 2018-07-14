@@ -6,7 +6,7 @@
             <div class="step-container" style="width: 100%; margin: 0 auto"></div>
         </div>
 
-        <div id="normal_sandwiches" style="margin-bottom: 4em;margin-left: 4em;">
+        <div id="normal_sandwiches" style="margin-bottom: 4em;">
             <div class="row">
                 <center>
                     <h5 style="font-weight: bolder;" id="choice"></h5>
@@ -16,7 +16,7 @@
             <div class="row" id="with_sandwiches">
             <div class="row">
 
-                <div id='sandwich' onclick="bread_selection(this)" class="col-sm-5 tile">
+                <div id='sandwich' onclick="bread_selection(this)" class="col-sm-5  tile">
                     <h5 style="margin-top:2em;">Sandwich </h5>
                     <div id='sandwich_price'></div>
                 </div>
@@ -60,7 +60,7 @@
         </div>
 
 
-        <div id="salads_div" style="margin-bottom: 4em;margin-left: 4em;">
+        <div id="salads_div" style="margin-bottom: 4em;margin-left: 1em;">
         <div class="row">
             <div class="step-container_salads" style="width: 100%; margin: 0 auto"></div>
         </div>
@@ -71,30 +71,29 @@
                 {{--<button class="btn pull-right" onclick="goBack()"><i class="fa fa-arrow-left"></i> Back</button>--}}
             </div>
             <div class="row">
-
-                <div class="col-sm-4">
-                    <img id="salad_image" width="450px" height="300px" class="img-responsive img-rounded" />
+                <div class="col-sm-3">
+                    <img id="salad_image" width="300px" height="250px" class="img-responsive img-rounded" />
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-9">
                 <p style="color:black;">Party Salads are available on request. You can substitue standard for pasta with any of our salads.</p>
                 <table>
                     <thead>
                     <th>Standard</th><th>Optional</th><th>Dressing</th>
                     </thead>
-                    <tr><td>Lettuce, tomato, cucumber, carrots & dressing</td><td>Onions & green peppers</td><td>CHEF'S DRESSING, CREAMY YOGURT & MUSTARD DRESSING, SEAFOOD DRESSING</td></tr>
+                    <tr><td>@foreach($ingredients as $ingr)
+                                @foreach($all_ingredients as $ingr_2)
+                                    @if($ingr->ingredient_id==$ingr_2->id)
+                                        <span>{{$ingr_2->name. " , "}}</span>
+                                    @endif
+                                @endforeach
+                            @endforeach</td><td>Onions & green peppers</td><td>CHEF'S DRESSING, CREAMY YOGURT & MUSTARD DRESSING, SEAFOOD DRESSING</td></tr>
                 </table>
-                    <p id="salads_ingredients_list" style="color:black;">Your salad will come with the following ingredients:</p>
-                    @foreach($ingredients as $ingr)
-                        @foreach($all_ingredients as $ingr_2)
-                            @if($ingr->ingredient_id==$ingr_2->id)
-                                <label>{{$ingr_2->name}}</label>
-                                @endif
-                            @endforeach
-                        @endforeach
+                    {{--<p id="salads_ingredients_list" style="color:black;">Your salad will come with the following ingredients:</p>--}}
+                    {{----}}
                 </div>
 
             </div>
-            <div class="row" style="margin-left: 4em;">
+            <div class="row" style="margin-left: 1em;">
                <center>
                 <label style="text-align: center">Select Salad Serving Size </label>
                </center>
@@ -206,11 +205,11 @@
         $(document).ready(function () {
             var menu_items = {!!$menu_items!!};
             $('.step-container').stepMaker({
-                steps: ['Item Size', 'Ingredients', 'Delivery Info','Receipt'],
+                steps: ['Item Size', 'Ingredients', 'Delivery','Receipt'],
                 currentStep: 1
             });
             $('.step-container_salads').stepMaker({
-                steps: ['Salad Size', 'Ingredients', 'Delivery Info','Receipt'],
+                steps: ['Salad Size', 'Ingredients', 'Delivery','Receipt'],
                 currentStep: 1
             });
             $("#salad_image").attr("src","/"+sessionStorage.getItem("item_image"));

@@ -9,7 +9,7 @@
         </div>
         <div class="row">
 
-            <div class=" col-md-7 col-sm-12 card" style="margin-left: 4em;">
+            <div class=" col-md-7 col-sm-12 card" style="margin-left: 1em;">
                 <form id="ingredients_toppings_form">
                     <div id="normal_sandwiches_div">
 
@@ -1020,11 +1020,11 @@
             accordion_trigger();
             console.log("Prize", sessionStorage.getItem('route_item_category'));
             $('.step-container').stepMaker({
-                steps: ['Item Size', 'Bread Choice', 'Ingredients', 'Delivery Info', 'Receipt'],
+                steps: ['Item Size', 'Bread Choice', 'Ingredients', 'Delivery', 'Receipt'],
                 currentStep: 3
             });
             $('.step-container_trays').stepMaker({
-                steps: ['Item Size', 'Ingredients', 'Delivery Info', 'Receipt'],
+                steps: ['Item Size', 'Ingredients', 'Delivery', 'Receipt'],
                 currentStep: 2
             });
             $("#trays_tracker").hide();

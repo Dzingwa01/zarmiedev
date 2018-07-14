@@ -208,33 +208,66 @@
     {{--<div class="step-container" style="width: 700px; margin: 0 auto"></div>--}}
     <div class="row" >
       <div id='menu_items' class="row" >
-       
-      {{--<div class="container">--}}
+      <ul class="collapsible">
         @foreach ($categories as $category)
-          <div class="col-md-12 col-sm-12 col-xs-12" >
+        <li style="margin-bottom: 1em;">
+          <div class="collapsible-header">
             <div style="margin:auto;width:50%;">
               <center>
-                <img title='{{$category->category_name}}' src='{{$category->picture_url}}' style = "align:center; margin-top:2em; important; width: 300px;height:62px"/>
+                <img title='{{$category->category_name}}' src='{{$category->picture_url}}' style = "margin-top:1em; width: 300px;height:62px"/>
               </center>
             </div>
-            <table id="{{$category->id}}" class="table table-hover table-sm table-striped">
-              @if($category->id==18||$category->id==19||$category->id==22||$category->id==21||$category->id==20)
-              <thead>
-                <tr><th>Item Number</th><th>Name</th><th>Price</th></tr>
-              </thead>
-              @elseif($category->id<=6)
-                <tr><th>Item Number</th><th>Name</th><th>Sandwich</th><th>Medium Sub</th><th>Large Sub</th><th>Wrap</th></tr>
-              @elseif($category->id<=7)
-                <tr><th>Item Number</th><th>Name</th><th>Medium</th><th>Large</th></tr>
-                @endif
-              <tbody>
-              </tbody>
-            </table>
-
           </div>
+
+          <div class="collapsible-body">
+              <table id="{{$category->id}}" class="table table-hover table-sm table-striped">
+                @if($category->id==18||$category->id==19||$category->id==22||$category->id==21||$category->id==20)
+                  <thead>
+                  <tr><th>Item Number</th><th>Name</th><th>Price</th></tr>
+                  </thead>
+                @elseif($category->id<=6)
+                  <tr><th>Item Number</th><th>Name</th><th>Sandwich</th><th>Medium Sub</th><th>Large Sub</th><th>Wrap</th></tr>
+                @elseif($category->id<=7)
+                  <tr><th>Item Number</th><th>Name</th><th>Medium</th><th>Large</th></tr>
+                @endif
+                <tbody>
+                </tbody>
+              </table>
+          </div>
+
+        </li>
         @endforeach
+      </ul>
+      </div>
+      {{--<div id='menu_items' class="row" >--}}
+       {{--<ul class="collapsible">--}}
+      {{--<div class="container">--}}
+        {{--@foreach ($categories as $category)--}}
+          {{--<div class="col-md-12 col-sm-12 col-xs-12" >--}}
+            {{--<li>--}}
+              {{--<div class="collapsible-body">--}}
+
+            {{--<table id="{{$category->id}}" class="table table-hover table-sm table-striped">--}}
+              {{--@if($category->id==18||$category->id==19||$category->id==22||$category->id==21||$category->id==20)--}}
+              {{--<thead>--}}
+                {{--<tr><th>Item Number</th><th>Name</th><th>Price</th></tr>--}}
+              {{--</thead>--}}
+              {{--@elseif($category->id<=6)--}}
+                {{--<tr><th>Item Number</th><th>Name</th><th>Sandwich</th><th>Medium Sub</th><th>Large Sub</th><th>Wrap</th></tr>--}}
+              {{--@elseif($category->id<=7)--}}
+                {{--<tr><th>Item Number</th><th>Name</th><th>Medium</th><th>Large</th></tr>--}}
+                {{--@endif--}}
+              {{--<tbody>--}}
+              {{--</tbody>--}}
+            {{--</table>--}}
+              {{--</div>--}}
+            {{--</li>--}}
+
+          {{--</div>--}}
+        {{--@endforeach--}}
       {{--</div>--}}
-    </div>
+       {{--</ul>--}}
+    {{--</div>--}}
   </div>
   </div>
   <link rel="stylesheet" href="/css/jquery-step-maker.css">
@@ -326,6 +359,7 @@
 //    console.log("categories",categories.length);
       console.log(menu_items);
       $(document).ready(function(){
+          $('.collapsible').collapsible();
           for(var i=0;i<categories.length;i++){
 //              console.log("category",categories[i]);
               $.each(menu_items, function(idx,obj){
@@ -357,7 +391,7 @@
               });
           }
           $('.step-container').stepMaker({
-              steps: ['Choose Item', 'Bread Choice', 'Ingredients', 'Delivery Info','Receipt'],
+              steps: ['Choose Item', 'Bread Choice', 'Ingredients', 'Delivery','Receipt'],
               currentStep: 1
           });
 

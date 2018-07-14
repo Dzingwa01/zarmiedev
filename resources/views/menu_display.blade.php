@@ -104,9 +104,9 @@
   </style>
 </head>
 <body>
-  <nav class="navbar-fixed-top white" role="navigation" style="height:7em;">
+  <nav class="navbar-fixed-top white" role="navigation" style="height:5em;">
     <div class="nav-wrapper container-fluid">
-      <a id="logo-container" href="/" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
+      <a id="logo-container" href="/" class="brand-logo" ><img height="70px" width="100px" class="img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
       {{--@if (Auth::user()->verified!=0)--}}
       {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
       {{--@else--}}
@@ -202,9 +202,9 @@
     $('select').material_select();
   });
   </script>
-  <div class="container" style="margin-top:8em">
-    <div class="row" >
-      <header class="center"><h4>Our Menu</h4></header>
+  <div class="container-fluid" style="margin-top:5em">
+
+      <header class="center"><h5>Our Menu</h5></header>
       <div id='menu_items' class="row" >
         @foreach ($categories as $category)
         <div class="col-md-4 col-sm-12" >
@@ -215,8 +215,6 @@
         @endforeach
       </div>
 
-    </div>
-
     <div id="menu_popup_dialog" class="modal" role="dialog">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -224,7 +222,7 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <table id='menu_show'>
+          <table id='menu_show' class="table table-hover table-sm table-striped">
             <th> Item Number </th>
             <th> Item Name </th>
             <th> Sandwich </th>
@@ -254,7 +252,9 @@
       /*background-color: #90EE90;*/
 
     }
-
+    .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+      background-color: #26a69a!important;;
+    }
     </style>
     <script>
     $(document).ready(function(){
@@ -274,158 +274,90 @@
       });
     });
     </script>
-    <div id="order_popup_dialog" class="modal" role="dialog">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h5 class="modal-title center">Order Details</h5>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-3">
-            <p style="margin-left:1em;">
-              <input name="order_for" type="radio" id="for_one" checked="checked" />
-              <label for="for_one">Myself</label>
-            </p>
-            <p style="margin-left:1em;">
-              <input name="order_for" type="radio" id="for_many" />
-              <label for="for_many">For many people</label>
-            </p>
-            <p style="margin-left:1em;">
-              <input name="num_people" type="number" id="num_people" placeholder="Number of People"/>
-            </p>
-          </div>
-          <div class="col-md-9">
-            <div class="row">
-              <form id="details_form" class="col s12">
-                <fieldset>
-                  <legend>Enter your details and menu choice/s</legend>
-                  <div class="row">
-                    <div class="input-field col s6">
-                      <input id="full_name" type="text" class="validate" required>
-                      <label for="full_name">Full Name</label>
-                    </div>
-                    <div class="input-field col s6">
-                      <input id="phone_number" type="tel" pattern="^\d{3}-\d{3}-\d{4}$" class="validate" required>
-                      <label for="phone_number">Phone Number(xxx-xxx-xxxx)</label>
-                    </div>
-                  </div>
-                  <div id='choice_stick_menu' class='row'>
-
-                  </div>
-                  <div>
-                    {{-- <p>
-                      <input type="checkbox" id="test5" />
-                      <label for="test5">Red</label>
-                    </p>
-                  </div> --}}
-                  <div class="row">
-                    <div class="col s4 offset-s3">
-                      <button id="go_next" class="btn waves-effect waves-light" type="submit" name="action">Next
-                        <i class="material-icons right">send</i>
-                      </button>
-                    </div>
-                  </div>
-                </fieldset>
-              </form>
-            </div>
-            <div class="row" id='address_div'>
-              <form id="address_form" class="col s12">
-                <fieldset>
-                  <legend>Enter Address for delivery</legend>
-                  <div class="row">
-                    <input id='address' type='text'  placeholder="Enter your address" required>
-                  </div>
-                  <div class="row" style="margin-top:1em;">
-                    <div  id="map_canvas"></div>
-                  </div>
-                </fieldset>
-              </form>
-            </div>
-            <div class="row">
-              <div class="col s4 offset-s3">
-                <button class="btn waves-effect waves-light" type="button" id="address_action">Next<i class="material-icons right">send</i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <style>
-    #map_canvas {
-      height: 250px;
-      /*width: 300px;*/
-      margin: 0px;
-      padding: 0px
-    }
-    .controls {
-      border: 1px solid!important;
-      border-radius: 2px 0 0 2px!important;
-      box-sizing: border-box!important;
-      -moz-box-sizing: border-box!important;
-      height: 32px;
-      outline: none;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
-    .pac-container {
-      background-color: #fff;
-      z-index: 20;
-      position: fixed;
-      display: inline-block;
-      float: left;
-    }
-    .modal{
-      z-index: 20;
-    }
-    .modal-backdrop{
-      z-index: 10;
-      }​
-      #address {
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        margin-left: 12px;
-        padding: 0 11px 0 13px;
-        text-overflow: ellipsis;
-        width: 400px;
-      }
-
-      #address:focus {
-        border-color: #4d90fe;
-      }
-
-      /*.pac-container {
-      font-family: Roboto;
-      }*/
-
-      #type-selector {
-        color: #fff;
-        background-color: #4d90fe;
-        padding: 5px 11px 0px 11px;
-      }
-
-      #type-selector label {
-        /*font-family: Roboto;*/
-        font-size: 13px;
-        font-weight: 300;
-      }
-
-      </style>
-      <script type='text/javascript'>
+    <script type='text/javascript'>
       function showModal(category_id,menu_items){
         console.log(menu_items);
         $(document).ready(function(){
           $("#menu_show").find("tr:gt(0)").remove();
           $.each(menu_items, function(idx,obj){
             if(obj.item_category == category_id){
-              $('#menu_show').append('<tr><td>'+ obj.item_number + '</td><td>'+obj.item_name + '</td><td>'+obj.Sandwich+'</td><td>'+obj.MediumSub+'</td><td>'+obj.LargeSub+'</td><td>'+obj.Wrap+'</td>');
+                if(category_id==7){
+                    $('#menu_show').append('<tr id='+"item_"+obj.item_number+' onclick="process_order(this)" ><td>'+ obj.item_number + '</td><td>'+obj.item_name + '</td><td></td><td>'+obj.MediumSub+'</td><td>'+obj.LargeSub+'</td><td></td>');
+
+                }else if(category_id>=18&&category_id<=22){
+                    $('#menu_show').append('<tr id='+"item_"+obj.item_number+' onclick="process_order(this)" ><td>'+ obj.item_number + '</td><td>'+obj.item_name + '</td><td>'+obj.Sandwich+'</td><td></td><td></td><td></td>');
+
+                }
+                else{
+                if(obj.item_number==25||obj.item_number==33){
+                        $('#menu_show').append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td></td><td></td><td></td><td> R '+(obj.Wrap).toFixed(2)+'</td></tr>');
+
+                    }else if(obj.item_number==32){
+                        $('#menu_show').append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td></td><td>R '+(obj.Sandwich).toFixed(2)+'</td><td></td><td> </td></tr>');
+
+                    }else{
+                        $('#menu_show').append('<tr id='+"item_"+obj.item_number+' onclick="process_order(this)" ><td>'+ obj.item_number + '</td><td>'+obj.item_name + '</td><td>'+obj.Sandwich+'</td><td>'+obj.MediumSub+'</td><td>'+obj.LargeSub+'</td><td>'+obj.Wrap+'</td>');
+                    }
+                }
+
             }
           });
           // $('#menu_popup_dialog').modal('show');
         });
       }
+      function process_order(item_number){
+          var id_string = item_number.id.split('_');
+          var id = id_string[1];
+          sessionStorage.setItem('item_number_1',id);
+          var item_category = 0;
+          var item_id = 0;
+          var prize = 0;
+          var menu_items = {!!$menu_items!!};
+          console.log("item number",item_number);
+          $.each(menu_items, function (idx, obj) {
+              if (id == obj.item_number) {
+                  var name_cur = obj.item_name;
+                  item_category = obj.item_category;
+                  item_id = obj.item_id;
+                  if(id==25||id==33){
+                      prize = obj.wrap;
+                      sessionStorage.setItem('item_category_price', prize);
+                      sessionStorage.setItem('total_due',prize);
+                  }else if(id==32){
+                      prize = obj.sandwich;
 
+                  }
+                  sessionStorage.setItem("route_item_category",item_category);
+                  sessionStorage.setItem('item_name', name_cur);
+                  sessionStorage.setItem('item_category_price', prize);
+                  sessionStorage.setItem('total_due',prize);
+                  sessionStorage.setItem('item_category', 'Tray');
+                  sessionStorage.setItem('item_id', obj.id);
+                  sessionStorage.setItem('bread_type',"Whole Wheat & White");
+                  sessionStorage.setItem('selected_toast',"No Toast");
+                  sessionStorage.setItem('quantity', 1);
+                  sessionStorage.setItem('item_category_price', obj.sandwich);
+                  sessionStorage.setItem('total_due', obj.sandwich);
+                  sessionStorage.setItem('item_description',obj.item_description);
+                  sessionStorage.setItem('item_image',obj.item_image);
+              }
+          });
+
+          if(item_category>=18&&item_category<=22){
+              window.location.href = '/select_ingredients_toppings/'+item_id;
+          }else if(id==32||id==25||id==33){
+              sessionStorage.setItem('item_category',item_category);
+              window.location.href = '/select_ingredients_toppings/'+item_id;
+              sessionStorage.setItem('item_category_price', prize);
+              sessionStorage.setItem('total_due',prize);
+          }
+          else{
+              window.location.href='/bread_selection/'+item_id;
+          }
+
+          console.log(item_number);
+
+      }
       $(document).ready(function(){
 
         $('#details_form').hide();
@@ -527,132 +459,7 @@
       </script>
       <script src="js/materialize.js"></script>
       <script src="js/init.js"></script>
-      {{-- <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false">
-      </script> --}}
-      {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4VCOsDzZ-3fqwWrxmWWgoPNlXcpvpPvE&libraries=places&callback=getLocation" async defer></script> --}}
-      <script>
-      var latitude=0;
-      var longitude=0;
-      var map;
-      var infowindow;
 
-      function getLocation(){
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(initAutocomplete);
-        } else {
-          $.notify('Geolocation is not supported by this browser',{
-            type:"danger",
-            align:"center",
-            verticalAlign:"middle",
-            animation:true,
-            animationType:"drop"
-          });
-          // alert("Geolocation is not supported by this browser.");
-        }
-      }
-
-      function initAutocomplete(position) {
-        latitude=position.coords.latitude;
-        longitude=position.coords.longitude;
-
-        map = new google.maps.Map(document.getElementById('map_canvas'), {
-          center: {lat: latitude, lng: longitude},
-          zoom: 15,
-          mapTypeId: 'roadmap'
-        });
-
-        infowindow = new google.maps.InfoWindow();
-        var service = new google.maps.places.PlacesService(map);
-        service.nearbySearch({
-          location:{lat:latitude,lng:longitude},
-          radius:5
-        },callback);
-        // Create the search box and link it to the UI element.
-        var input = document.getElementById('address');
-        var searchBox = new google.maps.places.SearchBox(input);
-        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-        // Bias the SearchBox results towards current map's viewport.
-        map.addListener('bounds_changed', function() {
-          searchBox.setBounds(map.getBounds());
-        });
-
-        var markers = [];
-        // Listen for the event fired when the user selects a prediction and retrieve
-        // more details for that place.
-        searchBox.addListener('places_changed', function() {
-          var places = searchBox.getPlaces();
-
-          if (places.length == 0) {
-            return;
-          }
-
-          // Clear out the old markers.
-          markers.forEach(function(marker) {
-            marker.setMap(null);
-          });
-          markers = [];
-
-          // For each place, get the icon, name and location.
-          var bounds = new google.maps.LatLngBounds();
-          places.forEach(function(place) {
-            if (!place.geometry) {
-              console.log("Returned place contains no geometry");
-              return;
-            }
-            var icon = {
-              url: place.icon,
-              size: new google.maps.Size(71, 71),
-              origin: new google.maps.Point(0, 0),
-              anchor: new google.maps.Point(17, 34),
-              scaledSize: new google.maps.Size(25, 25)
-            };
-
-            // Create a marker for each place.
-            markers.push(new google.maps.Marker({
-              map: map,
-              icon: icon,
-              title: place.name,
-              position: place.geometry.location
-            }));
-
-            if (place.geometry.viewport) {
-              // Only geocodes have viewport.
-              bounds.union(place.geometry.viewport);
-            } else {
-              bounds.extend(place.geometry.location);
-            }
-          });
-          map.fitBounds(bounds);
-        });
-      }
-      function callback(results, status) {
-        // console.log("creating marker");
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-          for (var i = 0; i < results.length; i++) {
-            createMarker(results[i]);
-            // var latLang=result[i].getPosition();
-            // map.setCenter();
-          }
-        }
-      }
-
-      function createMarker(place) {
-        var placeLoc = place.geometry.location;
-        var marker = new google.maps.Marker({
-          map: map,
-          position: place.geometry.location
-        });
-
-        google.maps.event.addListener(marker, 'click', function() {
-          infowindow.setContent(place.name);
-          infowindow.open(map, this);
-        });
-      }
-      $('#order_popup_dialog').on("shown.bs.modal",function(){
-        google.maps.event.trigger(map, "resize");
-      });
-      </script>
     </div>
     <div class="container-fluid">
       <footer class="page-footer teal">
@@ -696,6 +503,6 @@
     </div>
 
     <script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4VCOsDzZ-3fqwWrxmWWgoPNlXcpvpPvE&libraries=places&callback=getLocation" async defer></script>
+    {{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4VCOsDzZ-3fqwWrxmWWgoPNlXcpvpPvE&libraries=places&callback=getLocation" async defer></script>--}}
   </body>
   </html>
