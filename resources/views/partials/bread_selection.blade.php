@@ -1,11 +1,18 @@
 @extends('order_processing')
 
 @section('content')
-    <div class="container-fluid" style="margin-top:8em;margin-bottom: 8em;">
-        <center>
-            <h5 style="font-weight: bolder;" id="choice"></h5>
-        </center>
-        <div id="normal_sandwiches" style="margin-bottom: 4em;">
+    <div class="container-fluid" style="margin-top:5em;margin-bottom: 5em;">
+        <div id="normal_steps" class="row">
+            <div class="step-container" style="width: 100%; margin: 0 auto"></div>
+        </div>
+
+        <div id="normal_sandwiches" style="margin-bottom: 4em;margin-left: 4em;">
+            <div class="row">
+                <center>
+                    <h5 style="font-weight: bolder;" id="choice"></h5>
+                </center>
+                {{--<button class="btn pull-right" onclick="goBack()"><i class="fa fa-arrow-left"></i> Back</button>--}}
+            </div>
             <div class="row">
 
                 <div id='sandwich' onclick="bread_selection(this)" class="col-sm-5 tile">
@@ -29,8 +36,18 @@
             </div>
         </div>
 
-        <div id="salads_div" style="margin-bottom: 4em;">
+        <div id="salads_div" style="margin-bottom: 4em;margin-left: 4em;">
+        <div class="row">
+            <div class="step-container_salads" style="width: 100%; margin: 0 auto"></div>
+        </div>
             <div class="row">
+                <center>
+                    <h5 style="font-weight: bolder;" id="choice_salads"></h5>
+                </center>
+                {{--<button class="btn pull-right" onclick="goBack()"><i class="fa fa-arrow-left"></i> Back</button>--}}
+            </div>
+            <div class="row">
+
                 <div class="col-sm-4">
                     <img id="salad_image" width="450px" height="300px" class="img-responsive img-rounded" />
                 </div>
@@ -46,14 +63,14 @@
                     @foreach($ingredients as $ingr)
                         @foreach($all_ingredients as $ingr_2)
                             @if($ingr->ingredient_id==$ingr_2->id)
-                                <li>{{$ingr_2->name}}</li>
+                                <label>{{$ingr_2->name}}</label>
                                 @endif
                             @endforeach
                         @endforeach
                 </div>
 
             </div>
-            <div class="row">
+            <div class="row" style="margin-left: 4em;">
                <center>
                 <label style="text-align: center">Select Salad Serving Size </label>
                </center>
@@ -71,7 +88,13 @@
             </div>
 
         </div>
-        <div id="trays_div" style="margin-bottom: 4em;">
+        <div id="trays_div" style="margin-bottom: 4em;margin-left: 4em;">
+            <div class="row">
+                <center>
+                    <h5 style="font-weight: bolder;" id="choice"></h5>
+                </center>
+                {{--<button class="btn pull-right" onclick="goBack()"><i class="fa fa-arrow-left"></i> Back</button>--}}
+            </div>
             <div id='sandwich' onclick="bread_selection(this)" class="col-sm-offset-4 col-sm-4 tile">
                 <h5 id="choice_name" style="margin-top:2em;"> </h5>
                 <div id='sandwich_price_trays'></div>
@@ -81,7 +104,8 @@
     </div>
     </div>
 
-
+    {{--<link rel="stylesheet" href="/css/jquery-step-maker.css">--}}
+    {{--<script src="/js/jquery-step-maker.js"></script>--}}
 
     <script>
             <?php $menu_items = json_encode($menu_items);?>
@@ -135,6 +159,9 @@
                 clearToppings(db_toppings);
             }
         }
+        function goBack(){
+            window.history.back();
+        }
         function clearIngredients(db) {
             var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
             var objectStoreRequest = objectStore.clear();
@@ -154,6 +181,14 @@
 
         $(document).ready(function () {
             var menu_items = {!!$menu_items!!};
+            $('.step-container').stepMaker({
+                steps: ['Item Size', 'Ingredients', 'Delivery Info','Receipt'],
+                currentStep: 1
+            });
+            $('.step-container_salads').stepMaker({
+                steps: ['Salad Size', 'Ingredients', 'Delivery Info','Receipt'],
+                currentStep: 1
+            });
             $("#salad_image").attr("src","/"+sessionStorage.getItem("item_image"));
             $.each(menu_items, function (idx, obj) {
 //            console.log("check obj",obj);
@@ -168,8 +203,11 @@
 
                     $('.prizes').remove();
                     if (item_category == 7) {
+                        $('#choice_salads').append(sessionStorage.getItem('item_name'));
                         $('#normal_sandwiches').hide();
                         $("#trays_div").hide();
+                        $("#normal_steps").hide();
+                        $("#salad_steps").show();
                         $('#medium_price_salads').append('<h5 class="prizes"> R' + (obj.mediumsub).toFixed(2) + '</h5>');
                         $('#large_price_salads').append('<h5 class="prizes"> R' + (obj.largesub).toFixed(2) + '</h5>');
 

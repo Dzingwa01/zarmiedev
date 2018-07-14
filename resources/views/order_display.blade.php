@@ -205,6 +205,7 @@
   </nav>
 
   <div class="container-fluid" style="margin-top:8em">
+    {{--<div class="step-container" style="width: 700px; margin: 0 auto"></div>--}}
     <div class="row" >
       <div id='menu_items' class="row" >
        
@@ -236,7 +237,8 @@
     </div>
   </div>
   </div>
-  
+  <link rel="stylesheet" href="/css/jquery-step-maker.css">
+  <script src="/js/jquery-step-maker.js"></script>
     <script type='text/javascript'>
   
     <?php $menu_items = json_encode($menu_items);?>
@@ -343,6 +345,10 @@
                   }
               });
           }
+          $('.step-container').stepMaker({
+              steps: ['Choose Item', 'Bread Choice', 'Ingredients', 'Delivery Info','Receipt'],
+              currentStep: 1
+          });
 
     });
     function process_order(item_number){

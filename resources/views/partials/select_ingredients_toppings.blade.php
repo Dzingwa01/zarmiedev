@@ -1,15 +1,20 @@
 @extends('order_processing')
 @section('content')
-    <div class="container-fluid" style="margin-top:8em">
-
+    <div class="container-fluid" style="margin-top:5em">
+        <div id="normal_tracker" class="row">
+            <div class="step-container" style="width: 100%; margin: 0 auto"></div>
+        </div>
+        <div class="row" id="trays_tracker">
+            <div class="step-container_trays" style="width: 100%; margin: 0 auto"></div>
+        </div>
         <div class="row">
-
-            <div class="col-sm-7 card">
-                <form id="ingredients_toppings_form" col="col-md-12">
+            <div class=" col-md-7 col-sm-12 card" style="margin-left: 4em;">
+                <form id="ingredients_toppings_form" >
                     {{--<fieldset>--}}
                         {{--<legend>Toppings</legend>--}}
 
                         <div id="normal_sandwiches_div">
+
                             <p style="color:black;font-weight:bold;">Standard Toppings - * You can select to remove</p>
                             <div class="row" style="margin-top:2em;">
                                 <div id='standard_toppings'>
@@ -38,11 +43,13 @@
                             </div>
                         </div>
                         <di id="trays_div" hidden>
+
                             <div class="row" style="margin: 1em;">
                                 <h6 style="color:black;font-weight:bold;font-size: 1.5em;"><span id="tray_name"></span></h6>
                                 <div class="col-sm-6">
-                                    <img id="tray_image" height="300px" width="300px" class="img-responsive"/>
+                                    <img id="tray_image" height="200px" width="300px" class="img-rounded"/>
                                 </div>
+
                                 <div class="col-sm-6">
                                     <p id="tray_description" style="color:black;"></p>
                                 </div>
@@ -1007,6 +1014,16 @@
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
             accordion_trigger();
+            $('.step-container').stepMaker({
+                steps: [ 'Item Size','Bread Choice', 'Ingredients', 'Delivery Info','Receipt'],
+                currentStep: 3
+            });
+            $('.step-container_trays').stepMaker({
+                steps: [ 'Item Size', 'Ingredients', 'Delivery Info','Receipt'],
+                currentStep: 2
+            });
+            $("#trays_tracker").hide();
+
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             $("#choice_id").empty();
             $("#choice_id").append(sessionStorage.getItem("item_category"));
@@ -1018,6 +1035,8 @@
                 $("#tray_name").append(sessionStorage.getItem('item_name'));
                 $("#tray_description").append(sessionStorage.getItem('item_description'));
                 $("#tray_image").attr("src", "/" + sessionStorage.getItem('item_image'));
+                $("#trays_tracker").show();
+                $("#normal_tracker").hide();
 //                $("#item_ingredients").append('<label>Please select 5 items</label>');
             }
 

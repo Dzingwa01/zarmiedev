@@ -1,16 +1,18 @@
 @extends('order_processing')
 @section('content')
-    <div class="container-fluid" style="margin-top:8em">
-
+    <div class="container-fluid" style="margin-top:5em">
+        <div class="row">
+            <div class="step-container_salads" style="width: 100%; margin: 0 auto"></div>
+        </div>
         <div class="row">
             <center>
                 <h5 style="font-weight: bolder;" id="choice_2"></h5>
             </center>
-            <div class="col-sm-7 card">
-                <div class="row" style="margin: 1em;">
+            <div class="col-sm-7 card" style="margin-left: 2em;" >
+                <div class="row" >
                     <h6 style="color:black;font-weight:bold;font-size: 1.5em;"><span id="salad_name"></span></h6>
                     <div class="col-sm-4">
-                        <img id="salad_image" height="300px" width="300px" class="img-responsive"/>
+                        <img id="salad_image" height="200px" width="300px" class="img-responsive img-rounded"/>
                     </div>
                     <div class="col-sm-8">
                         <p style="color:black;font-weight:bold;">Standard Ingredients - * Please select to remove
@@ -31,22 +33,7 @@
 
                                 </div>
                             </div>
-                            <div class="row">
-                        <p style="color:black;">You can substitute standard toppings for pasta.Lettuce, Tomato and Cucumber will be removed.</p>
-                                <button class="accordion ">Swap  Options</button>
 
-                                <div id="pasta_accordion" class="panel">
-                                    <form id="" col="col-md-10" onsubmit="return false;">
-                                        <div class="row" style="margin-top:1em;">
-                                            <div id='pasta_list'>
-
-                                                <button class="btn">Swap For Pasta</button>
-                                            </div>
-                                        </div>
-
-                                    </form>
-                                </div>
-                            </div>
 
 
                             <div id="swap_ingredients_div" hidden>
@@ -62,21 +49,37 @@
 
                             </div>
 
-                            <div class="row">
-                                <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                                    <button id='ingredient_toppings_back' class="btn waves-effect waves-light">Back</button>
-                                </div>
 
-                                <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
-                                    <button id='ingredient_toppings_next' class="btn waves-effect waves-light">Next</button>
-                                </div>
-                            </div>
                             {{--</fieldset>--}}
                         </form>
                     </div>
 
                 </div>
+                <div class="row">
+                    <p style="color:black;">You can substitute standard toppings for pasta.Lettuce, Tomato and Cucumber will be removed.</p>
+                    <button class="accordion ">Swap  Options</button>
 
+                    <div id="pasta_accordion" class="panel">
+                        <form id="" col="col-md-10" onsubmit="return false;">
+                            <div class="row" style="margin-top:1em;">
+                                <div id='pasta_list'>
+
+                                    <button class="btn">Swap For Pasta</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
+                        <button id='ingredient_toppings_back' class="btn waves-effect waves-light">Back</button>
+                    </div>
+
+                    <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
+                        <button id='ingredient_toppings_next' class="btn waves-effect waves-light">Next</button>
+                    </div>
+                </div>
             </div>
             <div class="col-sm-4 card" style="margin-left: 2em;">
                 <form onsubmit="return false;">
@@ -510,6 +513,10 @@
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
             accordion_trigger();
+            $('.step-container_salads').stepMaker({
+                steps: ['Salad Size', 'Ingredients', 'Delivery Info','Receipt'],
+                currentStep: 2
+            });
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             $("#choice_id").empty();
             $("#choice_2").empty();

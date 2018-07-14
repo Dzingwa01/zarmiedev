@@ -1,14 +1,16 @@
 @extends('order_processing')
 @section('content')
- <div class="container-fluid" style="margin-top:8em">
-      
+ <div class="container-fluid" style="margin-top:5em">
+     <div class="row">
+         <div class="step-container" style="width: 100%; margin: 0 auto"></div>
+     </div>
     <div class="row" >
-       
-          <div class="col-sm-7 card">
+
+          <div class=" col-md-7 col-sm-12 card" style="margin-left: 4em;">
             <form id="bread_selection" >
               {{--<fieldset>--}}
                 <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Bread & Toast Choice</h6>
-                <h6>Please select your bread and toast option</h6>
+                {{--<h6>Please select your bread and toast option</h6>--}}
                 <div  id='bread_choice_form'>
                   <div class="row">
                     <div class="col-sm-6" >
@@ -26,20 +28,23 @@
                           <input name="group01" class="bread" value="Whole Wheat" type="radio" id="whole_wheat" />
                           <label for="whole_wheat">Whole Wheat Bread</label>
                         </p>
-                        <div style="margin-left:2em;">
-                          <input name="num_people" type="number" id="num_people"  value="1" hidden required/>
-                        </div>
-                          <label style="font-size: 16px; font-weight: bold; color:black;">Toast Choice</label>
-                        <p>
-                          <input name="group1" type="radio" value="Toast" id="toast" required/>
-                          <label for="toast">Toast</label>
-                        </p>
-                        <p>
-                          <input name="group1" type="radio" value="No Toast" id="no_toast" />
-                          <label for="no_toast">No Toast</label>
-                        </p>
+
                       </div>
                     </div>
+                      <div class="col-sm6">
+                          <div style="margin-left:2em;">
+                              <input name="num_people" type="number" id="num_people"  value="1" hidden required/>
+                          </div>
+                          <label style="font-size: 16px; font-weight: bold; color:black;">Toast Choice</label>
+                          <p>
+                              <input name="group1" type="radio" value="Toast" id="toast" required/>
+                              <label for="toast">Toast</label>
+                          </p>
+                          <p>
+                              <input name="group1" type="radio" value="No Toast" id="no_toast" />
+                              <label for="no_toast">No Toast</label>
+                          </p>
+                      </div>
                     
                   </div>
                 </div>
@@ -56,7 +61,7 @@
               {{--</fieldset>--}}
             </form>
           </div>
-          <div class="col-sm-4 card" style="margin-left: 2em;">
+          <div class="col-md-4 col-sm-12 card" style="margin-left: 2em;">
           <form>
               {{--<fieldset>--}}
                 <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Order Cart <i class="fa fa-shopping-cart"></i> </h6>
@@ -216,6 +221,10 @@
       $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
   }
   $(document).ready(function(){
+      $('.step-container').stepMaker({
+          steps: ['Item Size','Bread Choice', 'Ingredients', 'Delivery Info','Receipt'],
+          currentStep: 2
+      });
     if(sessionStorage.getItem('item_category')=="Medium Sub" || sessionStorage.getItem('item_category')=="Large Sub"){
         $("#no_toast").attr("checked",true);
         sessionStorage.setItem('selected_toast','No Toast');
@@ -298,7 +307,7 @@
     
      $("#bread_back").on('click',function(e){
         e.preventDefault();
-             window.location.href = '/bread_selection';
+             window.history.back();
     });
         
   });

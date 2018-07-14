@@ -117,9 +117,9 @@
   }
 
   /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-  .active, .accordion:hover {
-    background-color: #ccc;
-  }
+  /*.active, .accordion:hover {*/
+    /*background-color: #ccc;*/
+  /*}*/
 
   /* Style the accordion panel. Note: hidden by default */
   .panel {
@@ -206,8 +206,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:700' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/css/jquery-step-maker.css">
   <script src="/js/materialize.js"></script>
   <script src="/js/init.js"></script>
+  <script src="/js/jquery-step-maker.js"></script>
  
   <style>
   .drop-down{
@@ -287,9 +289,9 @@
   </script>
 </head>
 <body>
-<nav class="navbar-fixed-top white" role="navigation" style="height:8em;margin-bottom: 3em;">
+<nav class="navbar-fixed-top white" role="navigation" style="height:5em;margin-bottom: 1em;">
   <div class="nav-wrapper container-fluid">
-    <a id="logo-container" href="/" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
+    <a id="logo-container" href="/" class="brand-logo" ><img height="50px" width="70px" class=" img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
     {{--@if (Auth::user()->verified!=0)--}}
       {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
     {{--@else--}}
