@@ -344,6 +344,22 @@
             @endif
         </div>
     </div>
+    <div id="more_orders" class="modal" style="height: 250px;">
+        <div class="modal-header">
+            <h5 class="modal-title">Complete Order</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+
+                <button style="margin:1em;" class="btn remove" onclick="proceed_to_checkout()"> Proceed to Checkout</button>
+
+                <button style="margin:1em;" class="btn swap"
+                        onclick="add_another_order()"> Add Another Order
+                </button>
+            </div>
+        </div>
+    </div>
     <div id="extra_toppings_modal" class="modal" style="height: 400px;">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -413,7 +429,7 @@
             </div>
         </div>
     </div>
-    </div>
+
     <div hidden>
         @if(count($other_ingredients)>0)
             @foreach($other_ingredients as $ingredient)
@@ -432,13 +448,25 @@
             window.webkitIDBKeyRange || window.msIDBKeyRange
 
         if (!window.indexedDB) {
-            window.alert("Your browser doesn't support a stable version of IndexedDB.")
+            window.alert("Your browser doesn't support a critical feature required for this application, please upgrade your browser.")
         }
         sessionStorage.setItem("combination_count", 0);
-        var db;
+        var db,db_cart;
         var db_toppings;
         var toppings_request = window.indexedDB.open("toppings_cart", 1);
         var request = window.indexedDB.open("order_cart", 2);
+        var cart_request = window.indexedDB.open("complete_orders",1);
+        cart_request.onerror = function (event) {
+            console.log("error: ");
+        };
+
+        cart_request.onsuccess = function (event) {
+            db_cart = request.result;
+        };
+        cart_request.onupgradeneeded = function (event) {
+            db_cart = event.target.result;
+            var objectStore = db.createObjectStore("complete_orders", {keyPath: "id", autoIncrement: true});
+        }
         request.onerror = function (event) {
 //            console.log("error: ", event);
         };
@@ -980,12 +1008,9 @@
         }
 
         function addDefault() {
-//    console.log("adding defaults",sessionStorage.getItem("route_item_category"));
             var ingredients = {!! json_encode($ingredients) !!};
-
             if (sessionStorage.getItem("route_item_category") != 22 && sessionStorage.getItem("route_item_category") != 21) {
-                console.log("Hitdd");
-                for (var i = 0; i < ingredients.length; i++) {
+                 for (var i = 0; i < ingredients.length; i++) {
                     addIngredientOg2(ingredients[i].id, ingredients[i].ingredient.name, ingredients[i].ingredient.prize, ingredients[i].ingredient.ingredient_type_id);
 
                 }
@@ -1018,7 +1043,10 @@
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
             accordion_trigger();
-            console.log("Prize", sessionStorage.getItem('route_item_category'));
+            if(sessionStorage.getItem("order_quantity")==null||sessionStorage.getItem("order_quantity")==undefined){
+                sessionStorage.setItem("order_quantity",0);
+            }
+
             $('.step-container').stepMaker({
                 steps: ['Item Size', 'Bread Choice', 'Ingredients', 'Delivery', 'Receipt'],
                 currentStep: 3
@@ -1109,14 +1137,25 @@
                 e.preventDefault();
             });
             $('#ingredient_toppings_next').on('click', function (e) {
-                var count = count_ingredients(db);
+                $("#more_orders").modal();
             });
             $("#ingredient_toppings_back").on('click', function () {
                 window.history.back();
             });
 
         });
+        function proceed_to_checkout(){
+            sessionStorage.setItem("more_order",null);
+            sessionStorage.setItem("order_quantity",1);
+            var count = count_ingredients(db);
+        }
+        function add_another_order(){
+            var count = Number(sessionStorage.getItem("order_quantity"))+1;
+            sessionStorage.setItem("order_quantity",count);
 
+            sessionStorage.setItem("more_order","more_order");
+            window.location.href = '/order_display';
+        }
         function extra_toppings_select(obj) {
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             var ingredients = {!!json_encode($all_ingredients) !!};

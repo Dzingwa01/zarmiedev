@@ -126,10 +126,6 @@
 
     </div>
 
-
-    {{--<link rel="stylesheet" href="/css/jquery-step-maker.css">--}}
-    {{--<script src="/js/jquery-step-maker.js"></script>--}}
-
     <script>
             <?php $menu_items = json_encode($menu_items);?>
         var item_number = sessionStorage.getItem('item_number_1');
@@ -142,10 +138,11 @@
             window.webkitIDBKeyRange || window.msIDBKeyRange
 
         if (!window.indexedDB) {
-            window.alert("Your browser doesn't support a stable version of IndexedDB.")
+            window.alert("Your browser doesn't support a critical feature required for this application, please upgrade your browser.")
         }
-        var db;
+        var db,db_cart;
         var db_toppings;
+
         var toppings_request = window.indexedDB.open("toppings_cart", 1);
          var request = window.indexedDB.open("order_cart",2);
         request.onerror = function (event) {
@@ -182,6 +179,18 @@
                 clearToppings(db_toppings);
             }
         }
+            var cart_request = window.indexedDB.open("complete_orders",1);
+            cart_request.onerror = function (event) {
+                console.log("error: ");
+            };
+
+            cart_request.onsuccess = function (event) {
+                db_cart = request.result;
+            };
+            cart_request.onupgradeneeded = function (event) {
+                db_cart = event.target.result;
+                var objectStore = db_cart.createObjectStore("complete_orders", {keyPath: "id", autoIncrement: true});
+            }
         function goBack(){
             window.history.back();
         }

@@ -94,7 +94,7 @@
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
   <script>
-  sessionStorage.clear();
+//  sessionStorage.clear();
   </script>
   <style>
   .drop-down{
@@ -149,6 +149,9 @@
   .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
     background-color: #26a69a!important;;
   }
+    .with_cart{
+      margin-top: 5em;
+    }
   </style>
   <script>
   $(document).ready(function() {
@@ -204,9 +207,11 @@
     </div>
   </nav>
 
-  <div class="container-fluid" style="margin-top:5em">
+  <div class="container-fluid" style="margin-top:5em;">
     {{--<div class="step-container" style="width: 700px; margin: 0 auto"></div>--}}
-    <div class="row" >
+    <a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em;"><i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>
+
+    <div>
       <div id='menu_items' class="row" >
       <ul class="collapsible">
         @foreach ($categories as $category)
@@ -239,43 +244,57 @@
         @endforeach
       </ul>
       </div>
-      {{--<div id='menu_items' class="row" >--}}
-       {{--<ul class="collapsible">--}}
-      {{--<div class="container">--}}
-        {{--@foreach ($categories as $category)--}}
-          {{--<div class="col-md-12 col-sm-12 col-xs-12" >--}}
-            {{--<li>--}}
-              {{--<div class="collapsible-body">--}}
+      <div id="cart" class="modal">
+        <div class="modal-header">
+          <h5 class="modal-title">Current Order/s</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form>
+              {{--<fieldset>--}}
+              <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Order Cart <i class="fa fa-shopping-cart"></i> </h6>
+              <div id='type'></div>
+              <div id ='choice'>
+              </div>
 
-            {{--<table id="{{$category->id}}" class="table table-hover table-sm table-striped">--}}
-              {{--@if($category->id==18||$category->id==19||$category->id==22||$category->id==21||$category->id==20)--}}
-              {{--<thead>--}}
-                {{--<tr><th>Item Number</th><th>Name</th><th>Price</th></tr>--}}
-              {{--</thead>--}}
-              {{--@elseif($category->id<=6)--}}
-                {{--<tr><th>Item Number</th><th>Name</th><th>Sandwich</th><th>Medium Sub</th><th>Large Sub</th><th>Wrap</th></tr>--}}
-              {{--@elseif($category->id<=7)--}}
-                {{--<tr><th>Item Number</th><th>Name</th><th>Medium</th><th>Large</th></tr>--}}
-                {{--@endif--}}
-              {{--<tbody>--}}
-              {{--</tbody>--}}
-            {{--</table>--}}
-              {{--</div>--}}
-            {{--</li>--}}
+              <div id ='item_bread'>
+              </div>
+              <div>
+                <h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i onclick="increase_quantity()" class="fa fa-plus"></i> </a>  <a id="decrease_el" style="margin-left:1em;"><i onclick="decrease_quantity()" class="fa fa-minus"></i> </a>  </h6>
+                <div id="item_amount">
 
-          {{--</div>--}}
-        {{--@endforeach--}}
-      {{--</div>--}}
-       {{--</ul>--}}
-    {{--</div>--}}
+                </div>
+              </div>
+              <div id ='item_prize'></div>
+              <div id ='item_toast'>
+              </div>
+              <div id='item_ingredients' style="margin-top:2em;">
+                <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
+
+              </div>
+
+              {{--</fieldset>--}}
+            </form>
+            <button style="margin:1em;" class="btn" data-dismiss="modal"> Cancel</button>
+
+            <button style="margin:1em;" class="btn"
+                    onclick="check_out(this)">Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+
   </div>
   </div>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="/css/jquery-step-maker.css">
   <script src="/js/jquery-step-maker.js"></script>
     <script type='text/javascript'>
   
     <?php $menu_items = json_encode($menu_items);?>
     var item_number = sessionStorage.getItem('item_number_1');
+
     window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
         window.msIndexedDB;
 
@@ -285,13 +304,15 @@
         window.webkitIDBKeyRange || window.msIDBKeyRange
 
     if (!window.indexedDB) {
-        window.alert("Your browser doesn't support a stable version of IndexedDB.")
+        window.alert("Your browser doesn't support a critical feature required for this application, please upgrade your browser.")
     }
     var db;
     var db_toppings;
+    var db_cart;
 
     var toppings_request = window.indexedDB.open("toppings_cart", 1);
-     var request = window.indexedDB.open("order_cart",2);
+    var request = window.indexedDB.open("order_cart",2);
+//    var cart_request = window.indexedDB.open("complete_orders",1);
     request.onerror = function (event) {
         console.log("error: ");
     };
@@ -306,9 +327,18 @@
         var db = event.target.result;
         var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id", autoIncrement: true});
         var objectStore = db.createObjectStore("selected_drinks", {keyPath: "id", autoIncrement: true});
-//        clearIngredients(db);
+    }
+    var cart_request = window.indexedDB.open("complete_orders",1);
+    cart_request.onerror = function (event) {
+        console.log("error: ");
+    };
 
-//     readAll(db);
+    cart_request.onsuccess = function (event) {
+        db_cart = request.result;
+    };
+    cart_request.onupgradeneeded = function (event) {
+        db_cart = event.target.result;
+        var objectStore = db_cart.createObjectStore("complete_orders", {keyPath: "id", autoIncrement: true});
     }
     toppings_request.onerror = function (event) {
         console.log("error: ", event);
@@ -338,6 +368,9 @@
             console.log("cleared successfully");
         };
     }
+    function show_cart(){
+        $("#cart").show();
+    }
     function clearDrinks(db) {
         var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
         var objectStoreRequest = objectStore.clear();
@@ -360,6 +393,16 @@
       console.log(menu_items);
       $(document).ready(function(){
           $('.collapsible').collapsible();
+          var more_order = sessionStorage.getItem("more_order");
+          console.log("more order",more_order=="null");
+          if(more_order!=null&&more_order!=undefined&&more_order!="null"){
+              $("#cart_btn").show();
+              $("#order_count").empty();
+              $("#order_count").append('<sup style="font-size: 1.2em;font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
+              $("#menu_items").addClass("with_cart");
+          }else{
+              $("#cart_btn").hide();
+          }
           for(var i=0;i<categories.length;i++){
 //              console.log("category",categories[i]);
               $.each(menu_items, function(idx,obj){

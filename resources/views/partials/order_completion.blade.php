@@ -163,10 +163,22 @@
             window.webkitIDBKeyRange || window.msIDBKeyRange
 
         if (!window.indexedDB) {
-            window.alert("Your browser doesn't support a stable version of IndexedDB.")
+            window.alert("Your browser doesn't support a critical feature required for this application, please upgrade your browser.")
         }
-        var db;
+        var db,db_cart;
         var db_toppings;
+        var cart_request = window.indexedDB.open("complete_orders",1);
+        cart_request.onerror = function (event) {
+            console.log("error: ");
+        };
+
+        cart_request.onsuccess = function (event) {
+            db = request.result;
+        };
+        cart_request.onupgradeneeded = function (event) {
+            db_cart = event.target.result;
+            var objectStore = db_cart.createObjectStore("complete_orders", {keyPath: "id", autoIncrement: true});
+        }
         var toppings_request = window.indexedDB.open("toppings_cart", 1);
          var request = window.indexedDB.open("order_cart",2);
         request.onerror = function(event) {
