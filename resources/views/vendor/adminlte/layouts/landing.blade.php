@@ -491,6 +491,29 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 <script src="js/materialize.js"></script>
 <script src="js/init.js"></script>
 <script>
+    window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
+        window.msIndexedDB;
+
+    window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction ||
+        window.msIDBTransaction;
+    window.IDBKeyRange = window.IDBKeyRange ||
+        window.webkitIDBKeyRange || window.msIDBKeyRange
+
+    if (!window.indexedDB) {
+        window.alert("Your browser doesn't support a stable version of IndexedDB.")
+    }
+    var request = indexedDB.deleteDatabase("order_cart");
+    request.onsuccess = function (event) {
+      console.log("deleted order cart");
+    };
+    var request2 = indexedDB.deleteDatabase("toppings_cart");
+    request2.onsuccess = function (event) {
+        console.log("deleted toppings_cart");
+    };
+    var request3 = indexedDB.deleteDatabase("complete_orders");
+    request3.onsuccess = function (event) {
+        console.log("deleted orders");
+    };
     $(document).ready(function(){
         $("#details_form" ).hide();
         // $("#many_details_form").hide();
