@@ -220,7 +220,7 @@
                                     Details</a></li>
                             <li id="checkout_list" class="tab col s6"><a id="checkout_tab" class=""
                                                                     style="color:black;text-decoration: none;"
-                                                                    href="#checkout_div">Review Or Upadate<i
+                                                                    href="#checkout_div">Review Or Update<i
                                             class="fa fa-shopping-cart"></i><span style="color:red"
                                                                                   id="order_count"></span> </a></li>
 
