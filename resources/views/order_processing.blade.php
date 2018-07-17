@@ -276,7 +276,16 @@
   select{
     z-index: 20!important;
   }
-
+  a{
+    text-decoration: none;
+  }
+  a.active{
+    background-color: teal!important;
+    color:white!important;
+  }
+  .tabs .indicator{
+    background-color: teal!important;
+  }
   .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
     background-color: #26a69a!important;;
   }

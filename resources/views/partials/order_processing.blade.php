@@ -4,9 +4,10 @@
      <div class="row">
          <div class="step-container" style="width: 100%; margin: 0 auto"></div>
      </div>
-    <div class="row" >
 
-          <div class=" col-md-7 col-sm-12 card" style="margin-left: 1em;">
+     <div class="row" >
+
+          <div class=" col-md-6 col-sm-12 card" style="margin-left: 1em;">
               <h6 style="font-weight: bolder;font-size:1.5em;" id="choice_normals"></h6>
             <form id="bread_selection" style="margin-top:2em;">
               {{--<fieldset>--}}
@@ -62,33 +63,48 @@
               {{--</fieldset>--}}
             </form>
           </div>
-          <div class="col-md-4 col-sm-12 card" style="margin-left: 2em;">
-          <form>
-              {{--<fieldset>--}}
-                <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Order Cart <i class="fa fa-shopping-cart"></i> </h6>
-                <div id='type'></div>
-                <div id ='choice'>
-                </div>
-                
-                <div id ='item_bread'>
-                </div>
-                <div>
-                    <h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i onclick="increase_quantity()" class="fa fa-plus"></i> </a>  <a id="decrease_el" style="margin-left:1em;"><i onclick="decrease_quantity()" class="fa fa-minus"></i> </a>  </h6>
-                    <div id="item_amount">
+         <div class="col-sm-5 card" style="margin-left:2em; ">
+             <div class="row">
+                 <div class="col s12">
+                     <ul class="tabs z-depth-1">
+                         <li class="tab col s6 "><a id="current_order_tab" href="#current_order" class="active"
+                                                    style="color:black;text-decoration: none;">Current Order
+                                 Details</a></li>
+                         <li id="checkout_list" class="tab col s6"><a id="checkout_tab" class=""
+                                                                      style="color:black;text-decoration: none;"
+                                                                      href="#checkout_div">Review Or Upadate<i
+                                         class="fa fa-shopping-cart"></i><span style="color:red"
+                                                                               id="order_count"></span> </a></li>
 
-                    </div>
-                </div>
-                 <div id ='item_prize'></div>
-                <div id ='item_toast'>
-                </div>
-                  <div id='item_ingredients' style="margin-top:2em;">
-                      <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
+                     </ul>
+                 </div>
+                 <div id="current_order" class="col s12">
+                     <div id='type'></div>
+                     <div id='choice'>
+                     </div>
+                     <div id='egg_choice_div' hidden>
+                     </div>
+                     <div id='item_bread'>
+                     </div>
+                     <div>
+                         <h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i
+                                         onclick="increase_quantity()" class="fa fa-plus"></i> </a> <a
+                                     id="decrease_el" style="margin-left:1em;"><i onclick="decrease_quantity()"
+                                                                                  class="fa fa-minus"></i> </a></h6>
+                         <div id="item_amount">
 
-                  </div>
-                
-              {{--</fieldset>--}}
-            </form>
-          </div>
+                         </div>
+                     </div>
+                     <div id='item_prize'></div>
+                     <div id='item_ingredients' style="margin-top:2em;">
+                         <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
+
+                     </div>
+
+                 </div>
+                 <div id="checkout_div" class="col s12">Test 2</div>
+             </div>
+         </div>
         </div>
      <div hidden>
      @if(count($ingredients)>0)
@@ -100,7 +116,25 @@
      @endif
      </div>
   </div>
- 
+ <style>
+
+     #current_order_tab:after {
+         content: ""
+     }
+
+     .tabs .tab a:hover, .tabs .tab a.active {
+         content: ""
+     }
+
+     #checkout_tab:after {
+         content: ""
+     }
+
+     .step:after {
+         content: ""
+     }
+
+ </style>
   <script>
   <?php $menu_items = json_encode($menu_items);?>
       window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
@@ -204,7 +238,16 @@
       else{
           $("#decrease_el").hide();
       }
+      var more_order = sessionStorage.getItem("more_order");
 
+      if(more_order!=null&&more_order!=undefined&&more_order!="null"){
+          $("#cart_btn").show();
+          $("#order_count").empty();
+          $("#order_count").append('<sup style="font-size: 1.2em;font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
+          $("#menu_items").addClass("with_cart");
+      }else{
+          $("#cart_btn").hide();
+      }
       $('#item_amount').append('<h6> <b>'+ new_qty+'</h6>');
       sessionStorage.setItem('quantity',new_qty);
       var item_prize = Number(sessionStorage.getItem("item_category_price")).toFixed(2);
@@ -213,7 +256,16 @@
       $('#item_prize').empty();
       $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
   }
-
+  function initializeQuantities(){
+      var quantity = $('#num_people').val();
+      $("#decrease_el").hide();
+      sessionStorage.setItem('quantity',quantity);
+      $('#item_amount').append('<h6> <b>'+ quantity+'</h6>');
+      var item_prize = Number(sessionStorage.getItem("item_category_price")).toFixed(2);
+      var total_due = Number(item_prize*$('#num_people').val()).toFixed(2);
+      sessionStorage.setItem('total_due',total_due);
+      $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
+  }
   function increase_quantity(){
       $('#item_amount').empty();
       var quantity = sessionStorage.getItem('quantity');
@@ -234,6 +286,16 @@
       $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
   }
   $(document).ready(function(){
+      $('.tabs').tabs();
+      var more_order = sessionStorage.getItem("more_order");
+      if(more_order!=null&&more_order!=undefined&&more_order!="null"){
+          $("#cart_btn").show();
+          $("#order_count").empty();
+          $("#order_count").append('<sup style="font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
+          $("#menu_items").addClass("with_cart");
+      }else{
+          $("#checkout_list").hide();
+      }
       $("#choice_normals").append(sessionStorage.getItem('item_name') +" - "+sessionStorage.getItem('item_category'));
       $('.step-container').stepMaker({
           steps: ['Item Size','Bread Choice', 'Ingredients', 'Delivery','Receipt'],
@@ -246,16 +308,7 @@
     }
       var menu_items = {!!$menu_items!!};
       initializeQuantities();
-     function initializeQuantities(){
-         var quantity = $('#num_people').val();
-         $("#decrease_el").hide();
-         sessionStorage.setItem('quantity',quantity);
-         $('#item_amount').append('<h6> <b>'+ quantity+'</h6>');
-         var item_prize = Number(sessionStorage.getItem("item_category_price")).toFixed(2);
-         var total_due = Number(item_prize*$('#num_people').val()).toFixed(2);
-         sessionStorage.setItem('total_due',total_due);
-         $('#item_prize').append('<h6> <b>Prize - </b>R'+total_due+'</h6>');
-     }
+
         $.each(menu_items, function(idx,obj){
           if(item_number == obj.item_number){
             var name_cur = obj.item_name;

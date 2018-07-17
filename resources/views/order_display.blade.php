@@ -209,7 +209,7 @@
 
   <div class="container-fluid" style="margin-top:5em;">
     {{--<div class="step-container" style="width: 700px; margin: 0 auto"></div>--}}
-    <a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em;"><i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>
+    <a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>
 
     <div>
       <div id='menu_items' class="row" >
@@ -253,7 +253,7 @@
           <div class="row">
             <form>
               {{--<fieldset>--}}
-              <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Order Cart <i class="fa fa-shopping-cart"></i> </h6>
+              <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Current Order Details <i class="fa fa-shopping-cart"></i> </h6>
               <div id='type'></div>
               <div id ='choice'>
               </div>
@@ -394,11 +394,11 @@
       $(document).ready(function(){
           $('.collapsible').collapsible();
           var more_order = sessionStorage.getItem("more_order");
-          console.log("more order",more_order=="null");
+
           if(more_order!=null&&more_order!=undefined&&more_order!="null"){
               $("#cart_btn").show();
               $("#order_count").empty();
-              $("#order_count").append('<sup style="font-size: 1.2em;font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
+              $("#order_count").append('<sup style="font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
               $("#menu_items").addClass("with_cart");
           }else{
               $("#cart_btn").hide();

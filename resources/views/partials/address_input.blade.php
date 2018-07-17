@@ -1,8 +1,9 @@
 @extends('order_processing')
 @section('content')
- <div class="container" style="margin-top:8em">
-      
-    <div class="row" >
+ <div class="container-fluid" style="margin-top:8em">
+     {{--<a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>--}}
+
+     <div class="row" >
        
           <div class="col-sm-8">
               <h5>Enter Address for delivery</h5>
@@ -28,7 +29,7 @@
           <div class="col-sm-4">
           <form>
               <fieldset>
-                <legend>Order Cart</legend>
+                <legend>Current Order Details</legend>
                <div id='type'></div>
                 <div id ='choice'>
                 </div>

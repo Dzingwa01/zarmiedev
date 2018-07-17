@@ -491,6 +491,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 <script src="js/materialize.js"></script>
 <script src="js/init.js"></script>
 <script>
+    sessionStorage.clear();
     window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
         window.msIndexedDB;
 

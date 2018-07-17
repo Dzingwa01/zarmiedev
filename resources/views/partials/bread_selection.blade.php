@@ -5,6 +5,7 @@
         <div id="normal_steps" class="row">
             <div class="step-container" style="width: 100%; margin: 0 auto"></div>
         </div>
+        {{--<a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>--}}
 
         <div id="normal_sandwiches" style="margin-bottom: 4em;">
             <div class="row">
@@ -264,10 +265,7 @@
                             $('#large_price').append('<h5 class="prizes"> R' + (obj.largesub).toFixed(2) + '</h5>');
                             $('#wrap_price').append('<h5 class="prizes"> R' + (obj.wrap).toFixed(2) + '</h5>');
                         }
-
                     }
-
-
                 }
             });
         });

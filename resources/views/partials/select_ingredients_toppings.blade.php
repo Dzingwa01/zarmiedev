@@ -2,14 +2,13 @@
 @section('content')
     <div class="container-fluid" style="margin-top:5em">
         <div id="normal_tracker" class="row">
-            <div class="step-container" style="width: 100%; margin: 0 auto"></div>
+            <div id="normal_tracker" class="step-container" style="width: 100%; margin: 0 auto"></div>
         </div>
         <div class="row" id="trays_tracker">
-            <div class="step-container_trays" style="width: 100%; margin: 0 auto"></div>
+            <div id="trays_tracker" class="step-container_trays" style="width: 100%; margin: 0 auto"></div>
         </div>
         <div class="row">
-
-            <div class=" col-md-7 col-sm-12 card" style="margin-left: 1em;">
+            <div class=" col-md-6 col-sm-12 card" style="margin-left: 1em;">
                 <form id="ingredients_toppings_form">
                     <div id="normal_sandwiches_div">
 
@@ -26,13 +25,7 @@
                                         >{{$ingredient->ingredient->name}}  </button>
                                     @endforeach
                                 @endif
-                                {{--@if(count($standard_toppings)>0)--}}
-                                {{--@foreach($standard_toppings as $topping)--}}
-                                {{--<button id='{{'to_'.$topping->id}}' class="glass"--}}
-                                {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
-                                {{--onclick="topping_select(this);">{{$topping->name}}  </button>--}}
-                                {{--@endforeach--}}
-                                {{--@endif--}}
+
                             </div>
                             <div style="margin-top: 1em;" id="removed_list">
 
@@ -115,61 +108,37 @@
                     </div>
                     <hr/>
                     <div id="swap_toppings_div" hidden class="row" style="margin-top:1em;">
-                        <button class="accordion">Replace <span id="swap_ingr"></span></button>
+                        <button id="replace_accordion" class="accordion">Replace <span id="swap_ingr"></span></button>
                         <div id="swap_toppings_accordion" class="panel">
                             <form id="" col="col-md-10" onsubmit="return false;">
-                                {{--<fieldset>--}}
-                                {{--<legend>Please select extra topping:</legend>--}}
 
                                 <div class="row" style="margin-top:1em;">
                                     <div id="swap_ingredients">
 
                                     </div>
                                 </div>
-                                {{--<div class="row">--}}
-                                {{--<div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">--}}
-                                {{--<button id='' class="btn waves-effect waves-light" class="collapse">Cancel</button>--}}
-                                {{--</div>--}}
-
-                                {{--<div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">--}}
-                                {{--<button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>--}}
-                                {{--</div>--}}
-                                {{--</div>--}}
-                                {{--</fieldset>--}}
 
                             </form>
                         </div>
                     </div>
                     <div id="extra_toppings_div_2" class="row" style="margin-top:1em;">
 
-                        <button class="accordion ">Extra Toppings</button>
+                        <button id="extra_toppings_accordion" class="accordion ">Extra Toppings</button>
 
                         <div id="toppings_accordion" class="panel">
                             <form id="" col="col-md-10" onsubmit="return false;">
-                                {{--<fieldset>--}}
-                                {{--<legend>Please select extra topping:</legend>--}}
 
                                 <div class="row" style="margin-top:1em;">
                                     <div id='extra_toppings'>
 
                                     </div>
                                 </div>
-                                {{--<div class="row">--}}
-                                {{--<div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">--}}
-                                {{--<button id='' class="btn waves-effect waves-light" class="collapse">Cancel</button>--}}
-                                {{--</div>--}}
-
-                                {{--<div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">--}}
-                                {{--<button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>--}}
-                                {{--</div>--}}
-                                {{--</div>--}}
-                                {{--</fieldset>--}}
 
                             </form>
                         </div>
                     </div>
                     <div id="drinks_div" class="row" style="margin-top:1em;">
-                        <button class="accordion ">Something to Drink</button>
+                        <button id="accordion_drinks" class="accordion">Something to Drink</button>
 
                         <div id="drinks_accordion" class="panel">
                             <form id="" col="col-md-10" onsubmit="return false;">
@@ -191,21 +160,7 @@
                             </form>
                         </div>
                     </div>
-                    {{--<p style="color:black;font-weight:bold;">Do you want to add any extra toppings?</p>--}}
-                    {{--<p>--}}
-                    {{--<input name="group01" class="bread" type="radio" value="no" id="no" checked/>--}}
-                    {{--<label for="no">No</label>--}}
 
-                    {{--<input name="group01" class="bread" type="radio" id="yes" value="yes"/>--}}
-                    {{--<label for="yes">Yes</label>--}}
-                    {{--</p>--}}
-
-                    {{--<div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>--}}
-                    {{--<p  style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)--}}
-                    {{--<div id='extra_toppings' >--}}
-
-                    {{--</div>--}}
-                    {{--</div>--}}
                     <div class="row" style="margin-top:2em;" hidden>
                         <div>
                             @if(count($extra_toppings)>0)
@@ -236,41 +191,11 @@
                                         @endif
                                     </div>
                                 </div>
-                                {{--<div class="row">--}}
-                                {{--<div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">--}}
-                                {{--<button id='' class="btn waves-effect waves-light" class="collapse">Cancel</button>--}}
-                                {{--</div>--}}
-
-                                {{--<div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">--}}
-                                {{--<button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>--}}
-                                {{--</div>--}}
-                                {{--</div>--}}
-                                {{--</fieldset>--}}
 
                             </form>
                         </div>
                     </div>
-                    {{--<p style="color:black;font-weight:bold;">Do you want to swap any toppings?</p>--}}
-                    {{--<p>--}}
-                    {{--<input name="group02" class="bread" type="radio" value="swap_no" id="swap_no" checked/>--}}
-                    {{--<label for="swap_no">No</label>--}}
 
-                    {{--<input name="group02" class="bread" type="radio" id="swap_yes" value="swap_yes"/>--}}
-                    {{--<label for="swap_yes">Yes</label>--}}
-                    {{--</p>--}}
-                    {{--<div id="swap_ingredients_div" hidden>--}}
-                    {{----}}
-
-                    {{--</div>--}}
-                    {{--<div id="select_swap">--}}
-                    {{--<p style="color:black;font-weight:bold;">Select swap ingredients</p>--}}
-                    {{--<div class="row" style="margin-top:2em;">--}}
-                    {{--<div id='ingredients_list_swap'>--}}
-
-                    {{--</div>--}}
-                    {{--</div>--}}
-                    {{--</div>--}}
-                    {{--<hr/>--}}
                     <div class="row">
                         <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
                             <button id='ingredient_toppings_back' class="btn waves-effect waves-light">Back
@@ -286,44 +211,55 @@
                     {{--</fieldset>--}}
                 </form>
             </div>
-            <div class="col-sm-4 card" style="margin-left:2em; ">
-                <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Order Cart <i
-                            class="fa fa-shopping-cart"></i></h6>
-                <form onsubmit="return false;">
-                    {{--<fieldset>--}}
-                    {{--<legend>Order Cart</legend>--}}
-                    <div id='type'></div>
-                    <div id='choice'>
+            <div class="col-sm-5 card" style="margin-left:2em; ">
+                <div class="row">
+                    <div class="col s12">
+                        <ul class="tabs z-depth-1">
+                            <li class="tab col s6 "><a id="current_order_tab" href="#current_order" class="active"
+                                                       style="color:black;text-decoration: none;">Current Order
+                                    Details</a></li>
+                            <li id="checkout_list" class="tab col s6"><a id="checkout_tab" class=""
+                                                                    style="color:black;text-decoration: none;"
+                                                                    href="#checkout_div">Review Or Upadate<i
+                                            class="fa fa-shopping-cart"></i><span style="color:red"
+                                                                                  id="order_count"></span> </a></li>
+
+                        </ul>
                     </div>
-                    <div id='egg_choice_div' hidden>
-                    </div>
-                    <div id='item_bread'>
-                    </div>
-                    <div>
-                        <h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i
-                                        onclick="increase_quantity()" class="fa fa-plus"></i> </a> <a
-                                    id="decrease_el" style="margin-left:1em;"><i onclick="decrease_quantity()"
-                                                                                 class="fa fa-minus"></i> </a></h6>
-                        <div id="item_amount">
+                    <div id="current_order" class="col s12">
+                        <div id='type'></div>
+                        <div id='choice'>
+                        </div>
+                        <div id='egg_choice_div' hidden>
+                        </div>
+                        <div id='item_bread'>
+                        </div>
+                        <div>
+                            <h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i
+                                            onclick="increase_quantity()" class="fa fa-plus"></i> </a> <a
+                                        id="decrease_el" style="margin-left:1em;"><i onclick="decrease_quantity()"
+                                                                                     class="fa fa-minus"></i> </a></h6>
+                            <div id="item_amount">
+
+                            </div>
+                        </div>
+                        <div id='item_prize'></div>
+                        <div id='item_ingredients' style="margin-top:2em;">
+                            <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
 
                         </div>
-                    </div>
-                    <div id='item_prize'></div>
-                    <div id='item_ingredients' style="margin-top:2em;">
-                        <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
+                        <div id='extra_toppings_cart' style="margin-top:2em;" hidden>
+                            <h6><b>Extra Toppings - *Click to remove </b></h6>
 
-                    </div>
-                    <div id='extra_toppings_cart' style="margin-top:2em;" hidden>
-                        <h6><b>Extra Toppings - *Click to remove </b></h6>
-
-                    </div>
-                    <div id='drinks_cart' style="margin-top:2em;" hidden>
-                        <h6><b>Something to drink </b></h6>
-                        <div id="selected_drinks">
+                        </div>
+                        <div id='drinks_cart' style="margin-top:2em;" hidden>
+                            <h6><b>Something to drink </b></h6>
+                            <div id="selected_drinks">
+                            </div>
                         </div>
                     </div>
-                    {{--</fieldset>--}}
-                </form>
+                    <div id="checkout_div" class="col s12">Test 2</div>
+                </div>
             </div>
         </div>
         <div hidden>
@@ -352,7 +288,8 @@
         <div class="modal-body">
             <div class="row">
 
-                <button style="margin:1em;" class="btn remove" onclick="proceed_to_checkout()"> Proceed to Checkout</button>
+                <button style="margin:1em;" class="btn remove" onclick="proceed_to_checkout()"> Proceed to Checkout
+                </button>
 
                 <button style="margin:1em;" class="btn swap"
                         onclick="add_another_order()"> Add Another Order
@@ -437,6 +374,25 @@
             @endforeach
         @endif
     </div>
+    <style>
+
+        #current_order_tab:after {
+            content: ""
+        }
+
+        .tabs .tab a:hover, .tabs .tab a.active {
+            content: ""
+        }
+
+        #checkout_tab:after {
+            content: ""
+        }
+
+        .step:after {
+            content: ""
+        }
+
+    </style>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
         window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
@@ -451,11 +407,11 @@
             window.alert("Your browser doesn't support a critical feature required for this application, please upgrade your browser.")
         }
         sessionStorage.setItem("combination_count", 0);
-        var db,db_cart;
+        var db, db_cart;
         var db_toppings;
         var toppings_request = window.indexedDB.open("toppings_cart", 1);
         var request = window.indexedDB.open("order_cart", 2);
-        var cart_request = window.indexedDB.open("complete_orders",1);
+        var cart_request = window.indexedDB.open("complete_orders", 1);
         cart_request.onerror = function (event) {
             console.log("error: ");
         };
@@ -1010,7 +966,7 @@
         function addDefault() {
             var ingredients = {!! json_encode($ingredients) !!};
             if (sessionStorage.getItem("route_item_category") != 22 && sessionStorage.getItem("route_item_category") != 21) {
-                 for (var i = 0; i < ingredients.length; i++) {
+                for (var i = 0; i < ingredients.length; i++) {
                     addIngredientOg2(ingredients[i].id, ingredients[i].ingredient.name, ingredients[i].ingredient.prize, ingredients[i].ingredient.ingredient_type_id);
 
                 }
@@ -1042,11 +998,22 @@
 
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
-            accordion_trigger();
-            if(sessionStorage.getItem("order_quantity")==null||sessionStorage.getItem("order_quantity")==undefined){
-                sessionStorage.setItem("order_quantity",0);
-            }
+            $('.tabs').tabs();
 
+            accordion_trigger();
+            if (sessionStorage.getItem("order_quantity") == null || sessionStorage.getItem("order_quantity") == undefined) {
+                sessionStorage.setItem("order_quantity", 0);
+            }
+            var more_order = sessionStorage.getItem("more_order");
+
+            if (more_order != null && more_order != undefined && more_order != "null") {
+                $("#cart_btn").show();
+                $("#order_count").empty();
+                $("#order_count").append('<sup style="font-weight: bolder;">' + sessionStorage.getItem("order_quantity") + '*</sup>');
+                $("#menu_items").addClass("with_cart");
+            } else {
+                $("#checkout_list").hide();
+            }
             $('.step-container').stepMaker({
                 steps: ['Item Size', 'Bread Choice', 'Ingredients', 'Delivery', 'Receipt'],
                 currentStep: 3
@@ -1144,18 +1111,21 @@
             });
 
         });
-        function proceed_to_checkout(){
-            sessionStorage.setItem("more_order",null);
-            sessionStorage.setItem("order_quantity",1);
+
+        function proceed_to_checkout() {
+            sessionStorage.setItem("more_order", null);
+            sessionStorage.setItem("order_quantity", 1);
             var count = count_ingredients(db);
         }
-        function add_another_order(){
-            var count = Number(sessionStorage.getItem("order_quantity"))+1;
-            sessionStorage.setItem("order_quantity",count);
 
-            sessionStorage.setItem("more_order","more_order");
+        function add_another_order() {
+            var count = Number(sessionStorage.getItem("order_quantity")) + 1;
+            sessionStorage.setItem("order_quantity", count);
+
+            sessionStorage.setItem("more_order", "more_order");
             window.location.href = '/order_display';
         }
+
         function extra_toppings_select(obj) {
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             var ingredients = {!!json_encode($all_ingredients) !!};

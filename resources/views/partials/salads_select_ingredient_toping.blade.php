@@ -4,11 +4,13 @@
         <div class="row">
             <div class="step-container_salads" style="width: 100%; margin: 0 auto"></div>
         </div>
+        <a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>
+
         <div class="row">
             <center>
                 <h5 style="font-weight: bolder;" id="choice_2"></h5>
             </center>
-            <div class="col-md-7 col-sm-12 card" style="margin-left: 1em;" >
+            <div class="col-md-6 col-sm-12 card" style="margin-left: 1em;" >
                 <div class="row" >
                     <h6 style="color:black;font-weight:bold;font-size: 1.5em;"><span id="salad_name"></span></h6>
                     <div class="col-sm-4">
@@ -80,19 +82,34 @@
                     </div>
 
                     <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
-                        <button id='ingredient_toppings_next' class="btn waves-effect waves-light">Next</button>
+                        <button id='ingredient_toppings_next' class="btn waves-effect waves-light">Next
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4 card" style="margin-left: 2em;">
-                <form onsubmit="return false;">
-                    {{--<fieldset>--}}
-                    <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Order Cart <i class="fa fa-shopping-cart"></i> </h6>
+            <div class="col-sm-5 card" style="margin-left:2em; ">
+                <div class="row">
+                    <div class="col s12">
+                        <ul class="tabs z-depth-1">
+                            <li class="tab col s6 "><a id="current_order_tab" href="#current_order" class="active"
+                                                       style="color:black;text-decoration: none;">Current Order
+                                    Details</a></li>
+                            <li id="checkout_list" class="tab col s6"><a id="checkout_tab" class=""
+                                                                         style="color:black;text-decoration: none;"
+                                                                         href="#checkout_div">Review Or Upadate<i
+                                            class="fa fa-shopping-cart"></i><span style="color:red"
+                                                                                  id="order_count"></span> </a></li>
+
+                        </ul>
+                    </div>
+                    <div id="current_order" class="col s12">
                         <div id='type'></div>
                         <div id='choice'>
                         </div>
-                        {{--<div id='item_bread'>--}}
-                        {{--</div>--}}
+                        <div id='egg_choice_div' hidden>
+                        </div>
+                        <div id='item_bread'>
+                        </div>
                         <div>
                             <h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i
                                             onclick="increase_quantity()" class="fa fa-plus"></i> </a> <a
@@ -107,16 +124,38 @@
                             <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
 
                         </div>
-                        {{--<div id='extra_toppings_cart' style="margin-top:2em;">--}}
-                            {{--<h6><b>Extra Toppings - *Click to remove </b></h6>--}}
+                        <div id='extra_toppings_cart' style="margin-top:2em;" hidden>
+                            <h6><b>Extra Toppings - *Click to remove </b></h6>
 
-                        {{--</div>--}}
-
-                    {{--</fieldset>--}}
-                </form>
+                        </div>
+                        <div id='drinks_cart' style="margin-top:2em;" hidden>
+                            <h6><b>Something to drink </b></h6>
+                            <div id="selected_drinks">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="checkout_div" class="col s12">Test 2</div>
+                </div>
             </div>
         </div>
 
+    </div>
+    <div id="more_orders" class="modal" style="height: 250px;">
+        <div class="modal-header">
+            <h5 class="modal-title">Complete Order</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+
+                <button style="margin:1em;" class="btn remove" onclick="proceed_to_checkout()"> Proceed to Checkout
+                </button>
+
+                <button style="margin:1em;" class="btn swap"
+                        onclick="add_another_order()"> Add Another Order
+                </button>
+            </div>
+        </div>
     </div>
     <div id="extra_toppings_modal" class="modal">
         <div class="modal-header">
@@ -188,6 +227,7 @@
             </div>
         </div>
     </div>
+
     </div>
     <div hidden>
         @if(count($other_ingredients)>0)
@@ -196,6 +236,25 @@
             @endforeach
         @endif
     </div>
+    <style>
+
+        #current_order_tab:after {
+            content: ""
+        }
+
+        .tabs .tab a:hover, .tabs .tab a.active {
+            content: ""
+        }
+
+        #checkout_tab:after {
+            content: ""
+        }
+
+        .step:after {
+            content: ""
+        }
+
+    </style>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
         window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
@@ -533,16 +592,31 @@
         }
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
+            $('.tabs').tabs();
             accordion_trigger();
             $('.step-container_salads').stepMaker({
                 steps: ['Salad Size', 'Ingredients', 'Delivery','Receipt'],
                 currentStep: 2
             });
+            if (sessionStorage.getItem("order_quantity") == null || sessionStorage.getItem("order_quantity") == undefined) {
+                sessionStorage.setItem("order_quantity", 0);
+            }
             if(sessionStorage.getItem("item_number_1")=="S6"||sessionStorage.getItem("item_number_1")=="S7"){
                 $("#pasta_div").hide();
                 $("#no_pasta_message").empty();
                 $("#no_pasta_message").show();
                 $("#no_pasta_message").append("No available swap options for this salad");
+            }
+            var more_order = sessionStorage.getItem("more_order");
+
+            if(more_order!=null&&more_order!=undefined&&more_order!="null"){
+//                $("#cart_btn").show();
+                $("#order_count").empty();
+                $("#order_count").append('<sup style="font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
+//                $("#menu_items").addClass("with_cart");
+            }else{
+                $("#cart_btn").hide();
+                $("#checkout_list").hide();
             }
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             $("#choice_id").empty();
@@ -599,14 +673,27 @@
                 e.preventDefault();
             });
             $('#ingredient_toppings_next').on('click', function (e) {
-                var count = count_ingredients(db);
+//                var count = count_ingredients(db);
+                $("#more_orders").modal();
             });
             $("#ingredient_toppings_back").on('click', function () {
                 window.history.back();
             });
 
         });
+        function proceed_to_checkout() {
+            sessionStorage.setItem("more_order", null);
+            sessionStorage.setItem("order_quantity", 1);
+            var count = count_ingredients(db);
+        }
 
+        function add_another_order() {
+            var count = Number(sessionStorage.getItem("order_quantity")) + 1;
+            sessionStorage.setItem("order_quantity", count);
+
+            sessionStorage.setItem("more_order", "more_order");
+            window.location.href = '/order_display';
+        }
         function extra_toppings_select(obj) {
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             var ingredients = {!!json_encode($all_ingredients) !!};

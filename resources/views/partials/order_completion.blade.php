@@ -44,7 +44,7 @@
             <div class="col-sm-4">
                 <form>
                     <fieldset>
-                        <legend>Order Cart</legend>
+                        <legend>Current Order Details</legend>
                         <div id='type'></div>
                         <div id='choice'>
                         </div>
@@ -303,6 +303,16 @@
             var qty = sessionStorage.getItem('quantity');
             if (qty == 1) {
                 $("#decrease_el").hide();
+            }
+            var more_order = sessionStorage.getItem("more_order");
+
+            if(more_order!=null&&more_order!=undefined&&more_order!="null"){
+                $("#cart_btn").show();
+                $("#order_count").empty();
+                $("#order_count").append('<sup style="font-size: 1.2em;font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
+                $("#menu_items").addClass("with_cart");
+            }else{
+                $("#cart_btn").hide();
             }
             $('#item_ingredients').append('<h6><b>Ingredients</b></h6>');
             $('#choice').append('<h6><b>Choice - </b>' + sessionStorage.getItem('item_name') + '</h6>');
