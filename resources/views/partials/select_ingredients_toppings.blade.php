@@ -418,6 +418,7 @@
 
         cart_request.onsuccess = function (event) {
             db_cart = event.target.result;
+            count_orders(db_cart);
         };
         cart_request.onupgradeneeded = function (event) {
             db_cart = event.target.result;
@@ -852,6 +853,18 @@
             }
         }
 
+        function count_orders(db_cart) {
+//        console.log("carting pano");
+            var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
+            var countRequest = objectStore.count();
+            console.log("count req", countRequest);
+            countRequest.onsuccess = function () {
+                var count = countRequest.result;
+                console.log("Count", count);
+                sessionStorage.setItem("order_quantity",count);
+//                $("#order_count").append('<sup style="font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
+            }
+        }
         function readAll(db) {
             var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
             objectStore.openCursor().onsuccess = function (event) {
@@ -1123,7 +1136,7 @@
             var ingredients = [];
             var toppings = [];
             var drinks = [];
-            sessionStorage.setItem("order_quantity", count);
+//            sessionStorage.setItem("order_quantity", count);
             var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
             objectStore.openCursor().onsuccess = function (event) {
                 var toppingsStore = db_toppings.transaction(["selected_toppings"], "readwrite").objectStore("selected_toppings");
@@ -1148,7 +1161,7 @@
                                     cursor_2.continue();
                                 }
                                 else{
-                                    var order = {order_item_number:sessionStorage.getItem("order_quantity"),item_name:sessionStorage.getItem('item_name'),item_category: sessionStorage.getItem('item_category'),
+                                    var order = {order_item_number:count.toString(),item_name:sessionStorage.getItem('item_name'),item_category: sessionStorage.getItem('item_category'),
                                         bread_type:sessionStorage.getItem('bread_type') ,toast_type:sessionStorage.getItem('selected_toast'),
                                         quantity:sessionStorage.getItem('quantity'),prize:Number(sessionStorage.getItem('total_due')).toFixed(2),
                                         ingredients:ingredients,toppings:toppings,drinks:drinks};

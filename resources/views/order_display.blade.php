@@ -324,7 +324,7 @@
         clearDrinks(db);
     };
     request.onupgradeneeded = function (event) {
-        var db = event.target.result;
+        db = event.target.result;
         var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id", autoIncrement: true});
         var objectStore = db.createObjectStore("selected_drinks", {keyPath: "id", autoIncrement: true});
     }
@@ -334,11 +334,14 @@
     };
 
     cart_request.onsuccess = function (event) {
-        db_cart = request.result;
+        db_cart = cart_request.result;
+        count_orders(db_cart);
     };
     cart_request.onupgradeneeded = function (event) {
         db_cart = event.target.result;
+//        console.log("cutting");
         var objectStore = db_cart.createObjectStore("complete_orders", {keyPath: "id", autoIncrement: true});
+
     }
     toppings_request.onerror = function (event) {
         console.log("error: ", event);
@@ -358,6 +361,18 @@
         });
         transaction.oncomplete = function (event) {
             clearToppings(db_toppings);
+        }
+    }
+    function count_orders(db_cart) {
+//        console.log("carting pano");
+        var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
+        var countRequest = objectStore.count();
+        console.log("count req", countRequest);
+        countRequest.onsuccess = function () {
+            var count = countRequest.result;
+            console.log("Count", count);
+            sessionStorage.setItem("order_quantity",count);
+            $("#order_count").append('<sup style="font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
         }
     }
     function clearIngredients(db) {
@@ -398,7 +413,7 @@
           if(more_order!=null&&more_order!=undefined&&more_order!="null"){
               $("#cart_btn").show();
               $("#order_count").empty();
-              $("#order_count").append('<sup style="font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
+
               $("#menu_items").addClass("with_cart");
           }else{
               $("#cart_btn").hide();
