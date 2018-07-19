@@ -417,11 +417,11 @@
         };
 
         cart_request.onsuccess = function (event) {
-            db_cart = request.result;
+            db_cart = event.target.result;
         };
         cart_request.onupgradeneeded = function (event) {
             db_cart = event.target.result;
-            var objectStore = db.createObjectStore("complete_orders", {keyPath: "id", autoIncrement: true});
+            var objectStore = db_cart.createObjectStore("complete_orders", {keyPath: "id", autoIncrement: true});
         }
         request.onerror = function (event) {
 //            console.log("error: ", event);
@@ -1120,10 +1120,59 @@
 
         function add_another_order() {
             var count = Number(sessionStorage.getItem("order_quantity")) + 1;
+            var ingredients = [];
+            var toppings = [];
+            var drinks = [];
             sessionStorage.setItem("order_quantity", count);
+            var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
+            objectStore.openCursor().onsuccess = function (event) {
+                var toppingsStore = db_toppings.transaction(["selected_toppings"], "readwrite").objectStore("selected_toppings");
 
-            sessionStorage.setItem("more_order", "more_order");
-            window.location.href = '/order_display';
+                var cursor = event.target.result;
+                if (cursor) {
+                    ingredients.push(cursor.value);
+                    cursor.continue();
+                }else{
+
+                    toppingsStore.openCursor().onsuccess = function (toppings_event) {
+                        var cursor_1 = toppings_event.target.result;
+                        if (cursor_1) {
+                            toppings.push(cursor_1.value);
+                            cursor_1.continue();
+                        }else{
+                            var drinksStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
+                            drinksStore.openCursor().onsuccess = function (drinks_event) {
+                                var cursor_2 = drinks_event.target.result;
+                                if (cursor_2) {
+                                    drinks.push(cursor_2.value);
+                                    cursor_2.continue();
+                                }
+                                else{
+                                    var order = {order_item_number:sessionStorage.getItem("order_quantity"),item_name:sessionStorage.getItem('item_name'),item_category: sessionStorage.getItem('item_category'),
+                                        bread_type:sessionStorage.getItem('bread_type') ,toast_type:sessionStorage.getItem('selected_toast'),
+                                        quantity:sessionStorage.getItem('quantity'),prize:Number(sessionStorage.getItem('total_due')).toFixed(2),
+                                        ingredients:ingredients,toppings:toppings,drinks:drinks};
+                                    var request_complete = db_cart.transaction(["complete_orders"], "readwrite")
+                                        .objectStore("complete_orders")
+                                        .add(order);
+                                    request_complete.onsuccess = function (event) {
+                                        sessionStorage.setItem("more_order", "more_order");
+                                        window.location.href = '/order_display';
+                                    }
+                                    request_complete.onerror = function (event) {
+                                        console.log("error", event);
+                                    }
+                                }
+                            };
+
+                        }
+
+                    };
+
+                }
+
+            };
+
         }
 
         function extra_toppings_select(obj) {
