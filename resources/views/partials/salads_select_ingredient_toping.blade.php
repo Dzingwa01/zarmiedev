@@ -688,7 +688,6 @@
         }
 
         function add_another_order() {
-
                 var count = Number(sessionStorage.getItem("order_quantity")) + 1;
                 var ingredients = [];
                 var toppings = [];

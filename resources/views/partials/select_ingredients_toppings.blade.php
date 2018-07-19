@@ -258,7 +258,9 @@
                             </div>
                         </div>
                     </div>
-                    <div id="checkout_div" class="col s12">Test 2</div>
+                    <div id="checkout_div" class="col s12">
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -860,8 +862,11 @@
             console.log("count req", countRequest);
             countRequest.onsuccess = function () {
                 var count = countRequest.result;
-                console.log("Count", count);
+
                 sessionStorage.setItem("order_quantity",count);
+                if(count==0){
+                    $("#checkout_list").hide();
+                }
 //                $("#order_count").append('<sup style="font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
             }
         }
@@ -1024,6 +1029,7 @@
                 $("#order_count").empty();
                 $("#order_count").append('<sup style="font-weight: bolder;">' + sessionStorage.getItem("order_quantity") + '*</sup>');
                 $("#menu_items").addClass("with_cart");
+                read_all_complete_orders();
             } else {
                 $("#checkout_list").hide();
             }
@@ -1187,7 +1193,61 @@
             };
 
         }
+        function read_all_complete_orders(){
+            var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
+            objectStore.openCursor().onsuccess = function (event) {
+                var cursor = event.target.result;
+                if (cursor) {
+                    var with_order = "ord_"+cursor.value.id;
+                    $("#checkout_div").append('<div id='+cursor.value.id+' class="card"><b>'+cursor.value.quantity+' X '+cursor.value.item_name+' - ' +cursor.value.item_category+ '<br>'+cursor.value.bread_type+' - '+cursor.value.toast_type+'</b><i id='+with_order+' onclick="remove_order(this)"  class="fa fa-trash" style="float:right" style="color:red"></i><br/></div>');
+                    if(cursor.value.ingredients.length>0){
+                        var ingredients_string ="";
+                        for(var i=0;i<cursor.value.ingredients.length;i++){
+                            ingredients_string = ingredients_string+"; "+cursor.value.ingredients[i].name;
+                        }
+                        $("#"+cursor.value.order_item_number).append('<b>Ingredients: </b>'+ingredients_string+'<br/>');
+                    }else if(cursor.value.toppings.length>0){
+                        var toppings_string ="";
+                        for(var i=0;i<cursor.value.toppings.length;i++){
+                            toppings_string = toppings_string+"; "+cursor.value.toppings[i].name;
+                        }
+                        $("#"+cursor.value.order_item_number).append('<b>Toppings: </b>'+toppings_string+'<br/>');
+                    }else if(cursor.value.drinks.length>0){
+                        var drinks_string ="";
+                        for(var i=0;i<cursor.value.drinks.length;i++){
+                            toppings_string = toppings_string+"; "+cursor.value.toppings[i].name;
+                        }
+                        $("#"+cursor.value.order_item_number).append('<b>Drinks: </b>'+drinks_string+'<br/>');
+                    }
+                    cursor.continue();
+                } else {
+                }
+            };
+        }
+        function remove_order(obj){
+            var id_string = obj.id;
+            var id_array = id_string.split("_");
+            var id = id_array[1];
 
+            var request = db_cart.transaction(["complete_orders"], "readwrite")
+                .objectStore("complete_orders")
+                .delete(Number(id));
+
+            request.onsuccess = function (event) {
+                $("#"+id).remove();
+                var count = Number(sessionStorage.getItem("order_quantity"))-1;
+                sessionStorage.setItem("order_quantity",count);
+                $("#order_count").empty();
+                $("#order_count").append('<sup style="font-weight: bolder;">' + sessionStorage.getItem("order_quantity") + '*</sup>');
+                if(count==0){
+                    $("#checkout_list").hide();
+                }
+            }
+            request.onerror = function (event) {
+                console.log("error", event);
+            }
+//            alert(id);
+        }
         function extra_toppings_select(obj) {
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             var ingredients = {!!json_encode($all_ingredients) !!};
