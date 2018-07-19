@@ -29,28 +29,33 @@
           <div class="col-sm-4">
           <form>
               <fieldset>
-                <legend>Current Order Details</legend>
-               <div id='type'></div>
-                <div id ='choice'>
-                </div>
-                
-                <div id ='item_bread'>
-                </div>
-                  <div>
-                      <h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i onclick="increase_quantity()" class="fa fa-plus"></i> </a>  <a id="decrease_el" style="margin-left:1em;"><i onclick="decrease_quantity()" class="fa fa-minus"></i> </a>  </h6>
-                      <div id="item_amount">
-
-                      </div>
+                <legend>Order Details</legend>
+                  <div class="row">
+                      <p class="pull-right" style="font-weight: bolder;color:black;font-size:1.2em;" id="all_total_due"></p>
                   </div>
-                 <div id ='item_prize'></div>
-                  <div id ='item_ingredients'style="margin-top:2em;">
-                      <h6><b>Ingredients</b></h6>
+               <div id='checkout_div'>
 
-                  </div>
-                  <div id='extra_toppings_cart' style="margin-top:2em;">
-                      <h6><b>Extra Toppings </b></h6>
+               </div>
+                {{--<div id ='choice'>--}}
+                {{--</div>--}}
+                {{----}}
+                {{--<div id ='item_bread'>--}}
+                {{--</div>--}}
+                  {{--<div>--}}
+                      {{--<h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i onclick="increase_quantity()" class="fa fa-plus"></i> </a>  <a id="decrease_el" style="margin-left:1em;"><i onclick="decrease_quantity()" class="fa fa-minus"></i> </a>  </h6>--}}
+                      {{--<div id="item_amount">--}}
 
-                  </div>
+                      {{--</div>--}}
+                  {{--</div>--}}
+                 {{--<div id ='item_prize'></div>--}}
+                  {{--<div id ='item_ingredients'style="margin-top:2em;">--}}
+                      {{--<h6><b>Ingredients</b></h6>--}}
+
+                  {{--</div>--}}
+                  {{--<div id='extra_toppings_cart' style="margin-top:2em;">--}}
+                      {{--<h6><b>Extra Toppings </b></h6>--}}
+
+                  {{--</div>--}}
               </fieldset>
             </form>
           </div>
@@ -141,10 +146,23 @@
           if (!window.indexedDB) {
               window.alert("Your browser doesn't support a stable version of IndexedDB.")
           }
-          var db;
+          var db,db_cart;
           var db_toppings;
           var toppings_request = window.indexedDB.open("toppings_cart", 1);
            var request = window.indexedDB.open("order_cart",2);
+          var cart_request = window.indexedDB.open("complete_orders", 1);
+          cart_request.onerror = function (event) {
+              console.log("error: ");
+          };
+
+          cart_request.onsuccess = function (event) {
+              db_cart = event.target.result;
+              count_orders(db_cart);
+          };
+          cart_request.onupgradeneeded = function (event) {
+              db_cart = event.target.result;
+              var objectStore = db_cart.createObjectStore("complete_orders", {keyPath: "id", autoIncrement: true});
+          }
           request.onerror = function(event) {
               console.log("error: ");
           };
@@ -243,18 +261,117 @@
               $('#item_prize').empty();
               $('#item_prize').append('<h6> <b>Prize - </b>R' + total_due + '</h6>');
           }
+          function read_all_complete_orders(){
+              var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
+              var total_cost = 0;
+              objectStore.openCursor().onsuccess = function (event) {
+                  var cursor = event.target.result;
+                  if (cursor) {
+                      var with_order = "ord_"+cursor.value.id;
+                      total_cost+=Number(cursor.value.prize);
+                      $("#checkout_div").append('<div id='+cursor.value.id+' class="card"><b>'+cursor.value.quantity+' X '+cursor.value.item_name+' - ' +cursor.value.item_category+ '<br>'+cursor.value.bread_type+' - '+cursor.value.toast_type+'</b><i id='+with_order+' onclick="remove_order(this)"  class="fa fa-trash" style="float:right" style="color:red"></i><br/><b>Cost: </b>R'+cursor.value.prize+'</div>');
+                      console.log("ingredients",cursor.value.ingredients);
+                      var ingredients_string ="";
+                      var toppings_string ="";
+                      var drinks_string ="";
+                      if(cursor.value.ingredients.length>0){
+                          for(var i=0;i<cursor.value.ingredients.length;i++){
+                              console.log(cursor.value.ingredients[i]);
+                              ingredients_string = ingredients_string+"; "+cursor.value.ingredients[i].name;
+                          }
+                          $("#"+cursor.value.id).append('<br/><b>Ingredients: </b>'+ingredients_string+'<br/>');
+
+                      }
+                      if(cursor.value.toppings.length>0){
+                          for(var i=0;i<cursor.value.toppings.length;i++){
+                              toppings_string = toppings_string+"; "+cursor.value.toppings[i].name;
+                          }
+                          $("#"+cursor.value.id).append('<br/><b>Toppings: </b>'+toppings_string+'<br/>');
+                      }
+                      if(cursor.value.drinks.length>0){
+                          for(var i=0;i<cursor.value.drinks.length;i++){
+                              drinks_string = drinks_string+"; "+cursor.value.drinks[i].name;
+                          }
+                          $("#"+cursor.value.id).append('<br/><b>Drinks: </b>'+drinks_string+'<br/>');
+                      }
+
+                      cursor.continue();
+                  } else {
+                      $("#all_total_due").empty();
+//                      total_cost += Number(sessionStorage.getItem("total_due"));
+                      console.log("total cost",total_cost);
+                      $("#all_total_due").append('Total Due: R'+total_cost.toFixed(2));
+                  }
+              };
+          }
+          function calculate_cart(){
+              var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
+              var total_cost = 0;
+              objectStore.openCursor().onsuccess = function (event) {
+                  var cursor = event.target.result;
+                  if (cursor) {
+                      var with_order = "ord_"+cursor.value.id;
+                      total_cost+=Number(cursor.value.prize);
+                      cursor.continue();
+                  } else {
+                      $("#all_total_due").empty();
+                      total_cost += Number(sessionStorage.getItem("total_due"));
+                      $("#all_total_due").append('Total Due: R'+total_cost.toFixed(2));
+                  }
+              };
+          }
+          function remove_order(obj){
+              var id_string = obj.id;
+              var id_array = id_string.split("_");
+              var id = id_array[1];
+
+              var request = db_cart.transaction(["complete_orders"], "readwrite")
+                  .objectStore("complete_orders")
+                  .delete(Number(id));
+
+              request.onsuccess = function (event) {
+                  $("#"+id).remove();
+                  var count = Number(sessionStorage.getItem("order_quantity"))-1;
+                  sessionStorage.setItem("order_quantity",count);
+                  $("#order_count").empty();
+                  $("#order_count").append('<sup style="font-weight: bolder;">' + sessionStorage.getItem("order_quantity") + '*</sup>');
+                  calculate_cart();
+                  if(count==0){
+                      $("#checkout_list").hide();
+                  }
+              }
+              request.onerror = function (event) {
+                  console.log("error", event);
+              }
+//            alert(id);
+          }
+          function count_orders(db_cart) {
+//        console.log("carting pano");
+              var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
+              var countRequest = objectStore.count();
+              console.log("count req", countRequest);
+              countRequest.onsuccess = function () {
+                  var count = countRequest.result;
+
+                  sessionStorage.setItem("order_quantity",count);
+                  if(count==0){
+                      $("#checkout_list").hide();
+                  }
+//                $("#order_count").append('<sup style="font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
+              }
+          }
        $(document).ready(function(){
            var qty = sessionStorage.getItem('quantity');
            if(qty==1){
                $("#decrease_el").hide();
            }
-       $('#choice').append('<h6><b>Choice - </b>'+sessionStorage.getItem('item_name')+'</h6>');
-       $('#type').append('<h6> <b>Type - </b>'+sessionStorage.getItem('item_category')+'</h6>');
-        $('#item_bread').append('<h6><b>Bread Choice - </b>'+sessionStorage.getItem('bread_type') + ' - ' +sessionStorage.getItem('selected_toast') + '</h6>');
-        $('#item_prize').append('<h6> <b>Prize - </b> R '+Number(sessionStorage.getItem('total_due')).toFixed(2)+'</h6>');
-        $('#item_amount').append('<h6>'+sessionStorage.getItem('quantity')+'</h6>');
-           readAll();
-
+//       $('#choice').append('<h6><b>Choice - </b>'+sessionStorage.getItem('item_name')+'</h6>');
+//       $('#type').append('<h6> <b>Type - </b>'+sessionStorage.getItem('item_category')+'</h6>');
+//        $('#item_bread').append('<h6><b>Bread Choice - </b>'+sessionStorage.getItem('bread_type') + ' - ' +sessionStorage.getItem('selected_toast') + '</h6>');
+//        $('#item_prize').append('<h6> <b>Prize - </b> R '+Number(sessionStorage.getItem('total_due')).toFixed(2)+'</h6>');
+//        $('#item_amount').append('<h6>'+sessionStorage.getItem('quantity')+'</h6>');
+//           readAll();
+            read_all_complete_orders();
 
     $("#address_form").on('submit',function(e){
         e.preventDefault();
