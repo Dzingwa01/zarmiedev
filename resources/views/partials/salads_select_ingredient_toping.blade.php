@@ -100,7 +100,7 @@
                                     Details</a></li>
                             <li id="checkout_list" class="tab col s6"><a id="checkout_tab" class=""
                                                                          style="color:black;text-decoration: none;"
-                                                                         href="#checkout_div">Review Cart <i
+                                                                         href="#checkout_div">Review Other Orders <i
                                             class="fa fa-shopping-cart"></i><span style="color:red"
                                                                                   id="order_count"></span> </a></li>
 
@@ -344,7 +344,7 @@
                     $("#menu_items").addClass("with_cart");
                     read_all_complete_orders();
                 } else {
-                    $("#all_total_due").append('Total Due: R'+sessionStorage.getItem("total_due"));
+                    $("#all_total_due").append('Total Due: R'+Number(sessionStorage.getItem("total_due")).toFixed(2));
                     $("#checkout_list").hide();
                 }
             }

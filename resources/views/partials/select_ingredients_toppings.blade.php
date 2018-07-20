@@ -224,7 +224,7 @@
                                     Details</a></li>
                             <li id="checkout_list" class="tab col s6"><a id="checkout_tab" class=""
                                                                     style="color:black;text-decoration: none;"
-                                                                    href="#checkout_div">Review Cart <i
+                                                                    href="#checkout_div">Review Other Orders <i
                                             class="fa fa-shopping-cart"></i><span style="color:red"
                                                                                   id="order_count"></span> </a></li>
 
@@ -723,8 +723,8 @@
                     }
                 }
             }
-            var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")) - (prize + Number(sessionStorage.getItem("quantity")));
-            var new_prize = Number(sessionStorage.getItem('total_due')) - (prize * Number(sessionStorage.getItem("quantity"))).toFixed(2);
+            var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
+            var new_prize = parseFloat(sessionStorage.getItem('total_due')).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
             sessionStorage.setItem('total_due', new_prize);
             sessionStorage.setItem("complete_orders_due",complete_orders_due);
             $("#all_total_due").empty();
@@ -828,17 +828,17 @@
                 $("#drinks_cart").show();
                 var new_id = drink_id;
                 $("#selected_drinks").append('<li id=' + new_id + '>' + drink_name + '</li>');
-                console.log(selected_prize);
-                var complete_orders_due = (Number(sessionStorage.getItem("complete_orders_due"))+Number(selected_prize)).toFixed(2);
-                var new_prize = Number(sessionStorage.getItem('total_due'))+Number(selected_prize).toFixed(2);
-//                console.log(new_prize);
-//                console.log(complete_orders_due);
-//                sessionStorage.setItem("complete_orders_due",complete_orders_due);
-//                sessionStorage.setItem('total_due', new_prize);
-//                $("#all_total_due").empty();
-//                $("#all_total_due").append('Total Due: R'+complete_orders_due);
-//                $("#item_prize").empty();
-//                $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
+                console.log(sessionStorage.getItem("complete_orders_due"));
+                var complete_orders_due =  parseFloat(sessionStorage.getItem("complete_orders_due"))+parseFloat(selected_prize);
+                var new_prize = parseFloat(sessionStorage.getItem('total_due'))+parseFloat(selected_prize);
+                console.log(new_prize);
+                console.log(complete_orders_due);
+                sessionStorage.setItem("complete_orders_due",complete_orders_due);
+                sessionStorage.setItem('total_due', new_prize);
+                $("#all_total_due").empty();
+                $("#all_total_due").append('Total Due: R'+complete_orders_due);
+                $("#item_prize").empty();
+                $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
             }
             request.onerror = function (event) {
                 console.log("error", event);
@@ -881,7 +881,6 @@
             console.log("count req", countRequest);
             countRequest.onsuccess = function () {
                 var count = countRequest.result;
-
                 sessionStorage.setItem("order_quantity",count);
                 if (count>0) {
                     $("#cart_btn").show();
@@ -891,6 +890,7 @@
                     read_all_complete_orders();
                 } else {
                     $("#all_total_due").append('Total Due: R'+sessionStorage.getItem("total_due"));
+                    sessionStorage.setItem("complete_orders_due",sessionStorage.getItem("total_due"));
                     $("#checkout_list").hide();
                 }
             }
@@ -920,6 +920,7 @@
             var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
             objectStore.openCursor().onsuccess = function (event) {
                 var cursor = event.target.result;
+                var new_total =0;
                 if (cursor) {
                     $("#drinks_cart").show();
                     $('#selected_drinks').append('<li id=' + cursor.value.id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '</li>');
@@ -937,7 +938,22 @@
                 console.log("cleared successfully");
             };
         }
-
+        function clearDrinks(db) {
+            var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
+            var objectStoreRequest = objectStore.clear();
+            objectStoreRequest.onsuccess = function (event) {
+                // report the success of our request
+                console.log("cleared successfully");
+            };
+        }
+        function clearToppings(db) {
+            var objectStore = db.transaction(["selected_toppings"], "readwrite").objectStore("selected_toppings");
+            var objectStoreRequest = objectStore.clear();
+            objectStoreRequest.onsuccess = function (event) {
+                // report the success of our request
+                console.log("cleared successfully");
+            };
+        }
         function removeTopping(topping_id, db_toppings) {
             var request = db_toppings.transaction(["selected_toppings"], "readwrite")
                 .objectStore("selected_toppings")
@@ -1138,6 +1154,8 @@
                 $("#more_orders").modal();
             });
             $("#ingredient_toppings_back").on('click', function () {
+                clearDrinks(db)
+                clearToppings(db_toppings);
                 window.history.back();
             });
 

@@ -370,9 +370,13 @@
         console.log("count req", countRequest);
         countRequest.onsuccess = function () {
             var count = countRequest.result;
-            console.log("Count", count);
-            sessionStorage.setItem("order_quantity",count);
-            $("#order_count").append('<sup style="font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
+           if(count==0){
+               $("#cart_btn").hide();
+           }else{
+               sessionStorage.setItem("order_quantity",count);
+               $("#order_count").append('<sup style="font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
+           }
+
         }
     }
     function clearIngredients(db) {
@@ -410,14 +414,14 @@
           $('.collapsible').collapsible();
           var more_order = sessionStorage.getItem("more_order");
 
-          if(more_order!=null&&more_order!=undefined&&more_order!="null"){
-              $("#cart_btn").show();
-              $("#order_count").empty();
-
-              $("#menu_items").addClass("with_cart");
-          }else{
-              $("#cart_btn").hide();
-          }
+//          if(more_order!=null&&more_order!=undefined&&more_order!="null"){
+//              $("#cart_btn").show();
+//              $("#order_count").empty();
+//
+//              $("#menu_items").addClass("with_cart");
+//          }else{
+//              $("#cart_btn").hide();
+//          }
           for(var i=0;i<categories.length;i++){
 //              console.log("category",categories[i]);
               $.each(menu_items, function(idx,obj){
