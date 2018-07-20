@@ -831,14 +831,14 @@
                 console.log(selected_prize);
                 var complete_orders_due = (Number(sessionStorage.getItem("complete_orders_due"))+Number(selected_prize)).toFixed(2);
                 var new_prize = Number(sessionStorage.getItem('total_due'))+Number(selected_prize).toFixed(2);
-                console.log(new_prize);
-                console.log(complete_orders_due);
-                sessionStorage.setItem("complete_orders_due",complete_orders_due);
-                sessionStorage.setItem('total_due', new_prize);
-                $("#all_total_due").empty();
-                $("#all_total_due").append('Total Due: R'+complete_orders_due);
-                $("#item_prize").empty();
-                $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
+//                console.log(new_prize);
+//                console.log(complete_orders_due);
+//                sessionStorage.setItem("complete_orders_due",complete_orders_due);
+//                sessionStorage.setItem('total_due', new_prize);
+//                $("#all_total_due").empty();
+//                $("#all_total_due").append('Total Due: R'+complete_orders_due);
+//                $("#item_prize").empty();
+//                $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
             }
             request.onerror = function (event) {
                 console.log("error", event);
