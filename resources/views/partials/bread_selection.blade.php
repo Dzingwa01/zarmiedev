@@ -293,11 +293,11 @@
                 if (sessionStorage.getItem('item_number_1') == obj.item_number) {
                     if (cur_id == 'sandwich') {
                         $.each(menu_items_1, function (idx, obj) {
-
                             if (item_number == obj.item_number && obj.item_size_id == '1') {
                                 sessionStorage.setItem('item_category_price', obj.prize);
                                 sessionStorage.setItem('item_category', 'Sandwich');
                                 sessionStorage.setItem('item_id', obj.id);
+                                sessionStorage.setItem('item_size_id',1);
                             }
                         });
                     }
@@ -314,6 +314,7 @@
                             }else{
                                 sessionStorage.setItem('item_category_price', obj.prize);
                                 sessionStorage.setItem('item_category', 'Medium Sub');
+                                sessionStorage.setItem('item_size_id',2);
                             }
                             sessionStorage.setItem('item_id', obj.id);
                         }
@@ -332,6 +333,7 @@
                             }else {
                                 sessionStorage.setItem('item_category_price', obj.prize);
                                 sessionStorage.setItem('item_category', 'Large Sub');
+                                sessionStorage.setItem('item_size_id',3);
                             }
                             sessionStorage.setItem("bread_type","");
                             sessionStorage.setItem('item_id', obj.id);
@@ -349,6 +351,7 @@
                             sessionStorage.setItem('quantity', 1);
                             sessionStorage.setItem('selected_toast',"No Toast");
                             sessionStorage.setItem("bread_type","White Bread");
+                            sessionStorage.setItem('item_size_id',4);
 
                         }
                     });

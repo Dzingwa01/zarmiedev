@@ -99,12 +99,12 @@
                             <label for="mimosa">Mimosa</label>
                         </p>
 
-                        <div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>
-                            <p style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)
+                        {{--<div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>--}}
+                            {{--<p style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)--}}
                             {{--<div id='extra_toppings' >--}}
 
                             {{--</div>--}}
-                        </div>
+                        {{--</div>--}}
                     </div>
                     <hr/>
                     <div id="swap_toppings_div" hidden class="row" style="margin-top:1em;">
@@ -703,7 +703,36 @@
             $("#" + old_id).addClass('glass').removeClass('glass_unselected');
             removeTopping(id, db_toppings);
         }
-
+        function extras_select_drink_reverse(obj){
+            var id_string = obj.id.split('_');
+            var id = id_string[1];
+            let prize = 0;
+            var remove_id =".seldrink_"+id;
+            var drinks = {!! json_encode($drinks) !!};
+            let drink_name = "";
+            let selected_prize = 0;
+            let drink_id = "";
+            let ingredient_type_id = 0;
+            $("." + obj.id).remove();
+            for (var i = 0; i < drinks.length; i++) {
+                if (drinks[i].id == id) {
+                    selected_prize = drinks[i].prize;
+                }
+            }
+            console.log("selected_prizere",id);
+            console.log("selected_prize",selected_prize);
+            var complete_orders_due =  parseFloat(sessionStorage.getItem("complete_orders_due"))-parseFloat(selected_prize);
+            var new_prize = parseFloat(sessionStorage.getItem('total_due'))-parseFloat(selected_prize);
+            console.log(new_prize);
+            console.log(complete_orders_due);
+            sessionStorage.setItem("complete_orders_due",complete_orders_due);
+            sessionStorage.setItem('total_due', new_prize);
+            $("#all_total_due").empty();
+            $("#all_total_due").append('Total Due: R'+complete_orders_due);
+            $("#item_prize").empty();
+            $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');;
+            removeDrink(id);
+        }
         function extras_select_reverse(obj) {
             var id_string = obj.id.split('_');
             var id = id_string[1];
@@ -731,7 +760,6 @@
             $("#all_total_due").append('Total Due: R'+complete_orders_due.toFixed(2));
             $("#item_prize").empty();
             $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
-
         }
 
         function toTitleCase(str) {
@@ -826,13 +854,12 @@
 
             request.onsuccess = function (event) {
                 $("#drinks_cart").show();
-                var new_id = drink_id;
-                $("#selected_drinks").append('<li id=' + new_id + '>' + drink_name + '</li>');
-                console.log(sessionStorage.getItem("complete_orders_due"));
+                var new_id = "seldrink_"+drink_id;
+                var new_class="seldrink_"+drink_id;
+                $("#selected_drinks").append('<li class='+new_class+'><b>' + drink_name + '</b>  <i id=' + new_id +' onclick="extras_select_drink_reverse(this)" class="fa fa-trash"></i></li>');
                 var complete_orders_due =  parseFloat(sessionStorage.getItem("complete_orders_due"))+parseFloat(selected_prize);
                 var new_prize = parseFloat(sessionStorage.getItem('total_due'))+parseFloat(selected_prize);
-                console.log(new_prize);
-                console.log(complete_orders_due);
+
                 sessionStorage.setItem("complete_orders_due",complete_orders_due);
                 sessionStorage.setItem('total_due', new_prize);
                 $("#all_total_due").empty();
@@ -841,8 +868,7 @@
                 $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
             }
             request.onerror = function (event) {
-                console.log("error", event);
-//               alert(drink_name + " already added");
+                alert("You have already added "+drink_name +" you can increase the quantity in the cart");
             }
         }
 
@@ -966,7 +992,18 @@
                 console.log("error", event);
             }
         }
+        function removeDrink(id) {
+            var request = db.transaction(["selected_drinks"], "readwrite")
+                .objectStore("selected_drinks")
+                .delete(id);
 
+            request.onsuccess = function (event) {
+                console.log("drink removed", event);
+            }
+            request.onerror = function (event) {
+                console.log("error", event);
+            }
+        }
         function removeIngredient(ingredient_id) {
             var request = db.transaction(["selected_ingredients"], "readwrite")
                 .objectStore("selected_ingredients")
@@ -998,8 +1035,13 @@
             var total_due_single = Number(item_prize / quantity).toFixed(2);
             var total_due = Number(new_qty * total_due_single).toFixed(2);
             sessionStorage.setItem('total_due', total_due);
+            var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - total_due_single;
+            complete_orders_due+=total_due;
+            sessionStorage.setItem("complete_orders_due",complete_orders_due);
             $('#item_prize').empty();
             $('#item_prize').append('<h6> <b>Prize - </b>R' + total_due + '</h6>');
+            $("#all_total_due").empty();
+            $("#all_total_due").append('Total Due: R'+Number(complete_orders_due).toFixed(2));
         }
 
         function increase_quantity() {
@@ -1018,8 +1060,14 @@
             var item_prize = Number(sessionStorage.getItem("total_due")).toFixed(2) / quantity;
             var total_due = Number(item_prize * new_qty).toFixed(2);
             sessionStorage.setItem('total_due', total_due);
+            var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - item_prize;
+
+            complete_orders_due+=total_due;
+            sessionStorage.setItem("complete_orders_due",complete_orders_due);
             $('#item_prize').empty();
             $('#item_prize').append('<h6> <b>Prize - </b>R' + total_due + '</h6>');
+            $("#all_total_due").empty();
+            $("#all_total_due").append('Total Due: R'+Number(complete_orders_due).toFixed(2));
         }
 
         function addDefault() {
@@ -1364,14 +1412,15 @@
         function extra_toppings_select(obj) {
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             var ingredients = {!!json_encode($all_ingredients) !!};
+            console.log("exra toppings",extra_toppings);
             $("#extra_toppings_list").empty();
             for (var i = 0; i < extra_toppings.length; i++) {
-                if (extra_toppings[i].id == obj.id) {
+                if (extra_toppings[i].id == obj.id&&sessionStorage.getItem("item_size_id")==extra_toppings[i].item_size_id) {
                     for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
 //                        console.log(extra_toppings[i].item_ingredients[x].ingredient_id);
                         for (var y = 0; y < ingredients.length; y++) {
-                            if (ingredients[y].id == extra_toppings[i].item_ingredients[x].ingredient_id) {
-                                $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + ingredients[y].name + ' - ' + extra_toppings[x].prize + '</button>');
+                            if (ingredients[y].id == extra_toppings[i].item_ingredients[x].ingredient_id&&extra_toppings[i].size_name) {
+                                $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + ingredients[y].name + ' - ' + Number(extra_toppings[i].prize).toFixed(2) + '</button>');
                             }
                         }
                     }
@@ -1401,30 +1450,30 @@
             var new_id = "rev_" + id;
 
             let prize = 0;
+            var standard_toppings =
+                    {!! json_encode($all_ingredients) !!}
             var extra_toppings ={!! json_encode($extra_toppings) !!};
-            console.log("extra_toppings", extra_toppings);
+//            console.log("extra_toppings", extra_toppings);
+//            console.log("standard_toppings", standard_toppings);
             for (var i = 0; i < extra_toppings.length; i++) {
                 if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
                     for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
                         if (id == extra_toppings[i].item_ingredients[x].ingredient_id) {
                             prize = extra_toppings[i].prize;
-//                            console.log("prize",prize);
                         }
                     }
                 }
             }
-            var standard_toppings =
-                    {!! json_encode($all_ingredients) !!}
+
             for (var i = 0; i < standard_toppings.length; i++) {
                 if (standard_toppings[i].id == id) {
-                    addTopping(standard_toppings[i].id, standard_toppings[i].name, standard_toppings[i].prize, standard_toppings[i].category);
-//                    var previous_total = Number(sessionStorage.getItem("total_due"));
-                    var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due"))+ (prize + Number(sessionStorage.getItem("quantity")));
+                    addTopping(standard_toppings[i].id, standard_toppings[i].name, prize, standard_toppings[i].category);
+                    var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due"))+ (prize * parseInt(sessionStorage.getItem("quantity")));
                     sessionStorage.setItem("complete_orders_due",complete_orders_due);
-                    var new_prize = Number(sessionStorage.getItem('total_due')) + (prize + Number(sessionStorage.getItem("quantity")));
+                    var new_prize = Number(sessionStorage.getItem('total_due')) + (prize * parseInt(sessionStorage.getItem("quantity")));
                     sessionStorage.setItem('total_due', new_prize);
                     $("#all_total_due").empty();
-                    $("#all_total_due").append('Total Due: R'+complete_orders_due.toFixed(2));
+                    $("#all_total_due").append('Total Due: R'+Number(complete_orders_due).toFixed(2));
                     $("#item_prize").empty();
                     $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
                     $('#extra_toppings_cart').append('<li id=' + new_id + ' style="font-weight:bolder;margin-left:1em;color:black;" onclick="extras_select_reverse(this);" >' + standard_toppings[i].name + '</li>');
