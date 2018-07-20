@@ -66,6 +66,7 @@
          <div class="col-sm-5 card" style="margin-left:2em; ">
              <div class="row">
                  <p class="pull-right" style="font-weight: bolder;color:black;font-size:1.2em;" id="all_total_due"></p>
+                 {{--<span class="pull-right">*Cart and the current item</span>--}}
              </div>
              <div class="row">
                  <div class="col s12">
@@ -186,6 +187,7 @@
               $("#menu_items").addClass("with_cart");
               read_all_complete_orders();
           } else {
+              $("#all_total_due").append('Total Due: R'+sessionStorage.getItem("total_due"));
               $("#checkout_list").hide();
           }
       }
@@ -415,7 +417,7 @@
               var with_order = "ord_"+cursor.value.id;
               total_cost+=Number(cursor.value.prize);
               $("#checkout_div").append('<div id='+cursor.value.id+' class="card"><b>'+cursor.value.quantity+' X '+cursor.value.item_name+' - ' +cursor.value.item_category+ '<br>'+cursor.value.bread_type+' - '+cursor.value.toast_type+'</b><i id='+with_order+' onclick="remove_order(this)"  class="fa fa-trash" style="float:right" style="color:red"></i><br/><b>Cost: </b>R'+cursor.value.prize+'</div>');
-              console.log("ingredients",cursor.value.ingredients);
+//              console.log("ingredients",cursor.value.ingredients);
               var ingredients_string ="";
               var toppings_string ="";
               var drinks_string ="";
@@ -431,13 +433,13 @@
                   for(var i=0;i<cursor.value.toppings.length;i++){
                       toppings_string = toppings_string+"; "+cursor.value.toppings[i].name;
                   }
-                  $("#"+cursor.value.id).append('<br/><b>Toppings: </b>'+toppings_string+'<br/>');
+                  $("#"+cursor.value.id).append('<br/><b>Extra Toppings: </b>'+toppings_string);
               }
               if(cursor.value.drinks.length>0){
                   for(var i=0;i<cursor.value.drinks.length;i++){
                       drinks_string = drinks_string+"; "+cursor.value.drinks[i].name;
                   }
-                  $("#"+cursor.value.id).append('<br/><b>Drinks: </b>'+drinks_string+'<br/>');
+                  $("#"+cursor.value.id).append('<br/><b>Drinks: </b>'+drinks_string);
               }
 
               cursor.continue();
@@ -445,7 +447,8 @@
               $("#all_total_due").empty();
 //                      total_cost += Number(sessionStorage.getItem("total_due"));
               console.log("total cost",total_cost);
-              $("#all_total_due").append('Total Due: R'+total_cost.toFixed(2));
+//              $("#all_total_due").append('Total Due: R'+total_cost.toFixed(2));
+              calculate_cart();
           }
       };
   }

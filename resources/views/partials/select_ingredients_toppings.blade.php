@@ -214,6 +214,7 @@
             <div class="col-sm-5 card" style="margin-left:2em; ">
                 <div class="row">
                     <p class="pull-right" style="font-weight: bolder;color:black;font-size:1.2em;" id="all_total_due"></p>
+                    {{--<span class="pull-right">*Cart and the current item</span>--}}
                 </div>
                 <div class="row">
                     <div class="col s12">
@@ -722,8 +723,12 @@
                     }
                 }
             }
+            var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")) - (prize + Number(sessionStorage.getItem("quantity")));
             var new_prize = Number(sessionStorage.getItem('total_due')) - (prize * Number(sessionStorage.getItem("quantity"))).toFixed(2);
             sessionStorage.setItem('total_due', new_prize);
+            sessionStorage.setItem("complete_orders_due",complete_orders_due);
+            $("#all_total_due").empty();
+            $("#all_total_due").append('Total Due: R'+complete_orders_due.toFixed(2));
             $("#item_prize").empty();
             $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
 
@@ -823,6 +828,17 @@
                 $("#drinks_cart").show();
                 var new_id = drink_id;
                 $("#selected_drinks").append('<li id=' + new_id + '>' + drink_name + '</li>');
+                console.log(selected_prize);
+                var complete_orders_due = (Number(sessionStorage.getItem("complete_orders_due"))+Number(selected_prize)).toFixed(2);
+                var new_prize = Number(sessionStorage.getItem('total_due'))+Number(selected_prize).toFixed(2);
+                console.log(new_prize);
+                console.log(complete_orders_due);
+                sessionStorage.setItem("complete_orders_due",complete_orders_due);
+                sessionStorage.setItem('total_due', new_prize);
+                $("#all_total_due").empty();
+                $("#all_total_due").append('Total Due: R'+complete_orders_due);
+                $("#item_prize").empty();
+                $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
             }
             request.onerror = function (event) {
                 console.log("error", event);
@@ -874,6 +890,7 @@
                     $("#menu_items").addClass("with_cart");
                     read_all_complete_orders();
                 } else {
+                    $("#all_total_due").append('Total Due: R'+sessionStorage.getItem("total_due"));
                     $("#checkout_list").hide();
                 }
             }
@@ -1031,18 +1048,7 @@
                 sessionStorage.setItem("order_quantity", 0);
             }
             var more_order = sessionStorage.getItem("more_order");
-//            count_orders(){
-//
-//            }
-//            if (more_order != null && more_order != undefined && more_order != "null") {
-//                $("#cart_btn").show();
-//                $("#order_count").empty();
-//                $("#order_count").append('<sup style="font-weight: bolder;">' + sessionStorage.getItem("order_quantity") + '*</sup>');
-//                $("#menu_items").addClass("with_cart");
-//                read_all_complete_orders();
-//            } else {
-//                $("#checkout_list").hide();
-//            }
+
             $('.step-container').stepMaker({
                 steps: ['Item Size', 'Bread Choice', 'Ingredients', 'Delivery', 'Receipt'],
                 currentStep: 3
@@ -1077,11 +1083,7 @@
                 $("#combination_trays_div").show();
             }
             for (var i = 0; i < extra_toppings.length; i++) {
-
                 if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
-                    console.log("check me", sessionStorage.getItem('item_category') + extra_toppings[i].size_name);
-//                    $("#extra_toppings").append('<h1>Ndeip</h1>');
-                    console.log("checllll", extra_toppings[i].name);
                     $("#extra_toppings").append(' <button id=' + extra_toppings[i].id + ' class="glass" onclick="extra_toppings_select(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + extra_toppings[i].name + '</button>');
                 }
             }
@@ -1153,7 +1155,6 @@
             var ingredients = [];
             var toppings = [];
             var drinks = [];
-//            sessionStorage.setItem("order_quantity", count);
             var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
             objectStore.openCursor().onsuccess = function (event) {
                 var toppingsStore = db_toppings.transaction(["selected_toppings"], "readwrite").objectStore("selected_toppings");
@@ -1283,7 +1284,7 @@
                         for(var i=0;i<cursor.value.toppings.length;i++){
                             toppings_string = toppings_string+"; "+cursor.value.toppings[i].name;
                         }
-                        $("#"+cursor.value.id).append('<br/><b>Toppings: </b>'+toppings_string+'<br/>');
+                        $("#"+cursor.value.id).append('<br/><b>Extra Toppings: </b>'+toppings_string+'<br/>');
                     }
                     if(cursor.value.drinks.length>0){
                         for(var i=0;i<cursor.value.drinks.length;i++){
@@ -1295,8 +1296,8 @@
                     cursor.continue();
                 } else {
                     $("#all_total_due").empty();
-//                      total_cost += Number(sessionStorage.getItem("total_due"));
-                    console.log("total cost",total_cost);
+                      total_cost += Number(sessionStorage.getItem("total_due"));
+                    sessionStorage.setItem("complete_orders_due",total_cost);
                     $("#all_total_due").append('Total Due: R'+total_cost.toFixed(2));
                 }
             };
@@ -1399,8 +1400,13 @@
             for (var i = 0; i < standard_toppings.length; i++) {
                 if (standard_toppings[i].id == id) {
                     addTopping(standard_toppings[i].id, standard_toppings[i].name, standard_toppings[i].prize, standard_toppings[i].category);
+//                    var previous_total = Number(sessionStorage.getItem("total_due"));
+                    var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due"))+ (prize + Number(sessionStorage.getItem("quantity")));
+                    sessionStorage.setItem("complete_orders_due",complete_orders_due);
                     var new_prize = Number(sessionStorage.getItem('total_due')) + (prize + Number(sessionStorage.getItem("quantity")));
                     sessionStorage.setItem('total_due', new_prize);
+                    $("#all_total_due").empty();
+                    $("#all_total_due").append('Total Due: R'+complete_orders_due.toFixed(2));
                     $("#item_prize").empty();
                     $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
                     $('#extra_toppings_cart').append('<li id=' + new_id + ' style="font-weight:bolder;margin-left:1em;color:black;" onclick="extras_select_reverse(this);" >' + standard_toppings[i].name + '</li>');
@@ -1473,11 +1479,6 @@
                     ingredient_name = ingredients_others[i].name;
                 }
             }
-//            if(selected_prize!=null &&ingredients_others[i].prize!=null && selected_prize<ingredients_others[i].prize){
-//                var cur_prize = sessionStorage.getItem("total_due");
-//                cur_prize += Number(selected_prize) - ingredients_others[i].prize;
-//                sessionStorage.setItem("item_prize", cur_prize);
-//            }
             addIngredient(new_id, ingredient_name, selected_prize, ingredient_type);
 
         }

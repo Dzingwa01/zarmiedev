@@ -286,7 +286,7 @@
                           for(var i=0;i<cursor.value.toppings.length;i++){
                               toppings_string = toppings_string+"; "+cursor.value.toppings[i].name;
                           }
-                          $("#"+cursor.value.id).append('<br/><b>Toppings: </b>'+toppings_string+'<br/>');
+                          $("#"+cursor.value.id).append('<br/><b>Extra Toppings: </b>'+toppings_string+'<br/>');
                       }
                       if(cursor.value.drinks.length>0){
                           for(var i=0;i<cursor.value.drinks.length;i++){

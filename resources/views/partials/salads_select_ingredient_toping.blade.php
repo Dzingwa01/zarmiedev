@@ -90,6 +90,7 @@
             <div class="col-sm-5 card" style="margin-left:2em; ">
                 <div class="row">
                     <p class="pull-right" style="font-weight: bolder;color:black;font-size:1.2em;" id="all_total_due"></p>
+                    {{--<span class="pull-right">*Cart and the current item</span>--}}
                 </div>
                 <div class="row">
                     <div class="col s12">
@@ -282,6 +283,7 @@
 
         cart_request.onsuccess = function (event) {
             db_cart = cart_request.result;
+            count_orders(db_cart);
         };
         cart_request.onupgradeneeded = function (event) {
             db_cart = event.target.result;
@@ -326,6 +328,27 @@
 //                addDefaultToppings();
             }
         }
+        function count_orders(db_cart) {
+//        console.log("carting pano");
+            var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
+            var countRequest = objectStore.count();
+            console.log("count req", countRequest);
+            countRequest.onsuccess = function () {
+                var count = countRequest.result;
+
+                sessionStorage.setItem("order_quantity",count);
+                if (count>0) {
+                    $("#cart_btn").show();
+                    $("#order_count").empty();
+                    $("#order_count").append('<sup style="font-weight: bolder;">' + sessionStorage.getItem("order_quantity") + '*</sup>');
+                    $("#menu_items").addClass("with_cart");
+                    read_all_complete_orders();
+                } else {
+                    $("#all_total_due").append('Total Due: R'+sessionStorage.getItem("total_due"));
+                    $("#checkout_list").hide();
+                }
+            }
+        }
         function read_all_complete_orders(){
             var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
             var total_cost = 0;
@@ -351,7 +374,7 @@
                         for(var i=0;i<cursor.value.toppings.length;i++){
                             toppings_string = toppings_string+"; "+cursor.value.toppings[i].name;
                         }
-                        $("#"+cursor.value.id).append('<br/><b>Toppings: </b>'+toppings_string+'<br/>');
+                        $("#"+cursor.value.id).append('<br/><b>Extra Toppings: </b>'+toppings_string+'<br/>');
                     }
                     if(cursor.value.drinks.length>0){
                         for(var i=0;i<cursor.value.drinks.length;i++){
@@ -363,8 +386,8 @@
                     cursor.continue();
                 } else {
                     $("#all_total_due").empty();
-//                      total_cost += Number(sessionStorage.getItem("total_due"));
-                    console.log("total cost",total_cost);
+                      total_cost += Number(sessionStorage.getItem("total_due"));
+                    sessionStorage.setItem("complete_orders_due",total_cost);
                     $("#all_total_due").append('Total Due: R'+total_cost.toFixed(2));
                 }
             };
@@ -693,18 +716,18 @@
                 $("#no_pasta_message").show();
                 $("#no_pasta_message").append("No available swap options for this salad");
             }
-            var more_order = sessionStorage.getItem("more_order");
-
-            if(more_order!=null&&more_order!=undefined&&more_order!="null"){
-//                $("#cart_btn").show();
-                $("#order_count").empty();
-                $("#order_count").append('<sup style="font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
-//                $("#menu_items").addClass("with_cart");
-                read_all_complete_orders();
-            }else{
-                $("#cart_btn").hide();
-                $("#checkout_list").hide();
-            }
+//            var more_order = sessionStorage.getItem("more_order");
+//
+//            if(more_order!=null&&more_order!=undefined&&more_order!="null"){
+////                $("#cart_btn").show();
+//                $("#order_count").empty();
+//                $("#order_count").append('<sup style="font-weight: bolder;">'+sessionStorage.getItem("order_quantity")+'*</sup>');
+////                $("#menu_items").addClass("with_cart");
+//                read_all_complete_orders();
+//            }else{
+//                $("#cart_btn").hide();
+//                $("#checkout_list").hide();
+//            }
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             $("#choice_id").empty();
             $("#choice_2").empty();
