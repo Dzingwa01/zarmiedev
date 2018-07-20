@@ -257,7 +257,7 @@
 
                         </div>
                         <div id='drinks_cart' style="margin-top:2em;" hidden>
-                            <h6><b>Something to drink </b></h6>
+                            <h6><b>Something to drink - *Click to remove </b></h6>
                             <div id="selected_drinks">
                             </div>
                         </div>
@@ -737,7 +737,7 @@
             var id_string = obj.id.split('_');
             var id = id_string[1];
             let prize = 0;
-            $("#" + obj.id).remove();
+            $("." + obj.id).remove();
 
             removeTopping(id, db_toppings);
             var extra_toppings ={!! json_encode($extra_toppings) !!};
@@ -949,8 +949,10 @@
                 var new_total =0;
                 if (cursor) {
                     $("#drinks_cart").show();
-                    $('#selected_drinks').append('<li id=' + cursor.value.id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '</li>');
-                    cursor.continue();
+                    var new_id = "seldrink_"+cursor.value.id;
+                    var new_class="seldrink_"+cursor.value.id;
+                    $("#selected_drinks").append('<li class='+new_class+'><b>' + cursor.value.name + ' </b>   <i id=' + new_id +' onclick="extras_select_drink_reverse(this)" class="fa fa-trash"></i></li>');
+                     cursor.continue();
                 } else {
                 }
             };
@@ -1434,8 +1436,12 @@
             objectStore.openCursor().onsuccess = function (event) {
                 var cursor = event.target.result;
                 if (cursor) {
-                    $("#" + cursor.value.id).remove();
-                    $('#extra_toppings_cart').append('<li id=' + cursor.value.id + ' style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '</li>');
+                    var extra_topps = "extratops_"+cursor.value.id;
+                    $("." + extra_topps).remove();
+
+                    $('#extra_toppings_cart').append('<li class=' + extra_topps + ' style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '<i id=' + extra_topps+' onclick="extras_select_reverse(this)" class="fa fa-trash"></i></li>');
+
+//                    $('#extra_toppings_cart').append('<li id=' + cursor.value.id + ' style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '</li>');
 
                     cursor.continue();
                 }
@@ -1447,7 +1453,7 @@
             var id_string = obj.id.split('_');
             var id = id_string[1];
             $("#extra_toppings_cart").show();
-            var new_id = "rev_" + id;
+            var new_id = "";
 
             let prize = 0;
             var standard_toppings =
@@ -1475,8 +1481,9 @@
                     $("#all_total_due").empty();
                     $("#all_total_due").append('Total Due: R'+Number(complete_orders_due).toFixed(2));
                     $("#item_prize").empty();
+                    new_id = "extratops_"+id;
                     $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
-                    $('#extra_toppings_cart').append('<li id=' + new_id + ' style="font-weight:bolder;margin-left:1em;color:black;" onclick="extras_select_reverse(this);" >' + standard_toppings[i].name + '</li>');
+                    $('#extra_toppings_cart').append('<li class=' + new_id + ' style="font-weight:bolder;margin-left:1em;color:black;">' + standard_toppings[i].name + '<i id=' + new_id+' onclick="extras_select_reverse(this)" class="fa fa-trash"></i></li>');
 //                    $('#replaced_list').append('<span id='+another_new+'>'+standard_toppings[i].name+' replaced</span>');
                 }
             }
