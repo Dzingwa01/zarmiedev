@@ -54,27 +54,8 @@
                 </div>
                 <div class="row" id="pasta_div">
                     <p style="color:black;">You can substitute standard toppings for pasta.Lettuce, Tomato and Cucumber will be removed.</p>
-                    <button class="accordion ">Swap With Pasta Options</button>
-                    <div id="pasta_accordion" class="panel">
-                        <form id="" col="col-md-10" onsubmit="return false;">
-                            <div class="row" style="margin-top:1em;">
-                                <div id='pasta_list'>
-                                    @if(count($ingredients)>0)
-                                        @foreach($ingredients as $ingredient)
-                                            @if($ingredient->ingredient->name=="Lettuce"||$ingredient->ingredient->name=="Tomato"||$ingredient->ingredient->name=="Cucumber")
-                                            <button class="glass" id="{{"pasta_".$ingredient->id}}"
-                                                    onclick="ingredient_select_pasta(this)"
-                                                    style="font-weight:bolder;margin-left:1em;color:white;"
-                                            >{{$ingredient->ingredient->name}}  </button>
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                    {{--<button class="btn">Swap For Pasta</button>--}}
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
+                    <button id="replace_ingredients_with_pasta" class="btn" onclick="swap_pasta()">Swap With Pasta</button>
+                    <button id="replace_pasta_swap" class="btn" onclick="replace_pasta()">Reverse Pasta Swap</button>
                 </div>
                 <div class="row">
                     <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
@@ -467,7 +448,63 @@
             var id = id_string[1];
             removeTopping(id, db_toppings);
         }
+        function replace_pasta(){
+            $("#pasta").remove();
+            var actual_ingredient = 0;
+            var ingredient_name = "";
+            var remove_id ="";
+            var type_id = "";
+            var prize = 0;
+            var ingredients = {!! $ingredients !!};
+            for (var i = 0; i < ingredients.length; i++) {
+                if (ingredients[i].ingredient.name == "Lettuce"||ingredients[i].ingredient.name == "Tomato"||ingredients[i].ingredient.name == "Cucumber") {
+                    remove_id = "rem_" + ingredients[i].ingredient.id;
+                    var id = ingredients[i].ingredient.id;
+                    ingredient_name = ingredients[i].ingredient.name;
+                    actual_ingredient = ingredients[i].id;
+                    type_id = ingredients[i].ingredient.ingredient_type_id;
+                    prize = ingredients[i].ingredient.prize;
+                    $("#ingr_" + actual_ingredient).addClass('glass').removeClass('glass_unselected');
+                    $("#"+remove_id).remove();
+                    $("#"+actual_ingredient).remove();
+                    addIngredient(actual_ingredient, ingredient_name,prize, type_id);
+                    $('#item_ingredients').append('<li id=' + actual_ingredient + '   style="font-weight:bolder;margin-left:1em;color:black;">' + ingredient_name + '</li>');
+
+                }
+            }
+            $("#replace_ingredients_with_pasta").show();
+            $("#replace_pasta_swap").hide();
+            $("#removed_list").append('<span id="pasta" style="margin-left:1em" >Pasta Removed<br/></span>');
+
+        }
+        function swap_pasta(){
+            $("#pasta").remove();
+            var actual_ingredient = 0;
+            var ingredient_name = "";
+            var remove_id ="";
+            var type_id = "";
+            var prize = 0;
+            var ingredients = {!! $ingredients !!};
+            for (var i = 0; i < ingredients.length; i++) {
+                if (ingredients[i].ingredient.name == "Lettuce"||ingredients[i].ingredient.name == "Tomato"||ingredients[i].ingredient.name == "Cucumber") {
+                    remove_id = "rem_" + ingredients[i].ingredient.id;
+                    var id = ingredients[i].ingredient.id;
+                    ingredient_name = ingredients[i].ingredient.name;
+                    actual_ingredient = ingredients[i].id;
+                    type_id = ingredients[i].ingredient.ingredient_type_id;
+                    prize = ingredients[i].ingredient.prize;
+                    $("#ingr_" + actual_ingredient).addClass('glass_unselected').removeClass('glass');
+                    $("#removed_list").append('<span id=' + remove_id + ' style="margin-left:1em" >' + ingredient_name +" removed " + '</span>');
+                    $('#' + actual_ingredient).remove();
+                            removeIngredient(actual_ingredient);
+                }
+            }
+            $("#removed_list").append('<span id="pasta" style="margin-left:1em" ><br/>Pasta Added</span>');
+            $("#replace_pasta_swap").show();
+            $("#replace_ingredients_with_pasta").hide();
+        }
         function ingredient_select_pasta(obj){
+
 
         }
         function ingredient_select_remove(obj){
@@ -636,10 +673,12 @@
         function removeIngredient(ingredient_id) {
             var request = db.transaction(["selected_ingredients"], "readwrite")
                 .objectStore("selected_ingredients")
-                .delete(ingredient_id);
+                .delete(ingredient_id.toString());
 
             request.onsuccess = function (event) {
                 console.log("ingredient removed", event);
+                console.log(ingredient_id);
+
             }
             request.onerror = function (event) {
                 console.log("error", event);
@@ -659,11 +698,18 @@
 
             $('#item_amount').append('<h6> <b>' + new_qty + '</h6>');
             sessionStorage.setItem('quantity', new_qty);
+            console.log("new quantity", new_qty);
             var item_prize = Number(sessionStorage.getItem("total_due")).toFixed(2);
-            var total_due = Number(item_prize * new_qty).toFixed(2);
+            var total_due_single = Number(item_prize / quantity).toFixed(2);
+            var total_due = Number(new_qty * total_due_single).toFixed(2);
             sessionStorage.setItem('total_due', total_due);
+            var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - total_due_single;
+            complete_orders_due+=total_due;
+            sessionStorage.setItem("complete_orders_due",complete_orders_due);
             $('#item_prize').empty();
             $('#item_prize').append('<h6> <b>Prize - </b>R' + total_due + '</h6>');
+            $("#all_total_due").empty();
+            $("#all_total_due").append('Total Due: R'+Number(complete_orders_due).toFixed(2));
         }
 
         function increase_quantity() {
@@ -679,11 +725,19 @@
 
             $('#item_amount').append('<h6> <b>' + new_qty + '</h6>');
             sessionStorage.setItem('quantity', new_qty);
-            var item_prize = Number(sessionStorage.getItem("total_due")).toFixed(2);
+            var item_prize = Number(sessionStorage.getItem("total_due")).toFixed(2) / quantity;
             var total_due = Number(item_prize * new_qty).toFixed(2);
             sessionStorage.setItem('total_due', total_due);
+            console.log(sessionStorage.getItem("complete_orders_due"));
+            var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - item_prize;
+
+            complete_orders_due+=Number(total_due);
+            console.log("compp",complete_orders_due);
+            sessionStorage.setItem("complete_orders_due",complete_orders_due);
             $('#item_prize').empty();
             $('#item_prize').append('<h6> <b>Prize - </b>R' + total_due + '</h6>');
+            $("#all_total_due").empty();
+            $("#all_total_due").append('Total Due: R'+Number(complete_orders_due).toFixed(2));
         }
 
         function addDefault() {
@@ -703,10 +757,12 @@
         $(document).ready(function () {
             $('.tabs').tabs();
             accordion_trigger();
+//            $("#replace_ingredients_with_pasta").hide();
             $('.step-container_salads').stepMaker({
                 steps: ['Salad Size', 'Ingredients', 'Delivery','Receipt'],
                 currentStep: 2
             });
+            $("#replace_pasta_swap").hide();
             if (sessionStorage.getItem("order_quantity") == null || sessionStorage.getItem("order_quantity") == undefined) {
                 sessionStorage.setItem("order_quantity", 0);
             }

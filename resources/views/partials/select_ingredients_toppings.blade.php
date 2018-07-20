@@ -1063,8 +1063,8 @@
             var total_due = Number(item_prize * new_qty).toFixed(2);
             sessionStorage.setItem('total_due', total_due);
             var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - item_prize;
-
-            complete_orders_due+=total_due;
+            console.log("complete orders",complete_orders_due);
+            complete_orders_due+=Number(total_due);
             sessionStorage.setItem("complete_orders_due",complete_orders_due);
             $('#item_prize').empty();
             $('#item_prize').append('<h6> <b>Prize - </b>R' + total_due + '</h6>');

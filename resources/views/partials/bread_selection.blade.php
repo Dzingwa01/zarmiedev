@@ -360,6 +360,7 @@
             });
             if(sessionStorage.getItem("route_item_category")==7){
                 var link_to = sessionStorage.getItem('item_id');
+                sessionStorage.setItem("complete_orders_due",sessionStorage.getItem("total_due"));
                 window.location.href = '/select_ingredients_toppings_salads/'+link_to;
             }else if(sessionStorage.getItem('item_category')=="Wrap"){
                 var link_to = sessionStorage.getItem('item_id');

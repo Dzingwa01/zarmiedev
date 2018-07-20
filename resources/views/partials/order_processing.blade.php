@@ -2,7 +2,7 @@
 @section('content')
     <div class="container-fluid" style="margin-top:5em">
         <div class="row">
-            <div class="step-container" style="width: 100%; margin: 0 auto"></div>
+            <div class="step-container_p" style="width: 100%; margin: 0 auto"></div>
         </div>
 
         <div class="row">
@@ -149,6 +149,8 @@
         }
 
     </style>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <script>
         <?php $menu_items = json_encode($menu_items);?>
             window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
@@ -335,10 +337,7 @@
         $(document).ready(function () {
             $('.tabs').tabs();
             $("#choice_normals").append(sessionStorage.getItem('item_name') + " - " + sessionStorage.getItem('item_category'));
-            $('.step-container').stepMaker({
-                steps: ['Item Size', 'Bread Choice', 'Ingredients', 'Delivery', 'Receipt'],
-                currentStep: 2
-            });
+
             if (sessionStorage.getItem('item_category') == "Medium Sub" || sessionStorage.getItem('item_category') == "Large Sub") {
                 $("#no_toast").attr("checked", true);
                 sessionStorage.setItem('selected_toast', 'No Toast');
@@ -346,7 +345,10 @@
             }
             var menu_items = {!!$menu_items!!};
             initializeQuantities();
-
+            $('.step-container_p').stepMaker({
+                steps: ['Item Size', 'Bread Choice', 'Ingredients', 'Delivery', 'Receipt'],
+                currentStep: 2
+            });
             $.each(menu_items, function (idx, obj) {
                 if (item_number == obj.item_number) {
                     var name_cur = obj.item_name;
