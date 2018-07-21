@@ -253,12 +253,9 @@ class OrderController extends Controller
         return view('order_display', compact('menu_items', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread','menu_items_1'));
     }
 
-    function gotToCompletion($id)
+    function gotToCompletion()
     {
-        $menu_item = Menu::find($id);
-        $item_categories = Category::all();
-        $item_sizes = Item_Size::all();
-        $ingredients = $menu_item->item_ingredients;
+        $ingredients = Ingredient::all();
         return view('partials.order_completion', compact('ingredients'));
     }
 

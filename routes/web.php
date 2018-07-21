@@ -43,7 +43,7 @@ Route::get("get_ingredients","IngredientController@getIngredients");
 Route::get('contact_display','OrderController@showContactUsPage');
 Route::get('order_display','OrderController@getOrdersIndex');
 Route::get('process_order/{id}','OrderController@goToProcessOrder');
-Route::get('/order_completion/{id}','OrderController@gotToCompletion');
+Route::get('/order_completion','OrderController@gotToCompletion');
 Route::get('get_user_by_phone/{phone_number}','OrderController@getUserByPhone');
 Route::get('bread_selection/{id}','OrderController@showBread');
 Route::get('/address_selection/{id}','OrderController@showAddressSelection');
