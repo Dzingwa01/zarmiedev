@@ -16,36 +16,52 @@
                                 <input name="group01" class="bread" value="Collect" type="radio"
                                        id="collect"/>
                                 <label for="collect">Collect</label>
-                            </p>
-                            <p>
+
                                 <input name="group01" class="bread" type="radio" id="delivery"
                                        value="Delivery"/>
                                 <label for="delivery">Delivery</label>
                             </p>
                         </div>
-                        <div class="input-field col s6">
+                        <div class="col s6">
+                            <p>
+                                <input name="group02" class="bread" value="for_now" type="radio" checked
+                                       id="for_now"/>
+                                <label for="for_now">For Now</label>
+
+                                <input name="group02" class="bread" type="radio" id="for_later"
+                                       value="for_later"/>
+                                <label for="for_later">Specify Time</label>
+                            </p>
+                        </div>
+                    </div>
+                    <div id="time_div" hidden class="row" style="margin-bottom: 0px;">
+                        <div class="input-field col s6" >
                             <input id="delivery_pick_up_time" type="text" class="validate">
                             <label class="active" for="delivery_pick_up_time">Time</label>
                         </div>
                     </div>
                 </div>
-                <div id="address_div" hidden style="margin-top:0.5em;">
+                <div id="address_div" hidden style="margin-top:0.5em;" class="row">
                     {{--<h5>Enter Address for delivery</h5>--}}
-                    <form id="address_form" col="col-md-10">
-
-                        <div class="row">
-                            <input id='address' type='text' placeholder="Enter your address" required>
+                    <div class="col s8">
+                        <form id="address_form">
+                            <div class="row">
+                                <input id='address' type='text' placeholder="Enter your address" required>
+                            </div>
+                            <div class="row" style="margin-top:1em;">
+                                <div id="map_canvas"></div>
+                            </div>
+                        </form>
+                    </div>
+                        <div class="input-field col s4">
+                            <textarea id="delivery_instructions" class="materialize-textarea"></textarea>
+                            <label for="delivery_instructions">Any Special Instructions - *eg ask for John</label>
                         </div>
-                        <div class="row" style="margin-top:1em;">
-                            <div id="map_canvas"></div>
-                        </div>
-
-                    </form>
                 </div>
-                <div class="row" style="margin-bottom: 0px;">
-                    <div class="input-field col s6">
-                        <textarea id="instructions" class="materialize-textarea"></textarea>
-                        <label for="instructions">Special Instructions - *eg ask for John</label>
+                <div  class="row" style="margin-bottom: 0px;">
+                    <div id="collect_instructions_div" class="input-field col s6">
+                        <textarea id="collect_instructions" class="materialize-textarea"></textarea>
+                        <label for="collect_instructions">Any Special Instructions - *eg ask for John</label>
                     </div>
                 </div>
                 <div class="row">
@@ -351,6 +367,14 @@
 
             $(document).ready(function () {
                 var qty = sessionStorage.getItem('quantity');
+                sessionStorage.setItem("delivery_collect_time","for_now");
+                if(sessionStorage.getItem("delivery_collect")=="Delivery"){
+                    $("#delivery").attr("checked",true);
+                    $("#address_div").show();
+                }else if(sessionStorage.getItem("delivery_collect")=="Collect"){
+                    $("#collect").attr("checked",true);
+                    $("#address_div").hide();
+                }
                 if (qty == 1) {
                     $("#decrease_el").hide();
                 }
@@ -362,10 +386,19 @@
                     var delivery_or_collect = $(this).val();
                     if (delivery_or_collect == "Delivery") {
                         $("#address_div").show();
+                        $("#collect_instructions_div").hide();
                         sessionStorage.setItem("delivery_collect", "Delivery");
-                    } else {
+                    } else if(delivery_or_collect =="Collect"){
                         $("#address_div").hide();
+                        $("#collect_instructions_div").show();
                         sessionStorage.setItem("delivery_collect", "Collect");
+                    }else if(delivery_or_collect=="for_later"){
+                        sessionStorage.setItem("delivery_collect_time", "for_later");
+                        $("#time_div").show();
+                    }
+                    else if(delivery_or_collect=="for_now"){
+                        sessionStorage.setItem("delivery_collect_time", "for_now");
+                        $("#time_div").hide();
                     }
                 });
                 read_all_complete_orders();
@@ -374,26 +407,33 @@
 //                e.preventDefault();
 //                alert(sessionStorage.getItem("delivery_collect"));
                     if (sessionStorage.getItem("delivery_collect") == "Delivery") {
-                        if ($("#address").val() && $("#delivery_pick_up_time").val()) {
+                        if ($("#address").val()) {
                             sessionStorage.setItem("delivery_address", $("#address").val());
-                            sessionStorage.setItem("delivery_collect_time", $("#delivery_pick_up_time").val());
-                            window.location.href = '/order_completion';
+                            if(sessionStorage.getItem("delivery_collect_time")=="for_later"&&$("#delivery_pick_up_time").val()){
+                                sessionStorage.setItem("delivery_time", $("#delivery_pick_up_time").val());
+                                sessionStorage.setItem("instructions",$("#delivery_instructions").val());
+                                window.location.href = '/order_completion';
+                            }else if(!$("#delivery_pick_up_time").val()&&sessionStorage.getItem("delivery_collect_time")=="for_later"){
+                                alert("Please enter time of  delivery");
+                            }else if(sessionStorage.getItem("delivery_collect_time")=="for_now"){
+                                sessionStorage.setItem("instructions",$("#delivery_instructions").val());
+                                window.location.href = '/order_completion';
+                            }
                         } else if (!$("#address").val()) {
                             alert("Please enter your address");
                         }
-                        else if (!$("#delivery_pick_up_time").val()) {
-                            alert("Please enter time of pickup or delivery");
-                        }
                     } else if (sessionStorage.getItem("delivery_collect") == "Collect") {
-                        if ($("#delivery_pick_up_time").val()) {
+                        if ($("#delivery_pick_up_time").val()&&sessionStorage.getItem("delivery_collect_time")=="for_later") {
+                            sessionStorage.setItem("collect_time", $("#delivery_pick_up_time").val());
+                            sessionStorage.setItem("instructions",$("#delivery_instructions").val());
                             window.location.href = '/order_completion';
-                            sessionStorage.setItem("delivery_collect_time", $("#delivery_pick_up_time").val());
-                        } else {
+                        }else if(sessionStorage.getItem("delivery_collect_time")=="for_now"){
+                            sessionStorage.setItem("instructions",$("#delivery_instructions").val());
+                            window.location.href = '/order_completion';
+                        }
+                        else {
                             alert("Please Enter the time of pickup");
                         }
-
-                    } else {
-                        alert("Please select if its a delivery or collections");
                     }
                 });
                 $("#address_back").on('click', function (e) {
