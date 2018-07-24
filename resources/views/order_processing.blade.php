@@ -308,7 +308,7 @@
         <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="/order_display"><i class="material-icons left">payment</i> Order Now</a></li>
         <li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
         {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-        <li><a class="btn" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
+        {{--<li><a class="btn" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
         <li><a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Account</a><br/></li>
         {{--<li><a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a></li>--}}
 
@@ -316,7 +316,7 @@
       <ul id="nav-mobile" class="side-nav">
         <li><a class="btn" href="/order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
         <li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
-        <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
+        {{--<li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
         <li><a class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/></li>
         {{--<li><a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a></li>--}}
 
@@ -370,7 +370,7 @@
       </script>
     </footer>
 
-    <script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>
+    {{--<script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>--}}
     
   </body>
   </html>

@@ -228,6 +228,7 @@
 
         $(document).ready(function () {
             var menu_items = {!!$menu_items!!};
+            console.log("menut items",menu_items);
             $('.step-container').stepMaker({
                 steps: ['Item Size', 'Ingredients', 'Delivery','Receipt'],
                 currentStep: 1

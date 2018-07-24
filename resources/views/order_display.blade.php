@@ -157,10 +157,12 @@
   $(document).ready(function() {
     // $("#menu_popup_dialog").modal();
     $('select').material_select();
+      $(".dropdown-trigger").dropdown();
   });
   </script>
 </head>
 <body>
+
   <nav class="navbar-fixed-top white" role="navigation" style="height:5em;">
     <div class="nav-wrapper container-fluid">
       <a id="logo-container" href="/" class="brand-logo" ><img height="70px" width="100px" class="img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
@@ -173,14 +175,14 @@
           {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
           <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
           <li class="dropdown">
-            <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#">
+            <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#dropdown-menu">
               <i class="material-icons left">person_pin</i>
               Account
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
               <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;"><i class="material-icons left">verified_user</i>Sign  In</a><br/>
-              {{-- <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a> --}}
+               <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a>
             </ul>
           </li>
         </ul>
@@ -212,20 +214,12 @@
     <a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>
 
     <div>
-      <div id='menu_items' class="row" >
-      <ul class="collapsible">
+      <div id='menu_items' class="row">
         @foreach ($categories as $category)
-        <li style="margin-bottom: 1em;">
-          <div class="collapsible-header">
-            <div style="margin:auto;width:50%;">
-              <center>
-                <img title='{{$category->category_name}}' src='{{$category->picture_url}}' style = "margin-top:1em; width: 300px;height:62px"/>
-              </center>
-            </div>
-          </div>
-
-          <div class="collapsible-body">
-              <table id="{{$category->id}}" class="table table-hover table-sm table-striped">
+          <center>
+            <h5>{{$category->category_name}}</h5>
+          </center>
+              <table id="{{$category->id}}" class="table table-hover table-sm table-striped" >
                 @if($category->id==18||$category->id==19||$category->id==22||$category->id==21||$category->id==20)
                   <thead>
                   <tr><th>Item Number</th><th>Name</th><th>Price</th></tr>
@@ -238,11 +232,39 @@
                 <tbody>
                 </tbody>
               </table>
-          </div>
+            </div>
 
-        </li>
         @endforeach
-      </ul>
+      {{--<ul class="collapsible">--}}
+        {{--@foreach ($categories as $category)--}}
+        {{--<li style="margin-bottom: 1em;">--}}
+          {{--<div class="collapsible-header">--}}
+            {{--<div style="margin:auto;width:50%;">--}}
+              {{--<center>--}}
+                {{--<img title='{{$category->category_name}}' src='{{$category->picture_url}}' style = "margin-top:1em; width: 300px;height:62px"/>--}}
+              {{--</center>--}}
+            {{--</div>--}}
+          {{--</div>--}}
+
+          {{--<div class="collapsible-body">--}}
+              {{--<table id="{{$category->id}}" class="table table-hover table-sm table-striped">--}}
+                {{--@if($category->id==18||$category->id==19||$category->id==22||$category->id==21||$category->id==20)--}}
+                  {{--<thead>--}}
+                  {{--<tr><th>Item Number</th><th>Name</th><th>Price</th></tr>--}}
+                  {{--</thead>--}}
+                {{--@elseif($category->id<=6)--}}
+                  {{--<tr><th>Item Number</th><th>Name</th><th>Sandwich</th><th>Medium Sub</th><th>Large Sub</th><th>Wrap</th></tr>--}}
+                {{--@elseif($category->id<=7)--}}
+                  {{--<tr><th>Item Number</th><th>Name</th><th>Medium</th><th>Large</th></tr>--}}
+                {{--@endif--}}
+                {{--<tbody>--}}
+                {{--</tbody>--}}
+              {{--</table>--}}
+          {{--</div>--}}
+
+        {{--</li>--}}
+        {{--@endforeach--}}
+      {{--</ul>--}}
       </div>
       <div id="cart" class="modal">
         <div class="modal-header">
@@ -287,7 +309,7 @@
 
   </div>
   </div>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
   <link rel="stylesheet" href="/css/jquery-step-maker.css">
   <script src="/js/jquery-step-maker.js"></script>
     <script type='text/javascript'>
@@ -555,7 +577,7 @@
       </script>
     </footer>
 
-    <script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>
+    {{--<script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>--}}
     {{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4VCOsDzZ-3fqwWrxmWWgoPNlXcpvpPvE&libraries=places&callback=getLocation" async defer></script>--}}
   </body>
   </html>

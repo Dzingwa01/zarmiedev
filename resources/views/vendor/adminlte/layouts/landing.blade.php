@@ -108,56 +108,72 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 
 <body >
 <div id="app"></div>
-    <nav class="navbar-fixed-top white" role="navigation" style="height:5em;">
-        <div class="nav-wrapper container-fluid">
-            <a id="logo-container" href="/" class="brand-logo" ><img height="70px" width="100px;" class=" img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
-            {{--@if (Auth::user()->verified!=0)--}}
-                {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
-            {{--@else--}}
-                <ul class="right hide-on-med-and-down">
-                    <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="order_display"><i class="material-icons left">payment</i> Order Now</a></li>
-                    <li><a class="btn" href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
-                    {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-                    <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
-                    <li><a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Account</a><br/></li>
-                    {{--<li><a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a></li>--}}
-
+<nav class="navbar-fixed-top white col s12" style="height:5em;">
+    <div class="nav-wrapper container-fluid">
+        <a id="logo-container" href="/" class="brand-logo" ><img height="70px" width="100px" class="img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
+        {{--@if (Auth::user()->verified!=0)--}}
+        {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
+        {{--@else--}}
+        <ul class="right hide-on-med-and-down col s12">
+            <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="order_display"><i class="material-icons left">payment</i> Order Now</a></li>
+            <li><a class="btn"  href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+            {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
+            {{--<li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
+            <li class="dropdown">
+                <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#dropdown-menu">
+                    <i class="material-icons left">person_pin</i>
+                    Account
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;"><i class="material-icons left">verified_user</i>Sign  In</a><br/>
+                    <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a>
                 </ul>
-                <ul id="nav-mobile" class="side-nav">
-                    <li><a class="btn" href="order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
-                    <li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
-                    <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
-                    <li><a class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/></li>
-                    {{--<li><a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a></li>--}}
-
-
+            </li>
+        </ul>
+        <ul id="nav-mobile" class="side-nav">
+            <li><a class="btn" href="order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
+            <li><a class="btn"><i class="material-icons left">reorder</i> Menu</a></li>
+            {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
+            <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
+            <li class="dropdown">
+                <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#">
+                    <i class="material-icons left">person_pin</i>
+                    Account
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/>
+                     <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a>
                 </ul>
-                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-            {{--@endif--}}
-        </div>
-    </nav>
+            </li>
 
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        {{--@endif--}}
+    </div>
+</nav>
     <div class="slider" style="margin-top:1em">
         <ul id="slides" class="slides">
-            <li><img src="{{URL::asset('pictures/sandwich_1.jpg')}}" class="img-responsive" />
+            <li class="parallax-container"><img src="{{URL::asset('pictures/sandwich_slider.jpg')}}" class="img-responsive parallax" />
                 <div class="caption" >
                     <p class="z-depth-1 slide_p" style="margin-right:1em;font-weight:bolder;font-size:1.5em;">Sandwich of the week, only R16.99, order now! </p>
                     {{-- <button id="order_btn" class="btn" data-toggle="modal" style="margin-top:1em;margin-bottom:1em;" data-target="#order_popup_dialog">Order Now</button> --}}
                 </div>
             </li>
-            <li><img src="{{URL::asset('pictures/salads_1.jpg')}}" class="img-responsive" />
+            <li><img src="{{URL::asset('pictures/salad_slider.jpg')}}" class="img-responsive" />
                 <div class="caption">
                     <p class="z-depth-1 slide_p" style="margin-right:1em;font-weight:bolder;font-size:1.5em;">Farm fresh salads up for grabs, hurry now! </p>
                     {{-- <button id="order_btn" class="btn" data-toggle="modal" style="margin-top:1em;margin-bottom:1em;" data-target="#order_popup_dialog">Order Now</button> --}}
                 </div>
             </li>
-            <li><img src="{{URL::asset('pictures/sandwich_3.jpg')}}" class="img-responsive" />
+            <li><img src="{{URL::asset('pictures/veg_slider.jpg')}}" class="img-responsive" />
                 <div class="caption">
                     <p class="z-depth-1 slide_p" style="margin-right:1em;font-weight:bolder;font-size:1.5em;">We also cater for vegeteranians, order now to get awesome deals! </p>
                     {{-- <button id="order_btn" class="btn" data-toggle="modal" style="margin-top:1em;margin-bottom:1em;" data-target="#order_popup_dialog">Order Now</button> --}}
                 </div>
             </li>
-            <li><img src="{{URL::asset('pictures/trays.jpg')}}" class="img-responsive" />
+            <li><img src="{{URL::asset('pictures/platter_slider.jpg')}}" class="img-responsive" />
                 <div class="caption">
                     <p class="z-depth-1 slide_p" style="margin-right:1em;font-weight:bolder;font-size:1.5em;">Catering for many people, we have got awesome tray specials starting from R55.00! </p>
                     {{-- <button id="order_btn" class="btn" data-toggle="modal" style="margin-top:1em;margin-bottom:1em;" data-target="#order_popup_dialog">Order Now</button> --}}
@@ -166,39 +182,65 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
         </ul>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="section">
             <!--   Icon Section   -->
             <div class="row">
-                <div class="col s12 m4">
-                    <div class="icon-block">
-                        <img src="{{URL::asset('pictures/zarmie1.png')}}" class="img-responsive" />
-                        <p style="color:black!important;">Choose one of our delicious fillings or design your own sandwich large or medium...
-                        </p>
-                        <button id="sandwich_popup" style="margin-top:1em;margin-bottom:1em;" class="btn" data-toggle="modal" data-target="#sandwich_popup_dialog">More Details</button>
+                <div class=" col s12 col m4 card" >
+                    <div class="card-image">
+                        <img src="{{URL::asset('pictures/sandwich.jpg')}}" class="img-responsive" />
+
                     </div>
+                    <div class="card-content">
+                        <span class="card-title" style="color:black;font-weight:bold;font-size:1.5em">Sandwiches</span>
+                        <p style="text-align:justify;color:black!important;">Order our delicious sandwich or make your own...
+                        </p>
+                    </div>
+                   <div class="card-action">
+                       <a id="sandwich_popup" title="More Information" class="pull-left " data-toggle="modal" data-target="#sandwich_popup_dialog" style="margin-bottom: 1em;color:teal"><i class=" material-icons left">info</i></a>
+                       <a title="Order Now" href="order_display" class="pull-right "><i class="  material-icons left" style="margin-bottom: 1em; color:teal">payment</i> </a>
+                   </div>
+
                 </div>
 
-                <div class="col s12 m4" style="margin-top:1em;">
-                    <div class="icon-block">
-                        <img src="{{URL::asset('pictures/zarmie_salads.jpg')}}" class="img-responsive" />
-                        <p style="color:black!important;" >Party size salads are available on request. All dressings are served on the side..</p>
-                        <button id="salads_popup" class="btn" data-toggle="modal" style="margin-top:1em;margin-bottom:1em;" data-target="#salads_popup_dialog">More Details</button>
+                <div class="col s12 m4 card"  >
+                    <div class="card-image">
+                        <img src="{{URL::asset('pictures/greek_2.jpg')}}" class="img-responsive" />
+
+                    </div>
+                    <div class="card-content">
+                        <span class="card-title" style="text-align:justify;color:black;font-weight:bold;font-size:1.5em">Salads</span>
+                        <p style="text-align:justify;color:black!important;" >A variety of salads. All dressings are served on the side...</p>
+
+                    </div>
+                    <div class="card-action">
+                        <a id="salads_popup" title="More Information" data-toggle="modal" style="margin-top:1em;margin-bottom:1em;" data-target="#salads_popup_dialog" ><i class=" material-icons left" style="margin-bottom: 1em;color:teal">info</i></a>
+                        <a title="Order Now" href="order_display" class="pull-right "><i class="  material-icons left" style="margin-bottom: 1em; color:teal">payment</i> </a>
                     </div>
                 </div>
-                <div class="col s12 m4" style="margin-top:1em;">
-                    <div class="icon-block">
-                        <img src="{{URL::asset('pictures/zarmie_trays.jpg')}}" class="img-responsive" />
-                        <p style="color:black!important;">We offer a variety of trays at unbelievable prices. Tray sizes range from small to extra large..</p>
-                        <button id="trays_popup" class="btn" data-toggle="modal" style="margin-top:1em;margin-bottom:1em;" data-target="#trays_popup_dialog">More Details</button>
+                <div class="col s12 m4 card" >
+                    <div class="card-image">
+                        <img src="{{URL::asset('pictures/wrap_tray_lg.jpg')}}" class="img-responsive" />
+
+                       </div>
+                    <div class="card-content">
+                        <span class="card-title" style="color:black;font-weight:bold;font-size:1.5em">Trays & Platters</span>
+                        <p style="text-align:justify;color:black!important;">Trays & Platters at unbelievable prices. Small & Large...</p>
+                    </div>
+                    <div class="card-action">
+                        <a id="trays_popup" title="More Information" data-toggle="modal" style="margin-top:1em;margin-bottom:1em;" data-target="#trays_popup_dialog" style="margin-bottom: 1em;cursor:hand"><i style="margin-bottom: 1em;color:teal" class=" material-icons left">info</i></a>
+                        <a title="Order Now" href="order_display" class="pull-right " ><i class="  material-icons left" style="margin-bottom: 1em; color:teal">payment</i> </a>
+
                     </div>
                 </div>
             </div>
             <div class="row" style="margin-top:1em;">
                 <h5 class="center">Where to Find Us</h5>
-                <div class="col-md-4 col-md-offset-4">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3309.719747024528!2d25.562721314723113!3d-33.94833553062155!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e7ad17c338823d5%3A0xc3470fd4e6b82bb0!2s69+4th+Ave%2C+Newton+Park%2C+Port+Elizabeth%2C+6055!5e0!3m2!1sen!2sza!4v1495859382197" frameborder="0" style="border:0"  allowfullscreen></iframe>      </div>
+                <div class="center">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3309.719747024528!2d25.562721314723113!3d-33.94833553062155!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e7ad17c338823d5%3A0xc3470fd4e6b82bb0!2s69+4th+Ave%2C+Newton+Park%2C+Port+Elizabeth%2C+6055!5e0!3m2!1sen!2sza!4v1495859382197" frameborder="0" style="border:0;height:300px;width:600px;"  allowfullscreen></iframe>
+                </div>
             </div>
+
         </div>
     </div>
     <div id="trays_popup_dialog" class="modal" role="dialog">
@@ -248,10 +290,11 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
             </div>
             <div class="modal-footer">
                 <div style="float:right;">
-                    <a class="btn" href="order_display"><i class="material-icons left">payment</i> Order Now</a>
+                   <a class="btn" href="order_display"><i class="material-icons left">payment</i> Order Now</a>
                 </div>
             </div>
         </div>
+
     </div>
     <div id="salads_popup_dialog" class="modal" role="dialog">
         <div class="modal-header">
@@ -367,6 +410,17 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
             </div>
         </div>
     </div>
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large teal">
+        <i class="large material-icons">mode_edit</i>
+    </a>
+    <ul>
+        <a class="btn-floating" href="contact_display" title="Contact Us"><i class="material-icons left">email</i> Contact Us</a>
+        <a class="btn-floating" style="margin-top:1em;margin-bottom:1em;" href="order_display" title="Order Now"><i class="material-icons left">payment</i> Order Now</a>
+        <a  class="btn-floating" href="{{ url('/login') }}" style="margin-left:1em;" title="Sign In"><i class="material-icons left">verified_user</i>Sign  In</a>
+        {{--<li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>--}}
+    </ul>
+</div>
     <footer class="page-footer teal">
         <div class="container">
             <div class="row">
@@ -485,7 +539,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 </style>
 <script src="{{ asset('/js/app.js') }}"></script>
 <script src="{{ asset('/js/smoothscroll.js') }}"></script>
-<script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>
+{{--<script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>--}}
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4VCOsDzZ-3fqwWrxmWWgoPNlXcpvpPvE&libraries=places&callback=getLocation" async defer></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/materialize.js"></script>
