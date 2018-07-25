@@ -2,13 +2,13 @@
 <header class="main-header" >
     {{--<a id="logo-container" href="{{ url('/home') }}" class="brand-logo" ></a>--}}
     <!-- Logo -->
-    <a href="{{ url('/home') }}" class="logo" style="height: 5em!important;">
+    <a href="{{ url('/home') }}" class="logo" style="height: 4em!important;background-color: #26a69a">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} />
+        <img class="img-responsive img-rounded" style="height: 70px!important;" src={{URL::asset('pictures/logo.png')}}  />
     </a>
 
     <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation" >
+    <nav class="navbar navbar-static-top" role="navigation"  style="height: 4em;background-color: #26a69a">
         <!-- Sidebar toggle button-->
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">{{ trans('adminlte_lang::message.togglenav') }}</span>

@@ -14,6 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/client_order_display','ClientOrderController@getOrdersIndex');
+Route::get('/client_menu_display','ClientOrderController@getOrdersIndex');
+
 Route::resource('drinks','DrinksController');
 Route::get('drinks_list','DrinksController@showDrinks')->name('drinks_list');
 Route::get('show_drink_type','DrinksController@showCategories')->name('show_drink_type');

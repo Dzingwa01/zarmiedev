@@ -2,7 +2,7 @@
 <aside class="main-sidebar">
 
     <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar" style="margin-top:3em;">
+    <section class="sidebar" style="margin-top:2em;">
 
         <!-- Sidebar user panel (optional) -->
         @if (! Auth::guest())
@@ -23,9 +23,9 @@
         {{--<li class="header">{{ trans('adminlte_lang::message.header') }}</li>--}}
         <!-- Optionally, you can add icons to the links -->
             <li><a href="{{url('home')}}" ><i class='fa fa-home'></i><span style="cursor:pointer;"> Dashboard</span></a></li>
+            <li><a href="{{url('client_order_display')}}"><i class="fa fa-shopping-cart"></i> <span style="cursor:pointer;">Order Now</span></a></li>
             <li><a href=""><i class="fa fa-life-bouy"></i> <span style="cursor:pointer;">Manage Favourites</span></a></li>
             <li><a href=""><i class="fa fa-history"></i> <span style="cursor:pointer;">Order History</span></a></li>
-
 
             {{--</li>--}}
         </ul><!-- /.sidebar-menu -->

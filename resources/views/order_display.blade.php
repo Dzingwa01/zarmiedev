@@ -173,7 +173,7 @@
           <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="order_display"><i class="material-icons left">payment</i> Order Now</a></li>
           <li><a class="btn"  href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
           {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-          <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
+          {{--<li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
           <li class="dropdown">
             <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#dropdown-menu">
               <i class="material-icons left">person_pin</i>
@@ -190,7 +190,7 @@
           <li><a class="btn" href="order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
           <li><a class="btn"><i class="material-icons left">reorder</i> Menu</a></li>
           {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-          <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
+          {{--<li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
           <li class="dropdown">
             <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#">
               <i class="material-icons left">person_pin</i>

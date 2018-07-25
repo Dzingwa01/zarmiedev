@@ -1,69 +1,61 @@
-@extends('adminlte::layouts.app')
-
-@section('htmlheader_title')
-	{{ trans('adminlte_lang::message.home') }}
-@endsection
+@extends('client_processing')
+@section('content')
 <?php
 $order = App\Order::where('user_id',\Illuminate\Support\Facades\Auth::user()->id)->get();?>
 
-@section('main-content')
-	<div class="container-fluid spark-screen">
+	<div class="container" style="margin-top: 6em;">
+		<center>
+			<h5>Welcome {{Auth::user()->name}}</h5>
+		</center>
 		<div class="row">
-			<div class="col-md-4 well-lg">
-				<div class="box box-success">
-					<div class="box-header with-border">
-						{{--<h3>Users Report</h3>--}}
-						<div class="info-box bg-green">
-							<span class="info-box-icon"><i class="io ion-ios-people"></i> </span>
-							<div class="info-box-content">
-								<span class="info-box-text">Total Orders</span>
-								<span class="info-box-number">{{count($order)}}</span>
-								<div class="progress">
-									<div class="progress-bar" style="width:100%"></div>
-								</div>
-								<span class="progress-description">Total Orders you have placed</span>
-							</div>
-						</div>
-					</div>
+			<div class=" col s12 col m4 card" >
+				<div class="card-image">
+					<img src="{{URL::asset('/pictures/sandwich.jpg')}}" class="img-responsive" />
+
 				</div>
-			</div>
-			<div class="col-md-4 well-lg">
-				<div class="box box-primary">
-					<div class="box-header with-border">
-						{{--<h3>Articles</h3>--}}
-						<div class="info-box bg-aqua">
-							<span class="info-box-icon"><i class="ion ion-ios-heart-outline"></i> </span>
-							<div class="info-box-content">
-								<span class="info-box-text">Favourites</span>
-								<span class="info-box-number"> 1</span>
-								<div class="progress">
-									<div class="progress-bar" style="width:100%"></div>
-								</div>
-								<span class="progress-description">Total Favourites</span>
-							</div>
-						</div>
-					</div>
+				<div class="card-content">
+					<span class="card-title" style="color:black;font-weight:bold;font-size:1.5em">Sandwiches</span>
+					<p style="text-align:justify;color:black!important;">Order our delicious sandwich or make your own...
+					</p>
+				</div>
+				<div class="card-action">
+					<a id="sandwich_popup" title="More Information" class="pull-left " data-toggle="modal" data-target="#sandwich_popup_dialog" style="margin-bottom: 1em;color:teal"><i class=" material-icons left">info</i></a>
+					<a title="Order Now" href="order_display" class="pull-right "><i class="  material-icons left" style="margin-bottom: 1em; color:teal">payment</i> </a>
 				</div>
 			</div>
 
-			<div class="col-md-4 well-lg">
-				<div class="box box-warning">
-					<div class="box-header with-border">
-						{{--<h3>Users Report</h3>--}}
-						<div class="info-box bg-yellow">
-							<span class="info-box-icon"><i class="io ion-ios-contacts"></i> </span>
-							<div class="info-box-content">
-								<span class="info-box-text">Specials for you</span>
-								<span class="info-box-number">1</span>
-								<div class="progress">
-									<div class="progress-bar" style="width:100%"></div>
-								</div>
-								<span class="progress-description">Redeem your specials</span>
-							</div>
-						</div>
-					</div>
+			<div class="col s12 m4 card"  >
+				<div class="card-image">
+					<img src="{{URL::asset('pictures/greek_2.jpg')}}" class="img-responsive" />
+
+				</div>
+				<div class="card-content">
+					<span class="card-title" style="text-align:justify;color:black;font-weight:bold;font-size:1.5em">Salads</span>
+					<p style="text-align:justify;color:black!important;" >A variety of salads. All dressings are served on the side...</p>
+
+				</div>
+				<div class="card-action">
+					<a id="salads_popup" title="More Information" data-toggle="modal" style="margin-top:1em;margin-bottom:1em;" data-target="#salads_popup_dialog" ><i class=" material-icons left" style="margin-bottom: 1em;color:teal">info</i></a>
+					<a title="Order Now" href="order_display" class="pull-right "><i class="  material-icons left" style="margin-bottom: 1em; color:teal">payment</i> </a>
+				</div>
+			</div>
+			<div class="col s12 m4 card" >
+				<div class="card-image">
+					<img src="{{URL::asset('pictures/wrap_tray_lg.jpg')}}" class="img-responsive" />
+
+				</div>
+				<div class="card-content">
+					<span class="card-title" style="color:black;font-weight:bold;font-size:1.5em">Trays & Platters</span>
+					<p style="text-align:justify;color:black!important;">Trays & Platters at unbelievable prices. Small & Large...</p>
+				</div>
+				<div class="card-action">
+					<a id="trays_popup" title="More Information" data-toggle="modal" style="margin-top:1em;margin-bottom:1em;" data-target="#trays_popup_dialog" style="margin-bottom: 1em;cursor:hand"><i style="margin-bottom: 1em;color:teal" class=" material-icons left">info</i></a>
+					<a title="Order Now" href="order_display" class="pull-right " ><i class="  material-icons left" style="margin-bottom: 1em; color:teal">payment</i> </a>
+
 				</div>
 			</div>
 		</div>
 	</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 @endsection

@@ -182,7 +182,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
         </ul>
     </div>
 
-    <div class="container-fluid">
+    <div class="container">
         <div class="section">
             <!--   Icon Section   -->
             <div class="row">
