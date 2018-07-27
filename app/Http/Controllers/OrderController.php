@@ -72,7 +72,56 @@ class OrderController extends Controller
         $ingredients = $menu_item->item_ingredients;
         return view('partials.address_input', compact('ingredients'));
     }
+    public function showIngredientsToppingsClient($id)
+    {
+        $menu_item = Menu::find($id);
+        $ingredients = $menu_item->item_ingredients;
+        $standard_toppings = Topping::where('category','standard')->get();
+        $optional_toppings = Topping::where('category','optional')->get();
+        $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name')->get();
+        $extra_toppings = Menu::join('item_sizes','item_sizes.id','menu_item.item_size_id')->where('category_id',8)->select('menu_item.*','item_sizes.size_name')->get();
+//        dd($extra_toppings);
+        $temp_toppings_ingredients =[];
+        foreach ($extra_toppings as $topping){
+            $topping_ingredients = $topping->item_ingredients;
+        }
+        $drinks = Drink::all();
+        $ingredients_with_id = [];
+        foreach ($ingredients as $ingredient){
+            foreach ($all_ingredients as $ingr) {
+                if($ingredient->ingredient_id==$ingr->id){
+                    array_push($ingredients_with_id,$ingr);
+                }
+            }
+        }
 
+        $other_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name')->get();
+
+        $dup_other = [];
+        foreach ($ingredients_with_id as $with_id){
+            foreach ($other_ingredients as $ingr) {
+                if($with_id->ingredient_type_id == $ingr->ingredient_type_id && $with_id->id!=$ingr->id){
+                    array_push($dup_other,$ingr);
+                }
+            }
+        }
+        $other_ingredients = $dup_other;
+        $dup_other = [];
+        $dup_other_ids = [];
+        foreach ($other_ingredients as $ingr){
+            $available = false;
+            if(!in_array($ingr->id,$dup_other_ids)){
+                array_push($dup_other_ids,$ingr->id);
+                array_push($dup_other,$ingr);
+            }
+            else{
+                array_push($dup_other,$ingr);
+            }
+        }
+        $other_ingredients = $dup_other;
+//        dd($other_ingredients);
+        return view('clients.select_ingredients_toppings', compact('drinks','ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
+    }
     public function showIngredientsToppings($id)
     {
         $menu_item = Menu::find($id);
@@ -178,7 +227,61 @@ class OrderController extends Controller
 //        dd($other_ingredients);
         return view('partials.salads_select_ingredient_toping', compact('ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
     }
+    public function showIngredientsToppingsSaladsClient($id)
+    {
+        $menu_item = Menu::find($id);
+        $item_categories = Category::all();
+        $item_type = Category::where('id', $menu_item->category_id)->first();
+        $item_sizes = Item_Size::all();
+//        dd($item_sizes);
+        $ingredients = $menu_item->item_ingredients;
+        $standard_toppings = Topping::where('category','standard')->get();
+        $optional_toppings = Topping::where('category','optional')->get();
+        $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name')->get();
+        $extra_toppings = Menu::join('item_sizes','item_sizes.id','menu_item.item_size_id')->where('category_id',8)->select('menu_item.*','item_sizes.size_name')->get();
+//        dd($extra_toppings);
+        $temp_toppings_ingredients =[];
+        foreach ($extra_toppings as $topping){
+            $topping_ingredients = $topping->item_ingredients;
+        }
 
+//        dd($temp_toppings_ingredients);
+        $ingredients_with_id = [];
+        foreach ($ingredients as $ingredient){
+            foreach ($all_ingredients as $ingr) {
+                if($ingredient->ingredient_id==$ingr->id){
+                    array_push($ingredients_with_id,$ingr);
+                }
+            }
+        }
+
+        $other_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name')->get();
+
+        $dup_other = [];
+        foreach ($ingredients_with_id as $with_id){
+            foreach ($other_ingredients as $ingr) {
+                if($with_id->ingredient_type_id == $ingr->ingredient_type_id && $with_id->id!=$ingr->id){
+                    array_push($dup_other,$ingr);
+                }
+            }
+        }
+        $other_ingredients = $dup_other;
+        $dup_other = [];
+        $dup_other_ids = [];
+        foreach ($other_ingredients as $ingr){
+            $available = false;
+            if(!in_array($ingr->id,$dup_other_ids)){
+                array_push($dup_other_ids,$ingr->id);
+                array_push($dup_other,$ingr);
+            }
+            else{
+                array_push($dup_other,$ingr);
+            }
+        }
+        $other_ingredients = $dup_other;
+//        dd($other_ingredients);
+        return view('clients.salads_select_ingredient_toping', compact('ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
+    }
     public function showContactUsPage()
     {
         return view('contact_us');
@@ -264,7 +367,78 @@ class OrderController extends Controller
         $user = User::where('phone_number', $phone_number)->first();
         return response()->json(["user" => $user]);
     }
+    public function goToProcessOrderClient($id)
+    {
+        $menu_item = Menu::find($id);
+        $item_categories = Category::all();
+        $item_type = Category::where('id', $menu_item->category_id)->first();
+        $item_sizes = Item_Size::all();
+//        dd($item_sizes);
+        $ingredients = $menu_item->item_ingredients;
+        $bread = Bread::all();
+        $bread = json_encode($bread);
+        $menu_items = DB::table('menu_item')
+            ->join('item_sizes', 'item_sizes.id', 'menu_item.item_size_id')
+            ->join('menu_categories', 'menu_categories.id', 'menu_item.category_id')
+            ->where('prize', '>', 0)
+            ->select('menu_item.id','category_id', 'name', 'prize', 'size_name', 'item_number', 'category_name', 'item_size_id')
+            ->orderBy('item_number')
+            ->get();
 
+        // dd($menu_items);
+        $categories = DB::table('menu_categories')
+            ->orderBy('id')
+            ->get();
+        $toppings = Topping::all();
+        $toppings = json_encode($toppings);
+        $bread = Bread::all();
+        $bread = json_encode($bread);
+        // dd($bread);
+        $item_numbers = array();
+        $counter = 0;
+        foreach ($menu_items as $key => $item) {
+            // dd($item);
+            if (!in_array($item->item_number, $item_numbers)) {
+                $temp = array();
+                $id = $item->name;
+                $item_numbers[$id] = $item->item_number;
+            }
+        }
+        // dd($item_numbers);
+        $item_sizes = DB::table('item_sizes')
+            ->get();
+        // dd($item_sizes);
+        $resultant = array();
+        $counter = 0;
+        foreach ($item_numbers as $key => $number) {
+            $formatted_result = array();
+            $formatted_result['item_number'] = $number;
+            foreach ($menu_items as $key => $item) {
+                if ($item->item_number == $number) {
+                    $new_var = $item->size_name;
+                    $new_var = preg_replace('/\s+/', '', $new_var);
+                    if ($new_var == 'Sandwich') {
+                        $formatted_result['sandwich'] = $item->prize;
+                    } else if ($new_var == 'MediumSub') {
+                        $formatted_result['mediumsub'] = $item->prize;
+                    } else if ($new_var == 'LargeSub') {
+                        $formatted_result['largesub'] = $item->prize;
+                    } else if ($new_var == 'Wrap') {
+                        $formatted_result['wrap'] = $item->prize;
+                    }
+                    $formatted_result['item_name'] = $item->name;
+                    $formatted_result['item_category'] = $item->category_id;
+                    $formatted_result['item_id'] = $item->id;
+                }
+            }
+
+            $resultant[$counter] = (object)$formatted_result;
+            // dd($resultant[$counter]->sandwich);
+            ++$counter;
+        }
+        $menu_items = $resultant;
+        return view('clients.client_order_processing', compact('bread', 'menu_items','ingredients', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread'));
+    }
     public function goToProcessOrder($id)
     {
         $menu_item = Menu::find($id);
@@ -336,6 +510,76 @@ class OrderController extends Controller
         }
         $menu_items = $resultant;
         return view('partials.order_processing', compact('bread', 'menu_items','ingredients', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread'));
+    }
+    public function showBreadClient($id)
+    {
+        $cur_item = Menu::find($id);
+        $ingredients = $cur_item->item_ingredients;
+        $all_ingredients = Ingredient::all();
+//        dd($ingredients);
+        $bread = Bread::all();
+        $bread = json_encode($bread);
+        $menu_items = DB::table('menu_item')
+            ->join('item_sizes', 'item_sizes.id', 'menu_item.item_size_id')
+            ->join('menu_categories', 'menu_categories.id', 'menu_item.category_id')
+            ->where('prize', '>', 0)
+            ->select('category_id', 'name', 'prize', 'size_name', 'item_number', 'category_name', 'item_size_id', 'menu_item.id')
+            ->orderBy('item_number')
+            ->get();
+        $menu_items_1 = $menu_items;
+        // dd($menu_items);
+        $categories = DB::table('menu_categories')
+            ->orderBy('id')
+            ->get();
+        $toppings = Topping::all();
+        $toppings = json_encode($toppings);
+        $bread = Bread::all();
+        $bread = json_encode($bread);
+        // dd($bread);
+        $item_numbers = array();
+        $counter = 0;
+        foreach ($menu_items as $key => $item) {
+            // dd($item);
+            if (!in_array($item->item_number, $item_numbers)) {
+                $temp = array();
+                $id = $item->name;
+                $item_numbers[$id] = $item->item_number;
+            }
+        }
+        // dd($item_numbers);
+        $item_sizes = DB::table('item_sizes')
+            ->get();
+        // dd($item_sizes);
+        $resultant = array();
+        $counter = 0;
+        foreach ($item_numbers as $key => $number) {
+            $formatted_result = array();
+            $formatted_result['item_number'] = $number;
+            foreach ($menu_items as $key => $item) {
+                if ($item->item_number == $number) {
+                    $new_var = $item->size_name;
+                    $new_var = preg_replace('/\s+/', '', $new_var);
+                    if ($new_var == 'Sandwich') {
+                        $formatted_result['sandwich'] = $item->prize;
+                    } else if ($new_var == 'MediumSub') {
+                        $formatted_result['mediumsub'] = $item->prize;
+                    } else if ($new_var == 'LargeSub') {
+                        $formatted_result['largesub'] = $item->prize;
+                    } else if ($new_var == 'Wrap') {
+                        $formatted_result['wrap'] = $item->prize;
+                    }
+                    $formatted_result['item_name'] = $item->name;
+                    $formatted_result['item_category'] = $item->category_id;
+                }
+            }
+
+            $resultant[$counter] = (object)$formatted_result;
+            // dd($resultant[$counter]->sandwich);
+            ++$counter;
+        }
+        $menu_items = $resultant;
+//        dd($ingredients);
+        return view('clients.client_bread_selection', compact('bread','all_ingredients','ingredients','menu_items', 'menu_items_1', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread'));
     }
 
     public function showBread($id)

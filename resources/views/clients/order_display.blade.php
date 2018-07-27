@@ -278,7 +278,7 @@
             sessionStorage.setItem('total_due',prize);
         }
         else{
-            window.location.href='/bread_selection/'+item_id;
+            window.location.href='/client_bread_selection/'+item_id;
         }
 
         console.log(item_number);
