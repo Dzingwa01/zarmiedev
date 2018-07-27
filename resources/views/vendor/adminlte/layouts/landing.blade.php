@@ -83,6 +83,81 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
             list-style: circle!important;
         }
 
+         .drop-down{
+             margin-left: 1em!important;
+         }
+        .card .card-image img {
+            display: block;
+            border-radius: 2px 2px 0 0;
+        }
+
+        div > h6 {
+            font-size: 1rem;
+        }
+        .card{
+            z-index: 5!important;
+
+        }
+        .card .card-image .card-title {
+            color: #fff;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 20px;
+        }
+        .drink_button {
+            display: block;
+            width: 115px;
+            height: 25px;
+            background: #4E9CAF;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+        input[type="checkbox"]{
+            position:relative;
+            left:1em;
+            opacity: 1!important;
+        }
+        .card .card-content {
+            padding: 10px;
+            border-radius: 0 0 2px 2px;
+            height: 200px !important;
+            /*overflow:visible!important;*/
+        }
+        .card .card-content p {
+            margin: 0;
+            color: inherit;
+
+        }
+        .card .card-content .card-title {
+            line-height: 38px;
+        }
+        .card-action {
+            position: relative;
+            background-color: inherit;
+            border-top: 1px solid rgba(160, 160, 160, 0.2);
+            z-index: 2;
+            height:40px!important;
+        }
+        select{
+            z-index: 20!important;
+        }
+        a{
+            text-decoration: none;
+        }
+        a.active{
+            background-color: teal!important;
+            color:white!important;
+        }
+        .tabs .indicator{
+            background-color: teal!important;
+        }
+        .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+            background-color: #26a69a!important;;
+        }
     </style>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -108,14 +183,14 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 
 <body >
 <div id="app"></div>
-<nav class="navbar-fixed-top white col s12" style="height:5em;">
+<nav class="navbar-fixed-top white" role="navigation" style="height:5em;">
     <div class="nav-wrapper container-fluid">
         <a id="logo-container" href="/" class="brand-logo" ><img height="70px" width="100px" class="img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
         {{--@if (Auth::user()->verified!=0)--}}
         {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
         {{--@else--}}
         <ul class="right hide-on-med-and-down col s12">
-            <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="order_display"><i class="material-icons left">payment</i> Order Now</a></li>
+            <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
             <li><a class="btn"  href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
             {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
             {{--<li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
@@ -132,7 +207,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
             </li>
         </ul>
         <ul id="nav-mobile" class="side-nav">
-            <li><a class="btn" href="order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
+            <li><a class="btn" href="order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
             <li><a class="btn"><i class="material-icons left">reorder</i> Menu</a></li>
             {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
             <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
@@ -193,12 +268,12 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
                     </div>
                     <div class="card-content">
                         <span class="card-title" style="color:black;font-weight:bold;font-size:1.5em">Sandwiches</span>
-                        <p style="text-align:justify;color:black!important;">Order our delicious sandwich or make your own...
+                        <p style="text-align:justify;color:black!important;">Choose one of our delicious fillings or design your own sandwich large or medium...
                         </p>
                     </div>
                    <div class="card-action">
                        <a id="sandwich_popup" title="More Information" class="pull-left " data-toggle="modal" data-target="#sandwich_popup_dialog" style="margin-bottom: 1em;color:teal"><i class=" material-icons left">info</i></a>
-                       <a title="Order Now" href="order_display" class="pull-right "><i class="  material-icons left" style="margin-bottom: 1em; color:teal">payment</i> </a>
+                       <a title="Order Now" href="order_display" class="pull-right "><i class="  material-icons left" style="margin-bottom: 1em; color:teal">add_shopping_cart</i> </a>
                    </div>
 
                 </div>
@@ -210,12 +285,12 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
                     </div>
                     <div class="card-content">
                         <span class="card-title" style="text-align:justify;color:black;font-weight:bold;font-size:1.5em">Salads</span>
-                        <p style="text-align:justify;color:black!important;" >A variety of salads. All dressings are served on the side...</p>
+                        <p style="text-align:justify;color:black!important;" >Party size salads are available on request. All dressings are served on the side..</p>
 
                     </div>
                     <div class="card-action">
                         <a id="salads_popup" title="More Information" data-toggle="modal" style="margin-top:1em;margin-bottom:1em;" data-target="#salads_popup_dialog" ><i class=" material-icons left" style="margin-bottom: 1em;color:teal">info</i></a>
-                        <a title="Order Now" href="order_display" class="pull-right "><i class="  material-icons left" style="margin-bottom: 1em; color:teal">payment</i> </a>
+                        <a title="Order Now" href="order_display" class="pull-right "><i class="  material-icons left" style="margin-bottom: 1em; color:teal">add_shopping_cart</i> </a>
                     </div>
                 </div>
                 <div class="col s12 m4 card" >
@@ -225,11 +300,11 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
                        </div>
                     <div class="card-content">
                         <span class="card-title" style="color:black;font-weight:bold;font-size:1.5em">Trays & Platters</span>
-                        <p style="text-align:justify;color:black!important;">Trays & Platters at unbelievable prices. Small & Large...</p>
+                        <p style="text-align:justify;color:black!important;">We offer a variety of trays at unbelievable prices. Tray sizes range from small to extra large..</p>
                     </div>
                     <div class="card-action">
                         <a id="trays_popup" title="More Information" data-toggle="modal" style="margin-top:1em;margin-bottom:1em;" data-target="#trays_popup_dialog" style="margin-bottom: 1em;cursor:hand"><i style="margin-bottom: 1em;color:teal" class=" material-icons left">info</i></a>
-                        <a title="Order Now" href="order_display" class="pull-right " ><i class="  material-icons left" style="margin-bottom: 1em; color:teal">payment</i> </a>
+                        <a title="Order Now" href="order_display" class="pull-right " ><i class="  material-icons left" style="margin-bottom: 1em; color:teal">add_shopping_cart</i> </a>
 
                     </div>
                 </div>

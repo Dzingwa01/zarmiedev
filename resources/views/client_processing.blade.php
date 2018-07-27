@@ -292,7 +292,7 @@
         {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
         {{--@else--}}
         <ul class="right hide-on-med-and-down">
-            <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="/client_order_display"><i class="material-icons left">payment</i> Order Now</a></li>
+            <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="/client_order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
             <li><a class="btn" href="/client_menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
             {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
             {{--<li><a class="btn" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
@@ -315,11 +315,14 @@
             </form>
         </ul>
         <ul id="nav-mobile" class="side-nav">
-            <li><a class="btn" href="/order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
+            <li><a class="btn" href="/order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
             <li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
             {{--<li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
-            <li><a class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/></li>
-            {{--<li><a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a></li>--}}
+            <ul class="dropdown-menu">
+                <a style="width:160px!important;" class="btn"><i class="material-icons left" >person_pin</i>Profile</a>
+                <a style="width:160px!important;" class="btn" href="{{ url('/logout') }}" style="margin-left:1em;" onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();"><i class="material-icons left">verified_user</i>Sign  Out</a><br/>
+            </ul>
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
         {{--@endif--}}
@@ -365,6 +368,7 @@
         var year = new Date().getFullYear();
         $(document).ready(function () {
             $('#footer_p').append(year);
+
         });
     </script>
 </footer>
@@ -378,6 +382,7 @@
         // $("#menu_popup_dialog").modal();
         $('select').material_select();
         $(".dropdown-trigger").dropdown();
+//        $('.sidenav').sidenav();
     });
 </script>
 </body>
