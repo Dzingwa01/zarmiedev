@@ -286,7 +286,7 @@
             @endif
         </div>
     </div>
-    <div id="more_orders" class="modal" style="height: 250px;">
+    <div id="more_orders" class="modal" role="dialog" style="height: 250px;">
         <div class="modal-header">
             <h5 class="modal-title">Complete Order</h5>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -320,11 +320,11 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                            <button id='' class="btn waves-effect waves-light" data-dismiss="modal">Cancel</button>
+                            <button  class="btn waves-effect waves-light" id="cancel_toppings">Cancel</button>
                         </div>
 
                         <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
-                            <button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>
+                            <button class="btn waves-effect waves-light" id="done_toppings">Done</button>
                         </div>
                     </div>
                 </fieldset>
@@ -401,6 +401,8 @@
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    {{--<script src="/js/jquery-step-maker.js"></script>--}}
     <script>
         window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
             window.msIndexedDB;
@@ -887,11 +889,11 @@ $('#extra_toppings').empty();
                         }
                         else {
                             var link_to = sessionStorage.getItem('item_id');
-                            window.location.href = '/address_selection/' + link_to;
+                            window.location.href = '/client_address_selection/' + link_to;
                         }
                     } else {
                         var link_to = sessionStorage.getItem('item_id');
-                        window.location.href = '/address_selection/' + link_to;
+                        window.location.href = '/client_address_selection/' + link_to;
                     }
 
                 } else {
@@ -1109,7 +1111,12 @@ $('#extra_toppings').empty();
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
             $('.tabs').tabs();
-
+            $('#done_toppings').on('click',function(){
+                $("#extra_toppings_modal").hide();
+            });
+            $('#cancel_toppings').on('click',function(){
+                $("#extra_toppings_modal").hide();
+            });
             accordion_trigger();
             if (sessionStorage.getItem("order_quantity") == null || sessionStorage.getItem("order_quantity") == undefined) {
                 sessionStorage.setItem("order_quantity", 0);
@@ -1202,7 +1209,8 @@ $('#extra_toppings').empty();
                 e.preventDefault();
             });
             $('#ingredient_toppings_next').on('click', function (e) {
-                $("#more_orders").modal();
+                console.log('Clicked');
+                $("#more_orders").show();
             });
             $("#ingredient_toppings_back").on('click', function () {
                 clearDrinks(db)
@@ -1256,7 +1264,7 @@ $('#extra_toppings').empty();
                                         .add(order);
                                     request_complete.onsuccess = function (event) {
                                         sessionStorage.setItem("more_order", "more_order");
-                                        window.location.href = '/order_display';
+                                        window.location.href = '/client_order_display';
                                     }
                                     request_complete.onerror = function (event) {
                                         console.log("error", event);
@@ -1429,7 +1437,7 @@ $('#extra_toppings').empty();
                     }
                 }
             }
-            $("#extra_toppings_modal").modal();
+            $("#extra_toppings_modal").show();
         }
 
         function readToppings() {
@@ -1593,7 +1601,7 @@ $('#extra_toppings').empty();
                     $('#ingredients_list_swap').append(' <button id=' + ingredients_others[i].id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" data-dismiss="modal" onclick="ingredient_select(this)">' + ingredients_others[i].name + '</button>');
                 }
             }
-            $("#confirm_remove").modal();
+            $("#confirm_remove").show();
             $("#" + obj.id).addClass('glass_unselected').removeClass('glass');
             removeIngredient(obj.id);
             return false;

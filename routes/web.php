@@ -53,6 +53,7 @@ Route::get('get_user_by_phone/{phone_number}','OrderController@getUserByPhone');
 Route::get('bread_selection/{id}','OrderController@showBread');
 Route::get('/client_bread_selection/{id}','OrderController@showBreadClient');
 Route::get('/address_selection/{id}','OrderController@showAddressSelection');
+Route::get('/client_address_selection/{id}','OrderController@showAddressSelectionClient');
 Route::get('select_ingredients_toppings/{id}','OrderController@showIngredientsToppings');
 Route::get('select_ingredients_toppings_client/{id}','OrderController@showIngredientsToppingsClient');
 Route::get('select_ingredients_toppings_salads/{id}','OrderController@showIngredientsToppingsSalads');
@@ -68,6 +69,8 @@ Route::get('toppings_list','MenusController@showToppingsList')->name('toppings_l
 Route::get('manage_toppings','MenusController@getToppingsIndex')->name('manage_toppings');
 
 Route::post('save_item','MenusController@store')->name('add_menu_item');
+Route::post('place_order_client','OrderCompletionLoginController@placeOrderClient')->name('place_order_client');
+
 Route::post('place_order','OrderCompletionLoginController@placeOrder')->name('place_order');
 Route::post('place_order_new_registration','OrderCompletionRegisterController@placeOrderRegister')->name('place_order_new_registration');
 

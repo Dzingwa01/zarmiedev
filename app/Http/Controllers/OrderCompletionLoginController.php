@@ -12,7 +12,9 @@ use App\Ingredient;
 use App\Jobs\OrderPlacedJob;
 use App\Jobs\ZarmieOrder;
 use App\Order;
+use App\OrderDrinks;
 use App\OrderIngredient;
+use App\OrderToppings;
 use App\User;
 use Illuminate\Http\Request;
 use App\Bread;
@@ -27,13 +29,58 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderCompletionLoginController
 {
+    public function placeOrderClient(Request $request){
+        $user = Auth::user();
+        $input = $request->all();
+        $orders = json_decode($input['orders']);
+        DB::beginTransaction();
+
+        try {
+            foreach ($orders as $order) {
+                $item_name = $order->item_name;
+                $item_category = $order->item_category;
+                $bread_type = $order->bread_type;
+                $toast_type = $order->toast_type;
+                $quantity = $order->quantity;
+                $prize = $order->prize;
+                $order_input = ["address"=>$input['address'],"prize"=>$prize,"item_name" => $item_name, "phone_number" => $user->phone_number, "item_category" => $item_category, "bread_type" => $bread_type, "toast_type" => $toast_type, "quantity" => $quantity, "user_id" => $user->id];
+
+                $order_cur = Order::create($order_input);
+                foreach ($order->ingredients as $ingredient){
+                    $item_ingredient = new OrderIngredient;
+                    $item_ingredient->ingredient_id = $ingredient->id;
+                    $item_ingredient->order_id = $order_cur->id;
+                    $item_ingredient->name = $ingredient->name;
+                    $item_ingredient->save();
+                }
+                foreach ($order->toppings as $topping){
+                    $item_ingredient = new OrderToppings();
+                    $item_ingredient->topping_id = $topping->id;
+                    $item_ingredient->order_id = $order_cur->id;
+                    $item_ingredient->name = $topping->name;
+                    $item_ingredient->save();
+                }
+                foreach ($order->drinks as $drink){
+                    $item_ingredient = new OrderDrinks();
+                    $item_ingredient->drink_id = $drink->id;
+                    $item_ingredient->order_id = $order_cur->id;
+                    $item_ingredient->name = $topping->name;
+                    $item_ingredient->save();
+                }
+                DB::commit();
+            }
+            return response()->json(["status" => "Order submitted successfully, Thank you"]);
+
+        }
+        catch (\Exception $e) {
+                DB::rollback();
+                return response()->json(["status" => "An error occured, please contact zarmie on 041 365 7146"]);
+            }
+    }
+
     public function placeOrder(Request $request)
     {
-//        dd($request->all());
-//        $this->validateLogin($request);
-
         if ($this->attemptLogin($request)) {
-//            return $this->sendLoginResponse($request);
             $input = $request->all();
             $ingr_amount = count($input['ingredients_array']);
             $ingredients_array = $input['ingredients_array'];
