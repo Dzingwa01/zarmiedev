@@ -299,7 +299,7 @@
                     } else {
                         $("#all_total_due").empty();
 //                      total_cost += Number(sessionStorage.getItem("total_due"));
-                        console.log("total cost", total_cost);
+                        sessionStorage.setItem("total_cost",total_cost);
                         $("#all_total_due").append('Total Due: R' + total_cost.toFixed(2));
                     }
                 };
@@ -413,22 +413,27 @@
                                 sessionStorage.setItem("delivery_time", $("#delivery_pick_up_time").val());
                                 sessionStorage.setItem("instructions",$("#delivery_instructions").val());
                                 window.location.href = '/order_completion';
+//                                read_all_complete_orders_for_submission();
                             }else if(!$("#delivery_pick_up_time").val()&&sessionStorage.getItem("delivery_collect_time")=="for_later"){
                                 alert("Please enter time of  delivery");
                             }else if(sessionStorage.getItem("delivery_collect_time")=="for_now"){
                                 sessionStorage.setItem("instructions",$("#delivery_instructions").val());
                                 window.location.href = '/order_completion';
+                                sessionStorage.setItem("delivery_time", "For Now");
+//                                read_all_complete_orders_for_submission();
                             }
+
                         } else if (!$("#address").val()) {
                             alert("Please enter your address");
                         }
                     } else if (sessionStorage.getItem("delivery_collect") == "Collect") {
                         if ($("#delivery_pick_up_time").val()&&sessionStorage.getItem("delivery_collect_time")=="for_later") {
-                            sessionStorage.setItem("collect_time", $("#delivery_pick_up_time").val());
-                            sessionStorage.setItem("instructions",$("#delivery_instructions").val());
+                            sessionStorage.setItem("delivery_time", $("#delivery_pick_up_time").val());
+                            sessionStorage.setItem("instructions",$("#collect_instructions").val());
                             window.location.href = '/order_completion';
                         }else if(sessionStorage.getItem("delivery_collect_time")=="for_now"){
                             sessionStorage.setItem("instructions",$("#delivery_instructions").val());
+                            sessionStorage.setItem("delivery_time", "For Now");
                             window.location.href = '/order_completion';
                         }
                         else {
@@ -567,8 +572,8 @@
                 google.maps.event.trigger(map, "resize");
             });
         </script>
-        <script type="text/javascript" async="async" defer="defer" data-cfasync="false"
-                src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>
+        {{--<script type="text/javascript" async="async" defer="defer" data-cfasync="false"--}}
+                {{--src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>--}}
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4VCOsDzZ-3fqwWrxmWWgoPNlXcpvpPvE&libraries=places&callback=getLocation"
                 async defer></script>
 @endsection

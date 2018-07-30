@@ -342,6 +342,128 @@
 
             }
         }
+
+        function read_all_complete_orders_for_submission() {
+            var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
+            var total_cost = 0;
+            var orders_array = [];
+            objectStore.openCursor().onsuccess = function (event) {
+                var cursor = event.target.result;
+                if (cursor) {
+                    orders_array.push(cursor.value);
+                    cursor.continue();
+                } else {
+                    console.log("cursot obj",orders_array);
+                    var formData = new FormData();
+                    formData.append('_token', $("#_token").val());
+                    formData.append('phone_number', $("#contact_number").val());
+                    formData.append('email', $("#email").val());
+                    formData.append('remember', 'yes');
+                    formData.append('password', $("#password").val());
+                    formData.append('address', sessionStorage.getItem('delivery_address'));
+                    formData.append('delivery_or_collect',sessionStorage.getItem('delivery_collect'));
+                    if(sessionStorage.getItem('delivery_collect')=="Delivery"){
+                        formData.append('delivery_collect_time',sessionStorage.getItem('delivery_time'));
+                    }else{
+                        formData.append('delivery_collect_time',sessionStorage.getItem('collect_time'));
+                    }
+                    formData.append('total_cost',sessionStorage.getItem('total_cost'));
+                    formData.append('special_instructions',sessionStorage.getItem('instructions'));
+                    formData.append("orders",JSON.stringify(orders_array));
+                    console.log("sending", formData);
+
+                    $.ajax({
+                        url: "{{ route('place_order') }}",
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+
+                        success: function (response, a, b) {
+                            console.log("success", response);
+                            alert(response.status);
+                            clearIngredients();
+                            clearCompleteOrders();
+                            clearToppings();
+                            clearDrinks();
+                            window.location.href = "/";
+                        },
+                        error: function (response) {
+                            console.log("error", response);
+                            alert(response.status);
+                        }
+                    });
+                }
+            };
+        }
+        function clearCompleteOrders(){
+            var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
+            var objectStoreRequest = objectStore.clear();
+            objectStoreRequest.onsuccess = function (event) {
+                // report the success of our request
+                console.log("toppings cleared successfully");
+            };
+        }
+        function read_all_complete_orders_for_submission_new() {
+            var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
+            var total_cost = 0;
+            var orders_array = [];
+            objectStore.openCursor().onsuccess = function (event) {
+                var cursor = event.target.result;
+                if (cursor) {
+                    orders_array.push(cursor.value);
+                    cursor.continue();
+                } else {
+                    console.log("cursot obj",orders_array);
+                    var formData = new FormData();
+                    formData.append('_token', $("#_token").val());
+                    formData.append('phone_number', $("#phone_number_dialog").val());
+                    formData.append('email', $("#email_address_dialog").val());
+                    formData.append('password', $("#password_dialog").val());
+                    formData.append('first_name', $("#first_name_dialog").val());
+                    formData.append('last_name', $("#last_name_dialog").val());
+                    formData.append('address', $("#address_dialog").val());
+                    formData.append('delivery_or_collect',sessionStorage.getItem('delivery_collect'));
+                    if(sessionStorage.getItem('delivery_collect')=="Delivery"){
+                        formData.append('delivery_collect_time',sessionStorage.getItem('delivery_time'));
+                    }else{
+                        formData.append('delivery_collect_time',sessionStorage.getItem('collect_time'));
+                    }
+                    formData.append('total_cost',sessionStorage.getItem('total_cost'));
+                    formData.append('special_instructions',sessionStorage.getItem('instructions'));
+                    formData.append("orders",JSON.stringify(orders_array));
+                    console.log("sending", formData);
+
+                    $.ajax({
+                        url: "{{ route('place_order_new_registration') }}",
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+
+                        success: function (response, a, b) {
+                            console.log("success", response);
+                            alert(response.status);
+                            clearIngredients();
+                            clearCompleteOrders();
+                            clearToppings();
+                            clearDrinks();
+                            window.location.href = "/";
+                        },
+                        error: function (response) {
+                            console.log("error", response);
+                            alert(response.status);
+                        }
+                    });
+                }
+            };
+        }
         $(document).ready(function () {
             $('.step-container').stepMaker({
                 steps: ['Item Size', 'Bread Choice', 'Ingredients', 'Delivery', 'Receipt'],
@@ -389,93 +511,14 @@
                 }
                 else {
                     var formData = new FormData();
-                    formData.append('_token', $("#_token").val());
-                    formData.append('phone_number', $("#phone_number_dialog").val());
-                    formData.append('email', $("#email_address_dialog").val());
-                    formData.append('password', $("#password_dialog").val());
-                    formData.append('first_name', $("#first_name_dialog").val());
-                    formData.append('last_name', $("#last_name_dialog").val());
-                    formData.append('address', $("#address_dialog").val());
-                    formData.append('item_name', sessionStorage.getItem('item_name'));
-                    formData.append('item_category', sessionStorage.getItem('item_category'));
-                    formData.append('bread_type', sessionStorage.getItem('bread_type') + ' - ' + sessionStorage.getItem('selected_toast'));
-                    formData.append('prize', Number(sessionStorage.getItem('total_due')).toFixed(2));
-                    formData.append('quantity', sessionStorage.getItem('quantity'));
-
-                    var count = 0;
-                    $(".glass").each(function (idx, obj) {
-                        count += 1;
-                        formData.append('ingredients_array[]', obj.id);
-                    });
-
-                    $.ajax({
-                        url: "{{ route('place_order_new_registration') }}",
-                        processData: false,
-                        contentType: false,
-                        data: formData,
-                        type: 'post',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-
-                        success: function (response, a, b) {
-                            console.log("success", response);
-                            alert(response.status);
-                            clearIngredients();
-                            clearToppings();
-                            window.location.href = "/";
-                        },
-                        error: function (response) {
-                            console.log("error", response);
-                            alert(response.status);
-                        }
-                    });
+                    read_all_complete_orders_for_submission_new();
                 }
 
             });
             $("#order_completion").on('submit', function (e) {
                 e.preventDefault();
+                read_all_complete_orders_for_submission();
 
-                var formData = new FormData();
-                formData.append('_token', $("#_token").val());
-                formData.append('phone_number', $("#contact_number").val());
-                formData.append('email', $("#email").val());
-                formData.append('remember', 'yes');
-                formData.append('password', $("#password").val());
-                formData.append('item_name', sessionStorage.getItem('item_name'));
-                formData.append('item_category', sessionStorage.getItem('item_category'));
-                formData.append('bread_type', sessionStorage.getItem('bread_type') + ' - ' + sessionStorage.getItem('selected_toast'));
-                formData.append('prize', Number(sessionStorage.getItem('total_due')).toFixed(2));
-                formData.append('quantity', sessionStorage.getItem('quantity'));
-                formData.append('address', sessionStorage.getItem('delivery_address'));
-                console.log("sending", formData);
-                var count = 0;
-                $(".glass").each(function (idx, obj) {
-                    count += 1;
-                    formData.append('ingredients_array[]', obj.id);
-                });
-
-                $.ajax({
-                    url: "{{ route('place_order') }}",
-                    processData: false,
-                    contentType: false,
-                    data: formData,
-                    type: 'post',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-
-                    success: function (response, a, b) {
-                        console.log("success", response);
-                        alert(response.status);
-                        clearIngredients();
-                        window.location.href = "/";
-                    },
-                    error: function (response) {
-                        console.log("error", response);
-                        alert(response.status);
-                    }
-                });
 
             });
             $("#complete_back").on('click', function (e) {
