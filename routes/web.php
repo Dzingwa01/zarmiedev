@@ -44,6 +44,7 @@ Route::get('menu_display','MenuManagementController@getIndex');
 Route::get("get_ingredients","IngredientController@getIngredients");
 
 //orders
+Route::get('/repeat_order/{id}','ClientOrderController@repeatOrder');
 Route::get('/previous_orders','ClientOrderController@showHistory');
 Route::get('contact_display','OrderController@showContactUsPage');
 Route::get('order_display','OrderController@getOrdersIndex');

@@ -45,7 +45,7 @@ class OrderCompletionLoginController
         DB::beginTransaction();
 
         try {
-           $history = OrderHistory::create(["order_information"=>$orders,"user_id"=>$user->id]);
+           $history = OrderHistory::create(["order_information"=>$orders,"total_cost"=>$extra_info->total_cost,"user_id"=>$user->id,"address"=>$extra_info->address,"delivery_collect_time"=>$extra_info->delivery_time,"delivery_or_collection"=> $extra_info->delivery_or_collection,"special_instructions"=>$extra_info->instructions]);
 //            $history->save();
             foreach ($orders as $order) {
                 $item_name = $order->item_name;

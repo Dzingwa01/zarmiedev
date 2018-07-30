@@ -33,39 +33,49 @@
     <script>
         read_all_complete_orders();
         function read_all_complete_orders(){
-            var previous_orders = {!! $previous_orders !!}
-            console.log("previosu",previous_orders);
+            var previous_orders = {!! $previous_orders !!};
+
             for(var i=0;i<previous_orders.length;i++){
-                var cursor = previous_orders[i].order_information[0];
-                console.log("ingredients",cursor);
-                $("#previous_orders").append('<div id='+cursor.id+' class="card col s3"><b>'+cursor.quantity+' X '+cursor.item_name+' - ' +cursor.item_category+ '<br>'+cursor.bread_type+' - '+cursor.toast_type+'</b><br/><b>Cost: </b>R'+cursor.prize+'</div>');
-                console.log("ingredients",cursor.ingredients);
-                var ingredients_string ="";
-                var toppings_string ="";
-                var drinks_string ="";
-                if(cursor.ingredients.length>0){
-                    for(var i=0;i<cursor.ingredients.length;i++){
-                        console.log(cursor.ingredients[i]);
-                        ingredients_string = ingredients_string+"; "+cursor.ingredients[i].name;
+                console.log(i);
+                var prev_id = previous_orders[i].id;
+                var prev_orders = previous_orders[i].order_information;
+                console.log("Order Info",prev_orders);
+                for(var x=0;x<prev_orders.length;x++){
+                    var cursor = prev_orders[x];
+                    $("#previous_orders").append('<div id='+cursor.id+' class="card col s3"><b>'+cursor.quantity+' X '+cursor.item_name+' - ' +cursor.item_category+ '<br>'+cursor.bread_type+' - '+cursor.toast_type+'</b><br/><b>Cost: </b>R'+cursor.prize+'</div>');
+
+                    var ingredients_string ="";
+                    var toppings_string ="";
+                    var drinks_string ="";
+                    if(cursor.ingredients.length>0){
+                        for(var ii=0;ii<cursor.ingredients.length;ii++){
+                            ingredients_string = ingredients_string+"; "+cursor.ingredients[ii].name;
+                        }
+                        $("#"+cursor.id).append('<br/><b>Ingredients: </b>'+ingredients_string+'<br/>');
                     }
-                    $("#"+cursor.id).append('<br/><b>Ingredients: </b>'+ingredients_string+'<br/>');
+                    if(cursor.length>0){
+                        for(var ii=0;i<cursor.toppings.length;ii++){
+                            toppings_string = toppings_string+"; "+cursor.toppings[ii].name;
+                        }
+                        $("#"+cursor.id).append('<br/><b>Extra Toppings: </b>'+toppings_string+'<br/>');
+                    }
+                    if(cursor.drinks.length>0){
+                        for(var ii=0;i<cursor.drinks.length;ii++){
+                            drinks_string = drinks_string+"; "+cursor.drinks[ii].name;
+                        }
+                        $("#"+cursor.id).append('<br/><b>Drinks: </b>'+drinks_string+'<br/>');
+                    }
+                    var new_id = "prev_"+prev_id;
+                    $("#"+cursor.id).append('<br/><a id="'+new_id+'" onclick="repeat_order(this)" class="btn" style="margin-bottom: 2em;"><i class="material-icons left">add_shopping_cart</i>Repeat Order</a>');
 
                 }
-                if(cursor.length>0){
-                    for(var i=0;i<cursor.toppings.length;i++){
-                        toppings_string = toppings_string+"; "+cursor.toppings[i].name;
-                    }
-                    $("#"+cursor.id).append('<br/><b>Extra Toppings: </b>'+toppings_string+'<br/>');
-                }
-                if(cursor.drinks.length>0){
-                    for(var i=0;i<cursor.drinks.length;i++){
-                        drinks_string = drinks_string+"; "+cursor.drinks[i].name;
-                    }
-                    $("#"+cursor.id).append('<br/><b>Drinks: </b>'+drinks_string+'<br/>');
-                }
-                $("#"+cursor.id).append('<br/><a class="btn" style="margin-bottom: 2em;"><i class="material-icons left">add_shopping_cart</i>Repeat Order</a>');
             }
+        }
 
+        function repeat_order(obj){
+            var split_obj = obj.id.split('_');
+            var previous_order = split_obj[1];
+            window.location.href = "/repeat_order/"+previous_order;
         }
     </script>
 @endsection
