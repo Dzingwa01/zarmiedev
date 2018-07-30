@@ -247,7 +247,7 @@
         .card .card-content {
             padding: 10px;
             border-radius: 0 0 2px 2px;
-            height: 200px !important;
+            /*height: 200px !important;*/
             /*overflow:visible!important;*/
         }
         .card .card-content p {
