@@ -507,7 +507,7 @@
             $("#replace_pasta_swap").show();
             $('#item_ingredients').append('<li id="pasta_1"   style="font-weight:bolder;margin-left:1em;color:black;">Pasta</li>');
             $("#replace_ingredients_with_pasta").hide();
-            addIngredient("pasta_1", "Pasta",0, 11);
+            addIngredient("pasta_1", "Pasta",0, 86);
         }
         function ingredient_select_pasta(obj){
 

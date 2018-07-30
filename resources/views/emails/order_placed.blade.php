@@ -3,6 +3,7 @@ Hi {{$name . ' ' . $surname}},
 
 Your order has been received. Your order details are as follows:<br/>
 <b>Total Cost: R{{$extra_info->total_cost}}</b><br/>
+
 @foreach($order as $order_item)
 <b>Item name:</b> {{$order_item->item_name}}<br/>
 <b>Item size:</b> {{$order_item->item_category}}<br/>

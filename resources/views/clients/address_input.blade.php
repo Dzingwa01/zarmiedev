@@ -336,8 +336,6 @@
                         formData.append('total_cost',sessionStorage.getItem('total_cost'));
                         formData.append('special_instructions',sessionStorage.getItem('instructions'));
                         formData.append("orders",JSON.stringify(orders_array));
-                        console.log("sending", formData);
-
                         $.ajax({
                             url: "{{ route('place_order_client') }}",
                             processData: false,
