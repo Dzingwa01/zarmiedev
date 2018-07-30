@@ -20,13 +20,13 @@ class OrderPlaced extends Mailable
      */
     public $order;
     public $user;
-    public $ingredients;
-    public function __construct(User $user,Order $order,$ingredients)
+    public $extra_info;
+    public function __construct(User $user, $order,$extra_info)
     {
         //
         $this->order = $order;
         $this->user = $user;
-        $this->ingredients = $ingredients;
+        $this->extra_info = $extra_info;
     }
 
     /**
@@ -41,7 +41,7 @@ class OrderPlaced extends Mailable
             'order' => $this->order,
             'name'=>$this->user->name,
             'surname'=>$this->user->surname,
-            'ingredients'=>$this->ingredients
+            'extra_info'=>$this->extra_info
         ]);
     }
 }

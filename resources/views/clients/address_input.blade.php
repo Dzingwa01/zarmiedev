@@ -328,6 +328,14 @@
                         var formData = new FormData();
                         formData.append('_token', $("#_token").val());
                         formData.append('address', sessionStorage.getItem('delivery_address'));
+                        formData.append('delivery_or_collect',sessionStorage.getItem('delivery_collect'));
+                        if(sessionStorage.getItem('delivery_collect')=="Delivery"){
+                            formData.append('delivery_collect_time',sessionStorage.getItem('delivery_time'));
+                        }else{
+                            formData.append('delivery_collect_time',sessionStorage.getItem('collect_time'));
+                        }
+                        formData.append('total_cost',sessionStorage.getItem('total_cost'));
+                        formData.append('special_instructions',sessionStorage.getItem('instructions'));
                         formData.append("orders",JSON.stringify(orders_array));
                         console.log("sending", formData);
 
@@ -344,7 +352,10 @@
                             success: function (response, a, b) {
                                 console.log("success", response);
                                 alert(response.status);
-//                                clearIngredients();
+                                clearIngredients();
+                                clearCompleteOrders();
+                                clearToppings();
+                                clearDrinks();
                                 window.location.href = "/home";
                             },
                             error: function (response) {
@@ -355,7 +366,38 @@
                     }
                 };
             }
-
+            function clearIngredients() {
+                var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
+                var objectStoreRequest = objectStore.clear();
+                objectStoreRequest.onsuccess = function (event) {
+                    // report the success of our request
+                    console.log("cleared successfully");
+                };
+            }
+            function clearDrinks() {
+                var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
+                var objectStoreRequest = objectStore.clear();
+                objectStoreRequest.onsuccess = function (event) {
+                    // report the success of our request
+                    console.log("cleared successfully");
+                };
+            }
+            function clearToppings() {
+                var objectStore = db_toppings.transaction(["selected_toppings"], "readwrite").objectStore("selected_toppings");
+                var objectStoreRequest = objectStore.clear();
+                objectStoreRequest.onsuccess = function (event) {
+                    // report the success of our request
+                    console.log("toppings cleared successfully");
+                };
+            }
+            function clearCompleteOrders(){
+                var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
+                var objectStoreRequest = objectStore.clear();
+                objectStoreRequest.onsuccess = function (event) {
+                    // report the success of our request
+                    console.log("toppings cleared successfully");
+                };
+            }
             function calculate_cart() {
                 var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
                 var total_cost = 0;
@@ -368,6 +410,7 @@
                     } else {
                         $("#all_total_due").empty();
                         total_cost += Number(sessionStorage.getItem("total_due"));
+                        sessionStorage.setItem("total_cost",total_cost);
                         $("#all_total_due").append('Total Due: R' + total_cost.toFixed(2));
                     }
                 };
@@ -480,7 +523,7 @@
                         if ($("#delivery_pick_up_time").val()&&sessionStorage.getItem("delivery_collect_time")=="for_later") {
                             sessionStorage.setItem("collect_time", $("#delivery_pick_up_time").val());
                             sessionStorage.setItem("instructions",$("#delivery_instructions").val());
-                            window.location.href = '/order_completion';
+                            read_all_complete_orders_for_submission();
                         }else if(sessionStorage.getItem("delivery_collect_time")=="for_now"){
                             sessionStorage.setItem("instructions",$("#delivery_instructions").val());
 //                            window.location.href = '/order_completion';

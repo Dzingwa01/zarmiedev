@@ -33,6 +33,13 @@ class OrderCompletionLoginController
         $user = Auth::user();
         $input = $request->all();
         $orders = json_decode($input['orders']);
+        $extra_info = new \stdClass();
+        $extra_info->total_cost = $input['total_cost'];
+        $extra_info->phone_number = $user->phone_number;
+        $extra_info->address = $input['address'];
+        $extra_info->delivery_or_collection = $input['delivery_or_collect'];
+        $extra_info->instructions = $input['special_instructions'];
+
         DB::beginTransaction();
 
         try {
@@ -64,11 +71,15 @@ class OrderCompletionLoginController
                     $item_ingredient = new OrderDrinks();
                     $item_ingredient->drink_id = $drink->id;
                     $item_ingredient->order_id = $order_cur->id;
-                    $item_ingredient->name = $topping->name;
+                    $item_ingredient->name = $drink->name;
                     $item_ingredient->save();
                 }
                 DB::commit();
+
             }
+            event($user);
+            dispatch(new OrderPlacedJob($user, $orders,$extra_info));
+//            dispatch(new ZarmieOrder($user, $orders,$extra_info));
             return response()->json(["status" => "Order submitted successfully, Thank you"]);
 
         }

@@ -23,13 +23,14 @@ class OrderPlacedJob implements ShouldQueue
      */
     public $order;
     public $user;
-    public $ingredients;
-    public function __construct(User $user,Order $order,$ingredients)
+    public $extra_info;
+    public function __construct(User $user,$order,$extra_info)
     {
         //
         $this->order = $order;
         $this->user = $user;
-        $this->ingredients = $ingredients;
+        $this->extra_info = $extra_info;
+//        $this->ingredients = $ingredients;
     }
 
     /**
@@ -40,7 +41,7 @@ class OrderPlacedJob implements ShouldQueue
     public function handle()
     {
         //
-        $email = new OrderPlaced($this->user,$this->order,$this->ingredients);
+        $email = new OrderPlaced($this->user,$this->order,$this->extra_info);
         Mail::to($this->user->email)->queue($email);
 //        $this->release(2);
     }
