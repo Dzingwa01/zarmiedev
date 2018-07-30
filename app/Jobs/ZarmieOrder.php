@@ -41,8 +41,8 @@ class ZarmieOrder implements ShouldQueue
     {
         //
         $email = new ZarmieOrderPlaced($this->user,$this->order,$this->extra_info);
-//        Mail::to("shane@zarmie.co.za")->cc("tongaichiridza@gmail.com")->queue($email);
-        Mail::to("tongaichiridza@gmail.com")->queue($email);
+        Mail::to("shane@zarmie.co.za")->cc("tongaichiridza@gmail.com")->queue($email);
+//        Mail::to("tongaichiridza@gmail.com")->queue($email);
 
 //        $this->release(2);
     }
