@@ -38,6 +38,7 @@ class OrderCompletionLoginController
         $extra_info->phone_number = $user->phone_number;
         $extra_info->address = $input['address'];
         $extra_info->delivery_or_collection = $input['delivery_or_collect'];
+        $extra_info->delivery_time = $input['delivery_collect_time'];
         $extra_info->instructions = $input['special_instructions'];
 
         DB::beginTransaction();
@@ -79,11 +80,12 @@ class OrderCompletionLoginController
             }
             event($user);
             dispatch(new OrderPlacedJob($user, $orders,$extra_info));
-//            dispatch(new ZarmieOrder($user, $orders,$extra_info));
+            dispatch(new ZarmieOrder($user, $orders,$extra_info));
             return response()->json(["status" => "Order submitted successfully, Thank you"]);
 
         }
         catch (\Exception $e) {
+            dd($e);
                 DB::rollback();
                 return response()->json(["status" => "An error occured, please contact zarmie on 041 365 7146"]);
             }

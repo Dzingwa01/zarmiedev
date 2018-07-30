@@ -23,13 +23,13 @@ class ZarmieOrder implements ShouldQueue
      */
     public $order;
     public $user;
-    public $ingredients;
-    public function __construct(User $user,Order $order,$ingredients)
+    public $extra_info;
+    public function __construct(User $user,$order,$extra_info)
     {
         //
         $this->order = $order;
         $this->user = $user;
-        $this->ingredients = $ingredients;
+        $this->extra_info = $extra_info;
     }
 
     /**
@@ -40,7 +40,7 @@ class ZarmieOrder implements ShouldQueue
     public function handle()
     {
         //
-        $email = new ZarmieOrderPlaced($this->user,$this->order,$this->ingredients);
+        $email = new ZarmieOrderPlaced($this->user,$this->order,$this->extra_info);
 //        Mail::to("shane@zarmie.co.za")->cc("tongaichiridza@gmail.com")->queue($email);
         Mail::to("tongaichiridza@gmail.com")->queue($email);
 
