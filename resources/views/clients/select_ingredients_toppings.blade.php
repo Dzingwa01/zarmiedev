@@ -889,11 +889,11 @@ $('#extra_toppings').empty();
                         }
                         else {
                             var link_to = sessionStorage.getItem('item_id');
-                            window.location.href = '/client_address_selection/' + link_to;
+                            window.location.href = '/client_address_selection';
                         }
                     } else {
                         var link_to = sessionStorage.getItem('item_id');
-                        window.location.href = '/client_address_selection/' + link_to;
+                        window.location.href = '/client_address_selection';
                     }
 
                 } else {

@@ -90,15 +90,15 @@
             </div>
 
         </div>
-        <div hidden>
-            @if(count($ingredients)>0)
-                @foreach($ingredients as $ingredient)
-                    <button
-                            style="font-weight:bolder;margin-left:1em;color:white;"
-                    >{{$ingredient->ingredient->name}}  </button>
-                @endforeach
-            @endif
-        </div>
+        {{--<div hidden>--}}
+            {{--@if(count($ingredients)>0)--}}
+                {{--@foreach($ingredients as $ingredient)--}}
+                    {{--<button--}}
+                            {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
+                    {{-->{{$ingredient->ingredient->name}}  </button>--}}
+                {{--@endforeach--}}
+            {{--@endif--}}
+        {{--</div>--}}
         <form id="" col="col-md-10" role="form" method="POST">
             <input id="_token" name="_token" value="{{ csrf_token() }}" hidden>
         </form>
@@ -259,13 +259,11 @@
                 var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
                 objectStore.openCursor().onsuccess = function (event) {
                     var cursor = event.target.result;
-                    var ingredients = {!! $ingredients !!};
-                    console.log("cursor", cursor);
-                    console.log("ingred", ingredients);
+                    {{--var ingredients = {!! $ingredients !!};--}}
+
                     if (cursor) {
                         $("#" + cursor.value.id).remove();
                         $('#item_ingredients').append('<li id=' + cursor.value.id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '</li>');
-
                         cursor.continue();
                     }
                 };
@@ -539,7 +537,7 @@
                 $("#address_back").on('click', function (e) {
                     e.preventDefault();
                     var link_to = sessionStorage.getItem('item_id');
-                    window.location.href = '/select_ingredients_toppings/' + link_to;
+                    window.history.back();
                 });
             });
             var latitude = 0;

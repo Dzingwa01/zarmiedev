@@ -73,12 +73,12 @@ class OrderController extends Controller
         return view('partials.address_input', compact('ingredients'));
     }
 
-    public function showAddressSelectionClient($id){
-        $menu_item = Menu::find($id);
-        $item_categories = Category::all();
-        $item_sizes = Item_Size::all();
-        $ingredients = $menu_item->item_ingredients;
-        return view('clients.address_input', compact('ingredients'));
+    public function showAddressSelectionClient(){
+//        $menu_item = Menu::find($id);
+//        $item_categories = Category::all();
+//        $item_sizes = Item_Size::all();
+//        $ingredients = $menu_item->item_ingredients;
+        return view('clients.address_input');
     }
 
     public function showIngredientsToppingsClient($id)

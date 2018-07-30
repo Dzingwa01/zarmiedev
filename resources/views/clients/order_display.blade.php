@@ -248,11 +248,12 @@
                     prize = obj.wrap;
                     sessionStorage.setItem('item_category_price', prize);
                     sessionStorage.setItem('total_due',prize);
+                    sessionStorage.setItem('item_id', item_id);
                 }else if(id==32){
                     prize = obj.sandwich;
+                    sessionStorage.setItem('item_id', item_id);
 
                 }
-
                 sessionStorage.setItem("route_item_category",item_category);
                 sessionStorage.setItem('item_name', name_cur);
                 sessionStorage.setItem('item_category_price', prize);
@@ -270,14 +271,21 @@
         });
 
         if(item_category>=18&&item_category<=22){
-            window.location.href = '/select_ingredients_toppings/'+item_id;
-        }else if(id==32||id==25||id==33){
-            sessionStorage.setItem('item_category',item_category);
-            window.location.href = '/select_ingredients_toppings/'+item_id;
+            console.log("Hitting");
+            window.location.href = '/select_ingredients_toppings_client/'+item_id;
+        }else if(id==32){
+            sessionStorage.setItem('item_category',"Medium Sub");
+            window.location.href = '/select_ingredients_toppings_client/'+item_id;
+            sessionStorage.setItem('selected_toast',"No Toast");
             sessionStorage.setItem('item_category_price', prize);
             sessionStorage.setItem('total_due',prize);
-        }
-        else{
+        }else if(id==25||id==33){
+            sessionStorage.setItem('item_category',"Wrap");
+            window.location.href = '/select_ingredients_toppings_client/'+item_id;
+            sessionStorage.setItem('item_category_price', prize);
+            sessionStorage.setItem('selected_toast',"No Toast");
+            sessionStorage.setItem('total_due',prize);
+        }else{
             window.location.href='/client_bread_selection/'+item_id;
         }
 
