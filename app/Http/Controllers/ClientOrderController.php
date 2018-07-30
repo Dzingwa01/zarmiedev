@@ -12,6 +12,7 @@ use App\Ingredient;
 use App\Jobs\OrderPlacedJob;
 use App\Jobs\ZarmieOrder;
 use App\Order;
+use App\OrderHistory;
 use App\OrderIngredient;
 use App\User;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ use DB;
 use App\Menu;
 use App\Category;
 use App\Item_Size;
+use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Facades\Datatables;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderPlaced;
@@ -96,5 +98,9 @@ class ClientOrderController
         // dd($categories);
         return view('clients.order_display', compact('menu_items', 'item_numbers', 'item_sizes', 'categories', 'toppings', 'bread','menu_items_1'));
     }
-
+    public function showHistory(){
+        $previous_orders = OrderHistory::where('user_id',Auth::user()->id)->get();
+//        dd($previous_orders);
+        return view('clients.previous_orders',compact('previous_orders'));
+    }
 }

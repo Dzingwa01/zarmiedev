@@ -13,6 +13,7 @@ use App\Jobs\OrderPlacedJob;
 use App\Jobs\ZarmieOrder;
 use App\Order;
 use App\OrderDrinks;
+use App\OrderHistory;
 use App\OrderIngredient;
 use App\OrderToppings;
 use App\User;
@@ -44,6 +45,8 @@ class OrderCompletionLoginController
         DB::beginTransaction();
 
         try {
+           $history = OrderHistory::create(["order_information"=>$orders,"user_id"=>$user->id]);
+//            $history->save();
             foreach ($orders as $order) {
                 $item_name = $order->item_name;
                 $item_category = $order->item_category;
@@ -85,7 +88,7 @@ class OrderCompletionLoginController
 
         }
         catch (\Exception $e) {
-//            dd($e);
+            dd($e);
                 DB::rollback();
                 return response()->json(["status" => "An error occured, please contact zarmie on 041 365 7146"]);
             }

@@ -16,7 +16,7 @@ $order = App\Order::where('user_id',\Illuminate\Support\Facades\Auth::user()->id
 							<p style="color:black;font-weight: bolder">{{Auth::user()->email}}</p>
 						</div></li>
 					<li><div class="divider" style="margin-top: 2em;color:black"> </div></li><br>
-					<li><a href="#!" class="" style="color:black;font-weight: bolder"> <i class="tiny material-icons">shopping_cart</i>Previous Orders</a></li><br>
+					<li><a href="/previous_orders" class="" style="color:black;font-weight: bolder"> <i class="tiny material-icons">shopping_cart</i>Previous Orders</a></li><br>
 					<li><a href="#!" class="" style="margin-top: 2em;color:black;font-weight: bolder"><i class="tiny material-icons">favorite</i> Favourites</a></li>
 					<li><div class="divider" style="margin-top: 2em;color:black"> </div></li><br>
 
