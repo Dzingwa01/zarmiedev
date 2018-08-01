@@ -488,7 +488,7 @@
         var item_id = 0;
         var prize = 0;
         var menu_items_1 = {!!$menu_items_1!!};
-      console.log("item number",item_number);
+        console.log("item number",item_number);
         $.each(menu_items, function (idx, obj) {
             if (id == obj.item_number) {
                 var name_cur = obj.item_name;
@@ -498,11 +498,12 @@
                     prize = obj.wrap;
                     sessionStorage.setItem('item_category_price', prize);
                     sessionStorage.setItem('total_due',prize);
+                    sessionStorage.setItem('item_id', item_id);
                 }else if(id==32){
                     prize = obj.sandwich;
+                    sessionStorage.setItem('item_id', item_id);
 
                 }
-
                 sessionStorage.setItem("route_item_category",item_category);
                 sessionStorage.setItem('item_name', name_cur);
                 sessionStorage.setItem('item_category_price', prize);
@@ -520,19 +521,26 @@
         });
 
         if(item_category>=18&&item_category<=22){
+            console.log("Hitting");
             window.location.href = '/select_ingredients_toppings/'+item_id;
-        }else if(id==32||id==25||id==33){
-            sessionStorage.setItem('item_category',item_category);
+        }else if(id==32){
+            sessionStorage.setItem('item_category',"Medium Sub");
             window.location.href = '/select_ingredients_toppings/'+item_id;
+            sessionStorage.setItem('selected_toast',"No Toast");
             sessionStorage.setItem('item_category_price', prize);
             sessionStorage.setItem('total_due',prize);
-        }
-        else{
+        }else if(id==25||id==33){
+            sessionStorage.setItem('item_category',"Wrap");
+            window.location.href = '/select_ingredients_toppings/'+item_id;
+            sessionStorage.setItem('item_category_price', prize);
+            sessionStorage.setItem('selected_toast',"No Toast");
+            sessionStorage.setItem('total_due',prize);
+        }else{
             window.location.href='/bread_selection/'+item_id;
         }
 
-       console.log(item_number);
-        
+        console.log(item_number);
+
     }
     </script>
 

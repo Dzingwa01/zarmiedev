@@ -17,7 +17,7 @@
                                        id="collect"/>
                                 <label for="collect">Collect</label>
 
-                                <input name="group01" class="bread" type="radio" id="delivery"
+                                <input name="group01" class="bread" type="radio" id="delivery" checked
                                        value="Delivery"/>
                                 <label for="delivery">Delivery</label>
                             </p>
@@ -39,6 +39,18 @@
                             <input id="delivery_pick_up_time" type="text" class="validate">
                             <label class="active" for="delivery_pick_up_time">Time</label>
                         </div>
+                    </div>
+                    <div class="row">
+                        <p>
+                            <input name="group021" class="bread" value="usual_address" type="radio" checked
+                                   id="usual_address"/>
+                            <label for="usual_address">{{\Illuminate\Support\Facades\Auth::user()->physical_address}}</label>
+                        </p>
+                        <p>
+                            <input name="group021" class="bread" type="radio" id="new_address"
+                                   value="New Address"/>
+                            <label for="new_address">Another Address</label>
+                        </p>
                     </div>
                 </div>
                 <div id="address_div" hidden style="margin-top:0.5em;" class="row">
@@ -90,15 +102,7 @@
             </div>
 
         </div>
-        {{--<div hidden>--}}
-            {{--@if(count($ingredients)>0)--}}
-                {{--@foreach($ingredients as $ingredient)--}}
-                    {{--<button--}}
-                            {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
-                    {{-->{{$ingredient->ingredient->name}}  </button>--}}
-                {{--@endforeach--}}
-            {{--@endif--}}
-        {{--</div>--}}
+
         <form id="" col="col-md-10" role="form" method="POST">
             <input id="_token" name="_token" value="{{ csrf_token() }}" hidden>
         </form>
@@ -306,8 +310,6 @@
                         cursor.continue();
                     } else {
                         $("#all_total_due").empty();
-//                      total_cost += Number(sessionStorage.getItem("total_due"));
-                        console.log("total cost", total_cost);
                         sessionStorage.setItem('total_cost',total_cost.toFixed(2));
                         $("#all_total_due").append('Total Due: R' + total_cost.toFixed(2));
                     }
