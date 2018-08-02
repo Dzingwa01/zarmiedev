@@ -315,7 +315,7 @@
             </form>
         </ul>
         <ul id="nav-mobile" class="side-nav">
-            <li><a class="btn" href="/order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+            <li><a class="btn" href="/client_order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
             <li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
             {{--<li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
             <ul class="dropdown-menu">

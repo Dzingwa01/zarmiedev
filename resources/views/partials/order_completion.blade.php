@@ -296,7 +296,8 @@
                     cursor.continue();
                 } else {
                     $("#all_total_due").empty();
-                    total_cost += Number(sessionStorage.getItem("total_due"));
+//                    total_cost += Number(sessionStorage.getItem("total_due"));
+                    sessionStorage.setItem("total_cost",total_cost);
                     $("#all_total_due").append('Total Due: R' + total_cost.toFixed(2));
                 }
             };
@@ -464,6 +465,14 @@
                 }
             };
         }
+        function clearDrinks() {
+            var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
+            var objectStoreRequest = objectStore.clear();
+            objectStoreRequest.onsuccess = function (event) {
+                // report the success of our request
+                console.log("cleared successfully");
+            };
+        }
         $(document).ready(function () {
             $('.step-container').stepMaker({
                 steps: ['Item Size', 'Bread Choice', 'Ingredients', 'Delivery', 'Receipt'],
@@ -524,12 +533,12 @@
             $("#complete_back").on('click', function (e) {
                 e.preventDefault();
                 var link_to = sessionStorage.getItem('item_id');
-                window.location.href = '/address_selection/' + link_to;
+                window.history.back();
                 {{--window.location.href = "{{'/address_selection'}}";--}}
             });
         });
 
     </script>
-    <script type="text/javascript" async="async" defer="defer" data-cfasync="false"
-            src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>
+    {{--<script type="text/javascript" async="async" defer="defer" data-cfasync="false"--}}
+            {{--src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>--}}
 @endsection

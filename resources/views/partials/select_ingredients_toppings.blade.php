@@ -886,11 +886,11 @@
                         }
                         else {
                             var link_to = sessionStorage.getItem('item_id');
-                            window.location.href = '/address_selection/' + link_to;
+                            window.location.href = '/address_selection';
                         }
                     } else {
                         var link_to = sessionStorage.getItem('item_id');
-                        window.location.href = '/address_selection/' + link_to;
+                        window.location.href = '/address_selection';
                     }
 
                 } else {
@@ -1381,7 +1381,8 @@
                     cursor.continue();
                 } else {
                     $("#all_total_due").empty();
-                    total_cost += Number(sessionStorage.getItem("total_due"));
+//                    total_cost += Number(sessionStorage.getItem("total_due"));
+                    sessionStorage.setItem("total_cost",total_cost);
                     $("#all_total_due").append('Total Due: R'+total_cost.toFixed(2));
                 }
             };

@@ -54,7 +54,7 @@ Route::get('/order_completion','OrderController@gotToCompletion');
 Route::get('get_user_by_phone/{phone_number}','OrderController@getUserByPhone');
 Route::get('bread_selection/{id}','OrderController@showBread');
 Route::get('/client_bread_selection/{id}','OrderController@showBreadClient');
-Route::get('/address_selection/{id}','OrderController@showAddressSelection');
+Route::get('/address_selection','OrderController@showAddressSelection');
 Route::get('/client_address_selection','OrderController@showAddressSelectionClient');
 Route::get('select_ingredients_toppings/{id}','OrderController@showIngredientsToppings');
 Route::get('select_ingredients_toppings_client/{id}','OrderController@showIngredientsToppingsClient');

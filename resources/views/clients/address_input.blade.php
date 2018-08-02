@@ -1,5 +1,6 @@
 @extends('client_processing')
 @section('content')
+    <?php $user_address = \Illuminate\Support\Facades\Auth::user()->physical_address; ?>
     <div class="container-fluid" style="margin-top:8em">
         {{--<a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>--}}
         <div id="normal_tracker" class="row">
@@ -408,7 +409,7 @@
                         cursor.continue();
                     } else {
                         $("#all_total_due").empty();
-                        total_cost += Number(sessionStorage.getItem("total_due"));
+//                        total_cost += Number(sessionStorage.getItem("total_due"));
                         sessionStorage.setItem("total_cost",total_cost);
                         $("#all_total_due").append('Total Due: R' + total_cost.toFixed(2));
                     }
@@ -459,11 +460,16 @@
             }
 
             $(document).ready(function () {
+                sessionStorage.setItem("delivery_collect","Delivery");
+                sessionStorage.setItem("new_address_select","no");
+                $("#collect_instructions_div").hide();
+                var user_address =  "{{$user_address}}";
+                sessionStorage.setItem("delivery_address",user_address);
                 var qty = sessionStorage.getItem('quantity');
                 sessionStorage.setItem("delivery_collect_time","for_now");
                 if(sessionStorage.getItem("delivery_collect")=="Delivery"){
                     $("#delivery").attr("checked",true);
-                    $("#address_div").show();
+//                    $("#address_div").show();
                 }else if(sessionStorage.getItem("delivery_collect")=="Collect"){
                     $("#collect").attr("checked",true);
                     $("#address_div").hide();
@@ -492,6 +498,12 @@
                     else if(delivery_or_collect=="for_now"){
                         sessionStorage.setItem("delivery_collect_time", "for_now");
                         $("#time_div").hide();
+                    }else if(delivery_or_collect =="New Address"){
+                        $("#address_div").show();
+                        sessionStorage.setItem("new_address_select","yes");
+                    }else if(delivery_or_collect =="usual_address"){
+                        $("#address_div").hide();
+                        sessionStorage.setItem("new_address_select","no");
                     }
                 });
                 read_all_complete_orders();
@@ -500,8 +512,15 @@
 //                e.preventDefault();
 //                alert(sessionStorage.getItem("delivery_collect"));
                     if (sessionStorage.getItem("delivery_collect") == "Delivery") {
-                        if ($("#address").val()) {
-                            sessionStorage.setItem("delivery_address", $("#address").val());
+                        var addressValue;
+                        if(sessionStorage.getItem("new_address_select")=="no"){
+                            addressValue = sessionStorage.getItem("delivery_address");
+                        }else{
+                            addressValue = $("#address").val();
+                        }
+                        console.log("address",addressValue);
+                        if (addressValue) {
+//                            sessionStorage.setItem("delivery_address", $("#address").val());
                             if(sessionStorage.getItem("delivery_collect_time")=="for_later"&&$("#delivery_pick_up_time").val()){
                                 sessionStorage.setItem("delivery_time", $("#delivery_pick_up_time").val());
                                 sessionStorage.setItem("instructions",$("#delivery_instructions").val());

@@ -36,8 +36,8 @@
         overflow-y: scroll;
     }
 </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
     <script>
         read_all_complete_orders();
         function read_all_complete_orders(){
@@ -80,7 +80,7 @@
                 }
 
                 var new_id = "prev_"+prev_id;
-                $("#"+footer_id).append('<a id="'+new_id+'" onclick="repeat_order(this)" class="btn" style="margin-bottom: 1em;"><i class="material-icons left">add_shopping_cart</i>Repeat Order</a>');
+                $("#"+footer_id).append('<a id="'+new_id+'" onclick="repeat_order(this)" class="btn" style="margin-bottom: 1em;"><i class="material-icons left">add_shopping_cart</i>Repeat</a>');
 
             }
         }

@@ -385,7 +385,8 @@
                     cursor.continue();
                 } else {
                     $("#all_total_due").empty();
-                    total_cost += Number(sessionStorage.getItem("total_due"));
+//                    total_cost += Number(sessionStorage.getItem("total_due"));
+                    sessionStorage.setItem("total_cost",total_cost);
                     $("#all_total_due").append('Total Due: R'+total_cost.toFixed(2));
                 }
             };

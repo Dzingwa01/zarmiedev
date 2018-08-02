@@ -149,8 +149,9 @@
         }
 
     </style>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
+
 
     <script>
         <?php $menu_items = json_encode($menu_items);?>
@@ -475,7 +476,8 @@
                     cursor.continue();
                 } else {
                     $("#all_total_due").empty();
-                    total_cost += Number(sessionStorage.getItem("total_due"));
+//                    total_cost += Number(sessionStorage.getItem("total_due"));
+                    sessionStorage.setItem("total_cost",total_cost);
                     $("#all_total_due").append('Total Due: R' + total_cost.toFixed(2));
                 }
             };

@@ -90,15 +90,15 @@
             </div>
 
         </div>
-        <div hidden>
-            @if(count($ingredients)>0)
-                @foreach($ingredients as $ingredient)
-                    <button
-                            style="font-weight:bolder;margin-left:1em;color:white;"
-                    >{{$ingredient->ingredient->name}}  </button>
-                @endforeach
-            @endif
-        </div>
+        {{--<div hidden>--}}
+            {{--@if(count($ingredients)>0)--}}
+                {{--@foreach($ingredients as $ingredient)--}}
+                    {{--<button--}}
+                            {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
+                    {{-->{{$ingredient->ingredient->name}}  </button>--}}
+                {{--@endforeach--}}
+            {{--@endif--}}
+        {{--</div>--}}
         <style>
             #map_canvas {
                 height: 250px;
@@ -249,9 +249,9 @@
                 var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
                 objectStore.openCursor().onsuccess = function (event) {
                     var cursor = event.target.result;
-                    var ingredients = {!! $ingredients !!};
-                    console.log("cursor", cursor);
-                    console.log("ingred", ingredients);
+                    {{--var ingredients = {!! $ingredients !!};--}}
+                    {{--console.log("cursor", cursor);--}}
+                    {{--console.log("ingred", ingredients);--}}
                     if (cursor) {
                         $("#" + cursor.value.id).remove();
                         $('#item_ingredients').append('<li id=' + cursor.value.id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '</li>');
@@ -316,7 +316,8 @@
                         cursor.continue();
                     } else {
                         $("#all_total_due").empty();
-                        total_cost += Number(sessionStorage.getItem("total_due"));
+//                        total_cost += Number(sessionStorage.getItem("total_due"));
+                        sessionStorage.setItem("total_cost",total_cost);
                         $("#all_total_due").append('Total Due: R' + total_cost.toFixed(2));
                     }
                 };
@@ -366,6 +367,8 @@
             }
 
             $(document).ready(function () {
+                sessionStorage.setItem("delivery_collect","Delivery");
+                $("#collect_instructions_div").hide();
                 var qty = sessionStorage.getItem('quantity');
                 sessionStorage.setItem("delivery_collect_time","for_now");
                 if(sessionStorage.getItem("delivery_collect")=="Delivery"){
@@ -443,8 +446,7 @@
                 });
                 $("#address_back").on('click', function (e) {
                     e.preventDefault();
-                    var link_to = sessionStorage.getItem('item_id');
-                    window.location.href = '/select_ingredients_toppings/' + link_to;
+                   window.history.back();
                 });
             });
             var latitude = 0;

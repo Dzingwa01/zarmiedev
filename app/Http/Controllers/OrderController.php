@@ -64,13 +64,13 @@ class OrderController extends Controller
 
     }
 
-    public function showAddressSelection($id)
+    public function showAddressSelection()
     {
-        $menu_item = Menu::find($id);
-        $item_categories = Category::all();
-        $item_sizes = Item_Size::all();
-        $ingredients = $menu_item->item_ingredients;
-        return view('partials.address_input', compact('ingredients'));
+//        $menu_item = Menu::find($id);
+//        $item_categories = Category::all();
+//        $item_sizes = Item_Size::all();
+//        $ingredients = $menu_item->item_ingredients;
+        return view('partials.address_input');
     }
 
     public function showAddressSelectionClient(){
