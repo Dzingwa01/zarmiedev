@@ -26,7 +26,7 @@
                                         <label for="brown_bread">Brown Bread</label>
                                     </p>
                                     <p>
-                                        <input name="group01" class="bread" value="Whole Wheat" type="radio"
+                                        <input name="group01" class="bread" value="Whole Wheat" type="radio" checked
                                                id="whole_wheat"/>
                                         <label for="whole_wheat">Whole Wheat Bread</label>
                                     </p>
@@ -43,7 +43,7 @@
                                     <label for="toast">Toast</label>
                                 </p>
                                 <p>
-                                    <input name="group1" type="radio" value="No Toast" id="no_toast"/>
+                                    <input name="group1" type="radio" value="No Toast" id="no_toast" checked/>
                                     <label for="no_toast">No Toast</label>
                                 </p>
                             </div>
@@ -345,6 +345,14 @@
                 sessionStorage.setItem('selected_toast', 'No Toast');
                 $("#brown_bread_p").hide();
             }
+
+            if (sessionStorage.getItem('selected_toast')) {
+                $('#item_bread').append('<h6><b>Bread Choice - </b>' + sessionStorage.getItem('bread_type') + ' - ' + sessionStorage.getItem('selected_toast') + '</h6>');
+            }
+            else {
+                $('#item_bread').append('<h6><b>Bread Choice - </b>' + sessionStorage.getItem('bread_type') + '</h6>');
+            }
+
             var menu_items = {!!$menu_items!!};
             initializeQuantities();
             $('.step-container_p').stepMaker({

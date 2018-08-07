@@ -27,8 +27,8 @@
                                     </p>
                                     <p>
                                         <input name="group01" class="bread" value="Whole Wheat" type="radio"
-                                               id="whole_wheat"/>
-                                        <label for="whole_wheat">Whole Wheat Bread</label>
+                                               id="whole_wheat" checked/>
+                                        <label for="whole_wheat">Whole & Wheat Bread</label>
                                     </p>
 
                                 </div>
@@ -43,7 +43,7 @@
                                     <label for="toast">Toast</label>
                                 </p>
                                 <p>
-                                    <input name="group1" type="radio" value="No Toast" id="no_toast"/>
+                                    <input name="group1" type="radio" value="No Toast" id="no_toast" checked/>
                                     <label for="no_toast">No Toast</label>
                                 </p>
                             </div>
@@ -343,6 +343,12 @@
                 sessionStorage.setItem('selected_toast', 'No Toast');
                 $("#brown_bread_p").hide();
             }
+            if (sessionStorage.getItem('selected_toast')) {
+                $('#item_bread').append('<h6><b>Bread Choice - </b>' + sessionStorage.getItem('bread_type') + ' - ' + sessionStorage.getItem('selected_toast') + '</h6>');
+            }
+            else {
+                $('#item_bread').append('<h6><b>Bread Choice - </b>' + sessionStorage.getItem('bread_type') + '</h6>');
+            }
             var menu_items = {!!$menu_items!!};
             initializeQuantities();
             $('.step-container_p').stepMaker({
@@ -399,10 +405,10 @@
             });
             $("#bread_next").on('click', function (e) {
                 e.preventDefault();
-                if (sessionStorage.getItem("bread_type") == null || sessionStorage.getItem("bread_type") == "") {
+                if (!sessionStorage.getItem("bread_type")) {
                     alert("Please select bread type");
                 }
-                else if (sessionStorage.getItem("selected_toast") == null) {
+                else if (!sessionStorage.getItem("selected_toast")) {
                     alert("Please select toast type");
                 } else {
                     var link_to = sessionStorage.getItem('item_id');
@@ -411,7 +417,6 @@
 
 
             });
-
             $("#bread_back").on('click', function (e) {
                 e.preventDefault();
                 window.history.back();
