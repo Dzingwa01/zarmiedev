@@ -401,10 +401,10 @@
             });
             $("#bread_next").on('click', function (e) {
                 e.preventDefault();
-                if (sessionStorage.getItem("bread_type") == null || sessionStorage.getItem("bread_type") == "") {
+                if (!sessionStorage.getItem("bread_type")) {
                     alert("Please select bread type");
                 }
-                else if (sessionStorage.getItem("selected_toast") == null) {
+                else if (!sessionStorage.getItem("selected_toast")) {
                     alert("Please select toast type");
                 } else {
                     var link_to = sessionStorage.getItem('item_id');

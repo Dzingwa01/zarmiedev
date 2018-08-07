@@ -7,7 +7,7 @@
             <div id="normal_tracker" class="step-container" style="width: 100%; margin: 0 auto"></div>
         </div>
         <div class="row">
-
+            <input hidden id="hidden_address" value="{{$user_address}}">
             <div class="col-sm-7 card">
                 <div id="delivery_collect">
                     <p style="color:black;font-weight: bolder;font-size: 1.2em;">Delivery or Pickup</p>
@@ -463,7 +463,7 @@
                 sessionStorage.setItem("delivery_collect","Delivery");
                 sessionStorage.setItem("new_address_select","no");
                 $("#collect_instructions_div").hide();
-                var user_address =  "{{$user_address}}";
+                var user_address =  $('#hidden_address').val();
                 sessionStorage.setItem("delivery_address",user_address);
                 var qty = sessionStorage.getItem('quantity');
                 sessionStorage.setItem("delivery_collect_time","for_now");
