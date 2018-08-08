@@ -26,7 +26,7 @@ class UserController extends Controller
   {
     $users = User::join('role_user','role_user.user_id','users.id')
             ->join('roles','roles.id','role_user.role_id')
-            ->select(['users.id', 'users.name', 'users.email', 'physical_address','phone_number','verified' ,'users.created_at', 'users.updated_at','display_name']);
+            ->select(['users.id', 'users.name', 'users.email', 'physical_address','phone_number','verified' ,'users.created_at', 'users.updated_at','roles.display_name as display_name'])->get();
 
     return Datatables::of($users)
     ->addColumn('action', function ($user) {

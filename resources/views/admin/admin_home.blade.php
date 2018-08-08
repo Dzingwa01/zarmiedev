@@ -5,7 +5,8 @@
 @endsection
 @section('main-content')
     <?php $users = App\User::all();
-    $menus = App\Menu::all();$ingredients = App\Ingredient::all();?>
+    $menus = App\Menu::all();$ingredients = App\Ingredient::all();
+    $orders = \App\Order::all();?>
   <div class="container-fluid spark-screen">
     <div class="row">
       <div class="col-md-4 well-lg">
@@ -65,7 +66,24 @@
       </div>
     </div>
     <div class="row">
-
+      <div class="col-md-4 well-lg">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            {{--<h3>Articles</h3>--}}
+            <div class="info-box bg-gray-light">
+              <span class="info-box-icon"><i class="ion ion-ios-beer"></i> </span>
+              <div class="info-box-content">
+                <span class="info-box-text">Orders</span>
+                <span class="info-box-number">{{count($orders)}}</span>
+                <div class="progress">
+                  <div class="progress-bar" style="width:100%"></div>
+                </div>
+                <span class="progress-description">Total number of orders received</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="col-md-4 well-lg">
         <div class="box box-primary">
           <div class="box-header with-border">
@@ -84,24 +102,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4 well-lg">
-        <div class="box box-primary">
-          <div class="box-header with-border">
-            {{--<h3>Articles</h3>--}}
-            <div class="info-box bg-gray-light">
-              <span class="info-box-icon"><i class="ion ion-ios-beer"></i> </span>
-              <div class="info-box-content">
-                <span class="info-box-text">Orders</span>
-                <span class="info-box-number"></span>
-                <div class="progress">
-                  <div class="progress-bar" style="width:100%"></div>
-                </div>
-                <span class="progress-description">Total number of orders received</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
 
     </div>
 

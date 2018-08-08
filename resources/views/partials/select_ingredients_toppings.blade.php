@@ -1527,6 +1527,9 @@
                     }
                 }
             }
+            if($('#swap_ingredients').is(':empty')){
+                $('#swap_ingredients').append('<label>No Available Swap Option</label>');
+            }
         }
 
         function ingredient_select_swapped(obj) {

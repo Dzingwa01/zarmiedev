@@ -28,7 +28,7 @@
                                     <p>
                                         <input name="group01" class="bread" value="Whole Wheat" type="radio"
                                                id="whole_wheat" checked/>
-                                        <label for="whole_wheat">Whole & Wheat Bread</label>
+                                        <label for="whole_wheat">Whole Wheat & White Bread</label>
                                     </p>
 
                                 </div>

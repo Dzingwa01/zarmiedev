@@ -380,6 +380,11 @@
             @endforeach
         @endif
     </div>
+    <div hidden>
+        @foreach($extra_toppings as $topping)
+            <button>{{$topping->name}}  </button>
+        @endforeach
+    </div>
     <style>
 
         #current_order_tab:after {
@@ -1535,6 +1540,9 @@ $('#extra_toppings').empty();
 
                     }
                 }
+            }
+            if($('#swap_ingredients').is(':empty')){
+                $('#swap_ingredients').append('<label>No Available Swap Option</label>');
             }
         }
 
