@@ -266,46 +266,27 @@
         {{--@endforeach--}}
       {{--</ul>--}}
       </div>
-      <div id="cart" class="modal">
-        <div class="modal-header">
-          <h5 class="modal-title">Current Order/s</h5>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <form>
-              {{--<fieldset>--}}
-              <h6 style="color:black;font-weight:bold;font-size: 1.5em;">Current Order Details <i class="fa fa-shopping-cart"></i> </h6>
-              <div id='type'></div>
-              <div id ='choice'>
-              </div>
+    <div id="cart" class="modal">
+      <div class="modal-header">
+        <h5 class="modal-title">Current Orders</h5>
+        <button type="button" class="close" onclick="dismiss()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div id='checkout_div_cart'>
 
-              <div id ='item_bread'>
-              </div>
-              <div>
-                <h6 id="quantiy_header"><b>Quantity</b><a style="margin-left:1em;"><i onclick="increase_quantity()" class="fa fa-plus"></i> </a>  <a id="decrease_el" style="margin-left:1em;"><i onclick="decrease_quantity()" class="fa fa-minus"></i> </a>  </h6>
-                <div id="item_amount">
-
-                </div>
-              </div>
-              <div id ='item_prize'></div>
-              <div id ='item_toast'>
-              </div>
-              <div id='item_ingredients' style="margin-top:2em;">
-                <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
-
-              </div>
-
-              {{--</fieldset>--}}
-            </form>
-            <button style="margin:1em;" class="btn" data-dismiss="modal"> Cancel</button>
-
-            <button style="margin:1em;" class="btn"
-                    onclick="check_out(this)">Checkout
-            </button>
           </div>
+
         </div>
       </div>
+      <div class="modal-footer">
+        <button style="margin:1em;" class="btn" onclick="dismiss()"> Cancel</button>
+
+        <button style="margin:1em;" class="btn"
+                onclick="proceed_to_checkout()">Checkout
+        </button>
+      </div>
+    </div>
 
   </div>
   </div>
@@ -385,6 +366,50 @@
             clearToppings(db_toppings);
         }
     }
+
+    function read_all_complete_orders() {
+        var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
+        var total_cost = 0;
+        objectStore.openCursor().onsuccess = function (event) {
+            var cursor = event.target.result;
+            if (cursor) {
+                var with_order = "ord_" + cursor.value.id;
+                total_cost += Number(cursor.value.prize);
+                var cart_id = "cart_"+cursor.value.id
+                $("#checkout_div_cart").append('<div id=' + cart_id + ' class="card"><b>' + cursor.value.quantity + ' X ' + cursor.value.item_name + ' - ' + cursor.value.item_category + '<br>' + cursor.value.bread_type + ' - ' + cursor.value.toast_type + '</b><i id=' + with_order + ' onclick="remove_order(this)"  class="fa fa-trash" style="float:right" style="color:red"></i><br/><b>Cost: </b>R' + cursor.value.prize + '</div>');
+//                        console.log("ingredients", cursor.value.ingredients);
+                var ingredients_string = "";
+                var toppings_string = "";
+                var drinks_string = "";
+                if (cursor.value.ingredients.length > 0) {
+                    for (var i = 0; i < cursor.value.ingredients.length; i++) {
+                        console.log(cursor.value.ingredients[i]);
+                        ingredients_string = ingredients_string + "; " + cursor.value.ingredients[i].name;
+                    }
+                    $("#" + cart_id).append('<br/><b>Ingredients: </b>' + ingredients_string + '<br/>');
+
+                }
+                if (cursor.value.toppings.length > 0) {
+                    for (var i = 0; i < cursor.value.toppings.length; i++) {
+                        toppings_string = toppings_string + "; " + cursor.value.toppings[i].name;
+                    }
+                    $("#" + cart_id).append('<br/><b>Extra Toppings: </b>' + toppings_string + '<br/>');
+                }
+                if (cursor.value.drinks.length > 0) {
+                    for (var i = 0; i < cursor.value.drinks.length; i++) {
+                        drinks_string = drinks_string + "; " + cursor.value.drinks[i].name;
+                    }
+                    $("#" + cart_id).append('<br/><b>Drinks: </b>' + drinks_string + '<br/>');
+                }
+
+                cursor.continue();
+            } else {
+                $("#all_total_due").empty();
+                sessionStorage.setItem('total_cost',total_cost.toFixed(2));
+                $("#all_total_due").append('Total Due: R' + total_cost.toFixed(2));
+            }
+        };
+    }
     function count_orders(db_cart) {
 //        console.log("carting pano");
         var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
@@ -408,6 +433,12 @@
             // report the success of our request
             console.log("cleared successfully");
         };
+    }
+    function proceed_to_checkout() {
+        sessionStorage.setItem("more_order", "more_order");
+//            sessionStorage.setItem("order_quantity", 1);
+//            add_order_for_checkout();
+        window.location.href = '/address_selection';
     }
     function show_cart(){
         $("#cart").show();
@@ -480,6 +511,9 @@
           });
 
     });
+    function dismiss(){
+        $('.modal').hide();
+    }
     function process_order(item_number){
         var id_string = item_number.id.split('_');
         var id = id_string[1];

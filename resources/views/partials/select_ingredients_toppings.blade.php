@@ -305,7 +305,7 @@
     </div>
     <div id="extra_toppings_modal" class="modal" style="height: 400px;">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <button type="button" class="close" onclick="dismiss()">&times;</button>
             <h5 class="modal-title">Extra Toppings</h5>
         </div>
         <div class="modal-body">
@@ -320,7 +320,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                            <button id='' class="btn waves-effect waves-light" data-dismiss="modal">Cancel</button>
+                            <button id='' class="btn waves-effect waves-light" onclick="dismiss()">Cancel</button>
                         </div>
 
                         <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
@@ -1489,7 +1489,9 @@
                 }
             }
         }
-
+        function dismiss(){
+            $('.modal').hide();
+        }
         function ingredient_select_swap(obj) {
             var ingredients = {!! $ingredients !!};
             var id_string = obj.id.split("_");

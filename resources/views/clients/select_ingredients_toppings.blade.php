@@ -289,7 +289,7 @@
     <div id="more_orders" class="modal" role="dialog" style="height: 250px;">
         <div class="modal-header">
             <h5 class="modal-title">Complete Order</h5>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <button type="button" class="close" onclick="dismiss()">&times;</button>
         </div>
         <div class="modal-body">
             <div class="row">
@@ -305,7 +305,7 @@
     </div>
     <div id="extra_toppings_modal" class="modal" style="height: 400px;">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <button type="button" class="close" onclick="dismiss()">&times;</button>
             <h5 class="modal-title">Extra Toppings</h5>
         </div>
         <div class="modal-body">
@@ -320,11 +320,11 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                            <button  class="btn waves-effect waves-light" id="cancel_toppings">Cancel</button>
+                            <button  class="btn waves-effect waves-light" id="cancel_toppings" onclick="dismiss()">Cancel</button>
                         </div>
 
                         <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
-                            <button class="btn waves-effect waves-light" id="done_toppings">Done</button>
+                            <button class="btn waves-effect waves-light" id="done_toppings" onclick="dismiss()">Done</button>
                         </div>
                     </div>
                 </fieldset>
@@ -359,7 +359,7 @@
     <div id="confirm_remove" class="modal" style="height: 250px;width: 500px;">
         <div class="modal-header">
             <h5 class="modal-title">Remove/Swap</h5>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <button type="button" class="close" onclick="dismiss()">&times;</button>
         </div>
         <div class="modal-body">
             <div class="row">
@@ -481,7 +481,9 @@
                 readToppings();
             }
         }
-
+        function dismiss(){
+            $('.modal').hide();
+        }
         function addDefaultToppings() {
             var standard_toppings =
                     {!! $standard_toppings !!}

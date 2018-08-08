@@ -283,7 +283,7 @@
                         var with_order = "ord_" + cursor.value.id;
                         total_cost += Number(cursor.value.prize);
                         $("#checkout_div").append('<div id=' + cursor.value.id + ' class="card"><b>' + cursor.value.quantity + ' X ' + cursor.value.item_name + ' - ' + cursor.value.item_category + '<br>' + cursor.value.bread_type + ' - ' + cursor.value.toast_type + '</b><i id=' + with_order + ' onclick="remove_order(this)"  class="fa fa-trash" style="float:right" style="color:red"></i><br/><b>Cost: </b>R' + cursor.value.prize + '</div>');
-                        console.log("ingredients", cursor.value.ingredients);
+//                        console.log("ingredients", cursor.value.ingredients);
                         var ingredients_string = "";
                         var toppings_string = "";
                         var drinks_string = "";
