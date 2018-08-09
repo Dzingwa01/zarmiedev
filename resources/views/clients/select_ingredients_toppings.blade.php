@@ -123,7 +123,7 @@
                     </div>
                     <div id="extra_toppings_div_2" class="row" style="margin-top:1em;">
 
-                        <button id="extra_toppings_accordion" class="accordion ">Extra Toppings</button>
+                        <button id="extra_toppings_accordion" class="accordion ">Extra Ingredients - *extra charge</button>
 
                         <div id="toppings_accordion" class="panel">
                             <form id="" col="col-md-10" onsubmit="return false;">
@@ -164,7 +164,7 @@
 
                     <hr/>
                     <div id="swap_toppings_div" hidden class="row" style="margin-top:1em;">
-                        <button class="accordion">Swap Removed Toppings With:</button>
+                        <button class="accordion">Swap Removed Ingredients With:</button>
                         <div id="swap_toppings_accordion" class="panel">
                             <form id="" col="col-md-10" onsubmit="return false;">
                                 {{--<fieldset>--}}
@@ -242,8 +242,8 @@
                             <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
 
                         </div>
-                        <div id='extra_toppings_cart' style="margin-top:2em;" hidden>
-                            <h6><b>Extra Toppings - *Click to remove </b></h6>
+                        <div id='extra_toppings_cart' style="margin-top:2em;" >
+                            <h6><b>Extra Ingredients - *Click to remove </b></h6>
 
                         </div>
                         <div id='drinks_cart' style="margin-top:2em;" hidden>
@@ -296,12 +296,12 @@
     <div id="extra_toppings_modal" class="modal" style="height: 400px;">
         <div class="modal-header">
             <button type="button" class="close" onclick="dismiss()">&times;</button>
-            <h5 class="modal-title">Extra Toppings</h5>
+            <h5 class="modal-title">Extra Ingredients</h5>
         </div>
         <div class="modal-body">
             <form id="" col="col-md-10" onsubmit="return false">
                 <fieldset>
-                    <legend>Please select extra topping/s:</legend>
+                    <legend>Please select:</legend>
 
                     <div class="row" style="margin-top:2em;">
                         <div id='extra_toppings_list'>
@@ -768,16 +768,26 @@ $('#extra_toppings').empty();
             });
         }
 
-        function addTopping(topping_id, topping_name, topping_prize, topping_category) {
+        function addTopping(topping_id, topping_name, prize, type_name) {
             var request = db_toppings.transaction(["selected_toppings"], "readwrite")
                 .objectStore("selected_toppings")
-                .add({id: topping_id.toString(), name: topping_name, prize: topping_prize, category: topping_category});
+                .add({id: topping_id.toString(), name: topping_name, prize: prize, category: type_name});
 
             request.onsuccess = function (event) {
-                console.log("topping addedd");
+                var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due"))+ (prize * parseInt(sessionStorage.getItem("quantity")));
+                sessionStorage.setItem("complete_orders_due",complete_orders_due);
+                var new_prize = Number(sessionStorage.getItem('total_due')) + (prize * parseInt(sessionStorage.getItem("quantity")));
+                sessionStorage.setItem('total_due', new_prize);
+                $("#all_total_due").empty();
+                $("#all_total_due").append('Total Due: R'+Number(complete_orders_due).toFixed(2));
+                $("#item_prize").empty();
+                var new_id = "extratops_"+topping_id;
+                $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
+                $('#extra_toppings_cart').append('<li class=' + new_id + ' style="font-weight:bolder;margin-left:1em;color:black;">' + topping_name + '<i id=' + new_id+' onclick="extras_select_reverse(this)" class="fa fa-trash"></i></li>');
+
             }
             request.onerror = function (event) {
-                console.log("error", event);
+                alert("You have already added " + topping_name);
             }
         }
 
@@ -989,6 +999,35 @@ $('#extra_toppings').empty();
 
             request.onsuccess = function (event) {
                 console.log("topping removed", event);
+                var prize = 0;
+                var extra_toppings ={!! json_encode($extra_toppings) !!};
+                for (var i = 0; i < extra_toppings.length; i++) {
+                    var cur_topping = extra_toppings[i];
+                    console.log(cur_topping);
+                    for(var x=0;x<cur_topping.item_ingredients.length;x++){
+                        if(cur_topping.item_ingredients[x].id==topping_id){
+                            var standard_toppings = cur_topping.item_ingredients[x];
+
+                            if(sessionStorage.getItem("item_category")=="Sandwich") {
+                                prize =  !isNaN(Number(standard_toppings.prize))?Number(standard_toppings.prize):0;
+                                console.log("prize",Number(standard_toppings.prize));
+                            }else if(sessionStorage.getItem("item_category")=="Medium Sub"||sessionStorage.getItem("item_category")=="Wrap") {
+                                prize = !isNaN(Number(standard_toppings.medium_prize))?standard_toppings.medium_prize:0;
+                                console.log("prize",isNaN(Number(standard_toppings.medium_prize)));
+                            }else {
+                                prize =  !isNaN(Number(standard_toppings.large_prize))?standard_toppings.large_prize:0;
+                            }
+                        }
+                    }
+                }
+                var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
+                var new_prize = parseFloat(sessionStorage.getItem('total_due')).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
+                sessionStorage.setItem('total_due', new_prize);
+                sessionStorage.setItem("complete_orders_due",complete_orders_due);
+                $("#all_total_due").empty();
+                $("#all_total_due").append('Total Due: R'+complete_orders_due.toFixed(2));
+                $("#item_prize").empty();
+                $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
             }
             request.onerror = function (event) {
                 console.log("error", event);
@@ -1448,10 +1487,9 @@ $('#extra_toppings').empty();
                     $("." + extra_topps).remove();
 
                     $('#extra_toppings_cart').append('<li class=' + extra_topps + ' style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '<i id=' + extra_topps+' onclick="extras_select_reverse(this)" class="fa fa-trash"></i></li>');
-
-//                    $('#extra_toppings_cart').append('<li id=' + cursor.value.id + ' style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '</li>');
-
                     cursor.continue();
+                }else{
+                    $('#extra_toppings_cart').hide();
                 }
             };
         }
@@ -1462,38 +1500,33 @@ $('#extra_toppings').empty();
             var id = id_string[1];
             $("#extra_toppings_cart").show();
             var new_id = "";
-
-            let prize = 0;
-            var standard_toppings =
-                    {!! json_encode($all_ingredients) !!}
             var extra_toppings ={!! json_encode($extra_toppings) !!};
-//            console.log("extra_toppings", extra_toppings);
-//            console.log("standard_toppings", standard_toppings);
+            console.log("extra_toppings", extra_toppings);
+            console.log("id",id);
             for (var i = 0; i < extra_toppings.length; i++) {
-                if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
-                    for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
-                        if (id == extra_toppings[i].item_ingredients[x].ingredient_id) {
-                            prize = extra_toppings[i].prize;
+                var cur_topping = extra_toppings[i];
+                console.log(cur_topping);
+                for(var x=0;x<cur_topping.item_ingredients.length;x++){
+                    if(cur_topping.item_ingredients[x].id==id){
+                        var standard_toppings = cur_topping.item_ingredients[x];
+                        var prize = 0;
+                        if(sessionStorage.getItem("item_category")=="Sandwich") {
+                            prize =  !isNaN(Number(standard_toppings.prize))?Number(standard_toppings.prize):0;
+                            console.log("prize",Number(standard_toppings.prize));
+                        }else if(sessionStorage.getItem("item_category")=="Medium Sub"||sessionStorage.getItem("item_category")=="Wrap") {
+                            prize = !isNaN(Number(standard_toppings.medium_prize))?standard_toppings.medium_prize:0;
+                            console.log("prize",isNaN(Number(standard_toppings.medium_prize)));
+                        }else {
+                            prize =  !isNaN(Number(standard_toppings.large_prize))?standard_toppings.large_prize:0;
                         }
+//                        console.log("prize",prize);
+                        addTopping(standard_toppings.id, standard_toppings.name, prize, standard_toppings.type_name);
+                        //                    $('#replaced_list').append('<span id='+another_new+'>'+standard_toppings[i].name+' replaced</span>');
                     }
-                }
-            }
 
-            for (var i = 0; i < standard_toppings.length; i++) {
-                if (standard_toppings[i].id == id) {
-                    addTopping(standard_toppings[i].id, standard_toppings[i].name, prize, standard_toppings[i].category);
-                    var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due"))+ (prize * parseInt(sessionStorage.getItem("quantity")));
-                    sessionStorage.setItem("complete_orders_due",complete_orders_due);
-                    var new_prize = Number(sessionStorage.getItem('total_due')) + (prize * parseInt(sessionStorage.getItem("quantity")));
-                    sessionStorage.setItem('total_due', new_prize);
-                    $("#all_total_due").empty();
-                    $("#all_total_due").append('Total Due: R'+Number(complete_orders_due).toFixed(2));
-                    $("#item_prize").empty();
-                    new_id = "extratops_"+id;
-                    $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
-                    $('#extra_toppings_cart').append('<li class=' + new_id + ' style="font-weight:bolder;margin-left:1em;color:black;">' + standard_toppings[i].name + '<i id=' + new_id+' onclick="extras_select_reverse(this)" class="fa fa-trash"></i></li>');
-//                    $('#replaced_list').append('<span id='+another_new+'>'+standard_toppings[i].name+' replaced</span>');
                 }
+//                if (standard_toppings[i].id == id) {
+
             }
         }
 
