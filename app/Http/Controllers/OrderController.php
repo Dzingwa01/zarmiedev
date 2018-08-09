@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Drink;
 use App\Ingredient;
+use App\IngredientType;
 use App\Jobs\OrderPlacedJob;
 use App\Jobs\ZarmieOrder;
 use App\Order;
@@ -87,10 +88,65 @@ class OrderController extends Controller
         $ingredients = $menu_item->item_ingredients;
         $standard_toppings = Topping::where('category','standard')->get();
         $optional_toppings = Topping::where('category','optional')->get();
-        $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name')->get();
-        $extra_toppings = Menu::join('item_sizes','item_sizes.id','menu_item.item_size_id')->where('category_id',8)->select('menu_item.*','item_sizes.size_name')->get();
+        $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Oriental Chicken')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name','ingredient_type_id')->get();
+//        $extra_toppings = Menu::join('item_sizes','item_sizes.id','menu_item.item_size_id')->where('category_id',8)->select('menu_item.*','item_sizes.size_name')->get();
         $temp_toppings_ingredients =[];
         $drinks = Drink::all();
+        $type_count = IngredientType::all();
+        $temp_extras = [];
+        /**
+         * Getting item type
+         */
+        $item_type = Category::where('id',$menu_item->category_id)->first();
+//        dd($item_type);
+        foreach($type_count as $item){
+            $top = new \stdClass();
+            $top->id = $item->id;
+            $top->name = $item->type_name;
+            $top->item_ingredients = [];
+            foreach ($all_ingredients as $ingredient){
+                if($ingredient->ingredient_type_id==$item->id){
+                   array_push($top->item_ingredients,$ingredient);
+                }
+            }
+            array_push($temp_extras,$top);
+        }
+
+        $refined_temp = [];
+        foreach ($temp_extras as $extra) {
+            if ($item_type->category_name == "Veggie Corner" || $item_type->category_name == "Mighty Meat Sandwiches" || $item_type->category_name == "Deli Chicken Sandwiches" || $item_type->category_name == "Speciality Sandwiches") {
+                if ($extra->name == "Veggie" || $extra->name == "Cheese" || $extra->name == "Meat" || $extra->name == "Source") {
+                    array_push($refined_temp, $extra);
+                }
+
+            } else if ($item_type->category_name == "Go for Some Fish") {
+                if ($extra->name == "Fish"||$extra->name == "Veggie" || $extra->name == "Cheese") {
+                    array_push($refined_temp, $extra);
+                }
+            }
+            else if ($item_type->category_name == "Classic Breakfast") {
+                if ($extra->name == "Veggie" || $extra->name == "Cheese"|| $extra->name == "Eggs") {
+                    array_push($refined_temp, $extra);
+                }
+            }
+            else if ($item_type->category_name == "SNACK TRAYS") {
+                if ($extra->name == "SNACK TRAY") {
+                    array_push($refined_temp, $extra);
+                }
+            }else if ($item_type->category_name == "DELI COMBINATION TRAYS") {
+                if ($extra->name == "DELI INGREDIENTS") {
+                    array_push($refined_temp, $extra);
+                }
+            }else if ($item_type->category_name == "SNACK & SANDWICH TRAYS"||$item_type->category_name=="SURF & TURF TRAYS") {
+                if ($extra->name == "PLATTER INGREDIENT") {
+                    array_push($refined_temp, $extra);
+                }
+            }
+        }
+        $extra_toppings = $refined_temp;
+        /**
+         * Cleaning swap options
+         */
         $ingredients_with_id = [];
         foreach ($ingredients as $ingredient){
             foreach ($all_ingredients as $ingr) {
@@ -99,6 +155,7 @@ class OrderController extends Controller
                 }
             }
         }
+
         $temp_ingr = [];
         $ingr_ids = [];
         $similar_items = Menu::where('category_id',$menu_item->category_id)->get();
@@ -114,9 +171,10 @@ class OrderController extends Controller
             }
         }
         $other_ingredients = $temp_ingr;
-        foreach ($extra_toppings as $topping){
-            $topping_ingredients = $topping->item_ingredients;
-        }
+//        dd($extra_toppings);
+//        foreach ($extra_toppings as $topping){
+//            $topping_ingredients = $topping->item_ingredients;
+//        }
         return view('clients.select_ingredients_toppings', compact('drinks','ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
     }
     public function showIngredientsToppings($id)
@@ -125,11 +183,65 @@ class OrderController extends Controller
         $ingredients = $menu_item->item_ingredients;
         $standard_toppings = Topping::where('category','standard')->get();
         $optional_toppings = Topping::where('category','optional')->get();
-        $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name')->get();
-        $extra_toppings = Menu::join('item_sizes','item_sizes.id','menu_item.item_size_id')->where('category_id',8)->select('menu_item.*','item_sizes.size_name')->get();
+        $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Oriental Chicken')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name','ingredient_type_id')->get();
+//        $extra_toppings = Menu::join('item_sizes','item_sizes.id','menu_item.item_size_id')->where('category_id',8)->select('menu_item.*','item_sizes.size_name')->get();
         $temp_toppings_ingredients =[];
-
         $drinks = Drink::all();
+        $type_count = IngredientType::all();
+        $temp_extras = [];
+        /**
+         * Getting item type
+         */
+        $item_type = Category::where('id',$menu_item->category_id)->first();
+//        dd($item_type);
+        foreach($type_count as $item){
+            $top = new \stdClass();
+            $top->id = $item->id;
+            $top->name = $item->type_name;
+            $top->item_ingredients = [];
+            foreach ($all_ingredients as $ingredient){
+                if($ingredient->ingredient_type_id==$item->id){
+                    array_push($top->item_ingredients,$ingredient);
+                }
+            }
+            array_push($temp_extras,$top);
+        }
+
+        $refined_temp = [];
+        foreach ($temp_extras as $extra) {
+            if ($item_type->category_name == "Veggie Corner" || $item_type->category_name == "Mighty Meat Sandwiches" || $item_type->category_name == "Deli Chicken Sandwiches" || $item_type->category_name == "Speciality Sandwiches") {
+                if ($extra->name == "Veggie" || $extra->name == "Cheese" || $extra->name == "Meat" || $extra->name == "Source") {
+                    array_push($refined_temp, $extra);
+                }
+
+            } else if ($item_type->category_name == "Go for Some Fish") {
+                if ($extra->name == "Fish"||$extra->name == "Veggie" || $extra->name == "Cheese") {
+                    array_push($refined_temp, $extra);
+                }
+            }
+            else if ($item_type->category_name == "Classic Breakfast") {
+                if ($extra->name == "Veggie" || $extra->name == "Cheese"|| $extra->name == "Eggs") {
+                    array_push($refined_temp, $extra);
+                }
+            }
+            else if ($item_type->category_name == "SNACK TRAYS") {
+                if ($extra->name == "SNACK TRAY") {
+                    array_push($refined_temp, $extra);
+                }
+            }else if ($item_type->category_name == "DELI COMBINATION TRAYS") {
+                if ($extra->name == "DELI INGREDIENTS") {
+                    array_push($refined_temp, $extra);
+                }
+            }else if ($item_type->category_name == "SNACK & SANDWICH TRAYS"||$item_type->category_name=="SURF & TURF TRAYS") {
+                if ($extra->name == "PLATTER INGREDIENT") {
+                    array_push($refined_temp, $extra);
+                }
+            }
+        }
+        $extra_toppings = $refined_temp;
+        /**
+         * Cleaning swap options
+         */
         $ingredients_with_id = [];
         foreach ($ingredients as $ingredient){
             foreach ($all_ingredients as $ingr) {
@@ -138,6 +250,7 @@ class OrderController extends Controller
                 }
             }
         }
+
         $temp_ingr = [];
         $ingr_ids = [];
         $similar_items = Menu::where('category_id',$menu_item->category_id)->get();
@@ -153,9 +266,6 @@ class OrderController extends Controller
             }
         }
         $other_ingredients = $temp_ingr;
-        foreach ($extra_toppings as $topping){
-            $topping_ingredients = $topping->item_ingredients;
-        }
         return view('partials.select_ingredients_toppings', compact('drinks','ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
     }
     public function showIngredientsToppingsSalads($id)

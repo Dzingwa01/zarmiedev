@@ -1149,9 +1149,9 @@
                 $("#combination_trays_div").show();
             }
             for (var i = 0; i < extra_toppings.length; i++) {
-                if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
-                    $("#extra_toppings").append(' <button id=' + extra_toppings[i].id + ' class="glass" onclick="extra_toppings_select(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + extra_toppings[i].name + '</button>');
-                }
+//                if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
+                $("#extra_toppings").append(' <button id=' + extra_toppings[i].id + ' class="glass" onclick="extra_toppings_select(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + extra_toppings[i].name + '</button>');
+//                }
             }
             if (sessionStorage.getItem("prev_swap_choice") == "no") {
                 $("#extra_toppings_div").hide();
@@ -1418,18 +1418,18 @@
             console.log("exra toppings",extra_toppings);
             $("#extra_toppings_list").empty();
             for (var i = 0; i < extra_toppings.length; i++) {
-                if (extra_toppings[i].id == obj.id&&sessionStorage.getItem("item_size_id")==extra_toppings[i].item_size_id) {
+                if (extra_toppings[i].id == obj.id) {
                     for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
 //                        console.log(extra_toppings[i].item_ingredients[x].ingredient_id);
                         for (var y = 0; y < ingredients.length; y++) {
-                            if (ingredients[y].id == extra_toppings[i].item_ingredients[x].ingredient_id&&extra_toppings[i].size_name) {
-                                $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + ingredients[y].name + ' - ' + Number(extra_toppings[i].prize).toFixed(2) + '</button>');
+                            if (ingredients[y].id == extra_toppings[i].item_ingredients[x].id) {
+                                $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + ingredients[y].name  + '</button>');
                             }
                         }
                     }
                 }
             }
-            $("#extra_toppings_modal").modal();
+            $("#extra_toppings_modal").show();
         }
 
         function readToppings() {

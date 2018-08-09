@@ -161,17 +161,7 @@
                         </div>
                     </div>
 
-                    <div class="row" style="margin-top:2em;" hidden>
-                        <div>
-                            @if(count($extra_toppings)>0)
-                                @foreach($extra_toppings as $topping)
-                                    <button class="glass"
-                                            style="font-weight:bolder;margin-left:1em;color:white;"
-                                    >{{$topping->name}}  </button>
-                                @endforeach
-                            @endif
-                        </div>
-                    </div>
+
                     <hr/>
                     <div id="swap_toppings_div" hidden class="row" style="margin-top:1em;">
                         <button class="accordion">Swap Removed Toppings With:</button>
@@ -1141,6 +1131,7 @@ $('#extra_toppings').empty();
             $("#trays_tracker").hide();
 
             var extra_toppings ={!! json_encode($extra_toppings) !!};
+            console.log('Extra toppings',extra_toppings);
             $("#choice_id").empty();
             $("#choice_id").append(sessionStorage.getItem("item_category"));
             if (sessionStorage.getItem("item_category") === "Tray") {
@@ -1164,9 +1155,9 @@ $('#extra_toppings').empty();
                 $("#combination_trays_div").show();
             }
             for (var i = 0; i < extra_toppings.length; i++) {
-                if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
+//                if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
                     $("#extra_toppings").append(' <button id=' + extra_toppings[i].id + ' class="glass" onclick="extra_toppings_select(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + extra_toppings[i].name + '</button>');
-                }
+//                }
             }
             if (sessionStorage.getItem("prev_swap_choice") == "no") {
                 $("#extra_toppings_div").hide();
@@ -1434,12 +1425,12 @@ $('#extra_toppings').empty();
             console.log("exra toppings",extra_toppings);
             $("#extra_toppings_list").empty();
             for (var i = 0; i < extra_toppings.length; i++) {
-                if (extra_toppings[i].id == obj.id&&sessionStorage.getItem("item_size_id")==extra_toppings[i].item_size_id) {
+                if (extra_toppings[i].id == obj.id) {
                     for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
 //                        console.log(extra_toppings[i].item_ingredients[x].ingredient_id);
                         for (var y = 0; y < ingredients.length; y++) {
-                            if (ingredients[y].id == extra_toppings[i].item_ingredients[x].ingredient_id&&extra_toppings[i].size_name) {
-                                $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + ingredients[y].name + ' - ' + Number(extra_toppings[i].prize).toFixed(2) + '</button>');
+                            if (ingredients[y].id == extra_toppings[i].item_ingredients[x].id) {
+                                $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + ingredients[y].name  + '</button>');
                             }
                         }
                     }
