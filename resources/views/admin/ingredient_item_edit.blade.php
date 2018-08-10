@@ -40,10 +40,35 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="name" class="col-md-4 control-label">Ingredient Prize</label>
+                    <label for="prize" class="col-md-4 control-label">Sandwich Prize</label>
                     <div class="col-md-6">
                         <input id="prize" type="text" class="form-control" name="prize"
                                value="{{$ingredient->prize}}" required autofocus>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="medium_prize" class="col-md-4 control-label">Medium Sub Prize</label>
+                    <div class="col-md-6">
+                        <input id="medium_prize" type="text" class="form-control" name="medium_prize"
+                               value="{{$ingredient->medium_prize}}" required autofocus>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="large_prize" class="col-md-4 control-label">Large Sub Prize</label>
+                    <div class="col-md-6">
+                        <input id="large_prize" type="text" class="form-control" name="large_prize"
+                               value="{{$ingredient->large_prize}}" required autofocus>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="wrap_prize" class="col-md-4 control-label">Wrap Prize</label>
+                    <div class="col-md-6">
+                        <input id="wrap_prize" type="text" class="form-control" name="wrap_prize"
+                               value="{{$ingredient->wrap_prize}}" required autofocus>
 
                     </div>
                 </div>

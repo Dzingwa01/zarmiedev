@@ -59,6 +59,7 @@ class IngredientController extends Controller
         $input = $request->all();
         $ingredient = Ingredient::find($id);
         $ingredient->update($input);
+        $ingredient->save();
 
         return redirect()->route('manage_ingredients');
     }
