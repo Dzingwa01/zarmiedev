@@ -32,11 +32,28 @@
 
       <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-          <strong>Ingredient Price:</strong>
+          <strong>Sandwich Price:</strong>
           {{$ingredient_item->prize}}
         </div>
       </div>
-
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+          <strong>Medium Sub Price:</strong>
+          {{$ingredient_item->medium_prize}}
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+          <strong>Large Sub Price:</strong>
+          {{$ingredient_item->large_prize}}
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+          <strong>Wrap Price:</strong>
+          {{$ingredient_item->wrap_prize}}
+        </div>
+      </div>
       <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
           <strong>Ingredient Type Name:</strong>
