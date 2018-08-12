@@ -209,7 +209,7 @@
     </div>
   </nav>
 
-  <div class="container" style="margin-top:5em;">
+  <div class="container-fluid" style="margin-top:5em;">
     {{--<div class="step-container" style="width: 700px; margin: 0 auto"></div>--}}
     <a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>
 
@@ -370,7 +370,14 @@
             clearToppings(db_toppings);
         }
     }
-
+    function toTitleCase(str) {
+        return str.replace(
+            /\w\S*/g,
+            function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            }
+        );
+    }
     function read_all_complete_orders() {
         var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
         var total_cost = 0;
