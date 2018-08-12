@@ -1,6 +1,6 @@
 @extends('client_processing')
 @section('content')
-    <div class="container-fluid" style="margin-top:5em">
+    <div class="container" style="margin-top:5em">
     {{--<div class="step-container" style="width: 700px; margin: 0 auto"></div>--}}
     <a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>
 
@@ -10,21 +10,27 @@
                 <center>
                     <h5>{{$category->category_name}}</h5>
                 </center>
-                <table id="{{$category->id}}" class="table table-hover table-sm table-striped" >
+                <table id="{{$category->id}}" class="table table-hover table-sm table-striped card" >
                     @if($category->id==18||$category->id==19||$category->id==22||$category->id==21||$category->id==20)
                         <thead>
                         <tr><th>Item Number</th><th>Name</th><th>Price</th></tr>
                         </thead>
                     @elseif($category->id<=6)
+                        <thead>
                         <tr><th>Item Number</th><th>Name</th><th>Sandwich</th><th>Medium Sub</th><th>Large Sub</th><th>Wrap</th></tr>
+                        </thead>
                     @elseif($category->id<=7)
+                        <thead>
                         <tr><th>Item Number</th><th>Name</th><th>Medium</th><th>Large</th></tr>
+                        </thead>
                     @endif
                     <tbody>
+
                     </tbody>
                 </table>
-        </div>
+
         @endforeach
+        </div>
     </div>
 
 </div>
@@ -245,6 +251,14 @@
             console.log("toppings cleared successfully");
         };
     }
+        function toTitleCase(str) {
+            return str.replace(
+                /\w\S*/g,
+                function(txt) {
+                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                }
+            );
+        }
     var menu_items = {!!$menu_items!!};
     var categories = {!! $categories !!};
     //    console.log("categories",categories.length);
@@ -259,21 +273,21 @@
             $.each(menu_items, function(idx,obj){
                 if(categories[i].id === obj.item_category){
                     try{
-                        $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
+                        $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
 
                     }catch(err){
                         if(categories[i].id==18||categories[i].id==19||categories[i].id==20||categories[i].id==21||categories[i].id==22){
-                            $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td></tr>');
+                            $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td></tr>');
                         }
                         else if(categories[i].id==7){
-                            $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td></tr>');
+                            $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td></tr>');
 
                         }
                         if(obj.item_number==28||obj.item_number==27){
-                            $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td></td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
+                            $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td></td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
 
                         }else if(obj.item_number==25||obj.item_number==33){
-                            $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td></td><td></td><td></td><td> R '+(obj.wrap).toFixed(2)+'</td></tr>');
+                            $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td></td><td></td><td></td><td> R '+(obj.wrap).toFixed(2)+'</td></tr>');
 
                         }else if(obj.item_number==32){
                             $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td></td><td>R '+(obj.sandwich).toFixed(2)+'</td><td></td><td> </td></tr>');

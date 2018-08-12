@@ -295,31 +295,28 @@
     </div>
     <div id="extra_toppings_modal" class="modal" style="height: 400px;">
         <div class="modal-header">
-            <button type="button" class="close" onclick="dismiss()">&times;</button>
+            <button type="button" class="close" onclick="dismiss()" style="color:black;">&times;</button>
             <h5 class="modal-title">Extra Ingredients</h5>
         </div>
         <div class="modal-body">
-            <form id="" col="col-md-10" onsubmit="return false">
-                <fieldset>
-                    <legend>Please select:</legend>
-
-                    <div class="row" style="margin-top:2em;">
+                    <div class="row" style="margin-top:0.5em;">
+                        <p style="color:black;">Please select your choice of extra ingredients</p>
                         <div id='extra_toppings_list'>
 
+
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                            <button  class="btn waves-effect waves-light" id="cancel_toppings" onclick="dismiss()">Cancel</button>
-                        </div>
 
-                        <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
-                            <button class="btn waves-effect waves-light" id="done_toppings" onclick="dismiss()">Done</button>
-                        </div>
-                    </div>
-                </fieldset>
-
-            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
+                    <button  class="btn waves-effect waves-light" id="cancel_toppings" onclick="dismiss()">Cancel</button>
+                </div>
+                <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
+                    <button class="btn waves-effect waves-light" id="done_toppings" onclick="dismiss()">Done</button>
+                </div>
+            </div>
         </div>
     </div>
     <div id="swap_ingredients_modal" class="modal">
@@ -953,44 +950,64 @@ $('#extra_toppings').empty();
         }
 
         function readAllDrinks(db) {
-            var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
-            objectStore.openCursor().onsuccess = function (event) {
-                var cursor = event.target.result;
-                var new_total =0;
-                if (cursor) {
-                    $("#drinks_cart").show();
-                    var new_id = "seldrink_"+cursor.value.id;
-                    var new_class="seldrink_"+cursor.value.id;
-                    $("#selected_drinks").append('<li class='+new_class+'><b>' + cursor.value.name + ' </b>   <i id=' + new_id +' onclick="extras_select_drink_reverse(this)" class="fa fa-trash"></i></li>');
-                    cursor.continue();
-                } else {
-                }
-            };
+            try{
+                var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
+                objectStore.openCursor().onsuccess = function (event) {
+                    var cursor = event.target.result;
+                    var new_total =0;
+                    if (cursor) {
+                        $("#drinks_cart").show();
+                        var new_id = "seldrink_"+cursor.value.id;
+                        var new_class="seldrink_"+cursor.value.id;
+                        $("#selected_drinks").append('<li class='+new_class+'><b>' + cursor.value.name + ' </b>   <i id=' + new_id +' onclick="extras_select_drink_reverse(this)" class="fa fa-trash"></i></li>');
+                        cursor.continue();
+                    } else {
+                    }
+                };
+            }catch(err){
+
+            }
+
         }
 
         function clearIngredients(db) {
-            var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
-            var objectStoreRequest = objectStore.clear();
-            objectStoreRequest.onsuccess = function (event) {
-                // report the success of our request
-                console.log("cleared successfully");
-            };
+            try{
+                var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
+                var objectStoreRequest = objectStore.clear();
+                objectStoreRequest.onsuccess = function (event) {
+                    // report the success of our request
+                    console.log("cleared successfully");
+                };
+            }catch (err){
+
+            }
+
         }
         function clearDrinks(db) {
-            var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
-            var objectStoreRequest = objectStore.clear();
-            objectStoreRequest.onsuccess = function (event) {
-                // report the success of our request
-                console.log("cleared successfully");
-            };
+            try{
+                var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
+                var objectStoreRequest = objectStore.clear();
+                objectStoreRequest.onsuccess = function (event) {
+                    // report the success of our request
+                    console.log("cleared successfully");
+                };
+            }catch (err){
+
+            }
+
         }
         function clearToppings(db) {
-            var objectStore = db.transaction(["selected_toppings"], "readwrite").objectStore("selected_toppings");
-            var objectStoreRequest = objectStore.clear();
-            objectStoreRequest.onsuccess = function (event) {
-                // report the success of our request
-                console.log("cleared successfully");
-            };
+            try{
+                var objectStore = db.transaction(["selected_toppings"], "readwrite").objectStore("selected_toppings");
+                var objectStoreRequest = objectStore.clear();
+                objectStoreRequest.onsuccess = function (event) {
+                    // report the success of our request
+                    console.log("cleared successfully");
+                };
+            }catch(err){
+
+            }
+
         }
         function removeTopping(topping_id, db_toppings) {
             var request = db_toppings.transaction(["selected_toppings"], "readwrite")
@@ -1461,7 +1478,7 @@ $('#extra_toppings').empty();
         function extra_toppings_select(obj) {
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             var ingredients = {!!json_encode($all_ingredients) !!};
-            console.log("exra toppings",extra_toppings);
+            console.log("exra toppings1",extra_toppings);
             $("#extra_toppings_list").empty();
             for (var i = 0; i < extra_toppings.length; i++) {
                 if (extra_toppings[i].id == obj.id) {
@@ -1469,13 +1486,44 @@ $('#extra_toppings').empty();
 //                        console.log(extra_toppings[i].item_ingredients[x].ingredient_id);
                         for (var y = 0; y < ingredients.length; y++) {
                             if (ingredients[y].id == extra_toppings[i].item_ingredients[x].id) {
-                                $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + ingredients[y].name  + '</button>');
+                                if(sessionStorage.getItem('item_category')=="Sandwich"){
+                                    console.log("check",isNaN(Number(ingredients[y].prize)));
+                                    let prize = !isNaN(Number(ingredients[y].prize))?ingredients[y].prize:' ';
+                                    if(prize)
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) +' R ' + Number(prize).toFixed(2) +'</button>');
+                                    else
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) +'</button>');
+
+                                }else if(sessionStorage.getItem('item_category')=="Medium Sub"||sessionStorage.getItem('item_category')=="Wrap"){
+                                    let prize = !isNaN(Number(ingredients[y].medium_prize))?ingredients[y].medium_prize:'';
+                                    if(prize)
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + ' R '+ prize + '</button>');
+                                    else
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name)  + '</button>');
+                                }
+                                else if(sessionStorage.getItem('item_category')=="Large Sub"){
+                                    let prize = !isNaN(Number(ingredients[y].large_prize))?ingredients[y].large_prize:'';
+                                    if(prize)
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + ' R '+ prize+'</button>');
+                                    else
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) +'</button>');
+
+                                }
+
                             }
                         }
                     }
                 }
             }
             $("#extra_toppings_modal").show();
+        }
+        function toTitleCase(str) {
+            return str.replace(
+                /\w\S*/g,
+                function(txt) {
+                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                }
+            );
         }
 
         function readToppings() {
@@ -1501,7 +1549,7 @@ $('#extra_toppings').empty();
             $("#extra_toppings_cart").show();
             var new_id = "";
             var extra_toppings ={!! json_encode($extra_toppings) !!};
-            console.log("extra_toppings", extra_toppings);
+            console.log("extra_toppingsee", extra_toppings);
             console.log("id",id);
             for (var i = 0; i < extra_toppings.length; i++) {
                 var cur_topping = extra_toppings[i];
