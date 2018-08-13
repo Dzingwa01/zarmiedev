@@ -1,11 +1,11 @@
 @extends('client_processing')
 @section('content')
-    <div class="container-fluid" style="margin-top:5em">
-        <div id="normal_tracker" class="row">
-            <div id="normal_tracker" class="step-container" style="width: 100%; margin: 0 auto"></div>
+    <div class="container-fluid" >
+        <div id="normal_tracker" class="row" style="margin-top:1em">
+            <div id="normal_tracker" class="step-container" style="width: 450px; margin: 0 auto"></div>
         </div>
-        <div class="row" id="trays_tracker">
-            <div id="trays_tracker" class="step-container_trays" style="width: 100%; margin: 0 auto"></div>
+        <div class="row" id="trays_tracker" style="margin-top:1em">
+            <div id="trays_tracker" class="step-container_trays" style="width: 450px; margin: 0 auto"></div>
         </div>
         <div class="row">
             <div class=" col-md-6 col-sm-12 card" style="margin-left: 1em;">

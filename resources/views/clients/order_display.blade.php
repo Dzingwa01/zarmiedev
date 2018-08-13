@@ -1,16 +1,16 @@
 @extends('client_processing')
 @section('content')
-    <div class="container-fluid" style="margin-top:5em">
+
     {{--<div class="step-container" style="width: 700px; margin: 0 auto"></div>--}}
     <a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>
 
-    <div>
-        <div id='menu_items' class="row">
+
+        <div id='menu_items' class="row" style="">
             @foreach ($categories as $category)
                 <center>
                     <h5>{{$category->category_name}}</h5>
                 </center>
-                <table id="{{$category->id}}" class="table table-hover table-sm table-striped card" >
+                <table id="{{$category->id}}" class=" table table-hover table-sm table-striped card" >
                     @if($category->id==18||$category->id==19||$category->id==22||$category->id==21||$category->id==20)
                         <thead>
                         <tr><th>Item Number</th><th>Name</th><th>Price</th></tr>
@@ -31,9 +31,7 @@
 
         @endforeach
         </div>
-    </div>
 
-</div>
     <div id="cart" class="modal">
         <div class="modal-header">
             <h5 class="modal-title">Current Orders</h5>
@@ -133,6 +131,7 @@
         $('.modal').hide();
     }
         function read_all_complete_orders() {
+        try{
             var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
             var total_cost = 0;
             objectStore.openCursor().onsuccess = function (event) {
@@ -174,6 +173,10 @@
                     $("#all_total_due").append('Total Due: R' + total_cost.toFixed(2));
                 }
             };
+        }catch(err){
+
+        }
+
         }
     function count_orders(db_cart) {
 //        console.log("carting pano");
@@ -368,48 +371,4 @@
     }
 </script>
 
-<footer class="page-footer teal">
-    <div class="container">
-        <div class="row">
-            <div style="margin-top:1.5em;" class="col-md-6">
-                <ul>
-                    <h5 style="color:white;">Branches</h5>
-                    <li><a style="color:white;" href="#">Bloemfontein - Westdene</a></li>
-                    <li><a style="color:white;" href="#">Bloemfontein - UOVS</a></li>
-                    <li><a style="color:white;">Kimberly</a></li>
-                    <li><a style="color:white;">George</a></li>
-                    <li><a style="color:white;">Port Elizabeth - <i class="material-icons prefix">contact_phone</i> 041 365 7146 or WhatsApp 071 704 9449</a></li>
-                </ul>
-            </div>
-            <div class="col-md-offset-1 col-md-4">
-                <h5 style="color:white;"> Follow us on: </h5>
-                <ul class="icons">
-                    <li>
-                        <a class="icon rounded fa-facebook" href="https://www.facebook.com/The-Sandwich-Shop-174784602609962/"><span class="label">Facebook</span></a>
-                    </li>
-                    <li>
-                        <a class="icon rounded fa-twitter"><span class="label">Twitter</span></a>
-                    </li>
-                </ul>
-            </div>
-
-
-        </div>
-        <div class="footer-copyright">
-            <div class="container">
-                <a id="footer_p" style="color:white;" href="#">Copyright &copy; Zarmie </a>
-            </div>
-        </div>
-    </div>
-    <script>
-        var year = new Date().getFullYear();
-        $(document).ready(function () {
-            $('#footer_p').append(year);
-        });
-    </script>
-</footer>
-
-{{--<script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>--}}
-{{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4VCOsDzZ-3fqwWrxmWWgoPNlXcpvpPvE&libraries=places&callback=getLocation" async defer></script>--}}
-</body>
-</html>
+@endsection

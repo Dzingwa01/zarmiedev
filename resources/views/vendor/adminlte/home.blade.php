@@ -3,7 +3,7 @@
 <?php
 $order = App\Order::where('user_id',\Illuminate\Support\Facades\Auth::user()->id)->get();?>
 
-	<div class="container-fluid" style="margin-top: 6em;">
+	<div class="container-fluid" style="">
 		<center>
 			<h5>Welcome {{Auth::user()->name}}</h5>
 		</center>
@@ -17,23 +17,23 @@ $order = App\Order::where('user_id',\Illuminate\Support\Facades\Auth::user()->id
 			</div>
 		@endif
 		<div class="row">
-			<div class="col s12 m2 card" >
-				<ul id="slide-out" class="sidenav">
-					<li><div class="user-view">
-							<a href="#user"> <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image" /></a>
-							<p style="color:black;font-weight: bolder">{{Auth::user()->name . ' '. Auth::user()->surname}}</p>
-							<p style="color:black;font-weight: bolder">{{Auth::user()->email}}</p>
-						</div></li>
-					<li><div class="divider" style="margin-top: 2em;color:black"> </div></li><br>
-					<li><a href="/previous_orders" class="" style="color:black;font-weight: bolder"> <i class="tiny material-icons">shopping_cart</i>Previous Orders</a></li><br>
+			{{--<div class="col s12 m2 card" >--}}
+				{{--<ul id="slide-out" class="sidenav">--}}
+					{{--<li><div class="user-view">--}}
+							{{--<a href="#user"> <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image" /></a>--}}
+							{{--<p style="color:black;font-weight: bolder">{{Auth::user()->name . ' '. Auth::user()->surname}}</p>--}}
+							{{--<p style="color:black;font-weight: bolder">{{Auth::user()->email}}</p>--}}
+						{{--</div></li>--}}
+					{{--<li><div class="divider" style="margin-top: 2em;color:black"> </div></li><br>--}}
+					{{--<li><a href="/previous_orders" class="" style="color:black;font-weight: bolder"> <i class="tiny material-icons">shopping_cart</i>Previous Orders</a></li><br>--}}
 					{{--<li><a href="#!" class="" style="margin-top: 2em;color:black;font-weight: bolder"><i class="tiny material-icons">favorite</i> Favourites</a></li>--}}
-					<li><div class="divider" style="margin-top: 2em;color:black"> </div></li><br>
+					{{--<li><div class="divider" style="margin-top: 2em;color:black"> </div></li><br>--}}
 
-					<li><a style="margin-top: 2em;color:black;font-weight: bolder" class="" href="#!"><i class="tiny material-icons">person</i>Manage Profile</a></li>
-				</ul>
-			</div>
-			<div class="col s12 m10">
-				<div class=" col s12 col m4 card" >
+					{{--<li><a style="margin-top: 2em;color:black;font-weight: bolder" class="" href="#!"><i class="tiny material-icons">person</i>Manage Profile</a></li>--}}
+				{{--</ul>--}}
+
+
+				<div class=" col s12 col m4 card"  >
 					<div class="card-image">
 						<img src="{{URL::asset('/pictures/sandwich.jpg')}}" class="img-responsive" />
 
@@ -78,7 +78,6 @@ $order = App\Order::where('user_id',\Illuminate\Support\Facades\Auth::user()->id
 						<a title="Order Now" href="client_order_display" class="pull-right " ><i class="  material-icons left" style="margin-bottom: 1em; color:teal">add_shopping_cart</i> </a>
 					</div>
 				</div>
-			</div>
 
 		</div>
 		<div id="trays_popup_dialog" class="modal" role="dialog">
@@ -220,12 +219,5 @@ $order = App\Order::where('user_id',\Illuminate\Support\Facades\Auth::user()->id
 		height: 420px;
 	}
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-    $(".alert").fadeTo(2000, 500).slideUp(500, function(){
-        $(".alert").slideUp(500);
-    });
-});
-</script>
+
 @endsection

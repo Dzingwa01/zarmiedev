@@ -1,8 +1,8 @@
 @extends('client_processing')
 @section('content')
-    <div class="container-fluid" style="margin-top:5em">
-        <div class="row">
-            <div class="step-container_p" style="width: 100%; margin: 0 auto"></div>
+    <div class="container-fluid">
+        <div class="row" style="margin-top: 1em;">
+            <div class="step-container_p" style="width: 450px; margin: 0 auto"></div>
         </div>
 
         <div class="row">
@@ -15,20 +15,23 @@
                             <div class="col-sm-6">
                                 <div id="bread_choices">
                                     <label style="font-size: 16px; color:black; font-weight: bold;">Bread Type</label>
-                                    <p>
-                                        <input name="group01" class="bread" type="radio" id="white_bread"
+                                    <p style="color:black;">
+                                        <label for="white_bread">
+                                        <input name="group01"  type="radio" id="white_bread"
                                                value="White Bread"/>
-                                        <label for="white_bread">White Bread</label>
+                                      <span>White Bread</span> </label>
                                     </p>
                                     <p id="brown_bread_p">
-                                        <input name="group01" class="bread" type="radio" value="Brown Bread"
+                                        <label for="brown_bread">
+                                        <input name="group01" type="radio" value="Brown Bread"
                                                id="brown_bread"/>
-                                        <label for="brown_bread">Brown Bread</label>
+                                     <span>Brown Bread</span>  </label>
                                     </p>
                                     <p>
+                                        <label for="whole_wheat">
                                         <input name="group01" class="bread" value="Whole Wheat" type="radio" checked
                                                id="whole_wheat"/>
-                                        <label for="whole_wheat">Whole Wheat Bread</label>
+                                            <span>Whole Wheat Bread</span></label>
                                     </p>
 
                                 </div>
@@ -39,12 +42,14 @@
                                 </div>
                                 <label style="font-size: 16px; font-weight: bold; color:black;">Toast Choice</label>
                                 <p>
+                                    <label for="toast">
                                     <input name="group1" type="radio" value="Toast" id="toast" required/>
-                                    <label for="toast">Toast</label>
+                                   <span>Toast</span> </label>
                                 </p>
                                 <p>
+                                    <label for="no_toast">
                                     <input name="group1" type="radio" value="No Toast" id="no_toast" checked/>
-                                    <label for="no_toast">No Toast</label>
+                                 <span> No Toast</span></label>
                                 </p>
                             </div>
 

@@ -1,10 +1,10 @@
 @extends('client_processing')
 @section('content')
     <?php $user_address = \Illuminate\Support\Facades\Auth::user()->physical_address; ?>
-    <div class="container-fluid" style="margin-top:8em">
+    <div class="container-fluid" >
         {{--<a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>--}}
-        <div id="normal_tracker" class="row">
-            <div id="normal_tracker" class="step-container" style="width: 100%; margin: 0 auto"></div>
+        <div id="normal_tracker" class="row" style="margin-top:1em">
+            <div id="normal_tracker" class="step-container" style="width: 450px; margin: 0 auto"></div>
         </div>
         <div class="row">
             <input hidden id="hidden_address" value="{{$user_address}}">
@@ -14,24 +14,26 @@
                     <div class="row" style="margin-bottom: 0px;">
                         <div class="col s6">
                             <p>
+                                <label for="collect">
                                 <input name="group01" class="bread" value="Collect" type="radio"
                                        id="collect"/>
-                                <label for="collect">Collect</label>
-
+                              <span> Collect</span></label>
+                                <label for="delivery">
                                 <input name="group01" class="bread" type="radio" id="delivery" checked
                                        value="Delivery"/>
-                                <label for="delivery">Delivery</label>
+                             <span>Delivery</span> </label>
                             </p>
                         </div>
                         <div class="col s6">
                             <p>
+                                <label for="for_now">
                                 <input name="group02" class="bread" value="for_now" type="radio" checked
                                        id="for_now"/>
-                                <label for="for_now">For Now</label>
-
+                               <span> For Now</span></label>
+                                <label for="for_later">
                                 <input name="group02" class="bread" type="radio" id="for_later"
                                        value="for_later"/>
-                                <label for="for_later">Specify Time</label>
+                              <span>Specify Time</span></label>
                             </p>
                         </div>
                     </div>
@@ -43,14 +45,16 @@
                     </div>
                     <div class="row">
                         <p>
+                            <label for="usual_address">
                             <input name="group021" class="bread" value="usual_address" type="radio" checked
                                    id="usual_address"/>
-                            <label for="usual_address">{{\Illuminate\Support\Facades\Auth::user()->physical_address}}</label>
+                          <span>{{\Illuminate\Support\Facades\Auth::user()->physical_address}}</span> </label>
                         </p>
                         <p>
+                            <label for="new_address">
                             <input name="group021" class="bread" type="radio" id="new_address"
                                    value="New Address"/>
-                            <label for="new_address">Another Address</label>
+                          <span>  Another Address</span></label>
                         </p>
                     </div>
                 </div>

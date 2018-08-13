@@ -1,13 +1,15 @@
 @extends('client_processing')
 
 @section('content')
-    <div class="container-fluid" style="margin-top:5em;margin-bottom: 5em;">
-        <div id="normal_steps" class="row">
-            <div class="step-container" style="width: 100%; margin: 0 auto"></div>
-        </div>
-        {{--<a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>--}}
 
-        <div id="normal_sandwiches" style="margin-bottom: 4em;">
+    <div class="container ">
+
+        {{--<a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>--}}
+        <div id="normal_steps" class="row" style="margin-top: 1em;">
+            <div class="step-container" style="width: 450px; margin: 0 auto"></div>
+        </div>
+        <div id="normal_sandwiches" class="card" style="margin-bottom: 4em;">
+
             <div class="row">
                 <center>
                     <h5 style="font-weight: bolder;" id="choice"></h5>
@@ -16,22 +18,21 @@
             </div>
             <div class="row" id="with_sandwiches">
                 <div class="row">
-
-                    <div id='sandwich' onclick="bread_selection(this)" class="col-sm-5  tile">
+                    <div id='sandwich' onclick="bread_selection(this)" class="col offset-m1 col m5  tile">
                         <h5 style="margin-top:2em;">Sandwich </h5>
                         <div id='sandwich_price'></div>
                     </div>
-                    <div id='mediumsub' onclick="bread_selection(this)" class="col-sm-5 tile">
+                    <div id='mediumsub' onclick="bread_selection(this)" class="col m5 tile">
                         <h5 style="margin-top:2em;">Medium Sub - 15cm </h5>
                         <div id='medium_price'></div>
                     </div>
                 </div>
                 <div class="row">
-                    <div id='largesub' onclick="bread_selection(this)" class="col-sm-5 tile">
+                    <div id='largesub' onclick="bread_selection(this)" class="col offset-m1  col m5 tile">
                         <h5 style="margin-top:2em;">Large - 22cm </h5>
                         <div id='large_price'></div>
                     </div>
-                    <div id='wrap' onclick="bread_selection(this)" class="col-sm-5 tile">
+                    <div id='wrap' onclick="bread_selection(this)" class="col m5 tile">
                         <h5 style="margin-top:2em;">Wrap</h5>
                         <div id='wrap_price'></div>
                     </div>
@@ -41,7 +42,7 @@
             <div class="row" hidden id="without_sandwiches">
 
                 <div class="row">
-                    <div id='mediumsub' onclick="bread_selection(this)" class="col-sm-5 tile">
+                    <div id='mediumsub' onclick="bread_selection(this)" class="col offset-m1  col-sm-5 tile">
                         <h5 style="margin-top:2em;">Medium Sub - 15cm </h5>
                         <div id='medium_price_sandwiches'></div>
                     </div>
@@ -52,7 +53,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div id='wrap' onclick="bread_selection(this)" class="col-sm-5 tile">
+                    <div id='wrap' onclick="bread_selection(this)" class="col offset-m1 col-sm-5 tile">
                         <h5 style="margin-top:2em;">Wrap</h5>
                         <div id='wrap_price_sandwiches'></div>
                     </div>
@@ -61,9 +62,9 @@
         </div>
 
 
-        <div id="salads_div" style="margin-bottom: 4em;margin-left: 1em;">
+        <div id="salads_div" class="card" style="margin-top: 1em;">
             <div class="row">
-                <div class="step-container_salads" style="width: 100%; margin: 0 auto"></div>
+                <div class="step-container_salads" style="width: 450px; margin: 0 auto"></div>
             </div>
             <div class="row">
                 <center>
@@ -71,7 +72,7 @@
                 </center>
                 {{--<button class="btn pull-right" onclick="goBack()"><i class="fa fa-arrow-left"></i> Back</button>--}}
             </div>
-            <div class="row">
+            <div class="row" >
                 <div class="col-sm-3">
                     <img id="salad_image" width="300px" height="250px" class="img-responsive img-rounded" />
                 </div>
@@ -101,7 +102,7 @@
             </div>
             <div class="row">
 
-                <div id='mediumsub' onclick="bread_selection(this)" class="col-sm-5 tile">
+                <div id='mediumsub' onclick="bread_selection(this)" class="col offset-m1  col-sm-5 tile">
                     <h5 style="margin-top:2em;">Medium Salad - 500g </h5>
                     <div id='medium_price_salads'></div>
                 </div>
@@ -112,7 +113,7 @@
             </div>
 
         </div>
-        <div id="trays_div" style="margin-bottom: 4em;margin-left: 4em;">
+        <div id="trays_div" class="card" style="margin-top: 1em;">
             <div class="row">
                 <center>
                     <h5 style="font-weight: bolder;" id="choice"></h5>

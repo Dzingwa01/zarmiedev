@@ -79,11 +79,11 @@
         {
             background-image:url('/background_theme.jpg');
             color:#ffffff;
-            margin-left:1em;
+            margin:1em;
             text-align:center;
             vertical-align: center;
             height: 150px;
-            width: 300px;
+            width: 350px;
         }
         .tile:hover{
             box-shadow: 5px 5px 5px #888888;
@@ -189,21 +189,15 @@
             background: linear-gradient(#073,#0fa);
         }
     </style>
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>--}}
-    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/styles/metro/notify-metro.js"></script>--}}
-    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/styles/metro/notify-metro.css" rel="stylesheet"/>--}}
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:700' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/jquery-step-maker.css">
+    {{--<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">--}}
 
     <style>
         .drop-down{
@@ -247,8 +241,8 @@
         .card .card-content {
             padding: 10px;
             border-radius: 0 0 2px 2px;
-            /*height: 200px !important;*/
-            /*overflow:visible!important;*/
+            height: 200px !important;
+            overflow:visible!important;
         }
         .card .card-content p {
             margin: 0;
@@ -263,7 +257,7 @@
             background-color: inherit;
             border-top: 1px solid rgba(160, 160, 160, 0.2);
             z-index: 2;
-            height:40px!important;
+            height:65px!important;
         }
         select{
             z-index: 20!important;
@@ -281,55 +275,150 @@
         .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
             background-color: #26a69a!important;;
         }
+        .sidenav-overlay{z-index:99;}
     </style>
 
 </head>
 <body>
-<nav class="navbar-fixed-top white" role="navigation" style="height:5em;margin-bottom: 1em;">
-    <div class="nav-wrapper container-fluid">
-        <a id="logo-container" href="/home" class="brand-logo" ><img height="70px" width="100px" class=" img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
+<div class="navbar-fixed container-fluid">
+    <nav class="white" role="navigation" style="height: 5em;">
+        <a href="#" data-target="slide-out" class="sidenav-trigger" style="color:teal"><i class="material-icons">menu</i></a>
+        <div class="nav-wrapper ">
+            <a id="logo-container" href="{{url('/home')}}" class="brand-logo"><img height="70px" width="100px" class="img-rounded" src={{URL::asset('pictures/logo.png')}} />  </a>
+            <ul id="dropdown1" class="dropdown-content">
+                <a href="{{ url('/logout') }}" class=""
+                   onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                    Sign Out
+                </a>
+
+                <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                    <input type="submit" value="logout" style="display: none;">
+                </form>
+                <li><a href="{{url('register')}}">Profile</a></li>
+
+            </ul>
+            <ul id="dropdown2" class="dropdown-content">
+                <li><a href="{{url('register')}}">Profile</a></li>
+                <a href="{{ url('/logout') }}" class=""
+                   onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                    Sign Out
+                </a>
+
+                <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                    <input type="submit" value="logout" style="display: none;">
+                </form>
+
+
+            </ul>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/home"  style="color:black;font-weight: bolder"><i class="material-icons left">home</i> Home</a></li>
+                <li><a class="" style="color:black;font-weight:bolder;" href="/client_order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+                <li><a href="/previous_orders" class="" style="color:black;font-weight: bolder"> <i class="tiny material-icons left">shopping_cart</i>Previous Orders</a></li>
+                <li><a class="" href="/client_menu_display" style="color:black;font-weight: bolder"><i class="tiny material-icons left">reorder</i> Menu</a></li>
+
+                <li><a class="dropdown-trigger_cus" style="color:black;font-weight: bolder"  data-target="dropdown2">{{Auth::user()->name . ' '. Auth::user()->surname}}<i class="material-icons right">arrow_drop_down</i></a></li>
+            </ul>
+
+            <ul id="slide-out" class="sidenav">
+                <li><div class="user-view">
+                        <a href="#user"> <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image" /></a>
+                        <p style="color:black;font-weight: bolder">{{Auth::user()->name . ' '. Auth::user()->surname}}</p>
+                        <p style="color:black;font-weight: bolder">{{Auth::user()->email}}</p>
+                    </div></li>
+                <hr>
+                <li><a href="/home" class="sidenav-close" style="color:black;font-weight: bolder"><i class="tiny material-icons">home</i> Home</a></li>
+                <li><a class="" style="color:black;font-weight:bolder;" href="/client_order_display"><i class="tiny material-icons left">add_shopping_cart</i> Order Now</a></li>
+                <li><a href="/previous_orders" class="" style="color:black;font-weight: bolder"> <i class="tiny material-icons">shopping_cart</i>Previous Orders</a></li>
+                <li><a class="" href="/client_menu_display" style="color:black;font-weight: bolder"><i class="tiny material-icons left">reorder</i> Menu</a></li> <hr>
+                <li><a style="color:black;font-weight: bolder" class="sidenav-close" href="#!"><i class="tiny material-icons">account_circle</i>Manage Profile</a></li>
+                <li><a style="color:black;font-weight: bolder" href="{{ url('/logout') }}" class="sidenav-close"
+                       onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();"><i class="fa fa-sign-out-alt"></i>
+                        Sign Out
+                    </a></li>
+                <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                    <input type="submit" value="logout" style="display: none;">
+                </form>
+            </ul>
+
+        </div>
+
+    </nav>
+</div>
+{{--<nav class="navbar-fixed-top white" role="navigation" style="height:5em;margin-bottom: 1em;">--}}
+    {{--<div class="nav-wrapper container-fluid">--}}
+        {{--<a id="logo-container" href="/home" class="brand-logo" ><img height="70px" width="100px" class=" img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>--}}
         {{--@if (Auth::user()->verified!=0)--}}
         {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
         {{--@else--}}
-        <ul class="right hide-on-med-and-down">
-            <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="/client_order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
-            <li><a class="btn" href="/client_menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+        {{--<ul class="right hide-on-med-and-down">--}}
+            {{--<li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="/client_order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
+            {{--<li><a class="btn" href="/client_menu_display"><i class="material-icons left">reorder</i> Menu</a></li>--}}
             {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
             {{--<li><a class="btn" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
-            <li class="dropdown">
-                <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#dropdown-menu">
-                    <i class="material-icons left">person_pin</i>
-                    {{Auth::user()->name}}
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <a style="width:160px!important;" class="btn"><i class="material-icons left" >person_pin</i>Profile</a>
-                    <a style="width:160px!important;" class="btn" href="{{ url('/logout') }}" style="margin-left:1em;" onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();"><i class="material-icons left">verified_user</i>Sign  Out</a><br/>
+            {{--<li class="dropdown">--}}
+                {{--<a  class="dropdown-toggle btn" data-toggle="dropdown" href="#dropdown-menu">--}}
+                    {{--<i class="material-icons left">person_pin</i>--}}
+                    {{--{{Auth::user()->name}}--}}
+                    {{--<span class="caret"></span>--}}
+                {{--</a>--}}
+                {{--<ul class="dropdown-menu">--}}
+                    {{--<a style="width:160px!important;" class="btn"><i class="material-icons left" >person_pin</i>Profile</a>--}}
+                    {{--<a style="width:160px!important;" class="btn" href="{{ url('/logout') }}" style="margin-left:1em;" onclick="event.preventDefault();--}}
+                                                 {{--document.getElementById('logout-form').submit();"><i class="material-icons left">verified_user</i>Sign  Out</a><br/>--}}
 
-                </ul>
-            </li>
-            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                {{ csrf_field() }}
-                <input type="submit" value="logout" style="display: none;">
-            </form>
-        </ul>
-        <ul id="nav-mobile" class="side-nav">
-            <li><a class="btn" href="/client_order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
-            <li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+                {{--</ul>--}}
+            {{--</li>--}}
+            {{--<form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">--}}
+                {{--{{ csrf_field() }}--}}
+                {{--<input type="submit" value="logout" style="display: none;">--}}
+            {{--</form>--}}
+        {{--</ul>--}}
+        {{--<ul id="slide-out" class="sidenav">--}}
+            {{--<li><div class="user-view">--}}
+                    {{--<a href="#user"> <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image" /></a>--}}
+                    {{--<p style="color:black;font-weight: bolder">{{Auth::user()->name . ' '. Auth::user()->surname}}</p>--}}
+                    {{--<p style="color:black;font-weight: bolder">{{Auth::user()->email}}</p>--}}
+                {{--</div></li>--}}
+            {{--<hr>--}}
+            {{--<li><a href="/" class="" style="color:black;font-weight: bolder"><i class="tiny material-icons">home</i> Home</a></li>--}}
+            {{--<li><a class="btn" href="/client_order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
+            {{--<li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>--}}
+            {{--<hr>--}}
+            {{--<li><a style="margin-top: 2em;color:black;font-weight: bolder" class="" href="#!"><i class="tiny material-icons">account_circle</i>Manage Profile</a></li>--}}
+            {{--<li><a href="{{ url('/logout') }}" class=""--}}
+                   {{--onclick="event.preventDefault();--}}
+                                                 {{--document.getElementById('logout-form').submit();"><i class="fa fa-sign-out-alt"></i>--}}
+                    {{--Sign Out--}}
+                {{--</a></li>--}}
+
+            {{--<form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">--}}
+                {{--{{ csrf_field() }}--}}
+                {{--<input type="submit" value="logout" style="display: none;">--}}
+            {{--</form>--}}
+        {{--</ul>--}}
+        {{--<ul id="nav-mobile" class="side-nav">--}}
+            {{--<li><a class="btn" href="/client_order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
+            {{--<li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>--}}
             {{--<li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
-            <ul class="dropdown-menu">
-                <a style="width:160px!important;" class="btn"><i class="material-icons left" >person_pin</i>Profile</a>
-                <a style="width:160px!important;" class="btn" href="{{ url('/logout') }}" style="margin-left:1em;" onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();"><i class="material-icons left">verified_user</i>Sign  Out</a><br/>
-            </ul>
-        </ul>
-        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+            {{--<ul class="dropdown-menu">--}}
+                {{--<a style="width:160px!important;" class="btn"><i class="material-icons left" >person_pin</i>Profile</a>--}}
+                {{--<a style="width:160px!important;" class="btn" href="{{ url('/logout') }}" style="margin-left:1em;" onclick="event.preventDefault();--}}
+                                                 {{--document.getElementById('logout-form').submit();"><i class="material-icons left">verified_user</i>Sign  Out</a><br/>--}}
+            {{--</ul>--}}
+        {{--</ul>--}}
+        {{--<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>--}}
         {{--@endif--}}
-    </div>
-</nav>
-
-@yield('content')
+    {{--</div>--}}
+{{--</nav>--}}
+ <div class="container-fluid">
+    @yield('content')
+</div>
 
 <footer class="page-footer teal container-fluid">
     <div class="container">
@@ -364,26 +453,28 @@
             </div>
         </div>
     </div>
-    <script>
-        var year = new Date().getFullYear();
-        $(document).ready(function () {
-            $('#footer_p').append(year);
 
-        });
-    </script>
 </footer>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script src="/js/materialize.js"></script>
-<script src="/js/init.js"></script>
-<script src="/js/jquery-step-maker.js"></script>
 <script>
     $(document).ready(function() {
         // $("#menu_popup_dialog").modal();
-        $('select').material_select();
-        $(".dropdown-trigger").dropdown();
-//        $('.sidenav').sidenav();
+        $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+            $(".alert").slideUp(500);
+        });
+        var year = new Date().getFullYear();
+       $('#footer_p').append(year);
+        $(".dropdown-trigger_cus").dropdown();
+        $('.sidenav').sidenav();
     });
 </script>
+<script src="/js/init.js"></script>
+<script src="/js/jquery-step-maker.js"></script>
 </body>
 </html>
