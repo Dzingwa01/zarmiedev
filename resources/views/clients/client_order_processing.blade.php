@@ -36,7 +36,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm6">
+                            <div class="col-sm-6">
                                 <div style="margin-left:2em;">
                                     <input name="num_people" type="number" id="num_people" value="1" hidden required/>
                                 </div>
@@ -66,7 +66,7 @@
                     </div>
                 </form>
             </div>
-            <div class="col-sm-5 card" style="margin-left:2em; ">
+            <div class=" col-md-5 col-sm-12 card" style="margin-left:2em; ">
                 <div class="row">
                     <p class="pull-right" style="font-weight: bolder;color:black;font-size:1.2em;"
                        id="all_total_due"></p>

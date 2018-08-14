@@ -1,8 +1,8 @@
 @extends('order_processing')
 @section('content')
-    <div class="container-fluid" style="margin-top:5em">
+    <div class="container-fluid" style="margin-top:1em">
         <div class="row">
-            <div class="step-container_salads" style="width: 100%; margin: 0 auto"></div>
+            <div class="step-container_salads" style="width: 450px; margin: 0 auto"></div>
         </div>
         {{--<a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i> </a>--}}
 
@@ -762,6 +762,9 @@
         $(document).ready(function () {
             $('.tabs').tabs();
             accordion_trigger();
+            $(".dropdown-trigger_cus").dropdown();
+            $(".dropdown-trigger_cus2").dropdown();
+            $('.sidenav').sidenav();
 //            $("#replace_ingredients_with_pasta").hide();
             $('.step-container_salads').stepMaker({
                 steps: ['Salad Size', 'Ingredients', 'Delivery','Receipt'],

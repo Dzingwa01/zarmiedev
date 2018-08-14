@@ -1,23 +1,21 @@
 @extends('order_processing')
-
 @section('content')
-    <div class="container-fluid" style="margin-top:5em;margin-bottom: 5em;">
+    <div class="container" style="margin-top:1em;">
         <div id="normal_steps" class="row">
-            <div class="step-container" style="width: 100%; margin: 0 auto"></div>
+            <div class="step-container" style="width: 450px; margin: 0 auto"></div>
         </div>
         {{--<a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>--}}
 
-        <div id="normal_sandwiches" style="margin-bottom: 4em;">
+        <div id="normal_sandwiches" class="card" style="margin-bottom: 4em;">
             <div class="row">
                 <center>
                     <h5 style="font-weight: bolder;" id="choice"></h5>
                 </center>
                 {{--<button class="btn pull-right" onclick="goBack()"><i class="fa fa-arrow-left"></i> Back</button>--}}
             </div>
-            <div class="row" id="with_sandwiches">
-            <div class="row">
-
-                <div id='sandwich' onclick="bread_selection(this)" class="col-sm-5  tile">
+            <div class="row " id="with_sandwiches">
+            <div class="row ">
+                <div id='sandwich' onclick="bread_selection(this)" class="col offset-m1 col-sm-5  tile">
                     <h5 style="margin-top:2em;">Sandwich </h5>
                     <div id='sandwich_price'></div>
                 </div>
@@ -27,7 +25,7 @@
                 </div>
             </div>
             <div class="row">
-                <div id='largesub' onclick="bread_selection(this)" class="col-sm-5 tile">
+                <div id='largesub' onclick="bread_selection(this)" class="col offset-m1 col-sm-5 tile">
                     <h5 style="margin-top:2em;">Large - 22cm </h5>
                     <div id='large_price'></div>
                 </div>
@@ -38,10 +36,9 @@
             </div>
             </div>
 
-        <div class="row" hidden id="without_sandwiches">
-
+        <div class="row card" hidden id="without_sandwiches">
             <div class="row">
-            <div id='mediumsub' onclick="bread_selection(this)" class="col-sm-5 tile">
+            <div id='mediumsub' onclick="bread_selection(this)" class="col offset-m1 col-sm-5 tile">
                 <h5 style="margin-top:2em;">Medium Sub - 15cm </h5>
                 <div id='medium_price_sandwiches'></div>
             </div>
@@ -52,7 +49,7 @@
             </div>
             </div>
             <div class="row">
-            <div id='wrap' onclick="bread_selection(this)" class="col-sm-5 tile">
+            <div id='wrap' onclick="bread_selection(this)" class="col offset-m1 col-sm-5 tile">
                 <h5 style="margin-top:2em;">Wrap</h5>
                 <div id='wrap_price_sandwiches'></div>
             </div>
@@ -61,10 +58,11 @@
         </div>
 
 
-        <div id="salads_div" style="margin-bottom: 4em;margin-left: 1em;">
-        <div class="row">
-            <div class="step-container_salads" style="width: 100%; margin: 0 auto"></div>
-        </div>
+        <div id="salads_div"  style="margin-bottom: 4em;">
+            <div class="row">
+                <div class="step-container_salads" style="width: 450px; margin: 0 auto"></div>
+            </div>
+            <div class="card">
             <div class="row">
                 <center>
                     <h5 style="font-weight: bolder;" id="choice_salads"></h5>
@@ -110,6 +108,7 @@
                 <div id='large_price_salads'></div>
             </div>
             </div>
+            </div>
 
         </div>
         <div id="trays_div" style="margin-bottom: 4em;margin-left: 4em;">
@@ -126,7 +125,9 @@
         </div>
 
     </div>
-
+<style>
+    .sidenav-overlay{z-index:99;}
+</style>
     <script>
             <?php $menu_items = json_encode($menu_items);?>
         var item_number = sessionStorage.getItem('item_number_1');
@@ -228,7 +229,9 @@
 
         $(document).ready(function () {
             var menu_items = {!!$menu_items!!};
-            console.log("menut items",menu_items);
+            $(".dropdown-trigger_cus").dropdown();
+            $(".dropdown-trigger_cus2").dropdown();
+            $('.sidenav').sidenav();
             $('.step-container').stepMaker({
                 steps: ['Item Size', 'Ingredients', 'Delivery','Receipt'],
                 currentStep: 1

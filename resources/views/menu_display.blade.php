@@ -1,12 +1,21 @@
-<!doctype html>
-<html lang="{{ config('app.locale') }}">
+<!DOCTYPE html>
+<!--
+Landing page based on Pratt: http://blacktie.co/demo/pratt/
+-->
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Zarmie - The Sandwich Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="The Sandwich Shop">
+  <meta name="author" content="MARSHTEQ">
+
+
+  <title>Zarmie - The Sandwich Shop </title>
+
+  <!-- Custom styles for this template -->
+  {{--<link href="{{ asset('/css/all-landing.css') }}" rel="stylesheet">--}}
+
   <meta name="keywords" content="Sandwiches PE, Salads, Food Trays, Port Elizabeth, Breakfast, Lunch">
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -17,64 +26,138 @@
   <!-- Styles -->
   <style>
 
-  .full-height {
-    height: 100vh;
-  }
+    .full-height {
+      height: 100vh;
+    }
 
-  .flex-center {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-  }
+    .flex-center {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
 
-  .position-ref {
-    position: relative;
-  }
+    .position-ref {
+      position: relative;
+    }
 
-  .top-right {
-    position: absolute;
-    right: 10px;
-    top: 18px;
-  }
+    .top-right {
+      position: absolute;
+      right: 10px;
+      top: 18px;
+    }
 
-  .content {
-    text-align: center;
-  }
+    .content {
+      text-align: center;
+    }
 
-  .title {
-    font-size: 84px;
-  }
+    .title {
+      font-size: 84px;
+    }
 
-  .links > a {
-    color: #636b6f;
-    padding: 0 25px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: .1rem;
-    text-decoration: none;
-    text-transform: uppercase;
-  }
+    .links > a {
+      color: #636b6f;
+      padding: 0 25px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .1rem;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
 
-  .m-b-md {
-    margin-bottom: 30px;
-  }
-  .caption{
-    left:40%!important;
-  }
-  .btn{
-    margin-left:4em!important;
-  }
-  .slide_p{
-    color:white!important;
-    width:300px;
-    text-align:center;
-  }
-  ul{
-    list-style:none!important;
-  }
+    .m-b-md {
+      margin-bottom: 30px;
+    }
+    .caption{
+      left:40%!important;
+    }
+    .btn{
+      margin-left:4em!important;
+    }
+    .slide_p{
+      color:black!important;
+      width:300px;
+      font-weight:900!important;
+      text-align:center;
+    }
+    li{
+      list-style: circle!important;
+    }
+    .card .card-image img {
+      display: block;
+      border-radius: 2px 2px 0 0;
+    }
 
+    div > h6 {
+      font-size: 1rem;
+    }
+    .card{
+      z-index: 5!important;
+
+    }
+    .card .card-image .card-title {
+      color: #fff;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 20px;
+    }
+    .drink_button {
+      display: block;
+      width: 115px;
+      height: 25px;
+      background: #4E9CAF;
+      padding: 10px;
+      text-align: center;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+    }
+    input[type="checkbox"]{
+      position:relative;
+      left:1em;
+      opacity: 1!important;
+    }
+    .card .card-content {
+      padding: 10px;
+      border-radius: 0 0 2px 2px;
+      height: 200px !important;
+      /*overflow:visible!important;*/
+    }
+    .card .card-content p {
+      margin: 0;
+      color: inherit;
+
+    }
+    .card .card-content .card-title {
+      line-height: 38px;
+    }
+    .card-action {
+      position: relative;
+      background-color: inherit;
+      border-top: 1px solid rgba(160, 160, 160, 0.2);
+      z-index: 2;
+      height:40px!important;
+    }
+    select{
+      z-index: 20!important;
+    }
+    .sidenav-overlay{
+      z-index: 99!important;
+    }
+    a{
+      text-decoration: none;
+    }
+    a.active{
+      background-color: teal!important;
+      color:white!important;
+    }
+    .tabs .indicator{
+      background-color: teal!important;
+    }
+    .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+      background-color: #26a69a!important;;
+    }
   </style>
-
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
@@ -94,118 +177,60 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:700' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css'>
 
-  <style>
-  .drop-down{
-    margin-left: 1em!important;
-  }
-  /*.btn{
-  background-image:url('background_theme.jpg')!important;
-  }*/
-  </style>
+
 </head>
-<body>
-  <nav class="navbar-fixed-top white" role="navigation" style="height:5em;">
-    <div class="nav-wrapper container-fluid">
-      <a id="logo-container" href="/" class="brand-logo" ><img height="70px" width="100px" class="img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
-      {{--@if (Auth::user()->verified!=0)--}}
-      {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
-      {{--@else--}}
+
+<body >
+<div id="app"></div>
+<div class="navbar-fixed">
+  <nav class="white" role="navigation" style="height: 5em;">
+    <div class="nav-wrapper ">
+      <a id="logo-container" href="{{url('/home')}}" class="brand-logo"><img height="70px" width="100px" class="img-rounded" src={{URL::asset('pictures/logo.png')}} />  </a>
+      <a href="#" data-target="slide-out" class="sidenav-trigger" style="color:teal"><i class="material-icons">menu</i></a>
+      <ul id="dropdown1" class="dropdown-content">
+        <a  class="" href="{{ url('/login') }}">Sign  In</a><br/>
+        <a  class="" href="{{ url('/register') }}">Register</a>
+
+      </ul>
+      <ul id="dropdown2" class="dropdown-content">
+        <a  class="" href="{{ url('/login') }}">Sign  In</a><br/>
+        <a  class="" href="{{ url('/register') }}">Register</a>
+      </ul>
       <ul class="right hide-on-med-and-down">
-        <li><a class="btn" href="order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
-        <li><a class="btn"  href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+        <li><a class="" style="color:black;font-weight: bolder;" href="order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+        <li><a class="" style="color:black;font-weight: bolder;"  href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
         {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-        <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
-        <li class="dropdown">
-          <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#">
+        <li><a class="" style="color:black;font-weight: bolder;" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
+        <li>
+          <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown2">
             <i class="material-icons left">person_pin</i>
             Account
             <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
-            <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;"><i class="material-icons left">verified_user</i>Sign  In</a><br/>
-            {{-- <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a> --}}
-          </ul>
         </li>
       </ul>
-      <ul id="nav-mobile" class="side-nav">
-        <li><a class="btn" href="order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
-        <li><a class="btn"><i class="material-icons left">reorder</i> Menu</a></li>
-        {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-        <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
-        <li class="dropdown">
-          <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#">
-            <i class="material-icons left">person_pin</i>
-            Account
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/>
-            {{-- <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a> --}}
-          </ul>
-        </li>
 
+      <ul id="slide-out" class="sidenav">
+        <li><a href="/home" class="sidenav-close" style="color:black;font-weight: bolder"><i class="tiny material-icons">home</i> Home</a></li>
+        <li><a class="" style="color:black;font-weight:bolder;" href="/client_order_display"><i class="tiny material-icons left">add_shopping_cart</i> Order Now</a></li>
+        <li><a href="/previous_orders" class="" style="color:black;font-weight: bolder"> <i class="tiny material-icons">shopping_cart</i>Previous Orders</a></li>
+        <li><a class="" href="/client_menu_display" style="color:black;font-weight: bolder"><i class="tiny material-icons left">reorder</i> Menu</a></li> <hr>
+        <li>
+          <a  style="color:black;font-weight: bolder;" class="dropdown-trigger_cus" data-toggle="dropdown" href="#dropdown1">
+            <i class="material-icons left">person_pin</i>
+            Account
+            <span class="caret"></span>
+          </a>
+        </li>
       </ul>
-      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-      {{--@endif--}}
+
     </div>
+
   </nav>
-  <style>
-  .card .card-image img {
-    display: block;
-    border-radius: 2px 2px 0 0;
-    height: 60px !important;
-  }
-
-  div > h6 {
-    font-size: 1rem;
-  }
-  .card{
-    height:400!important;
-    z-index: 5!important;
-    overflow: visible!important;
-  }
-  .card .card-image .card-title {
-    color: #fff;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 20px;
-  }
-  .card .card-content {
-    padding: 10px;
-    border-radius: 0 0 2px 2px;
-    height: 200px !important;
-    /*overflow:visible!important;*/
-  }
-  .card .card-content p {
-    margin: 0;
-    color: inherit;
-
-  }
-  .card .card-content .card-title {
-    line-height: 38px;
-  }
-  .card-action {
-    position: relative;
-    background-color: inherit;
-    border-top: 1px solid rgba(160, 160, 160, 0.2);
-    z-index: 2;
-    height:40px!important;
-  }
-  select{
-    z-index: 20!important;
-  }
-  </style>
-  <script>
-  $(document).ready(function() {
-    // $("#menu_popup_dialog").modal();
-    $('select').material_select();
-  });
-  </script>
-  <div class="container-fluid" style="margin-top:5em">
-
+</div>
+  <div class="container-fluid" style="margin-top:1em">
+    <div id='menu_items' class="row" >
       <header class="center"><h5>Our Menu</h5></header>
-      <div id='menu_items' class="row" >
         @foreach ($categories as $category)
         <div class="col-md-4 col-sm-12" >
           <div class="tile" id='{{$category->id}}' onclick="showModal({{$category->id}},{{$menu_items}})" data-toggle="modal" data-target="#menu_popup_dialog">
@@ -258,6 +283,9 @@
     </style>
     <script>
     $(document).ready(function(){
+        $(".dropdown-trigger_cus").dropdown();
+        $(".dropdown-trigger_cus2").dropdown();
+        $('.sidenav').sidenav();
       sessionStorage.setItem('num_people',1);
       $("#for_one").on('click',function(){
         sessionStorage.setItem('num_people',1);

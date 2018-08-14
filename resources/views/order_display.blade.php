@@ -152,64 +152,69 @@
     .with_cart{
       margin-top: 5em;
     }
+  .sidenav-overlay{z-index:99;}
   </style>
   <script>
   $(document).ready(function() {
     // $("#menu_popup_dialog").modal();
-    $('select').material_select();
+//    $('select').material_select();
       $(".dropdown-trigger").dropdown();
+      $(".dropdown-trigger_cus").dropdown();
+      $(".dropdown-trigger_cus2").dropdown();
+      $('.sidenav').sidenav();
   });
   </script>
 </head>
 <body>
 
-  <nav class="navbar-fixed-top white" role="navigation" style="height:5em;">
-    <div class="nav-wrapper container-fluid">
-      <a id="logo-container" href="/" class="brand-logo" ><img height="70px" width="100px" class="img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
-      {{--@if (Auth::user()->verified!=0)--}}
-        {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
-      {{--@else--}}
-        <ul class="right hide-on-med-and-down">
-          <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="order_display"><i class="material-icons left">payment</i> Order Now</a></li>
-          <li><a class="btn"  href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
-          {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-          {{--<li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
-          <li class="dropdown">
-            <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#dropdown-menu">
-              <i class="material-icons left">person_pin</i>
-              Account
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;"><i class="material-icons left">verified_user</i>Sign  In</a><br/>
-               <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a>
-            </ul>
-          </li>
-        </ul>
-        <ul id="nav-mobile" class="side-nav">
-          <li><a class="btn" href="order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
-          <li><a class="btn"><i class="material-icons left">reorder</i> Menu</a></li>
-          {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-          {{--<li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
-          <li class="dropdown">
-            <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#">
-              <i class="material-icons left">person_pin</i>
-              Account
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/>
-              {{-- <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a> --}}
-            </ul>
-          </li>
+<div class="navbar-fixed">
+  <nav class="white" role="navigation" style="height: 5em;">
+    <div class="nav-wrapper ">
+      <a id="logo-container" href="{{url('/')}}" class="brand-logo"><img height="70px" width="100px" class="img-rounded" src={{URL::asset('pictures/logo.png')}} />  </a>
+      <a href="#" data-target="slide-out" class="sidenav-trigger" style="color:teal"><i class="material-icons">menu</i></a>
+      <ul id="dropdown1" class="dropdown-content">
+        <a  class="" href="{{ url('/login') }}">Sign  In</a><br/>
+        <a  class="" href="{{ url('/register') }}">Register</a>
 
-        </ul>
-        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-      {{--@endif--}}
+      </ul>
+      <ul id="dropdown2" class="dropdown-content">
+        <a  class="" href="{{ url('/login') }}">Sign  In</a><br/>
+        <a  class="" href="{{ url('/register') }}">Register</a>
+      </ul>
+      <ul class="right hide-on-med-and-down">
+        <li><a class="" style="color:black;font-weight: bolder;" href="order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+        <li><a class="" style="color:black;font-weight: bolder;"  href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+        {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
+        <li><a class="" style="color:black;font-weight: bolder;" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
+        <li>
+          <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown2">
+            <i class="material-icons left">person_pin</i>
+            Account
+            <span class="caret"></span>
+          </a>
+        </li>
+      </ul>
+
+      <ul id="slide-out" class="sidenav">
+        <li><a href="/home" class="sidenav-close" style="color:black;font-weight: bolder"><i class="tiny material-icons">home</i> Home</a></li>
+        <li><a class="" style="color:black;font-weight:bolder;" href="/client_order_display"><i class="tiny material-icons left">add_shopping_cart</i> Order Now</a></li>
+        <li><a href="/previous_orders" class="" style="color:black;font-weight: bolder"> <i class="tiny material-icons">shopping_cart</i>Previous Orders</a></li>
+        <li><a class="" href="/client_menu_display" style="color:black;font-weight: bolder"><i class="tiny material-icons left">reorder</i> Menu</a></li> <hr>
+        <li>
+          <a  style="color:black;font-weight: bolder;" class="dropdown-trigger_cus" data-toggle="dropdown" href="#dropdown1">
+            <i class="material-icons left">person_pin</i>
+            Account
+            <span class="caret"></span>
+          </a>
+        </li>
+      </ul>
+
     </div>
-  </nav>
 
-  <div class="container-fluid" style="margin-top:5em;">
+  </nav>
+</div>
+
+  <div class="container-fluid">
     {{--<div class="step-container" style="width: 700px; margin: 0 auto"></div>--}}
     <a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>
 

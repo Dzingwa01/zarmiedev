@@ -1,8 +1,8 @@
 @extends('order_processing')
 @section('content')
-    <div class="container-fluid" style="margin-top:5em">
+    <div class="container-fluid" style="margin-top:1em">
         <div id="normal_tracker" class="row">
-            <div id="normal_tracker" class="step-container" style="width: 100%; margin: 0 auto"></div>
+            <div id="normal_tracker" class="step-container" style="width: 450px; margin: 0 auto"></div>
         </div>
         <div class="row" id="trays_tracker">
             <div id="trays_tracker" class="step-container_trays" style="width: 100%; margin: 0 auto"></div>
@@ -357,12 +357,12 @@
     <div id="confirm_remove" class="modal" style="height: 250px;width: 500px;">
         <div class="modal-header">
             <h5 class="modal-title">Remove/Swap</h5>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <button type="button" class="close" onclick="dismiss()">&times;</button>
         </div>
         <div class="modal-body">
             <div class="row">
 
-                <button style="margin:1em;" class="btn remove" data-dismiss="modal"> Remove</button>
+                <button style="margin:1em;" class="btn remove" onclick="dismiss()"> Remove</button>
 
                 <button style="margin:1em;" class="btn swap" data-dismiss="modal"
                         onclick="ingredient_select_swap(this)"> Swap
@@ -395,9 +395,9 @@
         .step:after {
             content: ""
         }
-
+        .sidenav-overlay{z-index:99;}
     </style>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
     <script>
         window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
             window.msIndexedDB;
@@ -482,7 +482,9 @@
                 addTopping(standard_toppings[i].id, standard_toppings[i].name, standard_toppings[i].prize, standard_toppings[i].category);
             }
         }
-
+        function dismiss(){
+            $('.modal').hide();
+        }
         function drink_select(obj) {
             var id_string = obj.id.split("_");
             var new_id = id_string[1];
@@ -1153,7 +1155,9 @@
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
             $('.tabs').tabs();
-
+            $(".dropdown-trigger_cus").dropdown();
+            $(".dropdown-trigger_cus2").dropdown();
+            $('.sidenav').sidenav();
             accordion_trigger();
             if (sessionStorage.getItem("order_quantity") == null || sessionStorage.getItem("order_quantity") == undefined) {
                 sessionStorage.setItem("order_quantity", 0);
@@ -1169,7 +1173,9 @@
                 currentStep: 2
             });
             $("#trays_tracker").hide();
-
+//            $(".dropdown-trigger_cus").dropdown();
+//            $(".dropdown-trigger_cus2").dropdown();
+//            $('.sidenav').sidenav();
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             $("#choice_id").empty();
             $("#choice_id").append(sessionStorage.getItem("item_category"));
@@ -1246,7 +1252,7 @@
                 e.preventDefault();
             });
             $('#ingredient_toppings_next').on('click', function (e) {
-                $("#more_orders").modal();
+                $("#more_orders").show();
             });
             $("#ingredient_toppings_back").on('click', function () {
                 clearDrinks(db)

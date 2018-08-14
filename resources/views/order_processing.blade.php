@@ -212,9 +212,7 @@
   <script src="/js/jquery-step-maker.js"></script>
  
   <style>
-  .drop-down{
-    margin-left: 1em!important;
-  }
+
   .card .card-image img {
     display: block;
     border-radius: 2px 2px 0 0;
@@ -290,43 +288,61 @@
     background-color: #26a69a!important;;
   }
   </style>
-  <script>
-  $(document).ready(function() {
-    // $("#menu_popup_dialog").modal();
-    $('select').material_select();
-  });
-  </script>
+  {{--<script>--}}
+  {{--$(document).ready(function() {--}}
+    {{--// $("#menu_popup_dialog").modal();--}}
+    {{--$('select').material_select();--}}
+  {{--});--}}
+  {{--</script>--}}
 </head>
 <body>
-<nav class="navbar-fixed-top white" role="navigation" style="height:5em;margin-bottom: 1em;">
-  <div class="nav-wrapper container-fluid">
-    <a id="logo-container" href="/" class="brand-logo" ><img height="70px" width="100px" class=" img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
-    {{--@if (Auth::user()->verified!=0)--}}
-      {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
-    {{--@else--}}
+<div class="navbar-fixed">
+  <nav class="white" role="navigation" style="height: 5em;">
+    <div class="nav-wrapper ">
+      <a id="logo-container" href="{{url('/')}}" class="brand-logo"><img height="70px" width="100px" class="img-rounded" src={{URL::asset('pictures/logo.png')}} />  </a>
+      <a href="#" data-target="slide-out" class="sidenav-trigger" style="color:teal"><i class="material-icons">menu</i></a>
+      <ul id="dropdown1" class="dropdown-content">
+        <a  class="" href="{{ url('/login') }}">Sign  In</a><br/>
+        <a  class="" href="{{ url('/register') }}">Register</a>
+
+      </ul>
+      <ul id="dropdown2" class="dropdown-content">
+        <a  class="" href="{{ url('/login') }}">Sign  In</a><br/>
+        <a  class="" href="{{ url('/register') }}">Register</a>
+      </ul>
       <ul class="right hide-on-med-and-down">
-        <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="/order_display"><i class="material-icons left">payment</i> Order Now</a></li>
-        <li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+        <li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+        <li><a class="" style="color:black;font-weight: bolder;"  href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
         {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-        {{--<li><a class="btn" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
-        <li><a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Account</a><br/></li>
-        {{--<li><a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a></li>--}}
-
+        <li><a class="" style="color:black;font-weight: bolder;" href="/contact_us"><i class="material-icons left">email</i> Contact Us</a></li>
+        <li>
+          <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown2">
+            <i class="material-icons left">person_pin</i>
+            Account
+            <span class="caret"></span>
+          </a>
+        </li>
       </ul>
-      <ul id="nav-mobile" class="side-nav">
-        <li><a class="btn" href="/order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
-        <li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
-        {{--<li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
-        <li><a class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/></li>
-        {{--<li><a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a></li>--}}
 
-
+      <ul id="slide-out" class="sidenav">
+        <li><a class="" style="color:black;font-weight: bolder;" href="/"><i class="material-icons left">home</i>Home</a></li>
+        <li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+        <li><a class="" style="color:black;font-weight: bolder;"  href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+        {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
+        <li><a class="" style="color:black;font-weight: bolder;" href="/contact_us"><i class="material-icons left">email</i> Contact Us</a></li>
+        <li>
+          <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown2">
+            <i class="material-icons left">person_pin</i>
+            Account
+            <span class="caret"></span>
+          </a>
+        </li>
       </ul>
-      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-    {{--@endif--}}
-  </div>
-</nav>
 
+    </div>
+
+  </nav>
+</div>
         @yield('content')
         
   <footer class="page-footer teal container-fluid">
@@ -370,7 +386,5 @@
       </script>
     </footer>
 
-    {{--<script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>--}}
-    
   </body>
   </html>

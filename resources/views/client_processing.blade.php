@@ -280,7 +280,7 @@
 
 </head>
 <body>
-<div class="navbar-fixed container-fluid">
+<div class="navbar-fixed">
     <nav class="white" role="navigation" style="height: 5em;">
         <a href="#" data-target="slide-out" class="sidenav-trigger" style="color:teal"><i class="material-icons">menu</i></a>
         <div class="nav-wrapper ">
@@ -347,75 +347,9 @@
             </ul>
 
         </div>
-
     </nav>
 </div>
-{{--<nav class="navbar-fixed-top white" role="navigation" style="height:5em;margin-bottom: 1em;">--}}
-    {{--<div class="nav-wrapper container-fluid">--}}
-        {{--<a id="logo-container" href="/home" class="brand-logo" ><img height="70px" width="100px" class=" img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>--}}
-        {{--@if (Auth::user()->verified!=0)--}}
-        {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
-        {{--@else--}}
-        {{--<ul class="right hide-on-med-and-down">--}}
-            {{--<li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="/client_order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
-            {{--<li><a class="btn" href="/client_menu_display"><i class="material-icons left">reorder</i> Menu</a></li>--}}
-            {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-            {{--<li><a class="btn" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
-            {{--<li class="dropdown">--}}
-                {{--<a  class="dropdown-toggle btn" data-toggle="dropdown" href="#dropdown-menu">--}}
-                    {{--<i class="material-icons left">person_pin</i>--}}
-                    {{--{{Auth::user()->name}}--}}
-                    {{--<span class="caret"></span>--}}
-                {{--</a>--}}
-                {{--<ul class="dropdown-menu">--}}
-                    {{--<a style="width:160px!important;" class="btn"><i class="material-icons left" >person_pin</i>Profile</a>--}}
-                    {{--<a style="width:160px!important;" class="btn" href="{{ url('/logout') }}" style="margin-left:1em;" onclick="event.preventDefault();--}}
-                                                 {{--document.getElementById('logout-form').submit();"><i class="material-icons left">verified_user</i>Sign  Out</a><br/>--}}
 
-                {{--</ul>--}}
-            {{--</li>--}}
-            {{--<form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">--}}
-                {{--{{ csrf_field() }}--}}
-                {{--<input type="submit" value="logout" style="display: none;">--}}
-            {{--</form>--}}
-        {{--</ul>--}}
-        {{--<ul id="slide-out" class="sidenav">--}}
-            {{--<li><div class="user-view">--}}
-                    {{--<a href="#user"> <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image" /></a>--}}
-                    {{--<p style="color:black;font-weight: bolder">{{Auth::user()->name . ' '. Auth::user()->surname}}</p>--}}
-                    {{--<p style="color:black;font-weight: bolder">{{Auth::user()->email}}</p>--}}
-                {{--</div></li>--}}
-            {{--<hr>--}}
-            {{--<li><a href="/" class="" style="color:black;font-weight: bolder"><i class="tiny material-icons">home</i> Home</a></li>--}}
-            {{--<li><a class="btn" href="/client_order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
-            {{--<li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>--}}
-            {{--<hr>--}}
-            {{--<li><a style="margin-top: 2em;color:black;font-weight: bolder" class="" href="#!"><i class="tiny material-icons">account_circle</i>Manage Profile</a></li>--}}
-            {{--<li><a href="{{ url('/logout') }}" class=""--}}
-                   {{--onclick="event.preventDefault();--}}
-                                                 {{--document.getElementById('logout-form').submit();"><i class="fa fa-sign-out-alt"></i>--}}
-                    {{--Sign Out--}}
-                {{--</a></li>--}}
-
-            {{--<form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">--}}
-                {{--{{ csrf_field() }}--}}
-                {{--<input type="submit" value="logout" style="display: none;">--}}
-            {{--</form>--}}
-        {{--</ul>--}}
-        {{--<ul id="nav-mobile" class="side-nav">--}}
-            {{--<li><a class="btn" href="/client_order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
-            {{--<li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>--}}
-            {{--<li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
-            {{--<ul class="dropdown-menu">--}}
-                {{--<a style="width:160px!important;" class="btn"><i class="material-icons left" >person_pin</i>Profile</a>--}}
-                {{--<a style="width:160px!important;" class="btn" href="{{ url('/logout') }}" style="margin-left:1em;" onclick="event.preventDefault();--}}
-                                                 {{--document.getElementById('logout-form').submit();"><i class="material-icons left">verified_user</i>Sign  Out</a><br/>--}}
-            {{--</ul>--}}
-        {{--</ul>--}}
-        {{--<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>--}}
-        {{--@endif--}}
-    {{--</div>--}}
-{{--</nav>--}}
  <div class="container-fluid">
     @yield('content')
 </div>

@@ -1,41 +1,43 @@
 @extends('order_processing')
 @section('content')
-    <div class="container-fluid" style="margin-top:8em">
+    <div class="container-fluid" style="margin-top:1em">
         {{--<a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>--}}
         <div id="normal_tracker" class="row">
-            <div id="normal_tracker" class="step-container" style="width: 100%; margin: 0 auto"></div>
+            <div id="normal_tracker" class="step-container" style="width: 450px; margin: 0 auto"></div>
         </div>
         <div class="row">
 
-            <div class="col-sm-7 card">
+            <div class="col-md-7 card">
                 <div id="delivery_collect">
                     <p style="color:black;font-weight: bolder;font-size: 1.2em;">Delivery or Pickup</p>
                     <div class="row" style="margin-bottom: 0px;">
-                        <div class="col s6">
+                        <div class="col m6">
                             <p>
+                                <label for="collect">
                                 <input name="group01" class="bread" value="Collect" type="radio"
                                        id="collect"/>
-                                <label for="collect">Collect</label>
-
+                               <span>Collect</span></label>
+                                <label for="delivery">
                                 <input name="group01" class="bread" type="radio" id="delivery"
                                        value="Delivery"/>
-                                <label for="delivery">Delivery</label>
+                               <span>Delivery</span></label>
                             </p>
                         </div>
-                        <div class="col s6">
+                        <div class="col m6">
                             <p>
+                                <label for="for_now">
                                 <input name="group02" class="bread" value="for_now" type="radio" checked
                                        id="for_now"/>
-                                <label for="for_now">For Now</label>
-
+                                    <span>For Now</span></label>
+                                <label for="for_later">
                                 <input name="group02" class="bread" type="radio" id="for_later"
                                        value="for_later"/>
-                                <label for="for_later">Specify Time</label>
+                                    <span>Specify Time</span></label>
                             </p>
                         </div>
                     </div>
                     <div id="time_div" hidden class="row" style="margin-bottom: 0px;">
-                        <div class="input-field col s6" >
+                        <div class="input-field col m6" >
                             <input id="delivery_pick_up_time" type="text" class="validate">
                             <label class="active" for="delivery_pick_up_time">Time</label>
                         </div>
@@ -43,7 +45,7 @@
                 </div>
                 <div id="address_div" hidden style="margin-top:0.5em;" class="row">
                     {{--<h5>Enter Address for delivery</h5>--}}
-                    <div class="col s8">
+                    <div class="col m8 s12">
                         <form id="address_form">
                             <div class="row">
                                 <input id='address' type='text' placeholder="Enter your address" required>
@@ -53,15 +55,15 @@
                             </div>
                         </form>
                     </div>
-                        <div class="input-field col s4">
+                        <div class="input-field col m4 s12">
                             <textarea id="delivery_instructions" class="materialize-textarea"></textarea>
-                            <label for="delivery_instructions">Any Special Instructions - *eg ask for John</label>
+                            <label for="delivery_instructions">Any Special Instructions</label>
                         </div>
                 </div>
                 <div  class="row" style="margin-bottom: 0px;">
-                    <div id="collect_instructions_div" class="input-field col s6">
+                    <div id="collect_instructions_div" class="input-field col m6">
                         <textarea id="collect_instructions" class="materialize-textarea"></textarea>
-                        <label for="collect_instructions">Any Special Instructions - *eg ask for John</label>
+                        <label for="collect_instructions">Any Special Instructions</label>
                     </div>
                 </div>
                 <div class="row">
@@ -74,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-4 card" style="margin-left: 2em;">
+            <div class="col-md-4 card" style="margin-left: 2em;">
                 <p><span style="color:black;font-weight:bolder;font-size: 1.2em;">Order Details <i
                                 class="fa fa-shopping-cart"></i></span><span
                             style="color:black;margin-left: 8px;font-weight: bolder"
@@ -90,15 +92,7 @@
             </div>
 
         </div>
-        {{--<div hidden>--}}
-            {{--@if(count($ingredients)>0)--}}
-                {{--@foreach($ingredients as $ingredient)--}}
-                    {{--<button--}}
-                            {{--style="font-weight:bolder;margin-left:1em;color:white;"--}}
-                    {{-->{{$ingredient->ingredient->name}}  </button>--}}
-                {{--@endforeach--}}
-            {{--@endif--}}
-        {{--</div>--}}
+
         <style>
             #map_canvas {
                 height: 250px;
@@ -106,7 +100,9 @@
                 margin: 0px;
                 padding: 0px
             }
-
+            .sidenav-overlay{
+                z-index: 99;
+            }
             .controls {
                 border: 1px solid !important;
                 border-radius: 2px 0 0 2px !important;
@@ -385,6 +381,9 @@
                     steps: ['Item Size', 'Bread Choice', 'Ingredients', 'Delivery', 'Receipt'],
                     currentStep: 4
                 });
+                $(".dropdown-trigger_cus").dropdown();
+                $(".dropdown-trigger_cus2").dropdown();
+                $('.sidenav').sidenav();
                 $('input:radio').click(function () {
                     var delivery_or_collect = $(this).val();
                     if (delivery_or_collect == "Delivery") {

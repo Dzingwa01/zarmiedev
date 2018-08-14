@@ -14,7 +14,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
     <title>Zarmie - The Sandwich Shop </title>
 
     <!-- Custom styles for this template -->
-    <link href="{{ asset('/css/all-landing.css') }}" rel="stylesheet">
+    {{--<link href="{{ asset('/css/all-landing.css') }}" rel="stylesheet">--}}
 
     <meta name="keywords" content="Sandwiches PE, Salads, Food Trays, Port Elizabeth, Breakfast, Lunch">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
@@ -82,10 +82,6 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
         li{
             list-style: circle!important;
         }
-
-         .drop-down{
-             margin-left: 1em!important;
-         }
         .card .card-image img {
             display: block;
             border-radius: 2px 2px 0 0;
@@ -145,6 +141,9 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
         select{
             z-index: 20!important;
         }
+        .sidenav-overlay{
+            z-index: 99!important;
+        }
         a{
             text-decoration: none;
         }
@@ -183,52 +182,53 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 
 <body >
 <div id="app"></div>
-<nav class="navbar-fixed-top white" role="navigation" style="height:5em;">
-    <div class="nav-wrapper container-fluid">
-        <a id="logo-container" href="/" class="brand-logo" ><img height="70px" width="100px" class="img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
-        {{--@if (Auth::user()->verified!=0)--}}
-        {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
-        {{--@else--}}
-        <ul class="right hide-on-med-and-down col s12">
-            <li><a class="btn" style="margin-top:1em;margin-bottom:1em;" href="order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
-            <li><a class="btn"  href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
-            {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-            {{--<li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
-            <li class="dropdown">
-                <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#dropdown-menu">
-                    <i class="material-icons left">person_pin</i>
-                    Account
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;"><i class="material-icons left">verified_user</i>Sign  In</a><br/>
-                    <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a>
-                </ul>
-            </li>
-        </ul>
-        <ul id="nav-mobile" class="side-nav">
-            <li><a class="btn" href="order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
-            <li><a class="btn"><i class="material-icons left">reorder</i> Menu</a></li>
-            {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-            <li><a class="btn" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
-            <li class="dropdown">
-                <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#">
-                    <i class="material-icons left">person_pin</i>
-                    Account
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/>
-                     <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a>
-                </ul>
-            </li>
+<div class="navbar-fixed">
+    <nav class="white" role="navigation" style="height: 5em;">
+        <div class="nav-wrapper ">
+            <a id="logo-container" href="{{url('/')}}" class="brand-logo"><img height="70px" width="100px" class="img-rounded" src={{URL::asset('pictures/logo.png')}} />  </a>
+            <a href="#" data-target="slide-out" class="sidenav-trigger" style="color:teal"><i class="material-icons">menu</i></a>
+            <ul id="dropdown1" class="dropdown-content">
+                <a  class="" href="{{ url('/login') }}">Sign  In</a><br/>
+                <a  class="" href="{{ url('/register') }}">Register</a>
 
-        </ul>
-        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-        {{--@endif--}}
-    </div>
-</nav>
-    <div class="slider" style="margin-top:1em">
+            </ul>
+            <ul id="dropdown2" class="dropdown-content">
+                <a  class="" href="{{ url('/login') }}">Sign  In</a><br/>
+                <a  class="" href="{{ url('/register') }}">Register</a>
+            </ul>
+            <ul class="right hide-on-med-and-down">
+                <li><a class="" style="color:black;font-weight: bolder;" href="order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+                <li><a class="" style="color:black;font-weight: bolder;"  href="menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+                {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
+                <li><a class="" style="color:black;font-weight: bolder;" href="contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
+                <li>
+                    <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown2">
+                        <i class="material-icons left">person_pin</i>
+                        Account
+                        <span class="caret"></span>
+                    </a>
+                </li>
+            </ul>
+
+            <ul id="slide-out" class="sidenav">
+                <li><a href="/home" class="sidenav-close" style="color:black;font-weight: bolder"><i class="tiny material-icons">home</i> Home</a></li>
+                <li><a class="" style="color:black;font-weight:bolder;" href="/client_order_display"><i class="tiny material-icons left">add_shopping_cart</i> Order Now</a></li>
+                <li><a href="/previous_orders" class="" style="color:black;font-weight: bolder"> <i class="tiny material-icons">shopping_cart</i>Previous Orders</a></li>
+                <li><a class="" href="/client_menu_display" style="color:black;font-weight: bolder"><i class="tiny material-icons left">reorder</i> Menu</a></li> <hr>
+                <li>
+                    <a  style="color:black;font-weight: bolder;" class="dropdown-trigger_cus" data-toggle="dropdown" href="#dropdown1">
+                        <i class="material-icons left">person_pin</i>
+                        Account
+                        <span class="caret"></span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+    </nav>
+</div>
+    <div class="slider">
         <ul id="slides" class="slides">
             <li class="parallax-container"><img src="{{URL::asset('pictures/sandwich_slider.jpg')}}" class="img-responsive parallax" />
                 <div class="caption" >
@@ -491,7 +491,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
     </a>
     <ul>
         <a class="btn-floating" href="contact_display" title="Contact Us"><i class="material-icons left">email</i> Contact Us</a>
-        <a class="btn-floating" style="margin-top:1em;margin-bottom:1em;" href="order_display" title="Order Now"><i class="material-icons left">payment</i> Order Now</a>
+        <a class="btn-floating" style="margin-top:1em;margin-bottom:1em;" href="order_display" title="Order Now"><i class="material-icons left">add_shopping_cart</i> Order Now</a>
         <a  class="btn-floating" href="{{ url('/login') }}" style="margin-left:1em;" title="Sign In"><i class="material-icons left">verified_user</i>Sign  In</a>
         {{--<li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>--}}
     </ul>
@@ -537,86 +537,16 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
         </script>
     </footer>
 
-</body>
+
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<style>
-    @media only screen
-    and (min-width : 1824px) {
-        .modal{
-            height: 450px!important;
-        }
-    }
-    #map_canvas {
-        height: 250px;
-        /*width: 300px;*/
-        margin: 0px;
-        padding: 0px
-    }
 
-    .controls {
-        border: 1px solid!important;
-        border-radius: 2px 0 0 2px!important;
-        box-sizing: border-box!important;
-        -moz-box-sizing: border-box!important;
-        height: 32px;
-        outline: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
-    .pac-container {
-        background-color: #fff;
-        z-index: 20;
-        position: fixed;
-        display: inline-block;
-        float: left;
-    }
-    .modal{
-        z-index: 20;
-    }
-    .modal-backdrop{
-        z-index: 10;
-    }​
-     #address {
-         background-color: #fff;
-         font-family: Roboto;
-         font-size: 15px;
-         font-weight: 300;
-         margin-left: 12px;
-         padding: 0 11px 0 13px;
-         text-overflow: ellipsis;
-         width: 400px;
-     }
-
-    #address:focus {
-        border-color: #4d90fe;
-    }
-
-    /*.pac-container {
-    font-family: Roboto;
-    }*/
-
-    #type-selector {
-        color: #fff;
-        background-color: #4d90fe;
-        padding: 5px 11px 0px 11px;
-    }
-
-    #type-selector label {
-        /*font-family: Roboto;*/
-        font-size: 13px;
-        font-weight: 300;
-    }
-
-    .drop-down{
-        margin-left: 1em!important;
-    }
-</style>
-<script src="{{ asset('/js/app.js') }}"></script>
-<script src="{{ asset('/js/smoothscroll.js') }}"></script>
+{{--<script src="{{ asset('/js/app.js') }}"></script>--}}
+{{--<script src="{{ asset('/js/smoothscroll.js') }}"></script>--}}
 {{--<script type="text/javascript" async="async" defer="defer" data-cfasync="false" src="https://mylivechat.com/chatinline.aspx?hccid=10733251"></script>--}}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4VCOsDzZ-3fqwWrxmWWgoPNlXcpvpPvE&libraries=places&callback=getLocation" async defer></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4VCOsDzZ-3fqwWrxmWWgoPNlXcpvpPvE&libraries=places&callback=getLocation" async defer></script>--}}
+{{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
 <script src="js/materialize.js"></script>
 <script src="js/init.js"></script>
 <script>
@@ -649,10 +579,13 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
         // $("#many_details_form").hide();
         //$("#sandwich_popup_dialog").modal("hide");
         $('.slider').slider({ full_width: true });
-        $('.parallax').parallax();
+        $(".dropdown-trigger_cus").dropdown();
+        $(".dropdown-trigger_cus2").dropdown();
+        $('.sidenav').sidenav();
         $("#sandwich_popup").on('click',function(){
             $("#sandwich_popup_dialog").modal();
         });
+        $('.fixed-action-btn').floatingActionButton();
         $("#salads_popup").on('click',function(){
             $("#salads_popup_dialog").modal();
         });
@@ -819,5 +752,5 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
     }
 
 </script>
-
+</body>
 </html>

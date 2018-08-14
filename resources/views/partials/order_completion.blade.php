@@ -1,11 +1,11 @@
 @extends('order_processing')
 @section('content')
-    <div class="container-fluid" style="margin-top:8em">
+    <div class="container-fluid" style="margin-top:1em">
         <div id="normal_tracker" class="row">
-            <div id="normal_tracker" class="step-container" style="width: 100%; margin: 0 auto"></div>
+            <div id="normal_tracker" class="step-container" style="width: 450px; margin: 0 auto"></div>
         </div>
         <div class="row" id="trays_tracker">
-            <div id="trays_tracker" class="step-container_trays" style="width: 100%; margin: 0 auto"></div>
+            <div id="trays_tracker" class="step-container_trays" style="width: 450px; margin: 0 auto"></div>
         </div>
         <div class="row">
 
@@ -54,7 +54,7 @@
         <!-- Modal content-->
         {{--<div class="modal-content">--}}
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <button type="button" class="close" onclick="dismiss()">&times;</button>
             <h5 class="modal-title">Create Account</h5>
         </div>
         <div class="modal-body">
@@ -108,7 +108,7 @@
                     </div>
                     <div class="row" style="margin-top:2em;" style="color:black">
                         <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                            <button id='cancel' class="btn waves-effect waves-light" data-dismiss="modal">Cancel
+                            <button id='cancel' class="btn waves-effect waves-light" onclick="dismiss()">Cancel
                             </button>
                         </div>
                         <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
@@ -129,10 +129,10 @@
         label:after {
             content: ""
         }
-
+        .sidenav-overlay{z-index:99;}
     </style>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
     <script>
         window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
             window.msIndexedDB;
@@ -194,7 +194,9 @@
 //                readToppings();
             }
         }
-
+function dismiss() {
+    $('.modal').hide();
+}
         function readToppings() {
             var objectStore = db_toppings.transaction(["selected_toppings"], "readwrite").objectStore("selected_toppings");
             objectStore.openCursor().onsuccess = function (event) {
@@ -482,6 +484,9 @@
                 steps: ['Item Size', 'Ingredients', 'Delivery', 'Receipt'],
                 currentStep: 4
             });
+            $(".dropdown-trigger_cus").dropdown();
+            $(".dropdown-trigger_cus2").dropdown();
+            $('.sidenav').sidenav();
             $("#trays_tracker").hide();
             $("#choice_id").append(sessionStorage.getItem("item_category"));
             if (sessionStorage.getItem("item_category") === "Tray") {
@@ -508,7 +513,7 @@
                     else {
                         $('#address_dialog').val(sessionStorage.getItem("delivery_address"));
                         $("#phone_number_dialog").val($("#contact_number").val());
-                        $("#new_account").modal()
+                        $("#new_account").show()
                     }
 
                 });
