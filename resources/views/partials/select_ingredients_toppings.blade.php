@@ -197,13 +197,13 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                            <button id='ingredient_toppings_back' class="btn waves-effect waves-light">Back
+                        <div class="col offset-s2 col s2" style="margin-bottom:1em;">
+                            <button id='ingredient_toppings_back' class="btn waves-effect waves-light"><i class="material-icons">arrow_back</i>Back
                             </button>
                         </div>
 
-                        <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
-                            <button id='ingredient_toppings_next' class="btn waves-effect waves-light">Next
+                        <div class="col offset-s2 col s2" style="margin-bottom:1em;">
+                            <button id='ingredient_toppings_next' class="btn waves-effect waves-light">Next<i class="material-icons">arrow_forward</i>
                             </button>
                         </div>
                     </div>

@@ -8,35 +8,34 @@
             <div id="trays_tracker" class="step-container_trays" style="width: 450px; margin: 0 auto"></div>
         </div>
         <div class="row">
-
-            <div class="col-sm-7 card" style="margin-left: 2em;">
+            <div class="col m7 card" style="margin-left: 2em;">
                 <h5>Complete your order - Login to complete</h5>
-                <form id="order_completion" col="col-md-10" role="form" method="POST">
+                <form id="order_completion" role="form" method="POST">
                     <input id="_token" name="_token" value="{{ csrf_token() }}" hidden>
                     <div class="row">
-                        <div class="input-field col s6">
+                        <div class="input-field col m6">
                             <label for="contact_number" class="active">Phone Number</label>
                             <input id='contact_number' type='tel' required class="validate">
                         </div>
                         <input id='email' type='email' hidden required>
 
-                        <div class="input-field col s6">
+                        <div class="input-field col m6">
                             <label class="active" for="password">Password</label>
                             <input id='password' type='password'  required>
                         </div>
                     </div>
-                    <div class="row" style="margin-top:2em;" style="color:black">
-                        <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                            <button id='complete_back' class="btn waves-effect waves-light">Back</button>
-                        </div>
-                        <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
-                            <button id='complete' class="btn waves-effect waves-light">Submit</button>
+                    <div class="row" style="margin-top:1em;" >
+                        <div class="col offset-m1 col m10" style="margin-bottom:1em;">
+
+                            <button id='complete_back' class="btn waves-effect waves-light "><i class="material-icons">arrow_back</i> Back</button>
+
+                            <button id='complete' class="btn waves-effect waves-light pull-right">Submit <i class="material-icons">send</i></button>
                         </div>
                     </div>
 
                 </form>
             </div>
-            <div class="col-sm-4 card" style="margin-left: 2em;">
+            <div class="col m4 card" style="margin-left: 1em;">
                 <p ><span style="color:black;font-weight:bolder;font-size: 1.2em;">Order Details <i
                                 class="fa fa-shopping-cart"></i></span><span style="color:black;margin-left: 8px;font-weight: bolder"
                                                                              id="order_count"></span> <span  style="font-weight: bolder;margin-left:2em;color:black;font-size:1.2em;"
@@ -106,12 +105,12 @@
                         </p>
 
                     </div>
-                    <div class="row" style="margin-top:2em;" style="color:black">
-                        <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
+                    <div class="row" style="margin-top:2em;" >
+                        <div class="col offset-s2 col s2" style="margin-bottom:1em;">
                             <button id='cancel' class="btn waves-effect waves-light" onclick="dismiss()">Cancel
                             </button>
                         </div>
-                        <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
+                        <div class="col offset-s2 col s2" style="margin-bottom:1em;">
                             <button id='register_new_account' class="btn waves-effect waves-light">Submit</button>
                         </div>
                     </div>

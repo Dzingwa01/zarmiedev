@@ -48,7 +48,7 @@
                     <div class="col m8 s12">
                         <form id="address_form">
                             <div class="row">
-                                <input id='address' type='text' placeholder="Enter your address" required>
+                                <input id='address' type='text' placeholder="Enter your address" style="background-color:white;" required>
                             </div>
                             <div class="row" style="margin-top:1em;">
                                 <div id="map_canvas"></div>
@@ -67,11 +67,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                        <button id='address_back' class="btn waves-effect waves-light">Back</button>
+                    <div class="col offset-s2 col s2" style="margin-bottom:1em;">
+                        <button id='address_back' class="btn waves-effect waves-light"><i class="material-icons">arrow_back</i>Back</button>
                     </div>
-                    <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
-                        <button id='address_next' class="btn waves-effect waves-light">Next</button>
+                    <div class="col offset-s2 col s2" style="margin-bottom:1em;">
+                        <button id='address_next' class="btn waves-effect waves-light">Next <i class="material-icons">arrow_forward</i> </button>
                     </div>
                 </div>
             </div>

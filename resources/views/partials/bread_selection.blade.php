@@ -1,6 +1,6 @@
 @extends('order_processing')
 @section('content')
-    <div class="container" style="margin-top:1em;">
+    <div class="container-fluid" style="margin-top:1em;">
         <div id="normal_steps" class="row">
             <div class="step-container" style="width: 450px; margin: 0 auto"></div>
         </div>
@@ -13,24 +13,24 @@
                 </center>
                 {{--<button class="btn pull-right" onclick="goBack()"><i class="fa fa-arrow-left"></i> Back</button>--}}
             </div>
-            <div class="row " id="with_sandwiches">
-            <div class="row ">
-                <div id='sandwich' onclick="bread_selection(this)" class="col offset-m1 col-sm-5  tile">
-                    <h5 style="margin-top:2em;">Sandwich </h5>
-                    <div id='sandwich_price'></div>
+            <div class="row" id="with_sandwiches">
+            <div class="row">
+                <div id='sandwich' onclick="bread_selection(this)" class="col-sm-5  tile">
+                    <h5 style="color:white">Sandwich </h5>
+                    <p id='sandwich_price'></p>
                 </div>
                 <div id='mediumsub' onclick="bread_selection(this)" class="col-sm-5 tile">
-                    <h5 style="margin-top:2em;">Medium Sub - 15cm </h5>
+                    <h5>Medium Sub - 15cm </h5>
                     <div id='medium_price'></div>
                 </div>
             </div>
             <div class="row">
-                <div id='largesub' onclick="bread_selection(this)" class="col offset-m1 col-sm-5 tile">
-                    <h5 style="margin-top:2em;">Large - 22cm </h5>
+                <div id='largesub' onclick="bread_selection(this)" class="col-sm-5 tile">
+                    <h5 style="">Large - 22cm </h5>
                     <div id='large_price'></div>
                 </div>
                 <div id='wrap' onclick="bread_selection(this)" class="col-sm-5 tile">
-                    <h5 style="margin-top:2em;">Wrap</h5>
+                    <h5>Wrap</h5>
                     <div id='wrap_price'></div>
                 </div>
             </div>

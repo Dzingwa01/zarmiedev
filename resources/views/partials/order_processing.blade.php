@@ -56,12 +56,16 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                            <button id='bread_back' class="btn waves-effect waves-light">Back</button>
-                        </div>
+                        <div  style="margin-bottom:1em;">
+                            <div class="col offset-s4 col s2" style="margin-bottom:1em;">
+                                <button id='bread_back' class="btn pull-right"><i class="material-icons" >arrow_back</i>Back</button>
+                            </div>
+                            <div class="col offset-s2 col s2" style="margin-bottom:1em;">
+                                <button id='bread_next' class="btn waves-effect waves-light pull-right">Next<i class="material-icons">arrow_forward</i></button>
+                            </div>
 
-                        <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
-                            <button id='bread_next' class="btn waves-effect waves-light">Next</button>
+
+
                         </div>
                     </div>
                 </form>
@@ -342,7 +346,9 @@
         $(document).ready(function () {
             $('.tabs').tabs();
             $("#choice_normals").append(sessionStorage.getItem('item_name') + " - " + sessionStorage.getItem('item_category'));
-
+            $(".dropdown-trigger_cus").dropdown();
+            $(".dropdown-trigger_cus2").dropdown();
+            $('.sidenav').sidenav();
             if (sessionStorage.getItem('item_category') == "Medium Sub" || sessionStorage.getItem('item_category') == "Large Sub") {
                 $("#no_toast").attr("checked", true);
                 sessionStorage.setItem('selected_toast', 'No Toast');

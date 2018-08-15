@@ -1,42 +1,60 @@
 @extends('order_processing')
 @section('content')
-  <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-          <div class="panel panel-default">
-              <div class="panel-heading"><header class="center"><h4>Contact Us</h4></header></div>
-              <div class="panel-body">
-                  <form class="form-horizontal" role="form" method="POST" action="">
-                      {{ csrf_field() }}
-                      <div class="form-group">
-                          <label for="item_number" class="col-md-4 control-label">Full Name</label>
-                          <div class="col-md-6">
-                              <input id="full_name" type="text" class="form-control" name="full_name" value="" placeholder="Enter full name" required autofocus>
+    <div class="container">
+  <div class="row card" style="margin-top:1em;">
+      <form id="order_completion_form" col="col m10 " role="form" method="POST">
+          <input id="_token" name="_token" value="{{ csrf_token() }}" hidden>
+          <fieldset>
+              <legend class="center">Send Us an Email</legend>
+              <div class="row">
 
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label for="name" class="col-md-4 control-label">Cellphone Number</label>
-                          <div class="col-md-6">
-                              <input id="cell_number" type="tel" class="form-control" name="cell_number" value="" placeholder="Cellphone Number" required>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label for="item_description" class="col-md-4 control-label">Message</label>
-                          <div class="col-md-6">
-                            <textarea id="message" name="message" class="form-control materialize-textarea" value="" required rows="4" col="5" placeholder="Enter your message here"></textarea>
-                          </div>
-                      </div>
+                  <div class="input-field col m6">
+                      <label for="last_name_dialog" class="active">Full Name</label>
+                      <input id='last_name_dialog' type='text' required>
 
-                      <div class="form-group">
-                          <div class="col-md-6 col-md-offset-4">
-                              <button type="submit" class="btn btn-lg">
-                                  Send
-                              </button>
-                          </div>
-                      </div>
-                  </form>
+                  </div>
+                  <div class="input-field col m6">
+                      <label for="email_address_dialog" >Email</label>
+                      <input id='email_address_dialog' type='email' required>
+                  </div>
+
               </div>
-          </div>
-      </div>
+              <div class="row">
+                  <div class="input-field  col m6" style="color:black">
+                  <label for="phone_number" class="active">Phone Number</label>
+                  <input id='phone_number_dialog' type='tel' required>
+              </div>
+              </div>
+
+              <div class="row">
+                  <div id="address" class="input-field  col m12" style="color:black">
+                      <label for="address_dialog">Message</label>
+                      <textarea  id='address_dialog' class="materialize-textarea"></textarea>
+                  </div>
+              </div>
+              <div class="row" style="margin-top:2em;" >
+
+                  <div class="col offset-s5 col s2" style="margin-bottom:1em;">
+                      <button id='register_new_account' class="btn waves-effect waves-light">Submit</button>
+                  </div>
+              </div>
+          </fieldset>
+
+      </form>
   </div>
+    </div>
+  <style>
+
+      .active:after {
+          content: ""
+      }
+      .sidenav-overlay{z-index:99;}
+  </style>
+    <script>
+        $(document).ready(function(){
+            $(".dropdown-trigger_cus").dropdown();
+            $(".dropdown-trigger_cus2").dropdown();
+            $('.sidenav').sidenav();
+        });
+    </script>
 @endsection

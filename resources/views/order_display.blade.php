@@ -152,7 +152,7 @@
     .with_cart{
       margin-top: 5em;
     }
-  .sidenav-overlay{z-index:99;}
+  .sidenav-overlay{z-index:99!important;}
   </style>
   <script>
   $(document).ready(function() {
@@ -185,7 +185,7 @@
         <li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
         <li><a class="" style="color:black;font-weight: bolder;"  href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
         {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-        <li><a class="" style="color:black;font-weight: bolder;" href="/contact_us"><i class="material-icons left">email</i> Contact Us</a></li>
+        {{--<li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
         <li>
           <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown2">
             <i class="material-icons left">person_pin</i>
@@ -196,12 +196,13 @@
       </ul>
 
       <ul id="slide-out" class="sidenav">
-        <li><a href="/home" class="sidenav-close" style="color:black;font-weight: bolder"><i class="tiny material-icons">home</i> Home</a></li>
-        <li><a class="" style="color:black;font-weight:bolder;" href="/client_order_display"><i class="tiny material-icons left">add_shopping_cart</i> Order Now</a></li>
-        <li><a href="/previous_orders" class="" style="color:black;font-weight: bolder"> <i class="tiny material-icons">shopping_cart</i>Previous Orders</a></li>
-        <li><a class="" href="/client_menu_display" style="color:black;font-weight: bolder"><i class="tiny material-icons left">reorder</i> Menu</a></li> <hr>
+        <li><a class="" style="color:black;font-weight: bolder;" href="/"><i class="material-icons left">home</i>Home</a></li>
+        <li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+        <li><a class="" style="color:black;font-weight: bolder;"  href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+        {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
+        {{--<li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
         <li>
-          <a  style="color:black;font-weight: bolder;" class="dropdown-trigger_cus" data-toggle="dropdown" href="#dropdown1">
+          <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown2">
             <i class="material-icons left">person_pin</i>
             Account
             <span class="caret"></span>
@@ -482,7 +483,7 @@
       $(document).ready(function(){
           $('.collapsible').collapsible();
           var more_order = sessionStorage.getItem("more_order");
-
+          read_all_complete_orders();
 //          if(more_order!=null&&more_order!=undefined&&more_order!="null"){
 //              $("#cart_btn").show();
 //              $("#order_count").empty();
