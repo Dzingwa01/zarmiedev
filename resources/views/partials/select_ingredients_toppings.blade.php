@@ -1155,9 +1155,7 @@
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
             $('.tabs').tabs();
-            $(".dropdown-trigger_cus").dropdown();
-            $(".dropdown-trigger_cus2").dropdown();
-            $('.sidenav').sidenav();
+
             accordion_trigger();
             if (sessionStorage.getItem("order_quantity") == null || sessionStorage.getItem("order_quantity") == undefined) {
                 sessionStorage.setItem("order_quantity", 0);

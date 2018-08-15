@@ -156,9 +156,12 @@
         .step:after {
             content: ""
         }
+        .sidebar-overlay{
+            z-index:99!important;
+        }
 
     </style>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
 
     <script>
         <?php $menu_items = json_encode($menu_items);?>

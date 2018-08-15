@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="container ">
+    <div class="container-fluid">
 
         {{--<a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>--}}
         <div id="normal_steps" class="row" style="margin-top: 1em;">
@@ -73,10 +73,10 @@
                 {{--<button class="btn pull-right" onclick="goBack()"><i class="fa fa-arrow-left"></i> Back</button>--}}
             </div>
             <div class="row" >
-                <div class="col-sm-3">
+                <div class="col m3">
                     <img id="salad_image" width="300px" height="250px" class="img-responsive img-rounded" />
                 </div>
-                <div class="col-sm-9">
+                <div class="col m9">
                     <p style="color:black;">Party Salads are available on request. You can substitue standard for pasta with any of our salads.</p>
                     <table>
                         <thead>
@@ -102,11 +102,11 @@
             </div>
             <div class="row">
 
-                <div id='mediumsub' onclick="bread_selection(this)" class="col offset-m1  col-sm-5 tile">
+                <div id='mediumsub' onclick="bread_selection(this)" class="col m5 tile">
                     <h5 style="margin-top:2em;">Medium Salad - 500g </h5>
                     <div id='medium_price_salads'></div>
                 </div>
-                <div id='largesub' onclick="bread_selection(this)" class="col-sm-5 tile">
+                <div id='largesub' onclick="bread_selection(this)" class="col m5 tile">
                     <h5 style="margin-top:2em;">Large Salad - 750g</h5>
                     <div id='large_price_salads'></div>
                 </div>
@@ -120,7 +120,7 @@
                 </center>
                 {{--<button class="btn pull-right" onclick="goBack()"><i class="fa fa-arrow-left"></i> Back</button>--}}
             </div>
-            <div id='sandwich' onclick="bread_selection(this)" class="col-sm-offset-4 col-sm-4 tile">
+            <div id='sandwich' onclick="bread_selection(this)" class="col offset-m4 col m4 tile">
                 <h5 id="choice_name" style="margin-top:2em;"> </h5>
                 <div id='sandwich_price_trays'></div>
             </div>

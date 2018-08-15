@@ -7,11 +7,11 @@
 
         <div class="row">
 
-            <div class=" col-md-6 col-sm-12 card" style="margin-left: 1em;">
+            <div class=" col m6 col s12 card" style="margin-left: 1em;">
                 <h6 style="font-weight: bolder;font-size:1.5em;" id="choice_normals"></h6>
                 <form id="bread_selection" style="margin-top:2em;">
-                    <div id='bread_choice_form'>
-                        <div class="row">
+                    <div id='bread_choice_form' class="row">
+
                             <div class="col-sm-6">
                                 <div id="bread_choices">
                                     <label style="font-size: 16px; color:black; font-weight: bold;">Bread Type</label>
@@ -53,20 +53,23 @@
                                 </p>
                             </div>
 
-                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                            <button id='bread_back' class="btn waves-effect waves-light">Back</button>
-                        </div>
+                        <div  style="margin-bottom:1em;">
+                            <div class="col offset-s4 col s2" style="margin-bottom:1em;">
+                                <button id='bread_back' class="btn pull-right"><i class="material-icons" >arrow_back</i>Back</button>
+                            </div>
+                            <div class="col offset-s2 col s2" style="margin-bottom:1em;">
+                                <button id='bread_next' class="btn waves-effect waves-light pull-right">Next<i class="material-icons">arrow_forward</i></button>
+                            </div>
 
-                        <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
-                            <button id='bread_next' class="btn waves-effect waves-light">Next</button>
+
+
                         </div>
                     </div>
                 </form>
             </div>
-            <div class=" col-md-5 col-sm-12 card" style="margin-left:2em; ">
+            <div class=" col m5 col s12 card" style="margin-left:2em; ">
                 <div class="row">
                     <p class="pull-right" style="font-weight: bolder;color:black;font-size:1.2em;"
                        id="all_total_due"></p>

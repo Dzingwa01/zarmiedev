@@ -287,13 +287,17 @@
   .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
     background-color: #26a69a!important;;
   }
+    .sidebar-overlay{
+      z-index: 99!important;
+    }
   </style>
-  {{--<script>--}}
-  {{--$(document).ready(function() {--}}
-    {{--// $("#menu_popup_dialog").modal();--}}
-    {{--$('select').material_select();--}}
-  {{--});--}}
-  {{--</script>--}}
+  <script>
+  $(document).ready(function() {
+      $(".dropdown-trigger_cus1").dropdown();
+      $(".dropdown-trigger_cus2").dropdown();
+      $('.sidenav').sidenav();
+  });
+  </script>
 </head>
 <body>
 <div class="navbar-fixed">
@@ -311,12 +315,13 @@
         <a  class="" href="{{ url('/register') }}">Register</a>
       </ul>
       <ul class="right hide-on-med-and-down">
+        <li><a class="" style="color:black;font-weight: bolder;" href="/"><i class="material-icons left">home</i>Home</a></li>
         <li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
         <li><a class="" style="color:black;font-weight: bolder;"  href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
         {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
         {{--<li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
         <li>
-          <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown2">
+          <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus1" data-toggle="dropdown" href="#dropdown1">
             <i class="material-icons left">person_pin</i>
             Account
             <span class="caret"></span>
