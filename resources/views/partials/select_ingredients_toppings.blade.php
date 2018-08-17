@@ -90,20 +90,23 @@
                     <div id="egg_selection_div" hidden>
                         <p style="color:black;font-weight:bold;">How do you like your eggs done?</p>
                         <p>
-                            <input name="group01" class="bread" type="radio" value="Fried" id="fried"/>
-                            <label for="fried">Fried</label>
-
-                            <input name="group01" class="bread" type="radio" id="scrambled" value="Scrambled"/>
-                            <label for="scrambled">Scrambled</label>
-                            <input name="group01" class="bread" type="radio" id="mimosa" value="Mimosa"/>
-                            <label for="mimosa">Mimosa</label>
+                            <label for="fried">
+                                <input name="group01" class="bread" type="radio" value="Fried" id="fried" checked/>
+                                <span>Fried</span>
+                            </label>
+                            <label for="scrambled">
+                                <input name="group01" class="bread" type="radio" id="scrambled" value="Scrambled"/>
+                                <span>Scrambled</span></label>
+                            <label for="mimosa">
+                                <input name="group01" class="bread" type="radio" id="mimosa" value="Mimosa"/>
+                                <span>Mimosa</span> </label>
                         </p>
 
                         {{--<div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>--}}
-                            {{--<p style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)--}}
-                            {{--<div id='extra_toppings' >--}}
+                        {{--<p style="color:black;font-weight:bold;margin-left:1em;">Extra Toppings (Paid)--}}
+                        {{--<div id='extra_toppings' >--}}
 
-                            {{--</div>--}}
+                        {{--</div>--}}
                         {{--</div>--}}
                     </div>
                     <hr/>

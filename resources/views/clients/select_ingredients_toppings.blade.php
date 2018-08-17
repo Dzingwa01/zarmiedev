@@ -90,13 +90,16 @@
                     <div id="egg_selection_div" hidden>
                         <p style="color:black;font-weight:bold;">How do you like your eggs done?</p>
                         <p>
-                            <input name="group01" class="bread" type="radio" value="Fried" id="fried"/>
-                            <label for="fried">Fried</label>
-
+                            <label for="fried">
+                            <input name="group01" class="bread" type="radio" value="Fried" id="fried" checked/>
+                            <span>Fried</span>
+                            </label>
+                            <label for="scrambled">
                             <input name="group01" class="bread" type="radio" id="scrambled" value="Scrambled"/>
-                            <label for="scrambled">Scrambled</label>
+                            <span>Scrambled</span></label>
+                            <label for="mimosa">
                             <input name="group01" class="bread" type="radio" id="mimosa" value="Mimosa"/>
-                            <label for="mimosa">Mimosa</label>
+                           <span>Mimosa</span> </label>
                         </p>
 
                         {{--<div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>--}}
