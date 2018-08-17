@@ -138,7 +138,7 @@
     <script>
         $(document).ready(function () {
 //            $("#item_prize_div").hide();
-            $('#item_type').material_select();
+            $('#item_type').formSelect();
             $("#add_category").on('click', function () {
 
                 $("#add_category_popup").modal('show');

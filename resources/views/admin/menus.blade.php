@@ -211,7 +211,7 @@
     <script src="js/init.js"></script>
     <script>
         $(document).ready(function () {
-            $('select').material_select();
+             $('select').formSelect();
             $("#add_category").on('click', function () {
 
                 $("#add_category_popup").modal('show');
@@ -231,10 +231,10 @@
                 $.each(results, function (idx, obj) {
                     $(id_local).append("<option value=" + obj.id + ">" + obj.name + "</option>");
                 });
-                $('select').material_select();
+                $('select').formSelect();
                 $(id_local).trigger('contentChanged');
                 $(id_local).on('contentChanged', function () {
-                    $(this).material_select();
+                    $(this).formSelect();
                 });
 
             });

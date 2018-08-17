@@ -103,7 +103,7 @@
         <script src="/js/init.js"></script>
         <script>
             $(document).ready(function () {
-                $('#ingredient_type_id').material_select();
+                $('#ingredient_type_id').formSelect();
             });
         </script>
     @endpush
