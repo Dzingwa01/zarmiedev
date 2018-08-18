@@ -202,7 +202,7 @@
         {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
         {{--<li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
         <li>
-          <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown2">
+          <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown1">
             <i class="material-icons left">person_pin</i>
             Account
             <span class="caret"></span>
