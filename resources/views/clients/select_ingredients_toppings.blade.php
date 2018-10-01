@@ -1580,7 +1580,6 @@ $('#extra_toppings').empty();
 
             }
         }
-
         function ingredient_select_swap(obj) {
             var ingredients = {!! $ingredients !!};
             var id_string = obj.id.split("_");
