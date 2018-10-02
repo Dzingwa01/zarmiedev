@@ -8,7 +8,7 @@
         </div>
         <div class="row">
             <input hidden id="hidden_address" value="{{$user_address}}">
-            <div class="col-sm-7 card">
+            <div class="col m9 s12 card">
                 <div id="delivery_collect">
                     <p style="color:black;font-weight: bolder;font-size: 1.2em;">Delivery or Pickup</p>
                     <div class="row" style="margin-bottom: 0px;">
@@ -94,7 +94,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-4 card" style="margin-left: 2em;">
+            <div class="col m3 s12 card">
                 <p><span style="color:black;font-weight:bolder;font-size: 1.2em;">Order Details <i
                                 class="fa fa-shopping-cart"></i></span><span
                             style="color:black;margin-left: 8px;font-weight: bolder"

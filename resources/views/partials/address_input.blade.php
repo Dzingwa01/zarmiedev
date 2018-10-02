@@ -7,7 +7,7 @@
         </div>
         <div id="main_div" class="row">
 
-            <div id="time_diva" class="col-md-8 card">
+            <div id="time_diva" class="col-md-9 card">
                 <div id="delivery_collect">
                     <p style="color:black;font-weight: bolder;font-size: 1.2em;">Delivery or Pickup</p>
                     <div class="row" style="margin-bottom: 0px;">
@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            <div id="basket_div" class="col-md-4 card" style="">
+            <div id="basket_div" class="col-md-3 card" style="">
                 <p><span style="color:black;font-weight:bolder;font-size: 1.2em;">Order Details <i
                                 class="fa fa-shopping-cart"></i></span><span
                             style="color:black;margin-left: 8px;font-weight: bolder"
