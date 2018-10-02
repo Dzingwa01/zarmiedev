@@ -668,10 +668,10 @@
                     $("#removed_list").append('<span id=' + remove_id + ' style="margin-left:1em" >' + ingredient_name + " removed " + '</span>');
                     $('#' + id).remove();
                     removeIngredient(id);
-                    ingredient_select_swap(obj);
-                    $("#swap_toppings_div").show();
-                    $("#swap_ingr").empty();
-                    $("#swap_ingr").append(ingredient_name);
+//                    ingredient_select_swap(obj);
+//                    $("#swap_toppings_div").show();
+//                    $("#swap_ingr").empty();
+//                    $("#swap_ingr").append(ingredient_name);
                 } else {
                     $("#" + obj.id).addClass('glass').removeClass('glass_unselected');
                     $("#" + remove_id).remove();
@@ -1178,6 +1178,7 @@
 //            $(".dropdown-trigger_cus2").dropdown();
 //            $('.sidenav').sidenav();
             var extra_toppings ={!! json_encode($extra_toppings) !!};
+            console.log("Extra toppings",extra_toppings);
             $("#choice_id").empty();
             $("#choice_id").append(sessionStorage.getItem("item_category"));
             if (sessionStorage.getItem("item_category") === "Tray") {

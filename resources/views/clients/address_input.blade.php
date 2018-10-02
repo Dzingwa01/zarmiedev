@@ -70,10 +70,13 @@
                             </div>
                         </form>
                     </div>
-                    <div class="input-field col s4">
-                        <textarea id="delivery_instructions" class="materialize-textarea"></textarea>
-                        <label for="delivery_instructions">Any Special Instructions - *eg ask for John</label>
-                    </div>
+
+                </div>
+                <div id="delivery_instructions_div">
+                <div  class="input-field col s6">
+                    <textarea id="delivery_instructions" class="materialize-textarea"></textarea>
+                    <label for="delivery_instructions">Any Special Instructions - *eg ask for John</label>
+                </div>
                 </div>
                 <div  class="row" style="margin-bottom: 0px;">
                     <div id="collect_instructions_div" class="input-field col s6">
@@ -467,6 +470,7 @@
                 sessionStorage.setItem("delivery_collect","Delivery");
                 sessionStorage.setItem("new_address_select","no");
                 $("#collect_instructions_div").hide();
+                $("#delivery_pick_up_time").timepicker();
                 var user_address =  $('#hidden_address').val();
                 sessionStorage.setItem("delivery_address",user_address);
                 var qty = sessionStorage.getItem('quantity');
@@ -489,10 +493,12 @@
                     var delivery_or_collect = $(this).val();
                     if (delivery_or_collect == "Delivery") {
                         $("#address_div").show();
+                        $("#delivery_instructions_div").show();
                         $("#collect_instructions_div").hide();
                         sessionStorage.setItem("delivery_collect", "Delivery");
                     } else if(delivery_or_collect =="Collect"){
                         $("#address_div").hide();
+                        $("#delivery_instructions_div").hide();
                         $("#collect_instructions_div").show();
                         sessionStorage.setItem("delivery_collect", "Collect");
                     }else if(delivery_or_collect=="for_later"){

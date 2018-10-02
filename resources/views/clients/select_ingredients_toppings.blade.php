@@ -663,10 +663,11 @@
                     $("#removed_list").append('<span id=' + remove_id + ' style="margin-left:1em" >' + ingredient_name + " removed " + '</span>');
                     $('#' + id).remove();
                     removeIngredient(id);
-                    ingredient_select_swap(obj);
-                    $("#swap_toppings_div").show();
-                    $("#swap_ingr").empty();
-                    $("#swap_ingr").append(ingredient_name);
+                    console.log("we here");
+//                    ingredient_select_swap(obj);
+//                    $("#swap_toppings_div").show();
+//                    $("#swap_ingr").empty();
+//                    $("#swap_ingr").append(ingredient_name);
                 } else {
                     $("#" + obj.id).addClass('glass').removeClass('glass_unselected');
                     $("#" + remove_id).remove();

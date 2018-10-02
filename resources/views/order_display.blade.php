@@ -481,10 +481,35 @@
             console.log("toppings cleared successfully");
         };
     }
+
+     function compare(a,b) {
+
+            if(!isNaN(a.item_number)&&!isNaN(b.item_number)){
+                if (Number(a.item_number) < Number(b.item_number))
+                    return -1;
+                if (Number(a.item_number) > Number(b.item_number))
+                    return 1;
+            }else if(!isNaN(a.item_number.substr(1,2))&&!isNaN(b.item_number.substr(1,2))){
+                if (Number(a.item_number.substr(1,2)) < Number(b.item_number.substr(1,2)))
+                    return -1;
+                if (Number(a.item_number.substr(1,2)) > Number(b.item_number.substr(1,2)))
+                    return 1;
+
+            }else if(!isNaN(a.item_number.substr(1,1))&&!isNaN(b.item_number.substr(1,1))){
+                if (Number(a.item_number.substr(1,1)) < Number(b.item_number.substr(1,1)))
+                    return -1;
+                if (Number(a.item_number.substr(1,1)) > Number(b.item_number.substr(1,1)))
+                    return 1;
+            }
+
+    }
+
     var menu_items = {!!$menu_items!!};
+    menu_items.sort(compare);
     var categories = {!! $categories !!};
 //    console.log("categories",categories.length);
-      console.log(menu_items);
+      console.log("menu items",menu_items);
+
       $(document).ready(function(){
           $('.collapsible').collapsible();
           var more_order = sessionStorage.getItem("more_order");
@@ -512,7 +537,7 @@
                               $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td></tr>');
 
                           }
-                          if(obj.item_number==28||obj.item_number==27){
+                          if(obj.item_number==27||obj.item_number==28){
                               $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td></td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
 
                           }else if(obj.item_number==25||obj.item_number==33){

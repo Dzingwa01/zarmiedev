@@ -262,7 +262,30 @@
                 }
             );
         }
-    var menu_items = {!!$menu_items!!};
+        function compare(a,b) {
+
+            if(!isNaN(a.item_number)&&!isNaN(b.item_number)){
+                if (Number(a.item_number) < Number(b.item_number))
+                    return -1;
+                if (Number(a.item_number) > Number(b.item_number))
+                    return 1;
+            }else if(!isNaN(a.item_number.substr(1,2))&&!isNaN(b.item_number.substr(1,2))){
+                if (Number(a.item_number.substr(1,2)) < Number(b.item_number.substr(1,2)))
+                    return -1;
+                if (Number(a.item_number.substr(1,2)) > Number(b.item_number.substr(1,2)))
+                    return 1;
+
+            }else if(!isNaN(a.item_number.substr(1,1))&&!isNaN(b.item_number.substr(1,1))){
+                if (Number(a.item_number.substr(1,1)) < Number(b.item_number.substr(1,1)))
+                    return -1;
+                if (Number(a.item_number.substr(1,1)) > Number(b.item_number.substr(1,1)))
+                    return 1;
+            }
+
+        }
+
+        var menu_items = {!!$menu_items!!};
+        menu_items.sort(compare);
     var categories = {!! $categories !!};
     //    console.log("categories",categories.length);
     console.log(menu_items);

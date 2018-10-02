@@ -5,9 +5,9 @@
         <div id="normal_tracker" class="row">
             <div id="normal_tracker" class="step-container" style="width: 450px; margin: 0 auto"></div>
         </div>
-        <div class="row">
+        <div id="main_div" class="row">
 
-            <div class="col-md-7 card">
+            <div id="time_diva" class="col-md-8 card">
                 <div id="delivery_collect">
                     <p style="color:black;font-weight: bolder;font-size: 1.2em;">Delivery or Pickup</p>
                     <div class="row" style="margin-bottom: 0px;">
@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4 card" style="margin-left: 2em;">
+            <div id="basket_div" class="col-md-4 card" style="">
                 <p><span style="color:black;font-weight:bolder;font-size: 1.2em;">Order Details <i
                                 class="fa fa-shopping-cart"></i></span><span
                             style="color:black;margin-left: 8px;font-weight: bolder"
@@ -112,7 +112,10 @@
                 outline: none;
                 box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
             }
-
+            #delivery_pick_up_time
+            {
+                z-index: 99 !important;
+            }
             .pac-container {
                 background-color: #fff;
                 z-index: 20;
@@ -166,6 +169,7 @@
             }
 
         </style>
+
         <script>
             window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
                 window.msIndexedDB;
@@ -365,6 +369,10 @@
             $(document).ready(function () {
                 sessionStorage.setItem("delivery_collect","Delivery");
                 $("#collect_instructions_div").hide();
+
+//                $('#main_div').appendTo('body');
+                $('#delivery_pick_up_time').timepicker();
+//                $('.timepicker').appendTo('#time_diva');
                 var qty = sessionStorage.getItem('quantity');
                 sessionStorage.setItem("delivery_collect_time","for_now");
                 if(sessionStorage.getItem("delivery_collect")=="Delivery"){
