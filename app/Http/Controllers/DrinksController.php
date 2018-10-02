@@ -19,67 +19,95 @@ class DrinksController extends Controller
     {
         //
         $categories = DrinkCategory::all();
-        return view('drinks.drinks',compact('categories'));
+        return view('drinks.drinks', compact('categories'));
     }
 
-    public function showDrinks(){
-        $drinks = Drink::join('drink_categories','drinks.category_id','drink_categories.id')
-                    ->select('drinks.*','drink_categories.name as category')
-                    ->get();
+    public function showDrinks()
+    {
+        $drinks = Drink::join('drink_categories', 'drinks.category_id', 'drink_categories.id')
+            ->select('drinks.*', 'drink_categories.name as category')
+            ->get();
 
         return Datatables::of($drinks)->addColumn('action', function ($drink) {
             $re = 'drinks/' . $drink->id;
-            $sh = 'drinks/'. $drink->id.'/edit';
+            $sh = 'drinks/' . $drink->id . '/edit';
             $del = 'drinks/delete/' . $drink->id;
             return '<a href=' . $re . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $sh . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
         })
             ->make(true);
     }
 
-    public function showCategories(){
+    public function showCategories()
+    {
         return view('drinks.drink_categories');
     }
 
-    public function showDrinksCategories(){
+    public function showDrinksCategories()
+    {
         $drinks = DrinkCategory::all();
 
         return Datatables::of($drinks)->addColumn('action', function ($drink) {
             $re = 'drink_categories/' . $drink->id;
-            $sh = 'drink_categories_edit/'. $drink->id;
+            $sh = 'drink_categories_edit/' . $drink->id;
             $del = 'drink_categories/delete/' . $drink->id;
             return '<a href=' . $re . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $sh . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
         })
             ->make(true);
     }
 
-    public function  displayDrinksCategories($id){
+    public function displayDrinksCategories($id)
+    {
         $drink_category = DrinkCategory::find($id);
-        return view('drinks.show_categories',compact('drink_category'));
+        return view('drinks.show_categories', compact('drink_category'));
     }
 
-    public function editDrinksCategories($id){
+    public function editDrinksCategories($id)
+    {
         $drink_category = DrinkCategory::find($id);
-        return view('drinks.edit_categories',compact('drink_category'));
+        return view('drinks.edit_categories', compact('drink_category'));
     }
-    public function deleteDrinksCategories($id){
 
+    public function deleteDrinksCategories($id)
+    {
+        DB::beginTransaction();
+        try {
+            $drink = DrinkCategory::where('id', $id)->first();
+            $drinkQnty = count(Drink::where('category_id', $drink->id)->get());
+            if ($drinkQnty == 0) {
+                $drink->delete();
+                DB::commit();
+                return redirect()->route('show_drink_type')->with("status", "Drink category deleted successfully");
+            } else {
+                return redirect()->route('show_drink_type')->with("error", "This drink category can not be deleted");
+            }
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('show_drink_type')->with("error", "Error occured, please contact system admin " . $e->getMessage());
+        }
     }
-public function updateDrinkCategory(Request $request,$id){
-    DB::beginTransaction();
-    try {
-        $drink = DrinkCategory::create($request->all());
-        DB::commit();
-        return redirect()->route('show_drink_type')->with("status", "Drink added successfully");
-    } catch (\Exception $e) {
-        DB::rollback();
-        return redirect()->route('show_drink_type')->with("error", "Error occured, please contact system admin " . $e->getMessage());
+
+    public function updateDrinkCategory(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $drink = DrinkCategory::where('id', $id)->first();
+            $drink->update($request->all());
+//            dd($drink);
+            DB::commit();
+            return redirect()->route('show_drink_type')->with("status", "Drink updated successfully");
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('show_drink_type')->with("error", "Error occured, please contact system admin " . $e->getMessage());
+        }
     }
-}
-    public function storeDrinkCategory(Request $request){
+
+    public function storeDrinkCategory(Request $request)
+    {
 
         DB::beginTransaction();
         try {
-           $drink = DrinkCategory::create($request->all());
+            $drink = DrinkCategory::create($request->all());
             DB::commit();
             return redirect()->route('show_drink_type')->with("status", "Drink added successfully");
         } catch (\Exception $e) {
@@ -101,7 +129,7 @@ public function updateDrinkCategory(Request $request,$id){
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -112,28 +140,27 @@ public function updateDrinkCategory(Request $request,$id){
 
 
         DB::beginTransaction();
-        try{
-            if(array_key_exists("picture",$input)){
+        try {
+            if (array_key_exists("picture", $input)) {
                 $file = $input['picture'];
-                $ext  = $file->getClientOriginalExtension();
-                $filename = md5(str_random(5)).'.'.$ext;
+                $ext = $file->getClientOriginalExtension();
+                $filename = md5(str_random(5)) . '.' . $ext;
                 $name = 'image_url';
-                if($file->move('menu_images/',$filename)){
-                    $this->arr[$name] = 'menu_images/'.$filename;
+                if ($file->move('menu_images/', $filename)) {
+                    $this->arr[$name] = 'menu_images/' . $filename;
                 }
                 $input['image_url'] = $this->arr[$name];
                 Drink::create($input);
-            }else{
+            } else {
                 Drink::create($input);
             }
 
             DB::commit();
-            return redirect()->route('drinks.index')->with('status', "Drink saved successfully" );
-        }
-        catch(\Exception $e){
+            return redirect()->route('drinks.index')->with('status', "Drink saved successfully");
+        } catch (\Exception $e) {
             // dd($e);
             DB::rollback();
-            return  redirect()->route('drinks.index')->with('error', "An error occurred ". $e->getMessage());
+            return redirect()->route('drinks.index')->with('error', "An error occurred " . $e->getMessage());
 
         }
     }
@@ -141,7 +168,7 @@ public function updateDrinkCategory(Request $request,$id){
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -149,13 +176,13 @@ public function updateDrinkCategory(Request $request,$id){
         //
         $drink = Drink::find($id);
         $categories = DrinkCategory::all();
-        return view('drinks.show',compact('drink','categories'));
+        return view('drinks.show', compact('drink', 'categories'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -164,14 +191,14 @@ public function updateDrinkCategory(Request $request,$id){
         $categories = DrinkCategory::all();
         $drink = Drink::find($id);
 //        dd($drink);
-        return view('drinks.edit',compact('drink','categories'));
+        return view('drinks.edit', compact('drink', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -181,29 +208,28 @@ public function updateDrinkCategory(Request $request,$id){
         $input = $request->all();
         $drink = Drink::find($id);
         DB::beginTransaction();
-        try{
-            if(array_key_exists("picture",$input)){
+        try {
+            if (array_key_exists("picture", $input)) {
                 $file = $input['picture'];
-                $ext  = $file->getClientOriginalExtension();
-                $filename = md5(str_random(5)).'.'.$ext;
+                $ext = $file->getClientOriginalExtension();
+                $filename = md5(str_random(5)) . '.' . $ext;
                 $name = 'image_url';
-                if($file->move('menu_images/',$filename)){
-                    $this->arr[$name] = 'menu_images/'.$filename;
+                if ($file->move('menu_images/', $filename)) {
+                    $this->arr[$name] = 'menu_images/' . $filename;
                 }
 
                 $input['image_url'] = $this->arr[$name];
                 $drink->update($input);
-            }else{
+            } else {
                 $drink->update($input);
             }
 
             DB::commit();
-            return redirect()->route('drinks.index')->with('status', "Drink saved successfully" );
-        }
-        catch(\Exception $e){
+            return redirect()->route('drinks.index')->with('status', "Drink saved successfully");
+        } catch (\Exception $e) {
             // dd($e);
             DB::rollback();
-            return  redirect()->route('drinks.index')->with('error', "An error occurred ". $e->getMessage());
+            return redirect()->route('drinks.index')->with('error', "An error occurred " . $e->getMessage());
 
         }
     }
@@ -211,7 +237,7 @@ public function updateDrinkCategory(Request $request,$id){
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

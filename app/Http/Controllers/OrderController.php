@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Drink;
+use App\DrinkCategory;
 use App\Ingredient;
 use App\IngredientType;
 use App\Jobs\OrderPlacedJob;
@@ -114,18 +115,18 @@ class OrderController extends Controller
 
         $refined_temp = [];
         foreach ($temp_extras as $extra) {
-            if ($item_type->category_name == "Veggie Corner" || $item_type->category_name == "Mighty Meat Sandwiches" || $item_type->category_name == "Deli Chicken Sandwiches" || $item_type->category_name == "Speciality Sandwiches") {
-                if ($extra->name == "Veggie" || $extra->name == "Cheese" || $extra->name == "Meat" || $extra->name == "Source") {
+            if (strtolower($item_type->category_name) == strtolower("Veggie Corner") || strtolower($item_type->category_name) == strtolower("Mighty Meat Sandwiches") || strtolower($item_type->category_name) == strtolower("Deli Chicken Sandwiches") || strtolower($item_type->category_name) == strtolower("Speciality Sandwiches")) {
+                if (strtolower($extra->name) == "veggie" || strtolower($extra->name) == "cheese" || strtolower($extra->name) == "meat" || strtolower($extra->name) == "source"||strtolower($extra->name) == "fish") {
                     array_push($refined_temp, $extra);
                 }
 
-            } else if ($item_type->category_name == "Go for Some Fish") {
-                if ($extra->name == "Fish"||$extra->name == "Veggie" || $extra->name == "Cheese") {
+            } else if (strtolower($item_type->category_name) == strtolower("Go for Some Fish")) {
+                if (strtolower($extra->name) == strtolower("Fish")||strtolower($extra->name) == "veggie" || strtolower($extra->name) == "cheese"||strtolower($extra->name) == "meat") {
                     array_push($refined_temp, $extra);
                 }
             }
             else if ($item_type->category_name == "Classic Breakfast") {
-                if ($extra->name == "Veggie" || $extra->name == "Cheese"|| $extra->name == "Eggs") {
+                if (strtolower($extra->name) == "veggie" || strtolower($extra->name) == "cheese"||strtolower($extra->name) == "meat") {
                     array_push($refined_temp, $extra);
                 }
             }
@@ -171,11 +172,9 @@ class OrderController extends Controller
             }
         }
         $other_ingredients = $temp_ingr;
-//        dd($extra_toppings);
-//        foreach ($extra_toppings as $topping){
-//            $topping_ingredients = $topping->item_ingredients;
-//        }
-        return view('clients.select_ingredients_toppings', compact('drinks','ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
+        $drink_categories = DrinkCategory::where('in_stock','yes')->get();
+
+        return view('clients.select_ingredients_toppings', compact('drink_categories','drinks','ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
     }
     public function showIngredientsToppings($id)
     {
@@ -209,18 +208,18 @@ class OrderController extends Controller
 
         $refined_temp = [];
         foreach ($temp_extras as $extra) {
-            if ($item_type->category_name == "Veggie Corner" || $item_type->category_name == "Mighty Meat Sandwiches" || $item_type->category_name == "Deli Chicken Sandwiches" || $item_type->category_name == "Speciality Sandwiches") {
-                if ($extra->name == "Veggie" || $extra->name == "Cheese" || $extra->name == "Meat" || $extra->name == "Source") {
+            if (strtolower($item_type->category_name) == strtolower("Veggie Corner") || strtolower($item_type->category_name) == strtolower("Mighty Meat Sandwiches") || strtolower($item_type->category_name) == strtolower("Deli Chicken Sandwiches") || strtolower($item_type->category_name) == strtolower("Speciality Sandwiches")) {
+                if (strtolower($extra->name) == "veggie" || strtolower($extra->name) == "cheese" || strtolower($extra->name) == "meat" || strtolower($extra->name) == "source"||strtolower($extra->name) == "fish") {
                     array_push($refined_temp, $extra);
                 }
 
-            } else if ($item_type->category_name == "Go for Some Fish") {
-                if ($extra->name == "Fish"||$extra->name == "Veggie" || $extra->name == "Cheese") {
+            } else if (strtolower($item_type->category_name) == strtolower("Go for Some Fish")) {
+                if (strtolower($extra->name) == strtolower("Fish")||strtolower($extra->name) == "veggie" || strtolower($extra->name) == "cheese"||strtolower($extra->name) == "meat") {
                     array_push($refined_temp, $extra);
                 }
             }
             else if ($item_type->category_name == "Classic Breakfast") {
-                if ($extra->name == "Veggie" || $extra->name == "Cheese"|| $extra->name == "Eggs") {
+                if (strtolower($extra->name) == "veggie" || strtolower($extra->name) == "cheese"||strtolower($extra->name) == "meat") {
                     array_push($refined_temp, $extra);
                 }
             }
@@ -266,8 +265,10 @@ class OrderController extends Controller
             }
         }
         $other_ingredients = $temp_ingr;
-        return view('partials.select_ingredients_toppings', compact('drinks','ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
+        $drink_categories = DrinkCategory::where('in_stock','yes')->get();
+        return view('partials.select_ingredients_toppings', compact('drink_categories','drinks','ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
     }
+
     public function showIngredientsToppingsSalads($id)
     {
         $menu_item = Menu::find($id);
@@ -305,7 +306,34 @@ class OrderController extends Controller
         foreach ($extra_toppings as $topping){
             $topping_ingredients = $topping->item_ingredients;
         }
-        return view('partials.salads_select_ingredient_toping', compact('ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
+        $type_count = IngredientType::all();
+        $temp_extras = [];
+        /**
+         * Getting item type
+         */
+        $item_type = Category::where('id',$menu_item->category_id)->first();
+
+        foreach($type_count as $item){
+            $top = new \stdClass();
+            $top->id = $item->id;
+            $top->name = $item->type_name;
+            $top->item_ingredients = [];
+            foreach ($all_ingredients as $ingredient){
+                if($ingredient->ingredient_type_id==$item->id){
+                    array_push($top->item_ingredients,$ingredient);
+                }
+            }
+            array_push($temp_extras,$top);
+        }
+        $refined_temp = [];
+        foreach ($temp_extras as $extra) {
+            if (strtolower($extra->name) == "veggie" || strtolower($extra->name) == "cheese" || strtolower($extra->name) == "meat" || strtolower($extra->name) == "source"||strtolower($extra->name) == "fish") {
+                array_push($refined_temp, $extra);
+            }
+        }
+        $extra_toppings = $refined_temp;
+        $drink_categories = DrinkCategory::where('in_stock','yes')->get();
+        return view('partials.salads_select_ingredient_toping', compact('drink_categories','extra_toppings','ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
     }
     public function showIngredientsToppingsSaladsClient($id)
     {
@@ -344,7 +372,34 @@ class OrderController extends Controller
         foreach ($extra_toppings as $topping){
             $topping_ingredients = $topping->item_ingredients;
         }
-        return view('clients.salads_select_ingredient_toping', compact('ingredients','drinks','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
+        $type_count = IngredientType::all();
+        $temp_extras = [];
+        /**
+         * Getting item type
+         */
+        $item_type = Category::where('id',$menu_item->category_id)->first();
+
+        foreach($type_count as $item){
+            $top = new \stdClass();
+            $top->id = $item->id;
+            $top->name = $item->type_name;
+            $top->item_ingredients = [];
+            foreach ($all_ingredients as $ingredient){
+                if($ingredient->ingredient_type_id==$item->id){
+                    array_push($top->item_ingredients,$ingredient);
+                }
+            }
+            array_push($temp_extras,$top);
+        }
+        $refined_temp = [];
+        foreach ($temp_extras as $extra) {
+            if (strtolower($extra->name) == "veggie" || strtolower($extra->name) == "cheese" || strtolower($extra->name) == "meat" || strtolower($extra->name) == "source"||strtolower($extra->name) == "fish") {
+                array_push($refined_temp, $extra);
+            }
+        }
+        $extra_toppings = $refined_temp;
+        $drink_categories = DrinkCategory::where('in_stock','yes')->get();
+        return view('clients.salads_select_ingredient_toping', compact('drink_categories','extra_toppings','ingredients','drinks','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
     }
     public function showContactUsPage()
     {

@@ -57,6 +57,64 @@
                     <button id="replace_ingredients_with_pasta" class="btn" onclick="swap_pasta()">Swap With Pasta</button>
                     <button id="replace_pasta_swap" class="btn" onclick="replace_pasta()">Reverse Pasta Swap</button>
                 </div>
+                <div id="extra_toppings_div_2" class="row" style="margin-top:1em;">
+
+                    <button id="extra_toppings_accordion" class="accordion ">Extra Ingredients - <sup>*Extra charge applicable for some</sup></button>
+
+                    <div id="toppings_accordion" class="panel">
+                        <form id="" col="col-md-10" onsubmit="return false;">
+
+                            <div class="row" style="margin-top:1em;">
+                                <div id='extra_toppings'>
+
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div id="drinks_div" class="row" style="margin-top:1em;">
+                    <button id="accordion_drinks" class="accordion">Something to Drink</button>
+
+                    <div id="drinks_accordion" class="panel">
+                        <form id="" col="col-md-10" onsubmit="return false;">
+                            <div class="row" style="margin-top:1em;">
+                                <div id='drinks_list' class="col s12">
+                                    @if(count($drink_categories)>0)
+                                        <ul class="tabs">
+                                            @foreach($drink_categories as $drink_category)
+                                                <li class="tab col s2">
+                                                    <a href="{{'#drinkcat_'.$drink_category->id}}"
+                                                       style="color:black;text-decoration: none;font-size: 10px;">{{$drink_category->name}}</a>
+                                                    {{--<i class="fa fa-beer"></i> {{$drink->name . " - ".$drink->prize}}--}}
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </div>
+                                @if(count($drink_categories)>0)
+                                    @foreach($drink_categories as $drink_category)
+                                        <div id="{{'drinkcat_'.$drink_category->id}}" class="col s12 " style="margin-top: 1em;">
+                                            @if(count($drinks)>0)
+                                                @foreach($drinks as $drink)
+                                                    @if($drink->category_id==$drink_category->id)
+                                                        <button id="{{"drink_".$drink->id}}" class="drink_glass"
+                                                                onclick="drink_select(this)"
+                                                                style="margin-left:1em;color:white;"
+                                                        >
+                                                            <i class="fa fa-beer"></i> {{$drink->name . " - ".$drink->prize}}
+                                                        </button>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col offset-s2 col s2" style="margin-bottom:1em;">
                         <button id='ingredient_toppings_back' class="btn waves-effect waves-light"><i class="material-icons">arrow_back</i>Back</button>
@@ -284,9 +342,11 @@
             db = event.target.result;
             var transaction = event.target.transaction;
             var objectStore = db.createObjectStore("selected_ingredients", {keyPath: "id", autoIncrement: true});
+            var objectStore = db.createObjectStore("selected_drinks", {keyPath: "id", autoIncrement: true});
             transaction.oncomplete = function (event) {
                 addDefault();
                 readAll(db);
+                readAllDrinks(db);
             }
         }
         toppings_request.onerror = function (event) {
@@ -330,6 +390,54 @@
                 }
             }
         }
+        function drink_select(obj) {
+            var id_string = obj.id.split("_");
+            var new_id = id_string[1];
+            var another_new = "rep_" + new_id;
+            var drinks = {!! json_encode($drinks) !!};
+            let drink_name = "";
+            let selected_prize = 0;
+            let drink_id = "";
+            let ingredient_type_id = 0;
+            for (var i = 0; i < drinks.length; i++) {
+                if (drinks[i].id == new_id) {
+                    selected_prize = drinks[i].prize;
+                    drink_id = new_id;
+                    drink_name = drinks[i].name;
+                }
+            }
+            addDrink(drink_id, drink_name, selected_prize);
+        }
+
+        function addDrink(drink_id, drink_name, selected_prize) {
+            var request = db.transaction(["selected_drinks"], "readwrite")
+                .objectStore("selected_drinks")
+                .add({
+                    id: drink_id,
+                    name: drink_name,
+                    prize: selected_prize,
+                });
+
+            request.onsuccess = function (event) {
+                $("#drinks_cart").show();
+                var new_id = "seldrink_" + drink_id;
+                var new_class = "seldrink_" + drink_id;
+                $("#selected_drinks").append('<li class=' + new_class + '><b>' + drink_name + '</b>  <i id=' + new_id + ' onclick="extras_select_drink_reverse(this)" class="fa fa-trash"></i></li>');
+                var complete_orders_due = parseFloat(sessionStorage.getItem("complete_orders_due")) + parseFloat(selected_prize);
+                var new_prize = parseFloat(sessionStorage.getItem('total_due')) + parseFloat(selected_prize);
+
+                sessionStorage.setItem("complete_orders_due", complete_orders_due);
+                sessionStorage.setItem('total_due', new_prize);
+                $("#all_total_due").empty();
+                $("#all_total_due").append('Total Due: R' + complete_orders_due);
+                $("#item_prize").empty();
+                $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
+            }
+            request.onerror = function (event) {
+                alert("You have already added " + drink_name + " you can increase the quantity in the cart");
+            }
+        }
+
         function read_all_complete_orders(){
             var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
             var total_cost = 0;
@@ -655,11 +763,35 @@
                             $("#" + cursor.value.id).remove();
                         }
                     }
-                    $('#item_ingredients').append('<li id=' + cursor.value.id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '</li>');
+                    if (sessionStorage.getItem("route_item_category") != 22 && sessionStorage.getItem("route_item_category") != 21) {
+//                        console.log("Hitsasa",sessionStorage.getItem("route_item_category") );
+                        $('#item_ingredients').append('<li id=' + cursor.value.id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '</li>');
+                    }
                     cursor.continue();
                 } else {
                 }
             };
+        }
+
+        function readAllDrinks(db) {
+            try {
+                var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
+                objectStore.openCursor().onsuccess = function (event) {
+                    var cursor = event.target.result;
+                    var new_total = 0;
+                    if (cursor) {
+                        $("#drinks_cart").show();
+                        var new_id = "seldrink_" + cursor.value.id;
+                        var new_class = "seldrink_" + cursor.value.id;
+                        $("#selected_drinks").append('<li class=' + new_class + '><b>' + cursor.value.name + ' </b>   <i id=' + new_id + ' onclick="extras_select_drink_reverse(this)" class="fa fa-trash"></i></li>');
+                        cursor.continue();
+                    } else {
+                    }
+                };
+            } catch (err) {
+
+            }
+
         }
 
         function removeTopping(topping_id, db_toppings) {
@@ -977,53 +1109,79 @@
         function extra_toppings_select(obj) {
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             var ingredients = {!!json_encode($all_ingredients) !!};
+            console.log("exra toppings1", extra_toppings);
             $("#extra_toppings_list").empty();
             for (var i = 0; i < extra_toppings.length; i++) {
                 if (extra_toppings[i].id == obj.id) {
                     for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
 //                        console.log(extra_toppings[i].item_ingredients[x].ingredient_id);
                         for (var y = 0; y < ingredients.length; y++) {
-                            if (ingredients[y].id == extra_toppings[i].item_ingredients[x].ingredient_id) {
-                                $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + ingredients[y].name + '</button>');
+                            if (ingredients[y].id == extra_toppings[i].item_ingredients[x].id) {
+                                if (sessionStorage.getItem('item_category') == "Sandwich") {
+                                    console.log("check", isNaN(Number(ingredients[y].prize)));
+                                    let prize = !isNaN(Number(ingredients[y].prize)) ? ingredients[y].prize : ' ';
+                                    if (prize)
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + ' R ' + Number(prize).toFixed(2) + '</button>');
+                                    else
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + '</button>');
+
+                                } else if (sessionStorage.getItem('item_category') == "Medium Sub" || sessionStorage.getItem('item_category') == "Wrap") {
+                                    let prize = !isNaN(Number(ingredients[y].medium_prize)) ? ingredients[y].medium_prize : '';
+                                    if (prize)
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + ' R ' + prize + '</button>');
+                                    else
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + '</button>');
+                                }
+                                else if (sessionStorage.getItem('item_category') == "Large Sub") {
+                                    let prize = !isNaN(Number(ingredients[y].large_prize)) ? ingredients[y].large_prize : '';
+                                    if (prize)
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + ' R ' + prize + '</button>');
+                                    else
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + '</button>');
+
+                                }
+
                             }
                         }
                     }
                 }
             }
-            $("#extra_toppings_modal").modal();
+            $("#extra_toppings_modal").show();
         }
 
         function extra_toppings_selected(obj) {
             $("#" + obj.id).addClass('glass_unselected').removeClass('glass');
             var id_string = obj.id.split('_');
             var id = id_string[1];
-            console.log("prize", id);
-
-            var new_id = "rev_" + id;
-            let prize = 0;
+            $("#extra_toppings_cart").show();
+            var new_id = "";
             var extra_toppings ={!! json_encode($extra_toppings) !!};
-//            console.log(extra_toppings);
+            console.log("extra_toppingsee", extra_toppings);
+            console.log("id", id);
             for (var i = 0; i < extra_toppings.length; i++) {
-                if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
-                    for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
-                        if (id == extra_toppings[i].item_ingredients[x].ingredient_id) {
-                            prize = extra_toppings[i].prize;
-//                            console.log("prize",prize);
+                var cur_topping = extra_toppings[i];
+                console.log(cur_topping);
+                for (var x = 0; x < cur_topping.item_ingredients.length; x++) {
+                    if (cur_topping.item_ingredients[x].id == id) {
+                        var standard_toppings = cur_topping.item_ingredients[x];
+                        var prize = 0;
+                        if (sessionStorage.getItem("item_category") == "Sandwich") {
+                            prize = !isNaN(Number(standard_toppings.prize)) ? Number(standard_toppings.prize) : 0;
+                            console.log("prize", Number(standard_toppings.prize));
+                        } else if (sessionStorage.getItem("item_category") == "Medium Sub" || sessionStorage.getItem("item_category") == "Wrap") {
+                            prize = !isNaN(Number(standard_toppings.medium_prize)) ? standard_toppings.medium_prize : 0;
+                            console.log("prize", isNaN(Number(standard_toppings.medium_prize)));
+                        } else {
+                            prize = !isNaN(Number(standard_toppings.large_prize)) ? standard_toppings.large_prize : 0;
                         }
+//                        console.log("prize",prize);
+                        addTopping(standard_toppings.id, standard_toppings.name, prize, standard_toppings.type_name);
+                        //                    $('#replaced_list').append('<span id='+another_new+'>'+standard_toppings[i].name+' replaced</span>');
                     }
+
                 }
-            }
-            var standard_toppings =
-                    {!! json_encode($all_ingredients) !!}
-            for (var i = 0; i < standard_toppings.length; i++) {
-                if (standard_toppings[i].id == id) {
-                    addTopping(standard_toppings[i].id, standard_toppings[i].name, standard_toppings[i].prize, standard_toppings[i].category);
-                    var new_prize = Number(sessionStorage.getItem('total_due')) + prize;
-                    sessionStorage.setItem('total_due', new_prize);
-                    $("#item_prize").empty();
-                    $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
-                    $('#extra_toppings_cart').append('<button id=' + new_id + ' class="glass" style="font-weight:bolder;margin-left:1em;color:white;" onclick="extras_select_reverse(this);" >' + standard_toppings[i].name + '</button>');
-                }
+//                if (standard_toppings[i].id == id) {
+
             }
         }
 

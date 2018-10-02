@@ -8,7 +8,7 @@
         </div>
         <div class="row">
             <input hidden id="hidden_address" value="{{$user_address}}">
-            <div class="col m9 s12 card">
+            <div class="col m7 s12 card">
                 <div id="delivery_collect">
                     <p style="color:black;font-weight: bolder;font-size: 1.2em;">Delivery or Pickup</p>
                     <div class="row" style="margin-bottom: 0px;">
@@ -94,7 +94,7 @@
                 </div>
             </div>
 
-            <div class="col m3 s12 card">
+            <div class="col m4 s12 card" style="margin-left:2em;">
                 <p><span style="color:black;font-weight:bolder;font-size: 1.2em;">Order Details <i
                                 class="fa fa-shopping-cart"></i></span><span
                             style="color:black;margin-left: 8px;font-weight: bolder"
@@ -470,7 +470,12 @@
                 sessionStorage.setItem("delivery_collect","Delivery");
                 sessionStorage.setItem("new_address_select","no");
                 $("#collect_instructions_div").hide();
+
+                var curDate = new Date();
+                var cur_time = curDate.getHours() + ":" +curDate.getMinutes();
+                $('#delivery_pick_up_time').val(cur_time);
                 $("#delivery_pick_up_time").timepicker();
+                M.updateTextFields();
                 var user_address =  $('#hidden_address').val();
                 sessionStorage.setItem("delivery_address",user_address);
                 var qty = sessionStorage.getItem('quantity');

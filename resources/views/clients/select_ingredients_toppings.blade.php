@@ -1,6 +1,6 @@
 @extends('client_processing')
 @section('content')
-    <div class="container-fluid" >
+    <div class="container-fluid">
         <div id="normal_tracker" class="row" style="margin-top:1em">
             <div id="normal_tracker" class="step-container" style="width: 450px; margin: 0 auto"></div>
         </div>
@@ -91,15 +91,15 @@
                         <p style="color:black;font-weight:bold;">How do you like your eggs done?</p>
                         <p>
                             <label for="fried">
-                            <input name="group01" class="bread" type="radio" value="Fried" id="fried" checked/>
-                            <span>Fried</span>
+                                <input name="group01" class="bread" type="radio" value="Fried" id="fried" checked/>
+                                <span>Fried</span>
                             </label>
                             <label for="scrambled">
-                            <input name="group01" class="bread" type="radio" id="scrambled" value="Scrambled"/>
-                            <span>Scrambled</span></label>
+                                <input name="group01" class="bread" type="radio" id="scrambled" value="Scrambled"/>
+                                <span>Scrambled</span></label>
                             <label for="mimosa">
-                            <input name="group01" class="bread" type="radio" id="mimosa" value="Mimosa"/>
-                           <span>Mimosa</span> </label>
+                                <input name="group01" class="bread" type="radio" id="mimosa" value="Mimosa"/>
+                                <span>Mimosa</span> </label>
                         </p>
 
                         {{--<div id="extra_toppings_div" class="row" style="margin-top:2em;" hidden>--}}
@@ -126,7 +126,8 @@
                     </div>
                     <div id="extra_toppings_div_2" class="row" style="margin-top:1em;">
 
-                        <button id="extra_toppings_accordion" class="accordion ">Extra Ingredients - *extra charge</button>
+                        <button id="extra_toppings_accordion" class="accordion ">Extra Ingredients - *extra charge
+                        </button>
 
                         <div id="toppings_accordion" class="panel">
                             <form id="" col="col-md-10" onsubmit="return false;">
@@ -146,18 +147,37 @@
                         <div id="drinks_accordion" class="panel">
                             <form id="" col="col-md-10" onsubmit="return false;">
                                 <div class="row" style="margin-top:1em;">
-                                    <div id='drinks_list'>
-                                        @if(count($drinks)>0)
-                                            @foreach($drinks as $drink)
-                                                <button id="{{"drink_".$drink->id}}" class="drink_glass"
-                                                        onclick="drink_select(this)"
-                                                        style="margin-left:1em;color:white;"
-                                                >
-                                                    <i class="fa fa-beer"></i> {{$drink->name . " - ".$drink->prize}}
-                                                </button>
-                                            @endforeach
+                                    <div id='drinks_list' class="col s12">
+                                        @if(count($drink_categories)>0)
+                                            <ul class="tabs">
+                                                @foreach($drink_categories as $drink_category)
+                                                    <li class="tab col s2">
+                                                        <a href="{{'#drinkcat_'.$drink_category->id}}"
+                                                           style="color:black;text-decoration: none;font-size: 10px;">{{$drink_category->name}}</a>
+                                                        {{--<i class="fa fa-beer"></i> {{$drink->name . " - ".$drink->prize}}--}}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
                                         @endif
                                     </div>
+                                    @if(count($drink_categories)>0)
+                                        @foreach($drink_categories as $drink_category)
+                                            <div id="{{'drinkcat_'.$drink_category->id}}" class="col s12 " style="margin-top: 1em;">
+                                                @if(count($drinks)>0)
+                                                    @foreach($drinks as $drink)
+                                                        @if($drink->category_id==$drink_category->id)
+                                                            <button id="{{"drink_".$drink->id}}" class="drink_glass"
+                                                                    onclick="drink_select(this)"
+                                                                    style="margin-left:1em;color:white;"
+                                                            >
+                                                                <i class="fa fa-beer"></i> {{$drink->name . " - ".$drink->prize}}
+                                                            </button>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
 
                             </form>
@@ -206,7 +226,8 @@
             </div>
             <div class="col-sm-5 card" style="margin-left:2em; ">
                 <div class="row">
-                    <p class="pull-right" style="font-weight: bolder;color:black;font-size:1.2em;" id="all_total_due"></p>
+                    <p class="pull-right" style="font-weight: bolder;color:black;font-size:1.2em;"
+                       id="all_total_due"></p>
                     {{--<span class="pull-right">*Cart and the current item</span>--}}
                 </div>
                 <div class="row">
@@ -245,7 +266,7 @@
                             <h6><b>Your <span id="choice_id"></span> comes with following ingredients:</b></h6>
 
                         </div>
-                        <div id='extra_toppings_cart' style="margin-top:2em;" >
+                        <div id='extra_toppings_cart' style="margin-top:2em;">
                             <h6><b>Extra Ingredients - *Click to remove </b></h6>
 
                         </div>
@@ -302,19 +323,20 @@
             <h5 class="modal-title">Extra Ingredients</h5>
         </div>
         <div class="modal-body">
-                    <div class="row" style="margin-top:0.5em;">
-                        <p style="color:black;">Please select your choice of extra ingredients</p>
-                        <div id='extra_toppings_list'>
+            <div class="row" style="margin-top:0.5em;">
+                <p style="color:black;">Please select your choice of extra ingredients</p>
+                <div id='extra_toppings_list'>
 
 
-                        </div>
-                    </div>
+                </div>
+            </div>
 
         </div>
         <div class="modal-footer">
             <div class="row">
                 <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                    <button  class="btn waves-effect waves-light" id="cancel_toppings" onclick="dismiss()">Cancel</button>
+                    <button class="btn waves-effect waves-light" id="cancel_toppings" onclick="dismiss()">Cancel
+                    </button>
                 </div>
                 <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
                     <button class="btn waves-effect waves-light" id="done_toppings" onclick="dismiss()">Done</button>
@@ -471,9 +493,11 @@
                 readToppings();
             }
         }
-        function dismiss(){
+
+        function dismiss() {
             $('.modal').hide();
         }
+
         function addDefaultToppings() {
             var standard_toppings =
                     {!! $standard_toppings !!}
@@ -663,11 +687,6 @@
                     $("#removed_list").append('<span id=' + remove_id + ' style="margin-left:1em" >' + ingredient_name + " removed " + '</span>');
                     $('#' + id).remove();
                     removeIngredient(id);
-                    console.log("we here");
-//                    ingredient_select_swap(obj);
-//                    $("#swap_toppings_div").show();
-//                    $("#swap_ingr").empty();
-//                    $("#swap_ingr").append(ingredient_name);
                 } else {
                     $("#" + obj.id).addClass('glass').removeClass('glass_unselected');
                     $("#" + remove_id).remove();
@@ -686,8 +705,8 @@
             var id = id_string[1];
             var new_id = "rev_" + id;
             var standard_toppings =
-                {!! $optional_toppings !!}
-$('#extra_toppings').empty();
+                    {!! $optional_toppings !!}
+                    $('#extra_toppings').empty();
             for (var i = 0; i < standard_toppings.length; i++) {
                 if (standard_toppings[i].id == id) {
                     addTopping(standard_toppings[i].id, standard_toppings[i].name, standard_toppings[i].prize, standard_toppings[i].category);
@@ -704,11 +723,12 @@ $('#extra_toppings').empty();
             $("#" + old_id).addClass('glass').removeClass('glass_unselected');
             removeTopping(id, db_toppings);
         }
-        function extras_select_drink_reverse(obj){
+
+        function extras_select_drink_reverse(obj) {
             var id_string = obj.id.split('_');
             var id = id_string[1];
             let prize = 0;
-            var remove_id =".seldrink_"+id;
+            var remove_id = ".seldrink_" + id;
             var drinks = {!! json_encode($drinks) !!};
             let drink_name = "";
             let selected_prize = 0;
@@ -720,20 +740,22 @@ $('#extra_toppings').empty();
                     selected_prize = drinks[i].prize;
                 }
             }
-            console.log("selected_prizere",id);
-            console.log("selected_prize",selected_prize);
-            var complete_orders_due =  parseFloat(sessionStorage.getItem("complete_orders_due"))-parseFloat(selected_prize);
-            var new_prize = parseFloat(sessionStorage.getItem('total_due'))-parseFloat(selected_prize);
+            console.log("selected_prizere", id);
+            console.log("selected_prize", selected_prize);
+            var complete_orders_due = parseFloat(sessionStorage.getItem("complete_orders_due")) - parseFloat(selected_prize);
+            var new_prize = parseFloat(sessionStorage.getItem('total_due')) - parseFloat(selected_prize);
             console.log(new_prize);
             console.log(complete_orders_due);
-            sessionStorage.setItem("complete_orders_due",complete_orders_due);
+            sessionStorage.setItem("complete_orders_due", complete_orders_due);
             sessionStorage.setItem('total_due', new_prize);
             $("#all_total_due").empty();
-            $("#all_total_due").append('Total Due: R'+complete_orders_due);
+            $("#all_total_due").append('Total Due: R' + complete_orders_due);
             $("#item_prize").empty();
-            $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');;
+            $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
+            ;
             removeDrink(id);
         }
+
         function extras_select_reverse(obj) {
             var id_string = obj.id.split('_');
             var id = id_string[1];
@@ -756,9 +778,9 @@ $('#extra_toppings').empty();
             var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
             var new_prize = parseFloat(sessionStorage.getItem('total_due')).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
             sessionStorage.setItem('total_due', new_prize);
-            sessionStorage.setItem("complete_orders_due",complete_orders_due);
+            sessionStorage.setItem("complete_orders_due", complete_orders_due);
             $("#all_total_due").empty();
-            $("#all_total_due").append('Total Due: R'+complete_orders_due.toFixed(2));
+            $("#all_total_due").append('Total Due: R' + complete_orders_due.toFixed(2));
             $("#item_prize").empty();
             $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
         }
@@ -775,16 +797,16 @@ $('#extra_toppings').empty();
                 .add({id: topping_id.toString(), name: topping_name, prize: prize, category: type_name});
 
             request.onsuccess = function (event) {
-                var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due"))+ (prize * parseInt(sessionStorage.getItem("quantity")));
-                sessionStorage.setItem("complete_orders_due",complete_orders_due);
+                var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")) + (prize * parseInt(sessionStorage.getItem("quantity")));
+                sessionStorage.setItem("complete_orders_due", complete_orders_due);
                 var new_prize = Number(sessionStorage.getItem('total_due')) + (prize * parseInt(sessionStorage.getItem("quantity")));
                 sessionStorage.setItem('total_due', new_prize);
                 $("#all_total_due").empty();
-                $("#all_total_due").append('Total Due: R'+Number(complete_orders_due).toFixed(2));
+                $("#all_total_due").append('Total Due: R' + Number(complete_orders_due).toFixed(2));
                 $("#item_prize").empty();
-                var new_id = "extratops_"+topping_id;
+                var new_id = "extratops_" + topping_id;
                 $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
-                $('#extra_toppings_cart').append('<li class=' + new_id + ' style="font-weight:bolder;margin-left:1em;color:black;">' + topping_name + '<i id=' + new_id+' onclick="extras_select_reverse(this)" class="fa fa-trash"></i></li>');
+                $('#extra_toppings_cart').append('<li class=' + new_id + ' style="font-weight:bolder;margin-left:1em;color:black;">' + topping_name + '<i id=' + new_id + ' onclick="extras_select_reverse(this)" class="fa fa-trash"></i></li>');
 
             }
             request.onerror = function (event) {
@@ -865,21 +887,21 @@ $('#extra_toppings').empty();
 
             request.onsuccess = function (event) {
                 $("#drinks_cart").show();
-                var new_id = "seldrink_"+drink_id;
-                var new_class="seldrink_"+drink_id;
-                $("#selected_drinks").append('<li class='+new_class+'><b>' + drink_name + '</b>  <i id=' + new_id +' onclick="extras_select_drink_reverse(this)" class="fa fa-trash"></i></li>');
-                var complete_orders_due =  parseFloat(sessionStorage.getItem("complete_orders_due"))+parseFloat(selected_prize);
-                var new_prize = parseFloat(sessionStorage.getItem('total_due'))+parseFloat(selected_prize);
+                var new_id = "seldrink_" + drink_id;
+                var new_class = "seldrink_" + drink_id;
+                $("#selected_drinks").append('<li class=' + new_class + '><b>' + drink_name + '</b>  <i id=' + new_id + ' onclick="extras_select_drink_reverse(this)" class="fa fa-trash"></i></li>');
+                var complete_orders_due = parseFloat(sessionStorage.getItem("complete_orders_due")) + parseFloat(selected_prize);
+                var new_prize = parseFloat(sessionStorage.getItem('total_due')) + parseFloat(selected_prize);
 
-                sessionStorage.setItem("complete_orders_due",complete_orders_due);
+                sessionStorage.setItem("complete_orders_due", complete_orders_due);
                 sessionStorage.setItem('total_due', new_prize);
                 $("#all_total_due").empty();
-                $("#all_total_due").append('Total Due: R'+complete_orders_due);
+                $("#all_total_due").append('Total Due: R' + complete_orders_due);
                 $("#item_prize").empty();
                 $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
             }
             request.onerror = function (event) {
-                alert("You have already added "+drink_name +" you can increase the quantity in the cart");
+                alert("You have already added " + drink_name + " you can increase the quantity in the cart");
             }
         }
 
@@ -918,20 +940,21 @@ $('#extra_toppings').empty();
             console.log("count req", countRequest);
             countRequest.onsuccess = function () {
                 var count = countRequest.result;
-                sessionStorage.setItem("order_quantity",count);
-                if (count>0) {
+                sessionStorage.setItem("order_quantity", count);
+                if (count > 0) {
                     $("#cart_btn").show();
                     $("#order_count").empty();
                     $("#order_count").append('<sup style="font-weight: bolder;">' + sessionStorage.getItem("order_quantity") + '*</sup>');
                     $("#menu_items").addClass("with_cart");
                     read_all_complete_orders();
                 } else {
-                    $("#all_total_due").append('Total Due: R'+sessionStorage.getItem("total_due"));
-                    sessionStorage.setItem("complete_orders_due",sessionStorage.getItem("total_due"));
+                    $("#all_total_due").append('Total Due: R' + sessionStorage.getItem("total_due"));
+                    sessionStorage.setItem("complete_orders_due", sessionStorage.getItem("total_due"));
                     $("#checkout_list").hide();
                 }
             }
         }
+
         function readAll(db) {
             var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
             objectStore.openCursor().onsuccess = function (event) {
@@ -954,65 +977,68 @@ $('#extra_toppings').empty();
         }
 
         function readAllDrinks(db) {
-            try{
+            try {
                 var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
                 objectStore.openCursor().onsuccess = function (event) {
                     var cursor = event.target.result;
-                    var new_total =0;
+                    var new_total = 0;
                     if (cursor) {
                         $("#drinks_cart").show();
-                        var new_id = "seldrink_"+cursor.value.id;
-                        var new_class="seldrink_"+cursor.value.id;
-                        $("#selected_drinks").append('<li class='+new_class+'><b>' + cursor.value.name + ' </b>   <i id=' + new_id +' onclick="extras_select_drink_reverse(this)" class="fa fa-trash"></i></li>');
+                        var new_id = "seldrink_" + cursor.value.id;
+                        var new_class = "seldrink_" + cursor.value.id;
+                        $("#selected_drinks").append('<li class=' + new_class + '><b>' + cursor.value.name + ' </b>   <i id=' + new_id + ' onclick="extras_select_drink_reverse(this)" class="fa fa-trash"></i></li>');
                         cursor.continue();
                     } else {
                     }
                 };
-            }catch(err){
+            } catch (err) {
 
             }
 
         }
 
         function clearIngredients(db) {
-            try{
+            try {
                 var objectStore = db.transaction(["selected_ingredients"], "readwrite").objectStore("selected_ingredients");
                 var objectStoreRequest = objectStore.clear();
                 objectStoreRequest.onsuccess = function (event) {
                     // report the success of our request
                     console.log("cleared successfully");
                 };
-            }catch (err){
+            } catch (err) {
 
             }
 
         }
+
         function clearDrinks(db) {
-            try{
+            try {
                 var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
                 var objectStoreRequest = objectStore.clear();
                 objectStoreRequest.onsuccess = function (event) {
                     // report the success of our request
                     console.log("cleared successfully");
                 };
-            }catch (err){
+            } catch (err) {
 
             }
 
         }
+
         function clearToppings(db) {
-            try{
+            try {
                 var objectStore = db.transaction(["selected_toppings"], "readwrite").objectStore("selected_toppings");
                 var objectStoreRequest = objectStore.clear();
                 objectStoreRequest.onsuccess = function (event) {
                     // report the success of our request
                     console.log("cleared successfully");
                 };
-            }catch(err){
+            } catch (err) {
 
             }
 
         }
+
         function removeTopping(topping_id, db_toppings) {
             var request = db_toppings.transaction(["selected_toppings"], "readwrite")
                 .objectStore("selected_toppings")
@@ -1025,18 +1051,18 @@ $('#extra_toppings').empty();
                 for (var i = 0; i < extra_toppings.length; i++) {
                     var cur_topping = extra_toppings[i];
                     console.log(cur_topping);
-                    for(var x=0;x<cur_topping.item_ingredients.length;x++){
-                        if(cur_topping.item_ingredients[x].id==topping_id){
+                    for (var x = 0; x < cur_topping.item_ingredients.length; x++) {
+                        if (cur_topping.item_ingredients[x].id == topping_id) {
                             var standard_toppings = cur_topping.item_ingredients[x];
 
-                            if(sessionStorage.getItem("item_category")=="Sandwich") {
-                                prize =  !isNaN(Number(standard_toppings.prize))?Number(standard_toppings.prize):0;
-                                console.log("prize",Number(standard_toppings.prize));
-                            }else if(sessionStorage.getItem("item_category")=="Medium Sub"||sessionStorage.getItem("item_category")=="Wrap") {
-                                prize = !isNaN(Number(standard_toppings.medium_prize))?standard_toppings.medium_prize:0;
-                                console.log("prize",isNaN(Number(standard_toppings.medium_prize)));
-                            }else {
-                                prize =  !isNaN(Number(standard_toppings.large_prize))?standard_toppings.large_prize:0;
+                            if (sessionStorage.getItem("item_category") == "Sandwich") {
+                                prize = !isNaN(Number(standard_toppings.prize)) ? Number(standard_toppings.prize) : 0;
+                                console.log("prize", Number(standard_toppings.prize));
+                            } else if (sessionStorage.getItem("item_category") == "Medium Sub" || sessionStorage.getItem("item_category") == "Wrap") {
+                                prize = !isNaN(Number(standard_toppings.medium_prize)) ? standard_toppings.medium_prize : 0;
+                                console.log("prize", isNaN(Number(standard_toppings.medium_prize)));
+                            } else {
+                                prize = !isNaN(Number(standard_toppings.large_prize)) ? standard_toppings.large_prize : 0;
                             }
                         }
                     }
@@ -1044,9 +1070,9 @@ $('#extra_toppings').empty();
                 var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
                 var new_prize = parseFloat(sessionStorage.getItem('total_due')).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
                 sessionStorage.setItem('total_due', new_prize);
-                sessionStorage.setItem("complete_orders_due",complete_orders_due);
+                sessionStorage.setItem("complete_orders_due", complete_orders_due);
                 $("#all_total_due").empty();
-                $("#all_total_due").append('Total Due: R'+complete_orders_due.toFixed(2));
+                $("#all_total_due").append('Total Due: R' + complete_orders_due.toFixed(2));
                 $("#item_prize").empty();
                 $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
             }
@@ -1054,6 +1080,7 @@ $('#extra_toppings').empty();
                 console.log("error", event);
             }
         }
+
         function removeDrink(id) {
             var request = db.transaction(["selected_drinks"], "readwrite")
                 .objectStore("selected_drinks")
@@ -1066,6 +1093,7 @@ $('#extra_toppings').empty();
                 console.log("error", event);
             }
         }
+
         function removeIngredient(ingredient_id) {
             var request = db.transaction(["selected_ingredients"], "readwrite")
                 .objectStore("selected_ingredients")
@@ -1098,12 +1126,12 @@ $('#extra_toppings').empty();
             var total_due = Number(new_qty * total_due_single).toFixed(2);
             sessionStorage.setItem('total_due', total_due);
             var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - total_due_single;
-            complete_orders_due+=total_due;
-            sessionStorage.setItem("complete_orders_due",complete_orders_due);
+            complete_orders_due += total_due;
+            sessionStorage.setItem("complete_orders_due", complete_orders_due);
             $('#item_prize').empty();
             $('#item_prize').append('<h6> <b>Prize - </b>R' + total_due + '</h6>');
             $("#all_total_due").empty();
-            $("#all_total_due").append('Total Due: R'+Number(complete_orders_due).toFixed(2));
+            $("#all_total_due").append('Total Due: R' + Number(complete_orders_due).toFixed(2));
         }
 
         function increase_quantity() {
@@ -1123,13 +1151,13 @@ $('#extra_toppings').empty();
             var total_due = Number(item_prize * new_qty).toFixed(2);
             sessionStorage.setItem('total_due', total_due);
             var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - item_prize;
-            console.log("complete orders",complete_orders_due);
-            complete_orders_due+=Number(total_due);
-            sessionStorage.setItem("complete_orders_due",complete_orders_due);
+            console.log("complete orders", complete_orders_due);
+            complete_orders_due += Number(total_due);
+            sessionStorage.setItem("complete_orders_due", complete_orders_due);
             $('#item_prize').empty();
             $('#item_prize').append('<h6> <b>Prize - </b>R' + total_due + '</h6>');
             $("#all_total_due").empty();
-            $("#all_total_due").append('Total Due: R'+Number(complete_orders_due).toFixed(2));
+            $("#all_total_due").append('Total Due: R' + Number(complete_orders_due).toFixed(2));
         }
 
         function addDefault() {
@@ -1168,10 +1196,10 @@ $('#extra_toppings').empty();
         var item_number = sessionStorage.getItem('item_name');
         $(document).ready(function () {
             $('.tabs').tabs();
-            $('#done_toppings').on('click',function(){
+            $('#done_toppings').on('click', function () {
                 $("#extra_toppings_modal").hide();
             });
-            $('#cancel_toppings').on('click',function(){
+            $('#cancel_toppings').on('click', function () {
                 $("#extra_toppings_modal").hide();
             });
             accordion_trigger();
@@ -1191,7 +1219,7 @@ $('#extra_toppings').empty();
             $("#trays_tracker").hide();
 
             var extra_toppings ={!! json_encode($extra_toppings) !!};
-            console.log('Extra toppings',extra_toppings);
+            console.log('Extra toppings', extra_toppings);
             $("#choice_id").empty();
             $("#choice_id").append(sessionStorage.getItem("item_category"));
             if (sessionStorage.getItem("item_category") === "Tray") {
@@ -1216,7 +1244,7 @@ $('#extra_toppings').empty();
             }
             for (var i = 0; i < extra_toppings.length; i++) {
 //                if (extra_toppings[i].size_name == sessionStorage.getItem('item_category')) {
-                    $("#extra_toppings").append(' <button id=' + extra_toppings[i].id + ' class="glass" onclick="extra_toppings_select(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + extra_toppings[i].name + '</button>');
+                $("#extra_toppings").append(' <button id=' + extra_toppings[i].id + ' class="glass" onclick="extra_toppings_select(this)" style="font-weight:bolder;margin-left:1em;color:white;">' + extra_toppings[i].name + '</button>');
 //                }
             }
             if (sessionStorage.getItem("prev_swap_choice") == "no") {
@@ -1298,13 +1326,13 @@ $('#extra_toppings').empty();
                 if (cursor) {
                     ingredients.push(cursor.value);
                     cursor.continue();
-                }else{
+                } else {
                     toppingsStore.openCursor().onsuccess = function (toppings_event) {
                         var cursor_1 = toppings_event.target.result;
                         if (cursor_1) {
                             toppings.push(cursor_1.value);
                             cursor_1.continue();
-                        }else{
+                        } else {
                             var drinksStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
                             drinksStore.openCursor().onsuccess = function (drinks_event) {
                                 var cursor_2 = drinks_event.target.result;
@@ -1312,11 +1340,19 @@ $('#extra_toppings').empty();
                                     drinks.push(cursor_2.value);
                                     cursor_2.continue();
                                 }
-                                else{
-                                    var order = {order_item_number:count.toString(),item_name:sessionStorage.getItem('item_name'),item_category: sessionStorage.getItem('item_category'),
-                                        bread_type:sessionStorage.getItem('bread_type') ,toast_type:sessionStorage.getItem('selected_toast'),
-                                        quantity:sessionStorage.getItem('quantity'),prize:Number(sessionStorage.getItem('total_due')).toFixed(2),
-                                        ingredients:ingredients,toppings:toppings,drinks:drinks};
+                                else {
+                                    var order = {
+                                        order_item_number: count.toString(),
+                                        item_name: sessionStorage.getItem('item_name'),
+                                        item_category: sessionStorage.getItem('item_category'),
+                                        bread_type: sessionStorage.getItem('bread_type'),
+                                        toast_type: sessionStorage.getItem('selected_toast'),
+                                        quantity: sessionStorage.getItem('quantity'),
+                                        prize: Number(sessionStorage.getItem('total_due')).toFixed(2),
+                                        ingredients: ingredients,
+                                        toppings: toppings,
+                                        drinks: drinks
+                                    };
                                     var request_complete = db_cart.transaction(["complete_orders"], "readwrite")
                                         .objectStore("complete_orders")
                                         .add(order);
@@ -1338,6 +1374,7 @@ $('#extra_toppings').empty();
             };
 
         }
+
         function add_order_for_checkout() {
             var count = Number(sessionStorage.getItem("order_quantity")) + 1;
             var ingredients = [];
@@ -1352,14 +1389,14 @@ $('#extra_toppings').empty();
                 if (cursor) {
                     ingredients.push(cursor.value);
                     cursor.continue();
-                }else{
+                } else {
 
                     toppingsStore.openCursor().onsuccess = function (toppings_event) {
                         var cursor_1 = toppings_event.target.result;
                         if (cursor_1) {
                             toppings.push(cursor_1.value);
                             cursor_1.continue();
-                        }else{
+                        } else {
                             var drinksStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
                             drinksStore.openCursor().onsuccess = function (drinks_event) {
                                 var cursor_2 = drinks_event.target.result;
@@ -1367,11 +1404,19 @@ $('#extra_toppings').empty();
                                     drinks.push(cursor_2.value);
                                     cursor_2.continue();
                                 }
-                                else{
-                                    var order = {order_item_number:count.toString(),item_name:sessionStorage.getItem('item_name'),item_category: sessionStorage.getItem('item_category'),
-                                        bread_type:sessionStorage.getItem('bread_type') ,toast_type:sessionStorage.getItem('selected_toast'),
-                                        quantity:sessionStorage.getItem('quantity'),prize:Number(sessionStorage.getItem('total_due')).toFixed(2),
-                                        ingredients:ingredients,toppings:toppings,drinks:drinks};
+                                else {
+                                    var order = {
+                                        order_item_number: count.toString(),
+                                        item_name: sessionStorage.getItem('item_name'),
+                                        item_category: sessionStorage.getItem('item_category'),
+                                        bread_type: sessionStorage.getItem('bread_type'),
+                                        toast_type: sessionStorage.getItem('selected_toast'),
+                                        quantity: sessionStorage.getItem('quantity'),
+                                        prize: Number(sessionStorage.getItem('total_due')).toFixed(2),
+                                        ingredients: ingredients,
+                                        toppings: toppings,
+                                        drinks: drinks
+                                    };
                                     var request_complete = db_cart.transaction(["complete_orders"], "readwrite")
                                         .objectStore("complete_orders")
                                         .add(order);
@@ -1394,67 +1439,70 @@ $('#extra_toppings').empty();
             };
 
         }
-        function read_all_complete_orders(){
+
+        function read_all_complete_orders() {
             var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
             var total_cost = 0;
             objectStore.openCursor().onsuccess = function (event) {
                 var cursor = event.target.result;
                 if (cursor) {
-                    var with_order = "ord_"+cursor.value.id;
-                    total_cost+=Number(cursor.value.prize);
-                    $("#checkout_div").append('<div id='+cursor.value.id+' class="card"><b>'+cursor.value.quantity+' X '+cursor.value.item_name+' - ' +cursor.value.item_category+ '<br>'+cursor.value.bread_type+' - '+cursor.value.toast_type+'</b><i id='+with_order+' onclick="remove_order(this)"  class="fa fa-trash" style="float:right" style="color:red"></i><br/><b>Cost: </b>R'+cursor.value.prize+'</div>');
-                    console.log("ingredients",cursor.value.ingredients);
-                    var ingredients_string ="";
-                    var toppings_string ="";
-                    var drinks_string ="";
-                    if(cursor.value.ingredients.length>0){
-                        for(var i=0;i<cursor.value.ingredients.length;i++){
+                    var with_order = "ord_" + cursor.value.id;
+                    total_cost += Number(cursor.value.prize);
+                    $("#checkout_div").append('<div id=' + cursor.value.id + ' class="card"><b>' + cursor.value.quantity + ' X ' + cursor.value.item_name + ' - ' + cursor.value.item_category + '<br>' + cursor.value.bread_type + ' - ' + cursor.value.toast_type + '</b><i id=' + with_order + ' onclick="remove_order(this)"  class="fa fa-trash" style="float:right" style="color:red"></i><br/><b>Cost: </b>R' + cursor.value.prize + '</div>');
+                    console.log("ingredients", cursor.value.ingredients);
+                    var ingredients_string = "";
+                    var toppings_string = "";
+                    var drinks_string = "";
+                    if (cursor.value.ingredients.length > 0) {
+                        for (var i = 0; i < cursor.value.ingredients.length; i++) {
                             console.log(cursor.value.ingredients[i]);
-                            ingredients_string = ingredients_string+"; "+cursor.value.ingredients[i].name;
+                            ingredients_string = ingredients_string + "; " + cursor.value.ingredients[i].name;
                         }
-                        $("#"+cursor.value.id).append('<br/><b>Ingredients: </b>'+ingredients_string+'<br/>');
+                        $("#" + cursor.value.id).append('<br/><b>Ingredients: </b>' + ingredients_string + '<br/>');
 
                     }
-                    if(cursor.value.toppings.length>0){
-                        for(var i=0;i<cursor.value.toppings.length;i++){
-                            toppings_string = toppings_string+"; "+cursor.value.toppings[i].name;
+                    if (cursor.value.toppings.length > 0) {
+                        for (var i = 0; i < cursor.value.toppings.length; i++) {
+                            toppings_string = toppings_string + "; " + cursor.value.toppings[i].name;
                         }
-                        $("#"+cursor.value.id).append('<br/><b>Extra Toppings: </b>'+toppings_string+'<br/>');
+                        $("#" + cursor.value.id).append('<br/><b>Extra Toppings: </b>' + toppings_string + '<br/>');
                     }
-                    if(cursor.value.drinks.length>0){
-                        for(var i=0;i<cursor.value.drinks.length;i++){
-                            drinks_string = drinks_string+"; "+cursor.value.drinks[i].name;
+                    if (cursor.value.drinks.length > 0) {
+                        for (var i = 0; i < cursor.value.drinks.length; i++) {
+                            drinks_string = drinks_string + "; " + cursor.value.drinks[i].name;
                         }
-                        $("#"+cursor.value.id).append('<br/><b>Drinks: </b>'+drinks_string+'<br/>');
+                        $("#" + cursor.value.id).append('<br/><b>Drinks: </b>' + drinks_string + '<br/>');
                     }
 
                     cursor.continue();
                 } else {
                     $("#all_total_due").empty();
                     total_cost += Number(sessionStorage.getItem("total_due"));
-                    sessionStorage.setItem("complete_orders_due",total_cost);
-                    $("#all_total_due").append('Total Due: R'+total_cost.toFixed(2));
+                    sessionStorage.setItem("complete_orders_due", total_cost);
+                    $("#all_total_due").append('Total Due: R' + total_cost.toFixed(2));
                 }
             };
         }
-        function calculate_cart(){
+
+        function calculate_cart() {
             var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
             var total_cost = 0;
             objectStore.openCursor().onsuccess = function (event) {
                 var cursor = event.target.result;
                 if (cursor) {
-                    var with_order = "ord_"+cursor.value.id;
-                    total_cost+=Number(cursor.value.prize);
+                    var with_order = "ord_" + cursor.value.id;
+                    total_cost += Number(cursor.value.prize);
                     cursor.continue();
                 } else {
                     $("#all_total_due").empty();
 //                    total_cost += Number(sessionStorage.getItem("total_due"));
-                    sessionStorage.setItem("total_cost",total_cost);
-                    $("#all_total_due").append('Total Due: R'+total_cost.toFixed(2));
+                    sessionStorage.setItem("total_cost", total_cost);
+                    $("#all_total_due").append('Total Due: R' + total_cost.toFixed(2));
                 }
             };
         }
-        function remove_order(obj){
+
+        function remove_order(obj) {
             var id_string = obj.id;
             var id_array = id_string.split("_");
             var id = id_array[1];
@@ -1464,13 +1512,13 @@ $('#extra_toppings').empty();
                 .delete(Number(id));
 
             request.onsuccess = function (event) {
-                $("#"+id).remove();
-                var count = Number(sessionStorage.getItem("order_quantity"))-1;
-                sessionStorage.setItem("order_quantity",count);
+                $("#" + id).remove();
+                var count = Number(sessionStorage.getItem("order_quantity")) - 1;
+                sessionStorage.setItem("order_quantity", count);
                 $("#order_count").empty();
                 $("#order_count").append('<sup style="font-weight: bolder;">' + sessionStorage.getItem("order_quantity") + '*</sup>');
                 calculate_cart();
-                if(count==0){
+                if (count == 0) {
                     $("#checkout_list").hide();
                 }
             }
@@ -1479,10 +1527,11 @@ $('#extra_toppings').empty();
             }
 //            alert(id);
         }
+
         function extra_toppings_select(obj) {
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             var ingredients = {!!json_encode($all_ingredients) !!};
-            console.log("exra toppings1",extra_toppings);
+            console.log("exra toppings1", extra_toppings);
             $("#extra_toppings_list").empty();
             for (var i = 0; i < extra_toppings.length; i++) {
                 if (extra_toppings[i].id == obj.id) {
@@ -1490,27 +1539,27 @@ $('#extra_toppings').empty();
 //                        console.log(extra_toppings[i].item_ingredients[x].ingredient_id);
                         for (var y = 0; y < ingredients.length; y++) {
                             if (ingredients[y].id == extra_toppings[i].item_ingredients[x].id) {
-                                if(sessionStorage.getItem('item_category')=="Sandwich"){
-                                    console.log("check",isNaN(Number(ingredients[y].prize)));
-                                    let prize = !isNaN(Number(ingredients[y].prize))?ingredients[y].prize:' ';
-                                    if(prize)
-                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) +' R ' + Number(prize).toFixed(2) +'</button>');
+                                if (sessionStorage.getItem('item_category') == "Sandwich") {
+                                    console.log("check", isNaN(Number(ingredients[y].prize)));
+                                    let prize = !isNaN(Number(ingredients[y].prize)) ? ingredients[y].prize : ' ';
+                                    if (prize)
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + ' R ' + Number(prize).toFixed(2) + '</button>');
                                     else
-                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) +'</button>');
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + '</button>');
 
-                                }else if(sessionStorage.getItem('item_category')=="Medium Sub"||sessionStorage.getItem('item_category')=="Wrap"){
-                                    let prize = !isNaN(Number(ingredients[y].medium_prize))?ingredients[y].medium_prize:'';
-                                    if(prize)
-                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + ' R '+ prize + '</button>');
+                                } else if (sessionStorage.getItem('item_category') == "Medium Sub" || sessionStorage.getItem('item_category') == "Wrap") {
+                                    let prize = !isNaN(Number(ingredients[y].medium_prize)) ? ingredients[y].medium_prize : '';
+                                    if (prize)
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + ' R ' + prize + '</button>');
                                     else
-                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name)  + '</button>');
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + '</button>');
                                 }
-                                else if(sessionStorage.getItem('item_category')=="Large Sub"){
-                                    let prize = !isNaN(Number(ingredients[y].large_prize))?ingredients[y].large_prize:'';
-                                    if(prize)
-                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + ' R '+ prize+'</button>');
+                                else if (sessionStorage.getItem('item_category') == "Large Sub") {
+                                    let prize = !isNaN(Number(ingredients[y].large_prize)) ? ingredients[y].large_prize : '';
+                                    if (prize)
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + ' R ' + prize + '</button>');
                                     else
-                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) +'</button>');
+                                        $("#extra_toppings_list").append(' <button id=' + 'ext_' + ingredients[y].id + ' class="glass" onclick="extra_toppings_selected(this)" style="font-weight:bolder;margin-left:1em;margin-bottom:0.5em;color:white;">' + toTitleCase(ingredients[y].name) + '</button>');
 
                                 }
 
@@ -1521,10 +1570,11 @@ $('#extra_toppings').empty();
             }
             $("#extra_toppings_modal").show();
         }
+
         function toTitleCase(str) {
             return str.replace(
                 /\w\S*/g,
-                function(txt) {
+                function (txt) {
                     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
                 }
             );
@@ -1535,12 +1585,12 @@ $('#extra_toppings').empty();
             objectStore.openCursor().onsuccess = function (event) {
                 var cursor = event.target.result;
                 if (cursor) {
-                    var extra_topps = "extratops_"+cursor.value.id;
+                    var extra_topps = "extratops_" + cursor.value.id;
                     $("." + extra_topps).remove();
 
-                    $('#extra_toppings_cart').append('<li class=' + extra_topps + ' style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '<i id=' + extra_topps+' onclick="extras_select_reverse(this)" class="fa fa-trash"></i></li>');
+                    $('#extra_toppings_cart').append('<li class=' + extra_topps + ' style="font-weight:bolder;margin-left:1em;color:black;">' + cursor.value.name + '<i id=' + extra_topps + ' onclick="extras_select_reverse(this)" class="fa fa-trash"></i></li>');
                     cursor.continue();
-                }else{
+                } else {
                     $('#extra_toppings_cart').hide();
                 }
             };
@@ -1554,22 +1604,22 @@ $('#extra_toppings').empty();
             var new_id = "";
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             console.log("extra_toppingsee", extra_toppings);
-            console.log("id",id);
+            console.log("id", id);
             for (var i = 0; i < extra_toppings.length; i++) {
                 var cur_topping = extra_toppings[i];
                 console.log(cur_topping);
-                for(var x=0;x<cur_topping.item_ingredients.length;x++){
-                    if(cur_topping.item_ingredients[x].id==id){
+                for (var x = 0; x < cur_topping.item_ingredients.length; x++) {
+                    if (cur_topping.item_ingredients[x].id == id) {
                         var standard_toppings = cur_topping.item_ingredients[x];
                         var prize = 0;
-                        if(sessionStorage.getItem("item_category")=="Sandwich") {
-                            prize =  !isNaN(Number(standard_toppings.prize))?Number(standard_toppings.prize):0;
-                            console.log("prize",Number(standard_toppings.prize));
-                        }else if(sessionStorage.getItem("item_category")=="Medium Sub"||sessionStorage.getItem("item_category")=="Wrap") {
-                            prize = !isNaN(Number(standard_toppings.medium_prize))?standard_toppings.medium_prize:0;
-                            console.log("prize",isNaN(Number(standard_toppings.medium_prize)));
-                        }else {
-                            prize =  !isNaN(Number(standard_toppings.large_prize))?standard_toppings.large_prize:0;
+                        if (sessionStorage.getItem("item_category") == "Sandwich") {
+                            prize = !isNaN(Number(standard_toppings.prize)) ? Number(standard_toppings.prize) : 0;
+                            console.log("prize", Number(standard_toppings.prize));
+                        } else if (sessionStorage.getItem("item_category") == "Medium Sub" || sessionStorage.getItem("item_category") == "Wrap") {
+                            prize = !isNaN(Number(standard_toppings.medium_prize)) ? standard_toppings.medium_prize : 0;
+                            console.log("prize", isNaN(Number(standard_toppings.medium_prize)));
+                        } else {
+                            prize = !isNaN(Number(standard_toppings.large_prize)) ? standard_toppings.large_prize : 0;
                         }
 //                        console.log("prize",prize);
                         addTopping(standard_toppings.id, standard_toppings.name, prize, standard_toppings.type_name);
@@ -1581,6 +1631,7 @@ $('#extra_toppings').empty();
 
             }
         }
+
         function ingredient_select_swap(obj) {
             var ingredients = {!! $ingredients !!};
             var id_string = obj.id.split("_");
@@ -1618,7 +1669,7 @@ $('#extra_toppings').empty();
                     }
                 }
             }
-            if($('#swap_ingredients').is(':empty')){
+            if ($('#swap_ingredients').is(':empty')) {
                 $('#swap_ingredients').append('<label>No Available Swap Option</label>');
             }
         }

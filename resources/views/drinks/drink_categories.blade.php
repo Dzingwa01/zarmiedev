@@ -32,6 +32,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>In Stock</th>
                         <th>Created At</th>
                         <th>Action</th>
                     </tr>
@@ -146,6 +147,7 @@
                 columns: [
                     {data: 'name', name: 'name'},
                     {data: 'description', name: 'description'},
+                    {data: 'in_stock', name: 'in_stock'},
                     {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]

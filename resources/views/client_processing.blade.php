@@ -212,7 +212,7 @@
             font-size: 1rem;
         }
         .card{
-            z-index: 5!important;
+            /*z-index: 5!important;*/
 
         }
         .card .card-image .card-title {

@@ -356,23 +356,24 @@
                 console.log("count req", countRequest);
                 countRequest.onsuccess = function () {
                     var count = countRequest.result;
-
                     sessionStorage.setItem("order_quantity", count);
                     if (count > 0) {
                         $("#order_count").empty();
                         $("#order_count").append('<sup style="font-weight: bolder;">' + sessionStorage.getItem("order_quantity") + '*</sup>');
                     }
-
                 }
             }
 
             $(document).ready(function () {
                 sessionStorage.setItem("delivery_collect","Delivery");
                 $("#collect_instructions_div").hide();
+                var curDate = new Date();
+                var cur_time = curDate.getHours() + ":" +curDate.getMinutes();
 
-//                $('#main_div').appendTo('body');
+                $('#delivery_pick_up_time').val(cur_time);
                 $('#delivery_pick_up_time').timepicker();
-//                $('.timepicker').appendTo('#time_diva');
+                M.updateTextFields();
+
                 var qty = sessionStorage.getItem('quantity');
                 sessionStorage.setItem("delivery_collect_time","for_now");
                 if(sessionStorage.getItem("delivery_collect")=="Delivery"){

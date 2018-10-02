@@ -111,7 +111,7 @@
   }
   .card{
     height:400!important;
-    z-index: 5!important;
+    /*z-index: 5!important;*/
     overflow: visible!important;
   }
   .card .card-image .card-title {

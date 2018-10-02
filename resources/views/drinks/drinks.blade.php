@@ -33,6 +33,7 @@
                         <th>Name</th>
                         <th>Prize</th>
                         <th>Size</th>
+                        <th>In Stock</th>
                         <th>Category</th>
                         <th>Created At</th>
                         <th>Action</th>
@@ -184,6 +185,7 @@
                     {data: 'name', name: 'name'},
                     {data: 'prize', name: 'prize'},
                     {data: 'size', name: 'size'},
+                    {data: 'in_stock', name: 'in_stock'},
                     {data: 'category', name: 'category'},
                     {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
