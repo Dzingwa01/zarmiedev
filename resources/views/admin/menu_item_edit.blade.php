@@ -16,7 +16,7 @@
         </div>
 
         <form id='update_menu_item' class="form-horizontal" method="POST"  enctype="multipart/form-data"  action="{{ url('menu/update/'.$menu_item->id) }}">
-            <meta name="_token" content="{{ csrf_token() }}">
+            {{ csrf_field() }}
             <input id="item_id" value='{{$menu_item->id}}' hidden/>
             <div class="form-group">
                 <label for="item_number" class="col-md-4 control-label">Item Number</label>
@@ -164,7 +164,7 @@
 
     <script>
         $(document).ready(function () {
-            $('select').material_select();
+//            $('select').material_select();
             $.get("/get_ingredients", function (data) {
                 var id_local = "#ingredients";
                 var results = data.ingredients;

@@ -96,12 +96,22 @@
                     </div>
                 </div>
                 <div class="row">
-
                     <div class="input-field col s6 offset-m2">
-
                         <input id="picture" name="picture" type="file" class="validate" onchange="preview_file()" accept="image/*">
                         <!-- <label for="category_image">Image</label> -->
                     </div>
+                </div>
+                <div class="row">
+                    <p class="col s6 offset-m2">
+                        <label>
+                            <input name="in_stock" type="radio" value="yes" />
+                            <span>In Stock</span>
+                        </label>
+                        <label>
+                            <input name="in_stock" type="radio" value="no" />
+                            <span>Not In Stock</span>
+                        </label>
+                    </p>
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-md-offset-4">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ItemIngredient;
 use Illuminate\Http\Request;
 use App\Ingredient;
 use App\IngredientType;
@@ -35,7 +36,7 @@ class IngredientController extends Controller
             $re = 'ingredient/' . $ingredient->id;
             $sh = 'ingredient/show/' . $ingredient->id;
             $del = 'ingredient/delete/' . $ingredient->id;
-            return '<a href=' . $sh . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $re . '><i class="glyphicon glyphicon-edit"></i></a>';
+            return '<a href=' . $sh . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $re . '><i class="glyphicon glyphicon-edit"></i></a><a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
         })
             ->make(true);
     }
@@ -68,9 +69,16 @@ class IngredientController extends Controller
     {
         DB::beginTransaction();
         try {
-            Ingredient::find($id)->delete();
-            DB::commit();
-            return redirect()->route('manage_ingredients')->with("status", "Ingredient deleted successfully");
+            $ingredient = Ingredient::find($id);
+            $items = ItemIngredient::where('ingredient_id',$ingredient->id)->get();
+          if(count($items)>0){
+              return redirect()->route('manage_ingredients')->with("error", "Ingredient can not be deleted. It is linked with other menu items.");
+          }else{
+              $ingredient ->delete();
+              DB::commit();
+              return redirect()->route('manage_ingredients')->with("status", "Ingredient deleted successfully");
+          }
+
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->route('manage_ingredients')->with("error", "Error occured, please contact system admin " . $e->getMessage());

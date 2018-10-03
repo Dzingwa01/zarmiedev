@@ -171,6 +171,8 @@
             $('#menu-table').DataTable({
                 processing: true,
                 serverSide: true,
+                paging:false,
+                scrollY:700,
                 ajax: '{{route('ingredient_items')}}',
                 columns: [
                     {data: 'name', name: 'name'},

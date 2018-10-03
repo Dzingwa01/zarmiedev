@@ -83,7 +83,7 @@
                                     @if(count($drink_categories)>0)
                                         <ul class="tabs">
                                             @foreach($drink_categories as $drink_category)
-                                                <li class="tab col s2">
+                                                <li class="tab col s3">
                                                     <a href="{{'#drinkcat_'.$drink_category->id}}"
                                                        style="color:black;text-decoration: none;font-size: 10px;">{{$drink_category->name}}</a>
                                                     {{--<i class="fa fa-beer"></i> {{$drink->name . " - ".$drink->prize}}--}}
@@ -205,7 +205,7 @@
     </div>
     <div id="extra_toppings_modal" class="modal">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <button type="button" class="close" onclick="dismiss()" style="color:black;">&times;</button>
             <h5 class="modal-title">Extra Toppings</h5>
         </div>
         <div class="modal-body">
@@ -221,11 +221,11 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-offset-2 col-sm-2" style="margin-top:1em;">
-                            <button id='' class="btn waves-effect waves-light" data-dismiss="modal">Cancel</button>
+                            <button id='' class="btn waves-effect waves-light" onclick="dismiss()">Cancel</button>
                         </div>
 
                         <div class="col-sm-offset-1 col-sm-2" style="margin-top:1em;">
-                            <button class="btn waves-effect waves-light" data-dismiss="modal">Done</button>
+                            <button class="btn waves-effect waves-light" onclick="dismiss()">Done</button>
                         </div>
                     </div>
                 </fieldset>
@@ -377,6 +377,11 @@
 //                addDefaultToppings();
             }
         }
+
+        function dismiss() {
+            $('.modal').hide();
+        }
+
         function drink_select(obj) {
             var id_string = obj.id.split("_");
             var new_id = id_string[1];
@@ -691,8 +696,8 @@
             var id_string = obj.id.split('_');
             var id = id_string[1];
             let prize = 0;
-            $("#" + obj.id).remove();
-//            $("#" + old_id).addClass('glass').removeClass('glass_unselected');
+            $("." + obj.id).remove();
+
             removeTopping(id, db_toppings);
             var extra_toppings ={!! json_encode($extra_toppings) !!};
             console.log("id is", extra_toppings);
@@ -701,31 +706,43 @@
                     for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
                         if (id == extra_toppings[i].item_ingredients[x].ingredient_id) {
                             prize = extra_toppings[i].prize;
-                            console.log("prize", prize);
+//                            console.log("prize", prize);
                         }
                     }
                 }
             }
-            var new_prize = Number(sessionStorage.getItem('total_due')) - prize;
+            var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
+            var new_prize = parseFloat(sessionStorage.getItem('total_due')).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
             sessionStorage.setItem('total_due', new_prize);
+            sessionStorage.setItem("complete_orders_due", complete_orders_due);
+            $("#all_total_due").empty();
+            $("#all_total_due").append('Total Due: R' + complete_orders_due.toFixed(2));
             $("#item_prize").empty();
             $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
-
         }
 
-        function addTopping(topping_id, topping_name, topping_prize, topping_category) {
+        function addTopping(topping_id, topping_name, prize, type_name) {
             var request = db_toppings.transaction(["selected_toppings"], "readwrite")
                 .objectStore("selected_toppings")
-                .add({id: topping_id.toString(), name: topping_name, prize: topping_prize, category: topping_category});
+                .add({id: topping_id.toString(), name: topping_name, prize: prize, category: type_name});
 
             request.onsuccess = function (event) {
-                console.log("topping addedd");
+                var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due"))+ (prize * parseInt(sessionStorage.getItem("quantity")));
+                sessionStorage.setItem("complete_orders_due",complete_orders_due);
+                var new_prize = Number(sessionStorage.getItem('total_due')) + (prize * parseInt(sessionStorage.getItem("quantity")));
+                sessionStorage.setItem('total_due', new_prize);
+                $("#all_total_due").empty();
+                $("#all_total_due").append('Total Due: R'+Number(complete_orders_due).toFixed(2));
+                $("#item_prize").empty();
+                var new_id = "extratops_"+topping_id;
+                $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
+                $('#extra_toppings_cart').append('<li class=' + new_id + ' style="font-weight:bolder;margin-left:1em;color:black;">' + topping_name + '<i id=' + new_id+' onclick="extras_select_reverse(this)" class="fa fa-trash"></i></li>');
+
             }
             request.onerror = function (event) {
-                console.log("error", event);
+                alert("You have already added " + topping_name);
             }
         }
-
         function addIngredient(ingredient_id, ingredient_name, ingredient_prize, ingredient_type_id) {
             var request = db.transaction(["selected_ingredients"], "readwrite")
                 .objectStore("selected_ingredients")
@@ -808,6 +825,35 @@
 
             request.onsuccess = function (event) {
                 console.log("topping removed", event);
+                var prize = 0;
+                var extra_toppings ={!! json_encode($extra_toppings) !!};
+                for (var i = 0; i < extra_toppings.length; i++) {
+                    var cur_topping = extra_toppings[i];
+                    console.log(cur_topping);
+                    for (var x = 0; x < cur_topping.item_ingredients.length; x++) {
+                        if (cur_topping.item_ingredients[x].id == topping_id) {
+                            var standard_toppings = cur_topping.item_ingredients[x];
+
+                            if (sessionStorage.getItem("item_category") == "Sandwich") {
+                                prize = !isNaN(Number(standard_toppings.prize)) ? Number(standard_toppings.prize) : 0;
+                                console.log("prize", Number(standard_toppings.prize));
+                            } else if (sessionStorage.getItem("item_category") == "Medium Sub" || sessionStorage.getItem("item_category") == "Wrap") {
+                                prize = !isNaN(Number(standard_toppings.medium_prize)) ? standard_toppings.medium_prize : 0;
+                                console.log("prize", isNaN(Number(standard_toppings.medium_prize)));
+                            } else {
+                                prize = !isNaN(Number(standard_toppings.large_prize)) ? standard_toppings.large_prize : 0;
+                            }
+                        }
+                    }
+                }
+                var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
+                var new_prize = parseFloat(sessionStorage.getItem('total_due')).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
+                sessionStorage.setItem('total_due', new_prize);
+                sessionStorage.setItem("complete_orders_due", complete_orders_due);
+                $("#all_total_due").empty();
+                $("#all_total_due").append('Total Due: R' + complete_orders_due.toFixed(2));
+                $("#item_prize").empty();
+                $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
             }
             request.onerror = function (event) {
                 console.log("error", event);
@@ -1180,7 +1226,7 @@
                         if (sessionStorage.getItem("item_category") == "Sandwich") {
                             prize = !isNaN(Number(standard_toppings.prize)) ? Number(standard_toppings.prize) : 0;
                             console.log("prize", Number(standard_toppings.prize));
-                        } else if (sessionStorage.getItem("item_category") == "Medium Sub" || sessionStorage.getItem("item_category") == "Wrap") {
+                        } else if (sessionStorage.getItem("item_category") == "Medium Salad" || sessionStorage.getItem("item_category") == "Wrap") {
                             prize = !isNaN(Number(standard_toppings.medium_prize)) ? standard_toppings.medium_prize : 0;
                             console.log("prize", isNaN(Number(standard_toppings.medium_prize)));
                         } else {

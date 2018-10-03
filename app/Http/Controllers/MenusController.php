@@ -168,11 +168,10 @@ public function showToppingsList(){
 
     public function update(Request $request, $id)
     {
-
         $input = $request->all();
+//       if(is_null(in))
         $ingr_amount = count($input['ingredients_array']);
         $ingredients_array = $input['ingredients_array'];
-
         $categories = Category::all();
         $item_sizes = Item_Size::all();
         DB::beginTransaction();

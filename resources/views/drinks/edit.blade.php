@@ -53,6 +53,18 @@
                     </div>
                 </div>
                 <div class="row">
+                    <p class="col s6 offset-m2">
+                        <label>
+                            <input name="in_stock" type="radio" value="yes" />
+                            <span>In Stock</span>
+                        </label>
+                        <label>
+                            <input name="in_stock" type="radio" value="no" />
+                            <span>Not In Stock</span>
+                        </label>
+                    </p>
+                </div>
+                <div class="row">
                     <div class="col s6 offset-m2">
                         <label for="category_image">Drink Image</label>
                     </div>

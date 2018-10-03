@@ -320,6 +320,8 @@
             $('#menu-table').DataTable({
                 processing: true,
                 serverSide: true,
+                paging: false,
+                scrollY:720,
                 ajax: '{{route('menu_items')}}',
                 columns: [
                     {data: 'item_number', name: 'item_number'},

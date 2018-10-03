@@ -92,7 +92,7 @@ class OrderController extends Controller
         $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Oriental Chicken')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name','ingredient_type_id')->get();
 //        $extra_toppings = Menu::join('item_sizes','item_sizes.id','menu_item.item_size_id')->where('category_id',8)->select('menu_item.*','item_sizes.size_name')->get();
         $temp_toppings_ingredients =[];
-        $drinks = Drink::all();
+        $drinks = Drink::where('in_stock',"yes")->get();
         $type_count = IngredientType::all();
         $temp_extras = [];
         /**
@@ -121,7 +121,7 @@ class OrderController extends Controller
                 }
 
             } else if (strtolower($item_type->category_name) == strtolower("Go for Some Fish")) {
-                if (strtolower($extra->name) == strtolower("Fish")||strtolower($extra->name) == "veggie" || strtolower($extra->name) == "cheese"||strtolower($extra->name) == "meat") {
+                if (strtolower($extra->name) == strtolower("Fish")||strtolower($extra->name) == "veggie" || strtolower($extra->name) == "cheese"||strtolower($extra->name) == "meat"||strtolower($extra->name) == "source") {
                     array_push($refined_temp, $extra);
                 }
             }
@@ -130,16 +130,16 @@ class OrderController extends Controller
                     array_push($refined_temp, $extra);
                 }
             }
-            else if ($item_type->category_name == "SNACK TRAYS") {
-                if ($extra->name == "SNACK TRAY") {
+            else if (strtolower($item_type->category_name) == strtolower("SNACK TRAYS")) {
+                if (strtolower($extra->name) == strtolower("SNACK TRAY")) {
                     array_push($refined_temp, $extra);
                 }
-            }else if ($item_type->category_name == "DELI COMBINATION TRAYS") {
-                if ($extra->name == "DELI INGREDIENTS") {
+            }else if (strtolower($item_type->category_name) == strtolower("DELI COMBINATION TRAYS")) {
+                if (strtolower($extra->name) == strtolower("DELI INGREDIENTS")) {
                     array_push($refined_temp, $extra);
                 }
-            }else if ($item_type->category_name == "SNACK & SANDWICH TRAYS"||$item_type->category_name=="SURF & TURF TRAYS") {
-                if ($extra->name == "PLATTER INGREDIENT") {
+            }else if (strtolower($item_type->category_name) == strtolower("SNACK & SANDWICH TRAYS")||strtolower($item_type->category_name)==strtolower("SURF & TURF TRAYS")) {
+                if (strtolower($extra->name) == strtolower("PLATTER INGREDIENT")) {
                     array_push($refined_temp, $extra);
                 }
             }
@@ -185,7 +185,7 @@ class OrderController extends Controller
         $all_ingredients = Ingredient::join('ingredient_type','ingredient.ingredient_type_id','ingredient_type.id')->where('name','!=','Oriental Chicken')->where('name','!=','Tomato')->where('name','!=','Lettuce')->select('ingredient.*','ingredient_type.type_name','ingredient_type_id')->get();
 //        $extra_toppings = Menu::join('item_sizes','item_sizes.id','menu_item.item_size_id')->where('category_id',8)->select('menu_item.*','item_sizes.size_name')->get();
         $temp_toppings_ingredients =[];
-        $drinks = Drink::all();
+        $drinks = Drink::where('in_stock',"yes")->get();
         $type_count = IngredientType::all();
         $temp_extras = [];
         /**
@@ -214,7 +214,7 @@ class OrderController extends Controller
                 }
 
             } else if (strtolower($item_type->category_name) == strtolower("Go for Some Fish")) {
-                if (strtolower($extra->name) == strtolower("Fish")||strtolower($extra->name) == "veggie" || strtolower($extra->name) == "cheese"||strtolower($extra->name) == "meat") {
+                if (strtolower($extra->name) == strtolower("Fish")||strtolower($extra->name) == "veggie" || strtolower($extra->name) == "cheese"||strtolower($extra->name) == "meat"||strtolower($extra->name) == "source") {
                     array_push($refined_temp, $extra);
                 }
             }
@@ -223,16 +223,16 @@ class OrderController extends Controller
                     array_push($refined_temp, $extra);
                 }
             }
-            else if ($item_type->category_name == "SNACK TRAYS") {
-                if ($extra->name == "SNACK TRAY") {
+            else if (strtolower($item_type->category_name) == strtolower("SNACK TRAYS")) {
+                if (strtolower($extra->name) == strtolower("SNACK TRAY")) {
                     array_push($refined_temp, $extra);
                 }
-            }else if ($item_type->category_name == "DELI COMBINATION TRAYS") {
-                if ($extra->name == "DELI INGREDIENTS") {
+            }else if (strtolower($item_type->category_name) == strtolower("DELI COMBINATION TRAYS")) {
+                if (strtolower($extra->name) == strtolower("DELI INGREDIENTS")) {
                     array_push($refined_temp, $extra);
                 }
-            }else if ($item_type->category_name == "SNACK & SANDWICH TRAYS"||$item_type->category_name=="SURF & TURF TRAYS") {
-                if ($extra->name == "PLATTER INGREDIENT") {
+            }else if (strtolower($item_type->category_name) == strtolower("SNACK & SANDWICH TRAYS")||strtolower($item_type->category_name)==strtolower("SURF & TURF TRAYS")) {
+                if (strtolower($extra->name) == strtolower("PLATTER INGREDIENT")) {
                     array_push($refined_temp, $extra);
                 }
             }
@@ -279,7 +279,7 @@ class OrderController extends Controller
         $extra_toppings = Menu::join('item_sizes','item_sizes.id','menu_item.item_size_id')->where('category_id',8)->select('menu_item.*','item_sizes.size_name')->get();
         $temp_toppings_ingredients =[];
 
-        $drinks = Drink::all();
+        $drinks = Drink::where('in_stock',"yes")->get();
         $ingredients_with_id = [];
         foreach ($ingredients as $ingredient){
             foreach ($all_ingredients as $ingr) {
@@ -333,8 +333,9 @@ class OrderController extends Controller
         }
         $extra_toppings = $refined_temp;
         $drink_categories = DrinkCategory::where('in_stock','yes')->get();
-        return view('partials.salads_select_ingredient_toping', compact('drink_categories','extra_toppings','ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
+        return view('partials.salads_select_ingredient_toping', compact('drink','drink_categories','extra_toppings','ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
     }
+
     public function showIngredientsToppingsSaladsClient($id)
     {
         $menu_item = Menu::find($id);
@@ -345,7 +346,7 @@ class OrderController extends Controller
         $extra_toppings = Menu::join('item_sizes','item_sizes.id','menu_item.item_size_id')->where('category_id',8)->select('menu_item.*','item_sizes.size_name')->get();
         $temp_toppings_ingredients =[];
 
-        $drinks = Drink::all();
+        $drinks = Drink::where('in_stock',"yes")->get();
         $ingredients_with_id = [];
         foreach ($ingredients as $ingredient){
             foreach ($all_ingredients as $ingr) {
@@ -378,7 +379,6 @@ class OrderController extends Controller
          * Getting item type
          */
         $item_type = Category::where('id',$menu_item->category_id)->first();
-
         foreach($type_count as $item){
             $top = new \stdClass();
             $top->id = $item->id;
@@ -401,6 +401,7 @@ class OrderController extends Controller
         $drink_categories = DrinkCategory::where('in_stock','yes')->get();
         return view('clients.salads_select_ingredient_toping', compact('drink_categories','extra_toppings','ingredients','drinks','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
     }
+
     public function showContactUsPage()
     {
         return view('contact_us');

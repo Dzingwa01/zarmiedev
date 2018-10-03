@@ -102,6 +102,8 @@ $(function() {
   $('#menu-table').DataTable({
     processing: true,
     serverSide: true,
+      paging:false,
+      scrollY:580,
     ajax: '{{route('ingredient_item_types')}}',
     columns: [
       { data: 'type_name', name: 'type_name' },

@@ -9,5 +9,5 @@ class Drink extends Model
 {
     //
     use SoftDeletes;
-    protected $fillable = ['name','category_id','prize','size','image_url'];
+    protected $fillable = ['name','category_id','prize','size','image_url','in_stock'];
 }

@@ -150,7 +150,7 @@
                                         @if(count($drink_categories)>0)
                                             <ul class="tabs">
                                                 @foreach($drink_categories as $drink_category)
-                                                    <li class="tab col s2">
+                                                    <li class="tab col s">
                                                         <a href="{{'#drinkcat_'.$drink_category->id}}"
                                                            style="color:black;text-decoration: none;font-size: 10px;">{{$drink_category->name}}</a>
                                                         {{--<i class="fa fa-beer"></i> {{$drink->name . " - ".$drink->prize}}--}}
