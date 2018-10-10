@@ -97,9 +97,9 @@ class RegisterController extends Controller
             ]);
 //            Mail::queue('emails.verify_user',['title'=>$title,'user'=>user],function())
 
-            DB::commit();
             $role = Role::where('name','client')->first();
             $user->attachRole($role);
+            DB::commit();
             event($user);
             dispatch(new SendVerificationEmail($user));
 
