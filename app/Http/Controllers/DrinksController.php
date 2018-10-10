@@ -29,12 +29,48 @@ class DrinksController extends Controller
             ->get();
 
         return Datatables::of($drinks)->addColumn('action', function ($drink) {
-            $re = 'drinks/' . $drink->id;
+
             $sh = 'drinks/' . $drink->id . '/edit';
             $del = 'drinks/delete/' . $drink->id;
-            return '<a href=' . $re . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $sh . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
+            if($drink->in_stock=="yes"){
+                $re = 'drinks/' . $drink->id;
+                return '<a href=' . $re . ' title="Remove from stock"><i class="glyphicon glyphicon-remove" style="color:red"></i></a> <a href=' . $sh . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
+
+            }else{
+                $re = 'drinks-add-stock/' . $drink->id;
+                return '<a href=' . $re . ' title="Add to stock"><i class="glyphicon glyphicon-plus" style="color:green"></i></a> <a href=' . $sh . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
+
+            }
         })
             ->make(true);
+    }
+
+    public function reAddToStock($id){
+        $drink = Drink::where('id',$id)->first();
+        DB::beginTransaction();
+        try {
+            $drink->update(["in_stock" => "yes"]);
+            DB::commit();
+            return redirect()->route('drinks.index')->with("status", "Drink added to stock successfully ");
+
+        }catch(\Exception $e){
+            DB::rollback();
+            return redirect()->route('drinks.index')->with("error", "Error occured, please contact system admin " . $e->getMessage());
+        }
+    }
+
+    public function reAddToStockCategory($id){
+        $drink = DrinkCategory::where('id',$id)->first();
+        DB::beginTransaction();
+        try {
+            $drink->update(["in_stock" => "yes"]);
+            DB::commit();
+            return redirect()->route('show_drink_type')->with("status", "Drink Category added to stock successfully ");
+
+        }catch(\Exception $e){
+            DB::rollback();
+            return redirect()->route('show_drink_type')->with("error", "Error occured, please contact system admin " . $e->getMessage());
+        }
     }
 
     public function showCategories()
@@ -47,18 +83,33 @@ class DrinksController extends Controller
         $drinks = DrinkCategory::all();
 
         return Datatables::of($drinks)->addColumn('action', function ($drink) {
-            $re = 'drink_categories/' . $drink->id;
-            $sh = 'drink_categories_edit/' . $drink->id;
             $del = 'drink_categories/delete/' . $drink->id;
-            return '<a href=' . $re . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $sh . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
+            $sh = 'drink_categories_edit/' . $drink->id;
+                if($drink->in_stock=="yes"){
+                    $re = 'drink_categories/' . $drink->id;
+                    return '<a href=' . $re . '><i class="glyphicon glyphicon-remove" title="Remove from stock" style="color:red"></i></a> <a href=' . $sh . '><i class="glyphicon glyphicon-edit" title="Edit"></i></a> <a href=' . $del . ' title="Delete"><i class="glyphicon glyphicon-trash" style="color:red"></i></a>';
+                }else{
+                    $re = 'drink_categories_readd/' . $drink->id;
+                    return '<a href=' . $re . '><i class="glyphicon glyphicon-plus" title="Re-Add to stock" style="color:green"></i></a> <a href=' . $sh . '><i class="glyphicon glyphicon-edit" title="Edit"></i></a> <a href=' . $del . ' title="Delete"><i class="glyphicon glyphicon-trash" style="color:red"></i></a>';
+
+                }
         })
             ->make(true);
     }
 
     public function displayDrinksCategories($id)
     {
-        $drink_category = DrinkCategory::find($id);
-        return view('drinks.show_categories', compact('drink_category'));
+        $drink = DrinkCategory::where('id',$id)->first();
+        DB::beginTransaction();
+        try {
+            $drink->update(["in_stock" => "no"]);
+            DB::commit();
+            return redirect()->route('show_drink_type')->with("status", "Drink Category removed from stock successfully ");
+
+        }catch(\Exception $e){
+            DB::rollback();
+            return redirect()->route('show_drink_type')->with("error", "Error occured, please contact system admin " . $e->getMessage());
+        }
     }
 
     public function editDrinksCategories($id)
@@ -174,9 +225,17 @@ class DrinksController extends Controller
     public function show($id)
     {
         //
-        $drink = Drink::find($id);
-        $categories = DrinkCategory::all();
-        return view('drinks.show', compact('drink', 'categories'));
+        $drink = Drink::where('id',$id)->first();
+        DB::beginTransaction();
+        try {
+            $drink->update(["in_stock" => "no"]);
+            DB::commit();
+            return redirect()->route('drinks.index')->with("status", "Drink removed from stock successfully ");
+
+        }catch(\Exception $e){
+            DB::rollback();
+            return redirect()->route('drinks.index')->with("error", "Error occured, please contact system admin " . $e->getMessage());
+        }
     }
 
     /**

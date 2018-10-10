@@ -19,12 +19,15 @@ Route::get('/client_order_display','ClientOrderController@getOrdersIndex');
 Route::get('/client_menu_display','ClientOrderController@getOrdersIndex');
 
 Route::resource('drinks','DrinksController');
+
 Route::get('drinks_list','DrinksController@showDrinks')->name('drinks_list');
 Route::get('show_drink_type','DrinksController@showCategories')->name('show_drink_type');
 Route::get('drink_categories_list','DrinksController@showDrinksCategories')->name('drink_categories_list');
 Route::get('/show_drink_type/DrinksController@showCategories');
 Route::post('/drinks/update/{id}','DrinksController@update');
 Route::get('/drinks/delete/{id}','DrinksController@destroy');
+Route::get('drinks-add-stock/{id}','DrinksController@reAddToStock');
+Route::get('drink_categories_readd/{id}','DrinksController@reAddToStockCategory');
 
 Route::get('/drink_categories/{id}','DrinksController@displayDrinksCategories');
 Route::get('/drink_categories_edit/{id}','DrinksController@editDrinksCategories');

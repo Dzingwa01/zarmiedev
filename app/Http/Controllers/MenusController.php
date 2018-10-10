@@ -50,7 +50,7 @@ class MenusController extends Controller
             $re = 'menu/' . $menu->id;
             $sh = 'menu/show/' . $menu->id;
             $del = 'menu/delete/' . $menu->id;
-            return '<a href=' . $sh . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $re . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
+            return '<a href=' . $sh . '><i class="glyphicon glyphicon-eye-open" title="View Details" style="color:green"></i></a> <a href=' . $re . '><i class="glyphicon glyphicon-edit"></i></a><a href=' . $del . ' title="Delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>';
         })
             ->make(true);
     }
@@ -107,7 +107,7 @@ public function showMenuCategories(){
         $re = 'menu_category/' . $menu->id;
         $sh = 'menu_category/show/' . $menu->id;
         $del = 'menu_category/delete/' . $menu->id;
-        return '<a href=' . $sh . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $re . '><i class="glyphicon glyphicon-edit"></i></a> <a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
+        return '<a href=' . $sh . '><i class="glyphicon glyphicon-eye-open" title="View Details" style="color:green"></i></a> <a href=' . $re . '><i class="glyphicon glyphicon-edit"></i></a><a href=' . $del . ' title="Delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>';
     })
         ->make(true);
 }

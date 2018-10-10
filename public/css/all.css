@@ -18,7 +18,9 @@
   font-weight: normal;
   font-style: normal;
 }
-
+td>a{
+  margin:3px;
+}
 .ion, .ionicons,
 .ion-ios-add:before,
 .ion-ios-add-circle:before,

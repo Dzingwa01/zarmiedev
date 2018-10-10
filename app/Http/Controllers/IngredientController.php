@@ -36,7 +36,7 @@ class IngredientController extends Controller
             $re = 'ingredient/' . $ingredient->id;
             $sh = 'ingredient/show/' . $ingredient->id;
             $del = 'ingredient/delete/' . $ingredient->id;
-            return '<a href=' . $sh . '><i class="glyphicon glyphicon-eye-open"></i></a> <a href=' . $re . '><i class="glyphicon glyphicon-edit"></i></a><a href=' . $del . '><i class="glyphicon glyphicon-trash"></i></a>';
+            return '<a href=' . $sh . '><i class="glyphicon glyphicon-eye-open" title="View Details" style="color:green"></i></a> <a href=' . $re . '><i class="glyphicon glyphicon-edit"></i></a><a href=' . $del . ' title="Delete" style="color:red"><i class="glyphicon glyphicon-trash"></i></a>';
         })
             ->make(true);
     }
