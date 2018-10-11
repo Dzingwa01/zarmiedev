@@ -421,6 +421,8 @@
 
     {{--<script src="/js/jquery-step-maker.js"></script>--}}
     <script>
+        sessionStorage.removeItem("removed_price");
+        sessionStorage.removeItem("removed_counter");
         window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
             window.msIndexedDB;
 
@@ -667,6 +669,8 @@
                     actual_ingredient = ingredients[i].id;
                     type_id = ingredients[i].ingredient.ingredient_type_id;
                     prize = ingredients[i].ingredient.prize;
+                    sessionStorage.setItem("removed_counter",1);
+                    sessionStorage.setItem("removed_price",prize);
                 }
             }
             for (var i = 0; i < ingredients_others.length; i++) {
@@ -676,6 +680,8 @@
                     actual_ingredient = ingredients_others[i].id;
                     type_id = ingredients_others[i].ingredient_type_id;
                     prize = ingredients_others[i].prize;
+                        sessionStorage.setItem("removed_counter",1);
+                        sessionStorage.setItem("removed_price",prize);
                 }
             }
             var objectStore = db.transaction(["selected_ingredients"]).objectStore("selected_ingredients");
@@ -752,7 +758,7 @@
             $("#all_total_due").append('Total Due: R' + complete_orders_due);
             $("#item_prize").empty();
             $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
-            ;
+
             removeDrink(id);
         }
 
@@ -770,7 +776,6 @@
                     for (var x = 0; x < extra_toppings[i].item_ingredients.length; x++) {
                         if (id == extra_toppings[i].item_ingredients[x].ingredient_id) {
                             prize = extra_toppings[i].prize;
-//                            console.log("prize", prize);
                         }
                     }
                 }
@@ -1621,10 +1626,25 @@
                         } else {
                             prize = !isNaN(Number(standard_toppings.large_prize)) ? standard_toppings.large_prize : 0;
                         }
-//                        console.log("prize",prize);
-                        addTopping(standard_toppings.id, standard_toppings.name, prize, standard_toppings.type_name);
-                        //                    $('#replaced_list').append('<span id='+another_new+'>'+standard_toppings[i].name+' replaced</span>');
-                    }
+                        console.log("prize",prize);
+                        if(!sessionStorage.getItem("removed_counter")){
+                            let removed_price = Number(sessionStorage.getItem('removed_price'));
+                            console.log("removed price",removed_price);
+                            if(removed_price<=prize){
+                                console.log("removed less",removed_price);
+                                addTopping(standard_toppings.id, standard_toppings.name, 0, standard_toppings.type_name);
+                            }else{
+                                let diff = removed_price - prize;
+                                console.log("removed diff",diff);
+                                addTopping(standard_toppings.id, standard_toppings.name, diff, standard_toppings.type_name);
+                            }
+                            sessionStorage.setItem("removed_counter",null);
+                            sessionStorage.setItem("removed_price",null);
+                        }else{
+                            console.log("removed price mroe",prize);
+                            addTopping(standard_toppings.id, standard_toppings.name, prize, standard_toppings.type_name);
+                        }
+                        }
 
                 }
 //                if (standard_toppings[i].id == id) {
