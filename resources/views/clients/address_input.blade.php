@@ -343,6 +343,7 @@
                         }else{
                             formData.append('delivery_collect_time',sessionStorage.getItem('collect_time'));
                         }
+
                         formData.append('total_cost',sessionStorage.getItem('total_cost'));
                         formData.append('special_instructions',sessionStorage.getItem('instructions'));
                         formData.append("orders",JSON.stringify(orders_array));

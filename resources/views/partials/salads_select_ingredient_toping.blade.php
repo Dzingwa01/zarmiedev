@@ -309,10 +309,12 @@
             window.alert("Your browser doesn't support a critical feature required for this application, please upgrade your browser.")
         }
         var db, db_cart;
-        var db_toppings;
+        var db_toppings,db_removed;
         var toppings_request = window.indexedDB.open("toppings_cart", 1);
          var request = window.indexedDB.open("order_cart",2);
         var cart_request = window.indexedDB.open("complete_orders",1);
+        var removed_items_request = window.indexedDB.open("removed_toppings",1);
+
         cart_request.onerror = function (event) {
             console.log("error: ");
         };
@@ -367,10 +369,33 @@
             }
         }
 
+        removed_items_request.onsuccess = function (event) {
+            db_removed = event.target.result;
+            clearRemoved(db_removed);
+        };
+        removed_items_request.onupgradeneeded = function (event) {
+            db_removed = event.target.result;
+            var objectStore = db_removed.createObjectStore("removed_items", {keyPath: "id", autoIncrement: true});
+        }
+        removed_items_request.onerror = function (event) {
+            console.log("error: removed items", event);
+        };
         function dismiss() {
             $('.modal').hide();
         }
+        function clearRemoved(db_removed) {
+            try {
+                var objectStore = db_removed.transaction(["removed_items"], "readwrite").objectStore("removed_items");
+                var objectStoreRequest = objectStore.clear();
+                objectStoreRequest.onsuccess = function (event) {
+                    // report the success of our request
+                    console.log("cleared removed items successfully");
+                };
+            } catch (err) {
 
+            }
+
+        }
         function count_orders(db_cart) {
 //        console.log("carting pano");
             var objectStore = db_cart.transaction(["complete_orders"], "readwrite").objectStore("complete_orders");
@@ -628,6 +653,7 @@
             var remove_id ="";
             var type_id = "";
             var ingredients = {!! $ingredients !!};
+            var ingredients_others = {!! json_encode($other_ingredients) !!};
             var id_string = obj.id.split('_');
             var id = id_string[1];
             var prize = 0;
@@ -638,6 +664,18 @@
                     actual_ingredient = ingredients[i].id;
                     type_id = ingredients[i].ingredient.ingredient_type_id;
                     prize = ingredients[i].ingredient.prize;
+                    addRemovedTooping(id, ingredient_name, prize, type_id);
+                }
+            }
+            for (var i = 0; i < ingredients_others.length; i++) {
+                if (ingredients_others[i].id == id) {
+                    remove_id = "rem_" + id;
+                    ingredient_name = ingredients_others[i].name;
+                    actual_ingredient = ingredients_others[i].id;
+                    type_id = ingredients_others[i].ingredient_type_id;
+                    prize = ingredients_others[i].prize;
+                    addRemovedTooping(id, ingredient_name, prize, type_id);
+
                 }
             }
             var objectStore = db.transaction(["selected_ingredients"]).objectStore("selected_ingredients");
@@ -653,10 +691,35 @@
                     $("#" + obj.id).addClass('glass').removeClass('glass_unselected');
                     $("#"+remove_id).remove();
                     addIngredient(id, ingredient_name,prize, type_id);
+                    removeRemovedTopping(id);
                     $('#item_ingredients').append('<li id=' + id + '   style="font-weight:bolder;margin-left:1em;color:black;">' + ingredient_name + '</li>');
                 }
             };
 
+        }
+        function addRemovedTooping(topping_id, topping_name, prize, type_id) {
+            var request = db_removed.transaction(["removed_items"], "readwrite")
+                .objectStore("removed_items")
+                .add({id: topping_id.toString(), name: topping_name, prize: prize, type_id: type_id});
+
+            request.onsuccess = function (event) {
+                console.log("removed saved");
+            }
+            request.onerror = function (event) {
+//                alert("You have already added " + topping_name);
+            }
+        }
+        function removeRemovedTopping(id){
+            var request = db_removed.transaction(["removed_items"], "readwrite")
+                .objectStore("removed_items")
+                .delete(id);
+
+            request.onsuccess = function (event) {
+                console.log("removed item removed", event);
+            }
+            request.onerror = function (event) {
+                console.log("error", event);
+            }
         }
 
         function optional_topping_select(obj) {
@@ -809,42 +872,35 @@
         }
 
         function removeTopping(topping_id, db_toppings) {
-            var request = db_toppings.transaction(["selected_toppings"], "readwrite")
-                .objectStore("selected_toppings")
-                .delete(topping_id);
-
-            request.onsuccess = function (event) {
-                console.log("topping removed", event);
-                var prize = 0;
-                var extra_toppings ={!! json_encode($extra_toppings) !!};
-                for (var i = 0; i < extra_toppings.length; i++) {
-                    var cur_topping = extra_toppings[i];
-                    console.log(cur_topping);
-                    for (var x = 0; x < cur_topping.item_ingredients.length; x++) {
-                        if (cur_topping.item_ingredients[x].id == topping_id) {
-                            var standard_toppings = cur_topping.item_ingredients[x];
-
-                            if (sessionStorage.getItem("item_category") == "Sandwich") {
-                                prize = !isNaN(Number(standard_toppings.prize)) ? Number(standard_toppings.prize) : 0;
-                                console.log("prize", Number(standard_toppings.prize));
-                            } else if (sessionStorage.getItem("item_category") == "Medium Sub" || sessionStorage.getItem("item_category") == "Wrap") {
-                                prize = !isNaN(Number(standard_toppings.medium_prize)) ? standard_toppings.medium_prize : 0;
-                                console.log("prize", isNaN(Number(standard_toppings.medium_prize)));
-                            } else {
-                                prize = !isNaN(Number(standard_toppings.large_prize)) ? standard_toppings.large_prize : 0;
-                            }
-                        }
+            var prize = 0;
+            var objectStore = db_toppings.transaction(["selected_toppings"], "readwrite").objectStore("selected_toppings");
+            objectStore.openCursor().onsuccess = function (event) {
+                var cursor = event.target.result;
+                if (cursor) {
+                    if(cursor.value.id==topping_id){
+                        prize = cursor.value.prize;
                     }
+                    cursor.continue();
                 }
-                var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
-                var new_prize = parseFloat(sessionStorage.getItem('total_due')).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
-                sessionStorage.setItem('total_due', new_prize);
-                sessionStorage.setItem("complete_orders_due", complete_orders_due);
-                $("#all_total_due").empty();
-                $("#all_total_due").append('Total Due: R' + complete_orders_due.toFixed(2));
-                $("#item_prize").empty();
-                $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
-            }
+                else{
+                    var request = db_toppings.transaction(["selected_toppings"], "readwrite")
+                        .objectStore("selected_toppings")
+                        .delete(topping_id);
+
+                    request.onsuccess = function (event) {
+                        var complete_orders_due = Number(sessionStorage.getItem("complete_orders_due")).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
+                        var new_prize = parseFloat(sessionStorage.getItem('total_due')).toFixed(2) - ((parseFloat(prize) * parseInt(sessionStorage.getItem("quantity"))).toFixed(2));
+                        sessionStorage.setItem('total_due', new_prize);
+                        sessionStorage.setItem("complete_orders_due",complete_orders_due);
+                        $("#all_total_due").empty();
+                        $("#all_total_due").append('Total Due: R'+complete_orders_due.toFixed(2));
+                        $("#item_prize").empty();
+                        $('#item_prize').append('<h6> <b>Prize - </b> R ' + Number(sessionStorage.getItem('total_due')).toFixed(2) + '</h6>');
+                    }
+
+                }
+            };
+
             request.onerror = function (event) {
                 console.log("error", event);
             }
@@ -1217,14 +1273,40 @@
                         } else {
                             prize = !isNaN(Number(standard_toppings.large_prize)) ? standard_toppings.large_prize : 0;
                         }
-//                        console.log("prize",prize);
-                        addTopping(standard_toppings.id, standard_toppings.name, prize, standard_toppings.type_name);
-                        //                    $('#replaced_list').append('<span id='+another_new+'>'+standard_toppings[i].name+' replaced</span>');
+                        var cheapest = 999999;
+                        var cheapId = '';
+                        var objectStore = db_removed.transaction(["removed_items"], "readwrite").objectStore("removed_items");
+                        objectStore.openCursor().onsuccess = function (event) {
+                            var cursor = event.target.result;
+                            if (cursor) {
+                                console.log("bbb",cursor.value.prize);
+                                if(cursor.value.prize<cheapest){
+                                    cheapest = cursor.value.prize;
+                                    cheapId = cursor.value.id;
+                                }
+                                cursor.continue();
+                            } else {
+
+                                if(cheapId){
+                                    if(cheapest>=prize){
+                                        console.log("entering");
+                                        addTopping(standard_toppings.id, standard_toppings.name, 0, standard_toppings.type_name);
+                                    }else{
+                                        let diff = Math.abs(Number(cheapest) - prize);
+                                        console.log("removed diff", diff);
+                                        addTopping(standard_toppings.id, standard_toppings.name, diff, standard_toppings.type_name);
+                                    }
+                                    removeRemovedTopping(cheapId);
+                                }else {
+                                    addTopping(standard_toppings.id, standard_toppings.name, prize, standard_toppings.type_name);
+                                }
+
+                            }
+                        };
+
+
                     }
-
                 }
-//                if (standard_toppings[i].id == id) {
-
             }
         }
 
