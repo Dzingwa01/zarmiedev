@@ -40,8 +40,7 @@ class ClientOrderController
             ->join('menu_categories', 'menu_categories.id', 'menu_item.category_id')
             ->where('prize', '>', 0)
             ->select('menu_item.id','category_id', 'name', 'prize', 'size_name', 'item_number', 'category_name', 'item_size_id','menu_item.description','menu_item.image_url')
-
-            ->get();
+           ->orderBy('menu_item.category_id','asc')->get();
         $menu_items_1 = $menu_items;
 //         dd($menu_items);
         $categories = DB::table('menu_categories')
