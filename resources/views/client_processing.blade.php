@@ -312,7 +312,6 @@
                     <input type="submit" value="logout" style="display: none;">
                 </form>
 
-
             </ul>
             <ul class="right hide-on-med-and-down">
                 <li><a href="/home"  style="color:black;font-weight: bolder"><i class="material-icons left">home</i> Home</a></li>
