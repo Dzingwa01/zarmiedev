@@ -12,6 +12,12 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('get-current-orders','OrdersApiController@getCurrentOrders');
+Route::get('get-all-orders','OrdersApiController@getAllOrders');
+Route::get('accept-order/{order}','OrdersApiController@acceptOrder');
+Route::get('decline-order/{order}','OrdersApiController@declineOrder');
+Route::get('get-accepted-orders','OrdersApiController@getAcceptedOrders');
+Route::get('get-declined-orders','OrdersApiController@declinedOrders');
 
 Route::get('/user', function (Request $request) {
     return $request->user();

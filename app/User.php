@@ -23,6 +23,9 @@ class User extends Authenticatable
         'name', 'email', 'password','phone_number','physical_address','surname','verification_token'
     ];
 
+    public function orders(){
+        return $this->hasMany(Order::class,'user_id');
+    }
     /**
      * The attributes that should be hidden for arrays.
      *

@@ -58,6 +58,7 @@ class OrderCompletionRegisterController
             $extra_info->delivery_or_collection = $input['delivery_or_collect'];
             $extra_info->delivery_time = $input['delivery_time'];
             $extra_info->instructions = $input['special_instructions'];
+            $created_orders = [];
 
             foreach ($orders as $order) {
                 $item_name = $order->item_name;
@@ -66,7 +67,7 @@ class OrderCompletionRegisterController
                 $toast_type = $order->toast_type;
                 $quantity = $order->quantity;
                 $prize = $order->prize;
-                $order_input = ["address"=>$input['address'],"prize"=>$prize,"item_name" => $item_name, "phone_number" => $user->phone_number, "item_category" => $item_category, "bread_type" => $bread_type, "toast_type" => $toast_type, "quantity" => $quantity, "user_id" => $user->id];
+                $order_input = ["address"=>$input['address'],"prize"=>$prize,"item_name" => $item_name, "phone_number" => $user->phone_number, "item_category" => $item_category, "bread_type" => $bread_type, "toast_type" => $toast_type, "quantity" => $quantity, "user_id" => $user->id,"delivery_time"=>$input['delivery_collect_time'],"delivery_or_collect"=> $input['delivery_or_collect'],"extra_instructions"=>$input['special_instructions']];
 
                 $order_cur = Order::create($order_input);
                 foreach ($order->ingredients as $ingredient){
@@ -91,14 +92,14 @@ class OrderCompletionRegisterController
                     $item_ingredient->save();
                 }
                 DB::commit();
-
+                array_push($created_orders,$order_cur->load('order_ingredients','toppings','drinks','user'));
             }
             event($user);
             dispatch(new SendVerificationEmail($user));
             dispatch(new OrderPlacedJob($user, $orders,$extra_info));
             dispatch(new ZarmieOrder($user, $orders,$extra_info));
 
-            return response()->json(["status" => "Account creation successfully, and your order was captured successfully. Please verify your account"]);
+            return response()->json(["status" => "Account creation successfully, and your order was captured successfully. Please verify your account","orders"=>$created_orders]);
         }
         catch (\Exception $e){
             DB::rollback();

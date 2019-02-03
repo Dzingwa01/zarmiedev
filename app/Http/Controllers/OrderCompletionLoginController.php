@@ -34,6 +34,7 @@ class OrderCompletionLoginController
         $user = Auth::user();
         $input = $request->all();
         $orders = json_decode($input['orders']);
+        $created_orders = [];
 
         $extra_info = new \stdClass();
         $extra_info->total_cost = $input['total_cost'];
@@ -55,7 +56,7 @@ class OrderCompletionLoginController
                 $toast_type = $order->toast_type;
                 $quantity = $order->quantity;
                 $prize = $order->prize;
-                $order_input = ["address"=>$input['address'],"prize"=>$prize,"item_name" => $item_name, "phone_number" => $user->phone_number, "item_category" => $item_category, "bread_type" => $bread_type, "toast_type" => $toast_type, "quantity" => $quantity, "user_id" => $user->id];
+                $order_input = ["address"=>$input['address'],"prize"=>$prize,"item_name" => $item_name, "phone_number" => $user->phone_number, "item_category" => $item_category, "bread_type" => $bread_type, "toast_type" => $toast_type, "quantity" => $quantity, "user_id" => $user->id,"delivery_time"=>$input['delivery_collect_time'],"delivery_or_collect"=> $input['delivery_or_collect'],"extra_instructions"=>$input['special_instructions']];
 
                 $order_cur = Order::create($order_input);
                 foreach ($order->ingredients as $ingredient){
@@ -80,18 +81,19 @@ class OrderCompletionLoginController
                     $item_ingredient->save();
                 }
                 DB::commit();
+                array_push($created_orders,$order_cur->load('order_ingredients','toppings','drinks','user'));
 
             }
             event($user);
             dispatch(new OrderPlacedJob($user, $orders,$extra_info));
             dispatch(new ZarmieOrder($user, $orders,$extra_info));
-            return response()->json(["status" => "Order submitted successfully, Thank you"]);
+            return response()->json(["status" => "Order submitted successfully, Thank you","orders"=>$created_orders]);
 
         }
         catch (\Exception $e) {
-            dd($e);
+//            dd($e);
                 DB::rollback();
-                return response()->json(["status" => "An error occured, please contact zarmie on 041 365 7146"]);
+                return response()->json(["status" => "An error occured, please contact zarmie on 041 365 7146".$e->getMessage()]);
             }
     }
 
@@ -110,7 +112,7 @@ class OrderCompletionLoginController
             $extra_info->instructions = $input['special_instructions'];
 
             DB::beginTransaction();
-
+            $created_orders = [];
             try {
                 foreach ($orders as $order) {
                     $item_name = $order->item_name;
@@ -119,7 +121,7 @@ class OrderCompletionLoginController
                     $toast_type = $order->toast_type;
                     $quantity = $order->quantity;
                     $prize = $order->prize;
-                    $order_input = ["address"=>$input['address'],"prize"=>$prize,"item_name" => $item_name, "phone_number" => $user->phone_number, "item_category" => $item_category, "bread_type" => $bread_type, "toast_type" => $toast_type, "quantity" => $quantity, "user_id" => $user->id];
+                    $order_input = ["address"=>$input['address'],"prize"=>$prize,"item_name" => $item_name, "phone_number" => $user->phone_number, "item_category" => $item_category, "bread_type" => $bread_type, "toast_type" => $toast_type, "quantity" => $quantity, "user_id" => $user->id,"delivery_time"=>$input['delivery_collect_time'],"delivery_or_collect"=> $input['delivery_or_collect'],"extra_instructions"=>$input['special_instructions']];
 
                     $order_cur = Order::create($order_input);
                     foreach ($order->ingredients as $ingredient){
@@ -144,12 +146,12 @@ class OrderCompletionLoginController
                         $item_ingredient->save();
                     }
                     DB::commit();
-
+                    array_push($created_orders,$order_cur->load('order_ingredients','toppings','drinks','user'));
                 }
                 event($user);
                 dispatch(new OrderPlacedJob($user, $orders,$extra_info));
                 dispatch(new ZarmieOrder($user, $orders,$extra_info));
-                return response()->json(["status" => "Order submitted successfully, Thank you"]);
+                return response()->json(["status" => "Order submitted successfully, Thank you","orders"=>$created_orders,"input"=>$input]);
 
             }
             catch (\Exception $e) {

@@ -333,7 +333,7 @@ class OrderController extends Controller
         }
         $extra_toppings = $refined_temp;
         $drink_categories = DrinkCategory::where('in_stock','yes')->get();
-        return view('partials.salads_select_ingredient_toping', compact('drink','drink_categories','extra_toppings','ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
+        return view('partials.salads_select_ingredient_toping', compact('drinks','drink','drink_categories','extra_toppings','ingredients','other_ingredients','standard_toppings','optional_toppings','extra_toppings','temp_toppings_ingredients','all_ingredients'));
     }
 
     public function showIngredientsToppingsSaladsClient($id)

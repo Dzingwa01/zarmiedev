@@ -304,7 +304,11 @@
   <link rel="stylesheet" href="/css/jquery-step-maker.css">
   <script src="/js/jquery-step-maker.js"></script>
     <script type='text/javascript'>
-  
+//        order_now_temp();
+        function order_now_temp(){
+            alert("The Sandwich ordering module is currenly under maintainance, please place your order telephonically on 041 365 7146 ");
+            window.location.href = '/';
+        }
     <?php $menu_items = json_encode($menu_items);?>
     var item_number = sessionStorage.getItem('item_number_1');
 

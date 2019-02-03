@@ -198,6 +198,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
             </ul>
             <ul class="right hide-on-med-and-down">
                 <li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+                {{--<li><a class="" style="color:black;font-weight: bolder;" onclick="order_now_temp()"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
                 <li><a class="" style="color:black;font-weight: bolder;"  href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
                 {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
                 {{--<li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
@@ -212,7 +213,9 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 
             <ul id="slide-out" class="sidenav">
                 <li><a class="" style="color:black;font-weight: bolder;" href="/"><i class="material-icons left">home</i>Home</a></li>
-                <li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+                {{--<li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
+                <li><a class="" style="color:black;font-weight:bolder;"  onclick="order_now_temp()"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+
                 <li><a class="" style="color:black;font-weight: bolder;"  href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
                 {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
                 {{--<li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
@@ -575,6 +578,11 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
     request3.onsuccess = function (event) {
         console.log("deleted orders");
     };
+
+    function order_now_temp(){
+        alert("The Sandwich ordering module is currenly under maintainance, please place your order telephonically on 041 365 7146 ");
+    }
+
     $(document).ready(function(){
         $("#details_form" ).hide();
         // $("#many_details_form").hide();

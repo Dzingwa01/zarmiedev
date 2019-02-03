@@ -147,11 +147,11 @@
                         <div id="drinks_accordion" class="panel">
                             <form id="" col="col-md-10" onsubmit="return false;">
                                 <div class="row" style="margin-top:1em;">
-                                    <div id='drinks_list' class="col s12">
+                                    <div id='drinks_list' class="col s12" >
                                         @if(count($drink_categories)>0)
                                             <ul class="tabs">
                                                 @foreach($drink_categories as $drink_category)
-                                                    <li class="tab col s3">
+                                                    <li class="tab col s">
                                                         <a href="{{'#drinkcat_'.$drink_category->id}}"
                                                            style="color:black;text-decoration: none;font-size: 10px;">{{$drink_category->name}}</a>
                                                         {{--<i class="fa fa-beer"></i> {{$drink->name . " - ".$drink->prize}}--}}
@@ -162,8 +162,7 @@
                                     </div>
                                     @if(count($drink_categories)>0)
                                         @foreach($drink_categories as $drink_category)
-                                            <div id="{{'drinkcat_'.$drink_category->id}}" class="col s12 "
-                                                 style="margin-top: 1em;">
+                                            <div id="{{'drinkcat_'.$drink_category->id}}" class="col s12" style="margin-top: 1em;">
                                                 @if(count($drinks)>0)
                                                     @foreach($drinks as $drink)
                                                         @if($drink->category_id==$drink_category->id)
