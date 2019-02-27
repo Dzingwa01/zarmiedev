@@ -28,6 +28,7 @@ use Yajra\Datatables\Facades\Datatables;
 use Illuminate\Support\Facades\Auth;
 //use Illuminate\Validation\ValidationException;
 
+
 class OrderCompletionLoginController
 {
     public function placeOrderClient(Request $request){
@@ -151,11 +152,12 @@ class OrderCompletionLoginController
                 event($user);
                 dispatch(new OrderPlacedJob($user, $orders,$extra_info));
                 dispatch(new ZarmieOrder($user, $orders,$extra_info));
+
                 return response()->json(["status" => "Order submitted successfully, Thank you","orders"=>$created_orders,"input"=>$input]);
 
             }
             catch (\Exception $e) {
-//            dd($e);
+            dd($e);
                 DB::rollback();
                 return response()->json(["status" => "An error occured, please contact zarmie on 041 365 7146"]);
             }

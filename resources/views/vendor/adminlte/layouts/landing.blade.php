@@ -213,8 +213,8 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 
             <ul id="slide-out" class="sidenav">
                 <li><a class="" style="color:black;font-weight: bolder;" href="/"><i class="material-icons left">home</i>Home</a></li>
-                {{--<li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
-                <li><a class="" style="color:black;font-weight:bolder;"  onclick="order_now_temp()"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+                <li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+                {{--<li><a class="" style="color:black;font-weight:bolder;"  onclick="order_now_temp()"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
 
                 <li><a class="" style="color:black;font-weight: bolder;"  href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
                 {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}

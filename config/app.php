@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Zarmie'),
 
     /*
     |--------------------------------------------------------------------------
@@ -168,6 +168,7 @@ return [
         'Collective\Html\HtmlServiceProvider',
         Yajra\Datatables\DatatablesServiceProvider::class,
 
+
     ],
 
     /*
@@ -222,6 +223,7 @@ return [
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+        'Pusher' => Pusher\PushNotifications\PushNotifications::class,
     ],
 
 ];

@@ -362,13 +362,9 @@
                             success: function (response, a, b) {
                                 console.log("success here", response);
                                 alert(response.status);
-                                publishOrderToPusher(response.orders);
+                                publishOrderToPusher(response.orders,response);
                                 console.log("Check orders",response.orders);
-                                clearIngredients();
-                                clearCompleteOrders();
-                                clearToppings();
-                                clearDrinks();
-                                window.location.href = "/home";
+
                             },
                             error: function (response) {
                                 console.log("error", response);
@@ -379,7 +375,7 @@
                 };
             }
 
-            function publishOrderToPusher(orders){
+            function publishOrderToPusher(orders,status){
                 for(let i=0;i<orders.length;i++){
                     let cur_order = orders[i];
 
@@ -431,7 +427,12 @@
                         },
 
                         success: function (response, a, b) {
-                            console.log("success here", response);
+                            alert(status);
+                            clearIngredients();
+                            clearCompleteOrders();
+                            clearToppings();
+                            clearDrinks();
+                            window.location.href = "/home";
 
                         },
                         error: function (response) {
