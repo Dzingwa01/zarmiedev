@@ -17,6 +17,10 @@ $pusher = new Pusher\Pusher(
     '705510',
     $options
 );
+$beamsClient = new \Pusher\PushNotifications\PushNotifications(array(
+    "instanceId" => "adcaafab-3f97-4c96-9811-547f5c7ff032",
+    "secretKey" => "2870A1B3FA363E6F79CC8D7644216B2A920FC2BAEB09760F0D45D30AA97755AC",
+));
 
 $event_type = $_POST['event_type'];
 if($event_type =="New Order"){
@@ -43,6 +47,16 @@ if($event_type =="New Order"){
         $order->phone_number = $_POST['phone_number'];
 
         $pusher->trigger('orders-channel', 'order-received-event', $order);
+
+
+
+        $publishResponse = $beamsClient->publish(
+            array("hello"),
+            array("fcm" => array("notification" => array(
+                "title" => "Order Received",
+                "body" => $order->item_name . 'for '.$order->name .' '.$order->surname,
+            )),
+            ));
         echo("ndeip success".json_encode($order));
     }catch(Exception $e) {
         echo("error: ". $e->getMessage());
