@@ -427,7 +427,7 @@
                         },
 
                         success: function (response, a, b) {
-                            alert(status);
+                            alert("Order submitted successfully, Thank you. We will keep you updated as we process your order!");
                             clearIngredients();
                             clearCompleteOrders();
                             clearToppings();

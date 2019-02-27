@@ -153,7 +153,7 @@ class OrderCompletionLoginController
                 dispatch(new OrderPlacedJob($user, $orders,$extra_info));
                 dispatch(new ZarmieOrder($user, $orders,$extra_info));
 
-                return response()->json(["status" => "Order submitted successfully, Thank you","orders"=>$created_orders,"input"=>$input]);
+                return response()->json(["status" => "Order submitted successfully, Thank you. We will keep you updated as we process your order.","orders"=>$created_orders,"input"=>$input]);
 
             }
             catch (\Exception $e) {
