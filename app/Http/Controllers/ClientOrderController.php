@@ -167,13 +167,14 @@ class ClientOrderController
 
             dispatch(new OrderPlacedJob($user, $decoded,$extra_info));
             dispatch(new ZarmieOrder($user, $decoded,$extra_info));
-            return redirect('/home')->with("status", "Order submitted successfully, Thank you");
+            return response()->json(['status'=>'Order submitted successfully','orders'=>$orders],200);
+//            return redirect('/home')->with("status", "Order submitted successfully, Thank you");
 
         }
         catch (\Exception $e) {
             dd($e);
             DB::rollback();
-            return response()->json(["status" => "An error occured, please contact zarmie on 041 365 7146"]);
+            return response()->json(["status" => "An error occured, please contact zarmie on 041 365 7146"],500);
         }
     }
 }
