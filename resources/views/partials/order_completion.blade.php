@@ -497,11 +497,7 @@ function dismiss() {
                     formData.append('last_name', $("#last_name_dialog").val());
                     formData.append('address', $("#address_dialog").val());
                     formData.append('delivery_or_collect',sessionStorage.getItem('delivery_collect'));
-                    if(sessionStorage.getItem('delivery_collect')=="Delivery"){
-                        formData.append('delivery_collect_time',sessionStorage.getItem('delivery_time'));
-                    }else{
-                        formData.append('delivery_collect_time',sessionStorage.getItem('collect_time'));
-                    }
+                    formData.append('delivery_time',sessionStorage.getItem('delivery_collect_time'));
                     formData.append('total_cost',sessionStorage.getItem('total_cost'));
                     formData.append('special_instructions',sessionStorage.getItem('instructions'));
                     formData.append("orders",JSON.stringify(orders_array));

@@ -22,6 +22,16 @@
                     </ul>
                 </div>
             @endif
+            @if(session()->has('user'))
+
+                <div class="alert alert-danger">
+                   <span>Account not yet Activated.</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <a class="btn" href="{{'/resend-email/'.session()->get('user')}}">Click here to resend verification email.</a>
+                </div>
+            @endif
 
             <div class="login-box-body" style="border-radius: 15px;">
                 <p class="login-box-msg"> {{ trans('adminlte_lang::message.siginsession') }} </p>

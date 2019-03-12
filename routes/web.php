@@ -134,6 +134,7 @@ Route::get('users','UserController@getIndex')->name('users');
 Route::get('/account_creation_success','Auth\RegisterController@accountSuccess');
 Route::get('/account_not_verified','Auth\RegisterController@accountNotRegistered');
 Route::get('/verify_email/{token}', 'Auth\RegisterController@verify');
+Route::get('/resend-email/{email}','HomeController@resendEmail');
 Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
     // Route::get('/', 'AdminController@welcome');
     // Route::get('/manage', ['middleware' => ['permission:manage-admins'], 'uses' => 'AdminController@manageAdmins']);

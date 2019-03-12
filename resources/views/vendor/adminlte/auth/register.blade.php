@@ -24,7 +24,11 @@
                     </ul>
                 </div>
             @endif
-
+            @if(session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session()->get('message') }}
+                </div>
+            @endif
             <div class="register-box-body" style="border-radius: 15px;">
                 <p class="login-box-msg">{{ trans('adminlte_lang::message.registermember') }}</p>
                 <form action="{{ url('/register') }}" method="post">

@@ -7,6 +7,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendVerificationEmail;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,19 +36,35 @@ class HomeController extends Controller
     public function index()
     {
         $user=Auth::user();
-
+//        dd($user->hasRole('client'));
         if($user->hasRole('admin')){
             return redirect()->route('admin_home');
         }
         else if($user->hasRole('client'))
         {
             if($user->verified==0){
-                return view('status.status_message_not_activated');
+                if(Auth::check()){
+                    Auth::logout();
+                    return redirect()->back()->with('user',$user->email);
+                }
+                else{
+                    return view('status.status_message_not_activated',compact('user'));
+                }
+
+
             }else{
                 return view('adminlte::home');
             }
-
-
+        }else{
+            Auth::logout();
         }
+
+    }
+    public function resendEmail($email){
+//        dd($email);
+        $user = User::where('email',$email)->first();
+        $user->verification_token = base64_encode($user->email);
+        dispatch(new SendVerificationEmail($user));
+        return redirect('login');
     }
 }

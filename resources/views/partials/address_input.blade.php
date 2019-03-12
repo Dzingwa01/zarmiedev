@@ -369,7 +369,7 @@
                 $("#collect_instructions_div").hide();
                 var curDate = new Date();
                 var cur_time = curDate.getHours() + ":" +curDate.getMinutes();
-
+                sessionStorage.setItem("delivery_collect_time", $("#delivery_pick_up_time").val());
                 $('#delivery_pick_up_time').val(cur_time);
                 $('#delivery_pick_up_time').timepicker();
                 M.updateTextFields();
@@ -421,7 +421,7 @@
                         if ($("#address").val()) {
                             sessionStorage.setItem("delivery_address", $("#address").val());
                             if(sessionStorage.getItem("delivery_collect_time")=="for_later"&&$("#delivery_pick_up_time").val()){
-                                sessionStorage.setItem("delivery_time", $("#delivery_pick_up_time").val());
+                                sessionStorage.setItem("delivery_collect_time", $("#delivery_pick_up_time").val());
                                 sessionStorage.setItem("instructions",$("#delivery_instructions").val());
                                 window.location.href = '/order_completion';
 //                                read_all_complete_orders_for_submission();
@@ -430,7 +430,7 @@
                             }else if(sessionStorage.getItem("delivery_collect_time")=="for_now"){
                                 sessionStorage.setItem("instructions",$("#delivery_instructions").val());
                                 window.location.href = '/order_completion';
-                                sessionStorage.setItem("delivery_time", "For Now");
+                                sessionStorage.setItem("delivery_collect_time", "For Now");
 //                                read_all_complete_orders_for_submission();
                             }
 
@@ -444,7 +444,7 @@
                             window.location.href = '/order_completion';
                         }else if(sessionStorage.getItem("delivery_collect_time")=="for_now"){
                             sessionStorage.setItem("instructions",$("#delivery_instructions").val());
-                            sessionStorage.setItem("delivery_time", "For Now");
+                            sessionStorage.setItem("delivery_collect_time", "For Now");
                             window.location.href = '/order_completion';
                         }
                         else {

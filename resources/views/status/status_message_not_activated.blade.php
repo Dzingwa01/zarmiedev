@@ -142,23 +142,23 @@
                     </ul>
                 </li>
             </ul>
-            <ul id="nav-mobile" class="side-nav">
-                <li><a class="btn" href="order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>
-                <li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
-                <li><a class="btn"><i class="material-icons left">email</i> Contact Us</a></li>
-                <li class="dropdown">
-                    <a  class="dropdown-toggle btn" data-toggle="dropdown" href="#">
-                        <i class="material-icons left">person_pin</i>
-                        Account
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/>
-                        <a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a>
-                    </ul>
-                </li>
+            {{--<ul id="nav-mobile" class="side-nav">--}}
+                {{--<li><a class="btn" href="order_display" style="margin-top:1em;margin-bottom:1em;"><i class="material-icons left">payment</i> Order Now</a></li>--}}
+                {{--<li><a class="btn" href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>--}}
+                {{--<li><a class="btn"><i class="material-icons left">email</i> Contact Us</a></li>--}}
+                {{--<li class="dropdown">--}}
+                    {{--<a  class="dropdown-toggle btn" data-toggle="dropdown" href="#">--}}
+                        {{--<i class="material-icons left">person_pin</i>--}}
+                        {{--Account--}}
+                        {{--<span class="caret"></span>--}}
+                    {{--</a>--}}
+                    {{--<ul class="dropdown-menu">--}}
+                        {{--<a style="width:160px!important;" class="btn" href="{{ url('/login') }}" style="margin-left:1em;" ><i class="material-icons left">verified_user</i>Sign  In</a><br/>--}}
+                        {{--<a style="width:160px!important;" class="btn" href="{{ url('/register') }}" style="margin-left:1em;"><i class="material-icons left">person_pin</i>Register</a>--}}
+                    {{--</ul>--}}
+                {{--</li>--}}
 
-            </ul>
+            {{--</ul>--}}
             <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
         @endif
     </div>
@@ -166,7 +166,7 @@
 <div class="row" style="margin-top:8em;">
     <div class="panel-heading"><h4>Registration Not Confirmed</h4></div>
     <div class="panel-body">
-       <h5> {{$user->name}}Your account has not been activated as yet. Please check your email to verify your account.</h5>
+        <h5> {{$user->name}} Your account has not been activated as yet. Please check your email to verify your account. If you have not received the email please <a class="btn" href="{{'/resend-email/'.$user->email}}">click here</a></h5>
     </div>
 
 </div>

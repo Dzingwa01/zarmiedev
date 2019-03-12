@@ -111,6 +111,14 @@ class RegisterController extends Controller
         return response()->view('status.status_message',$user,200);
     }
 
+    public function resendEmail($email){
+//        dd($email);
+        $user = User::where('email',$email)->first();
+        $user->verification_token = base64_encode($user->email);
+        dispatch(new SendVerificationEmail($user));
+        return $this->redirectTo('login');
+    }
+
     public function verify($token)
     {
         $user = User::where('verification_token', $token)->first();

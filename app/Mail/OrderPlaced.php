@@ -38,7 +38,7 @@ class OrderPlaced extends Mailable
     {
 //        return $this->from('shane@zarmie.co.za')->view('emails.order_placed');
         return $this->markdown('emails.order_placed')->with([
-            'order' => $this->order,
+            'orders' => $this->order,
             'name'=>$this->user->name,
             'surname'=>$this->user->surname,
             'extra_info'=>$this->extra_info

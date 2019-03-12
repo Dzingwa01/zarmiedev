@@ -36,7 +36,7 @@ Your order has been received. Your order details are as follows:<br/>
 <b>Contact Number:</b> {{$extra_info->phone_number}}<br/>
 <b>Special Instructions:</b> {{$extra_info->instructions}}<br/>
 
-Your order will be delivered in the next 20 minutes<br/>
+Your order will be processed accordingly. For any queries regarding your order, please contact us on 041 365 7146<br/>
 Thanks,<br/>
 {{ config('app.name') }}
 @endcomponent
