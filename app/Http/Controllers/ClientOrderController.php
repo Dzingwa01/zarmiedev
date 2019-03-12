@@ -107,6 +107,7 @@ class ClientOrderController
     }
 
     public function repeatOrder($id){
+//        dd($id);
         $previous_orders = OrderHistory::where('id',$id)->first();
 
         $user = Auth::user();
@@ -162,9 +163,9 @@ class ClientOrderController
                 DB::commit();
 
             }
+            $orders->user = $user;
             event($user);
-           $decoded = json_decode(json_encode($orders->order_information));
-
+            $decoded = json_decode(json_encode($orders->order_information));
             dispatch(new OrderPlacedJob($user, $decoded,$extra_info));
             dispatch(new ZarmieOrder($user, $decoded,$extra_info));
             return response()->json(['status'=>'Order submitted successfully','orders'=>$orders],200);

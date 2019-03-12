@@ -520,7 +520,8 @@ function dismiss() {
                             clearCompleteOrders();
                             clearToppings();
                             clearDrinks();
-                            window.location.href = "/";
+                            // window.location.href = "/";
+                            publishOrderToPusher(response.orders,response);
                         },
                         error: function (response) {
                             console.log("error", response);
@@ -530,6 +531,75 @@ function dismiss() {
                 }
             };
         }
+        function publishOrderToPusher(orders,status){
+            for(let i=0;i<orders.length;i++){
+                let cur_order = orders[i];
+
+                var formData = new FormData();
+                formData.append('event_type',"New Order");
+                formData.append('_token', $("#_token").val());
+                formData.append('name',cur_order.user.name);
+                formData.append('surname',cur_order.user.surname);
+                formData.append('address',cur_order.address);
+                formData.append('phone_number',cur_order.phone_number);
+
+                formData.append('item_name',cur_order.item_name);
+                formData.append('item_category',cur_order.item_category);
+                formData.append('prize',cur_order.prize);
+                formData.append('toast_type',cur_order.toast_type);
+                formData.append('bread_type',cur_order.bread_type);
+                formData.append('delivery_or_collect',sessionStorage.getItem('delivery_collect'));
+                formData.append('extra_instructions',sessionStorage.getItem('instructions'));
+                formData.append('delivery_time',sessionStorage.getItem('delivery_time_sub'));
+                let temp_ingrs = [];
+                for(let x=0;x<cur_order.order_ingredients.length;x++){
+                    temp_ingrs.push(cur_order.order_ingredients[x].name);
+                }
+                formData.append('ingredients',temp_ingrs);
+                let temp_toppings = [];
+                for(let x=0;x<cur_order.toppings.length;x++){
+                    temp_toppings.push(cur_order.toppings[x].name);
+                }
+                formData.append('toppings',temp_toppings);
+
+                let temp_drinks = [];
+                for(let x=0;x<cur_order.drinks.length;x++){
+                    temp_drinks.push(cur_order.drinks[x].name);
+                }
+
+                formData.append('drinks',temp_drinks);
+
+                formData.append('quantity',cur_order.quantity);
+                formData.append('order_date',cur_order.created_at);
+                formData.append('id',cur_order.id);
+                $.ajax({
+                    url: "/chat_server.php",
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    type: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+
+                    success: function (response, a, b) {
+                        alert("Order submitted to the kitchen successfully, Thank you. We will keep you updated as we process your order!");
+                        clearIngredients();
+                        clearCompleteOrders();
+                        clearToppings();
+                        clearDrinks();
+                        window.location.href = "/home";
+
+                    },
+                    error: function (response) {
+                        console.log("error", response);
+                        alert(response.status);
+                    }
+                });
+            }
+
+        }
+
         function clearDrinks() {
             var objectStore = db.transaction(["selected_drinks"], "readwrite").objectStore("selected_drinks");
             var objectStoreRequest = objectStore.clear();

@@ -82,7 +82,7 @@
                 processData: false,
                 contentType: false,
                 data: formData,
-                type: 'post',
+                type: 'get',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -91,7 +91,7 @@
                     console.log("success here", response);
                     alert(response.status);
                     publishOrderToPusher(response.orders,response);
-                    console.log("Check orders",response.orders);
+
 
                 },
                 error: function (response) {
@@ -104,8 +104,11 @@
         }
 
         function publishOrderToPusher(orders,status){
-            for(let i=0;i<orders.length;i++){
-                let cur_order = orders[i];
+            // alert("Hit");
+            console.log(orders);
+
+                let cur_order = orders;
+                console.log("Check orders",cur_order);
 
                 var formData = new FormData();
                 formData.append('event_type',"New Order");
@@ -113,29 +116,29 @@
                 formData.append('name',cur_order.user.name);
                 formData.append('surname',cur_order.user.surname);
                 formData.append('address',cur_order.address);
-                formData.append('phone_number',cur_order.phone_number);
+                formData.append('phone_number',cur_order.user.phone_number);
 
-                formData.append('item_name',cur_order.item_name);
-                formData.append('item_category',cur_order.item_category);
-                formData.append('prize',cur_order.prize);
-                formData.append('toast_type',cur_order.toast_type);
-                formData.append('bread_type',cur_order.bread_type);
-                formData.append('delivery_or_collect',sessionStorage.getItem('delivery_collect'));
-                formData.append('extra_instructions',sessionStorage.getItem('instructions'));
-                formData.append('delivery_time',sessionStorage.getItem('delivery_time_sub'));
+                formData.append('item_name',cur_order.order_information[0].item_name);
+                formData.append('item_category',cur_order.order_information[0].item_category);
+                formData.append('prize',cur_order.order_information[0].prize);
+                formData.append('toast_type',cur_order.order_information[0].toast_type);
+                formData.append('bread_type',cur_order.order_information[0].bread_type);
+                formData.append('delivery_or_collect',cur_order.delivery_or_collect);
+                formData.append('extra_instructions',cur_order.special_instructions);
+                formData.append('delivery_time',cur_order.delivery_collect_time);
                 let temp_ingrs = [];
-                for(let x=0;x<cur_order.order_ingredients.length;x++){
-                    temp_ingrs.push(cur_order.order_ingredients[x].name);
+                for(let x=0;x<cur_order.order_information[0].ingredients.length;x++){
+                    temp_ingrs.push(cur_order.order_information[0].ingredients[x].name);
                 }
                 formData.append('ingredients',temp_ingrs);
                 let temp_toppings = [];
-                for(let x=0;x<cur_order.toppings.length;x++){
+                for(let x=0;x<cur_order.order_information[0].toppings.length;x++){
                     temp_toppings.push(cur_order.toppings[x].name);
                 }
                 formData.append('toppings',temp_toppings);
 
                 let temp_drinks = [];
-                for(let x=0;x<cur_order.drinks.length;x++){
+                for(let x=0;x<cur_order.order_information[0].drinks.length;x++){
                     temp_drinks.push(cur_order.drinks[x].name);
                 }
 
@@ -156,10 +159,7 @@
 
                     success: function (response, a, b) {
                         alert("Order submitted successfully, Thank you. We will keep you updated as we process your order!");
-                        // clearIngredients();
-                        // clearCompleteOrders();
-                        // clearToppings();
-                        // clearDrinks();
+
                         window.location.href = "/home";
 
                     },
@@ -168,7 +168,7 @@
                         alert(response.status);
                     }
                 });
-            }
+
 
         }
     </script>
