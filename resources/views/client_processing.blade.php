@@ -296,11 +296,11 @@
                     {{ csrf_field() }}
                     <input type="submit" value="logout" style="display: none;">
                 </form>
-                <li><a href="{{url('register')}}">Profile</a></li>
+                <li><a  href="{{url('manage-profile/'.Auth::user()->id)}}">Profile</a></li>
 
             </ul>
             <ul id="dropdown2" class="dropdown-content">
-                <li><a href="{{url('register')}}">Profile</a></li>
+                <li><a  href="{{url('manage-profile/'.Auth::user()->id)}}">Profile</a></li>
                 <a href="{{ url('/logout') }}" class=""
                    onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">

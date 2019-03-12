@@ -44,6 +44,10 @@ class UserController extends Controller
     $role=DB::table('role_user')->where('user_id',$id)->first();
     return view('users.edit')->with('user',$user)->with('users_roles',$users_roles)->with('role',$role);
   }
+
+  public function showProfile(User $user){
+      return view('clients.edit-profile',compact('user'));
+  }
   public function update(Request $request,$id)
   {
     $input = $request->all();
@@ -53,6 +57,18 @@ class UserController extends Controller
 
     $user->roles()->attach($input['user_role']);
     return redirect()->route('users');
+  }
+
+  public function updateProfile(Request $request, User $user){
+      DB::beginTransaction();
+      try{
+          $user->update($request->input());
+          DB::commit();
+          return redirect()->back()->with('message','Profile updated successfully');
+      }catch(\Exception $e){
+          DB::rollback();
+          return redirect()->back()->with('message','An error occured '.$e->getMessage());
+      }
   }
   public function destroy($id)
   {

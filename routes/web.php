@@ -45,7 +45,8 @@ Route::get('admin','AdminController@index')->name('admin_home');
 Route::get('menu_display','MenuManagementController@getIndex');
 
 Route::get("get_ingredients","IngredientController@getIngredients");
-
+Route::post('update-profile/{user}','UserController@updateProfile');
+Route::get('manage-profile/{user}','UserController@showProfile');
 //orders
 Route::get('/repeat_order/{id}','ClientOrderController@repeatOrder');
 Route::get('/previous_orders','ClientOrderController@showHistory');
