@@ -40,7 +40,7 @@ class UserController extends Controller
 
   public function editUser($id){
     $user=User::find($id);
-    $users_roles=DB::table('roles')->get();
+    $users_roles=DB::table('roles')->where('name','!=','admin')->get();
     $role=DB::table('role_user')->where('user_id',$id)->first();
     return view('users.edit')->with('user',$user)->with('users_roles',$users_roles)->with('role',$role);
   }

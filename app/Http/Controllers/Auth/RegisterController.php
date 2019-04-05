@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Jobs\SendVerificationEmail;
+use App\Mail\VerifyUser;
 use App\Package;
 use App\Role;
 use App\User;
@@ -10,6 +11,7 @@ use Validator;
 use DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class RegisterController
@@ -101,7 +103,9 @@ class RegisterController extends Controller
             $user->attachRole($role);
             DB::commit();
             event($user);
-            dispatch(new SendVerificationEmail($user));
+            Mail::to($user->email)
+                ->send(new VerifyUser($user));
+//            dispatch(new SendVerificationEmail($user));
 
         }
         catch (\Exception $e){

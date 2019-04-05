@@ -15,9 +15,9 @@
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4",
         "pusher/pusher-php-server": "^3.3",
+        "pusher/pusher-push-notifications": "^1.1",
         "yajra/laravel-datatables-oracle": "^7.7",
-        "zizaco/entrust": "5.2.x-dev",
-        "pusher/pusher-push-notifications": "^1.0"
+        "zizaco/entrust": "5.2.x-dev"
     },
     "require-dev": {
         "filp/whoops": "^2.0",

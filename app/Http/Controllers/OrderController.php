@@ -8,6 +8,7 @@ use App\Ingredient;
 use App\IngredientType;
 use App\Jobs\OrderPlacedJob;
 use App\Jobs\ZarmieOrder;
+use App\Mail\ContactUs;
 use App\Order;
 use App\OrderIngredient;
 use App\User;
@@ -28,6 +29,19 @@ class OrderController extends Controller
     public function __construct()
     {
         // $this->middleware('auth');
+    }
+
+    public function contactUs(Request $request){
+//        dd($request->all());
+        $input = $request->input();
+        try{
+            Mail::to('tongaichiridza@gmail.com')
+                ->send(new ContactUs($input['full_name'],$input['phone_number'],$input['email'],$input['message']));
+            return redirect()->back()->with('success', 'Message sent successfully');
+
+        }catch(\Exception $e){
+            return redirect()->back()->with('error', 'An error occured while sending the message');
+        }
     }
 
     public function getIndex()

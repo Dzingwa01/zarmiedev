@@ -315,13 +315,13 @@
         <a  class="" href="{{ url('/register') }}">Register</a>
       </ul>
       <ul class="right hide-on-med-and-down">
-        <li><a class="" style="color:black;font-weight: bolder;" href="/"><i class="material-icons left">home</i>Home</a></li>
-        <li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
-        <li><a class="" style="color:black;font-weight: bolder;"  href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+        <li><a class="" style="color:black;font-weight: bolder;" href="!#" data-toggle="modal" data-target="#login_modal"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+        {{--<li><a class="" style="color:black;font-weight: bolder;" onclick="order_now_temp()"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
+        <li><a class="" style="color:black;font-weight: bolder;"  href="/order_display"><i class="material-icons left">reorder</i> Menu</a></li>
         {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-        {{--<li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
+        <li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
         <li>
-          <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus1" data-toggle="dropdown" href="#dropdown1">
+          <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown2">
             <i class="material-icons left">person_pin</i>
             Account
             <span class="caret"></span>
@@ -331,12 +331,14 @@
 
       <ul id="slide-out" class="sidenav">
         <li><a class="" style="color:black;font-weight: bolder;" href="/"><i class="material-icons left">home</i>Home</a></li>
-        <li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
-        <li><a class="" style="color:black;font-weight: bolder;"  href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
-        {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-        {{--<li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
+        <li><a class="" style="color:black;font-weight: bolder;" href="!#" data-toggle="modal" data-target="#login_modal"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+        {{--<li><a class="" style="color:black;font-weight:bolder;"  onclick="order_now_temp()"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
+
+        <li><a class="" style="color:black;font-weight: bolder;"  href="/order_display"><i class="material-icons left">reorder</i> Menu</a></li>
+        {{--<li><a class="btn"><i class="material-icons left">info</i> About Us</a></li>--}}
+        <li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
         <li>
-          <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown2">
+          <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown1">
             <i class="material-icons left">person_pin</i>
             Account
             <span class="caret"></span>
@@ -349,7 +351,25 @@
   </nav>
 </div>
         @yield('content')
-        
+<div id="login_modal" class="modal" role="dialog" style="max-height: 40%!important;">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title center">Order Now</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <p style="color:black!important;" >Please Login or Register to order our delicious sandwiches.</p>
+    </div>
+
+    <div class="modal-footer">
+      <div style="float:right;">
+        <a class="btn" href="/login"><i class="material-icons left">person_pin</i> Login</a>
+        <a class="btn" href="/register"><i class="material-icons left">security</i> Register</a>
+      </div>
+    </div>
+  </div>
+
+</div>
   <footer class="page-footer teal container-fluid">
       <div class="container">
         <div class="row">

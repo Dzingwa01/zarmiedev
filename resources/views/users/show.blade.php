@@ -1,7 +1,9 @@
-@extends('layouts.admin_template')
-
-@section('content')
-	<div class="container" style="margin-top:8em;">
+@extends('adminlte::layouts.app')
+@section('htmlheader_title')
+    {{ trans('adminlte_lang::message.home') }}
+@endsection
+@section('main-content')
+    <div class="container-fluid box box-success">
 	<div class="row">
 	    <div class="col-lg-12 margin-tb">
 	        <div class="pull-left">

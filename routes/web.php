@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('contact_us','OrderController@contactUs');
+
 Route::get('/client_order_display','ClientOrderController@getOrdersIndex');
 Route::get('/client_menu_display','ClientOrderController@getOrdersIndex');
 
@@ -86,8 +88,6 @@ Route::get('ingredient_items','IngredientController@showIngredients')->name('ing
 Route::get('ingredient_item_types','IngredientTypeController@showIngredientTypes')->name('ingredient_item_types');
 Route::post('save_ingredient','IngredientController@store')->name('add_ingredient');
 Route::post('save_ingredient_type','IngredientTypeController@store')->name('add_ingredient_type');
-
-
 
 Route::get('users/{id}','UserController@editUser');
 Route::post('user/update/{id}','UserController@update');

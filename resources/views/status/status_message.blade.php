@@ -120,7 +120,7 @@
 <body>
 <nav class="navbar-fixed-top white" role="navigation" style="height:7em;">
     <div class="nav-wrapper container-fluid">
-        <a id="logo-container" href="#" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
+        <a id="logo-container" href="/" class="brand-logo" ><img class="img-responsive img-rounded" src={{URL::asset('pictures/logo.png')}} /></a>
         @if (Auth::check())
             <li><a href="{{ url('/home') }}">Home</a></li>
         @else

@@ -182,10 +182,11 @@
         <a  class="" href="{{ url('/register') }}">Register</a>
       </ul>
       <ul class="right hide-on-med-and-down">
-        <li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
-        <li><a class="" style="color:black;font-weight: bolder;"  href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
+        <li><a class="" style="color:black;font-weight: bolder;" href="!#" data-toggle="modal" data-target="#login_modal"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+        {{--<li><a class="" style="color:black;font-weight: bolder;" onclick="order_now_temp()"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
+        <li><a class="" style="color:black;font-weight: bolder;"  href="/order_display"><i class="material-icons left">reorder</i> Menu</a></li>
         {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-        {{--<li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
+        <li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
         <li>
           <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown2">
             <i class="material-icons left">person_pin</i>
@@ -197,10 +198,12 @@
 
       <ul id="slide-out" class="sidenav">
         <li><a class="" style="color:black;font-weight: bolder;" href="/"><i class="material-icons left">home</i>Home</a></li>
-        <li><a class="" style="color:black;font-weight: bolder;" href="/order_display"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
-        <li><a class="" style="color:black;font-weight: bolder;"  href="/menu_display"><i class="material-icons left">reorder</i> Menu</a></li>
-        {{-- <li><a class="btn"><i class="material-icons left">info</i> About Us</a></li> --}}
-        {{--<li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>--}}
+        <li><a class="" style="color:black;font-weight: bolder;" href="!#" data-toggle="modal" data-target="#login_modal"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>
+        {{--<li><a class="" style="color:black;font-weight:bolder;"  onclick="order_now_temp()"><i class="material-icons left">add_shopping_cart</i> Order Now</a></li>--}}
+
+        <li><a class="" style="color:black;font-weight: bolder;"  href="/order_display"><i class="material-icons left">reorder</i> Menu</a></li>
+        {{--<li><a class="btn"><i class="material-icons left">info</i> About Us</a></li>--}}
+        <li><a class="" style="color:black;font-weight: bolder;" href="/contact_display"><i class="material-icons left">email</i> Contact Us</a></li>
         <li>
           <a style="color:black;font-weight: bolder;"  class="dropdown-trigger_cus2" data-toggle="dropdown" href="#dropdown1">
             <i class="material-icons left">person_pin</i>
@@ -216,90 +219,40 @@
 </div>
 
   <div class="container-fluid">
-    {{--<div class="step-container" style="width: 700px; margin: 0 auto"></div>--}}
-    <a id="cart_btn" hidden  class=" btn pull-right" onclick="show_cart()" style="margin-top:1em; margin-right:1em;">CHECKOUT<i class="fa fa-shopping-cart" ></i><span style="color:red" id="order_count"></span> </a>
-
-    <div>
-      <div id='menu_items' class="row">
-        @foreach ($categories as $category)
-          <center>
-            <h5>{{$category->category_name}}</h5>
-          </center>
-              <table id="{{$category->id}}" class="table table-hover table-sm table-striped card" >
-                @if($category->id==18||$category->id==19||$category->id==22||$category->id==21||$category->id==20)
-                  <thead>
-                  <tr><th>Item Number</th><th>Name</th><th>Price</th></tr>
-                  </thead>
-                @elseif($category->id<=6)
-                  <thead>
-                  <tr><th>Item Number</th><th>Name</th><th>Sandwich</th><th>Medium Sub</th><th>Large Sub</th><th>Wrap</th></tr>
-                  </thead>
-                @elseif($category->id<=7)
-                  </thead>
-                  <tr><th>Item Number</th><th>Name</th><th>Medium</th><th>Large</th></tr>
-                  </thead>
-                @endif
-                <tbody>
-                </tbody>
-              </table>
-
-        @endforeach
+    <div class="row" style="margin-top:1em;">
+      <h5 style="text-align: center;text-transform: uppercase;">Our Menu </h5>
+      <div class="col m6">
+        <h6 style="text-align: center">Sandwiches & Salads</h6><span><i class="material-icons">info</i>Click on menu to zoom</span>
+        <img class="materialboxed" style="max-width: 100%" src="img/sandwiches_salad.jpg">
       </div>
-      {{--<ul class="collapsible">--}}
-        {{--@foreach ($categories as $category)--}}
-        {{--<li style="margin-bottom: 1em;">--}}
-          {{--<div class="collapsible-header">--}}
-            {{--<div style="margin:auto;width:50%;">--}}
-              {{--<center>--}}
-                {{--<img title='{{$category->category_name}}' src='{{$category->picture_url}}' style = "margin-top:1em; width: 300px;height:62px"/>--}}
-              {{--</center>--}}
-            {{--</div>--}}
-          {{--</div>--}}
-
-          {{--<div class="collapsible-body">--}}
-              {{--<table id="{{$category->id}}" class="table table-hover table-sm table-striped">--}}
-                {{--@if($category->id==18||$category->id==19||$category->id==22||$category->id==21||$category->id==20)--}}
-                  {{--<thead>--}}
-                  {{--<tr><th>Item Number</th><th>Name</th><th>Price</th></tr>--}}
-                  {{--</thead>--}}
-                {{--@elseif($category->id<=6)--}}
-                  {{--<tr><th>Item Number</th><th>Name</th><th>Sandwich</th><th>Medium Sub</th><th>Large Sub</th><th>Wrap</th></tr>--}}
-                {{--@elseif($category->id<=7)--}}
-                  {{--<tr><th>Item Number</th><th>Name</th><th>Medium</th><th>Large</th></tr>--}}
-                {{--@endif--}}
-                {{--<tbody>--}}
-                {{--</tbody>--}}
-              {{--</table>--}}
-          {{--</div>--}}
-
-        {{--</li>--}}
-        {{--@endforeach--}}
-      {{--</ul>--}}
+      <div class="col m6">
+        <h6 style="text-align: center">Platters</h6><span><i class="material-icons">info</i>Click on menu to zoom</span>
+        <img class="materialboxed" style="max-width: 100%" src="img/platters.jpg">
       </div>
-    <div id="cart" class="modal">
-      <div class="modal-header">
-        <h5 class="modal-title">Current Orders</h5>
-        <button type="button" class="close" onclick="dismiss()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div id='checkout_div_cart'>
 
-          </div>
-
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button style="margin:1em;" class="btn" onclick="dismiss()"> Cancel</button>
-
-        <button style="margin:1em;" class="btn"
-                onclick="proceed_to_checkout()">Checkout
-        </button>
-      </div>
     </div>
 
+
+  </div>
+<div id="login_modal" class="modal" role="dialog" style="max-height: 40%!important;">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title center">Order Now</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <p style="color:black!important;" >Please Login or Register to order our delicious sandwiches.</p>
+    </div>
+
+    <div class="modal-footer">
+      <div style="float:right;">
+        <a class="btn" href="/login"><i class="material-icons left">person_pin</i> Login</a>
+        <a class="btn" href="/register"><i class="material-icons left">security</i> Register</a>
+      </div>
+    </div>
   </div>
 
+</div>
   {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
   <link rel="stylesheet" href="/css/jquery-step-maker.css">
   <script src="/js/jquery-step-maker.js"></script>
@@ -516,6 +469,8 @@
 
       $(document).ready(function(){
           $('.collapsible').collapsible();
+        $('.materialboxed').materialbox();
+        $('.tabs').tabs();
           var more_order = sessionStorage.getItem("more_order");
           read_all_complete_orders();
 //          if(more_order!=null&&more_order!=undefined&&more_order!="null"){
@@ -531,24 +486,24 @@
               $.each(menu_items, function(idx,obj){
                   if(categories[i].id === obj.item_category){
                       try{
-                          $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
+                          $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' ><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
 
                       }catch(err){
                           if(categories[i].id==18||categories[i].id==19||categories[i].id==20||categories[i].id==21||categories[i].id==22){
-                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td></tr>');
+                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' ><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td> R '+(obj.sandwich).toFixed(2)+'</td></tr>');
                           }
                           else if(categories[i].id==7){
-                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td></tr>');
+                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' ><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td></tr>');
 
                           }
                           if(obj.item_number==27||obj.item_number==28){
-                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td></td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
+                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' ><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td></td><td> R '+(obj.mediumsub).toFixed(2)+'</td><td> R '+(obj.largesub).toFixed(2)+'</td><td>'+(obj.wrap).toFixed(2)+'</td></tr>');
 
                           }else if(obj.item_number==25||obj.item_number==33){
-                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td></td><td></td><td></td><td> R '+(obj.wrap).toFixed(2)+'</td></tr>');
+                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' ><td>'+obj.item_number+'</td><td>'+toTitleCase(obj.item_name)+'</td><td></td><td></td><td></td><td> R '+(obj.wrap).toFixed(2)+'</td></tr>');
 
                           }else if(obj.item_number==32){
-                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' onclick="process_order(this)"><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td></td><td>R '+(obj.sandwich).toFixed(2)+'</td><td></td><td> </td></tr>');
+                              $("#"+categories[i].id).append('<tr id='+"tr_"+obj.item_number+' ><td>'+obj.item_number+'</td><td>'+obj.item_name+'</td><td></td><td>R '+(obj.sandwich).toFixed(2)+'</td><td></td><td> </td></tr>');
 
                           }
 
