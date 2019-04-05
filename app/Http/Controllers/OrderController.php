@@ -35,7 +35,8 @@ class OrderController extends Controller
 //        dd($request->all());
         $input = $request->input();
         try{
-            Mail::to('tongaichiridza@gmail.com')
+            Mail::to('newtonpark@zarmie.co.za')
+                ->cc('shaneparker37@gmail.com')
                 ->send(new ContactUs($input['full_name'],$input['phone_number'],$input['email'],$input['message']));
             return redirect()->back()->with('success', 'Message sent successfully');
 
