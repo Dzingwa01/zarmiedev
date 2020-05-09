@@ -33,7 +33,7 @@ class VerifyUser extends Mailable
     public function build()
     {
         return $this->markdown('emails.verrify_user')->with([
-            'url' => 'zarmiedev.co.za/verify_email/'.$this->user->verification_token,
+            'url' => 'zarmie.co.za/verify_email/'.$this->user->verification_token,
             'name'=>$this->user->name,
             'surname'=>$this->user->surname,
         ]);
